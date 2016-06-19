@@ -133,8 +133,9 @@ int main(){
 
 ###External libraries
 
-Usage with external libraries written in generic paradigme is demonstrared on the example of [Eigen](http://eigen.tuxfamily.org/).
-We will code a perceptron with sigmoid activations, following by softmax normalization, taking 24x24 image as an input and outputing a 10 class classifier. We will use dC++ provided mappings.
+Usage with external libraries written in generic paradigm is demonstrated on the example of [Eigen](http://eigen.tuxfamily.org/). 
+We will code a perceptron with sigmoid activations, following by softmax normalization, taking 24x24 image as an input and outputting a 10 class classifier. We will use dC++ provided mappings.
+
 ```c++
 #include <iostream>
 #include <dC.h>
