@@ -9,7 +9,7 @@ Library dC++ implements the theory of τ − calculus in a natural way, needing 
 This is the openSource version.
 
 ###Usage
-As algorithms become differentiable, so does a whole new set of procedures. Algorithms involving solving equations, approximating models, SVD decomposition, etc. as one of their steps, Runge-Kutta and other approximation methods, all become differentiable and can be subjected to standard methods of Functional analysis, thus providing exact solutions to analyticaly non-computable expressions.
+As algorithms become differentiable, so does a whole new set of procedures. Algorithms involving solving equations, approximating models, SVD decomposition, eigen vector/value calculation, etc. as one of their steps, Runge-Kutta and other approximation methods, all become differentiable and can be subjected to standard methods of Functional analysis, thus providing exact solutions to analyticaly non-computable expressions.
 
 ###Tutorial
 As most programmers face the need of differentiability through machine learning, we use the concept of a recursive neural network as a vessel for this tutorial.
