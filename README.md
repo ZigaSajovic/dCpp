@@ -4,7 +4,7 @@ differentiable C++; conditionals, loops, recursion and all things C++
 ###Abstract
 Algorithms were defined as a non-Abelian subgroup (or more generally a submonoid) of operators acting on a virtual space. By defining a norm on this space, and the notion of a limit, we show the operators to be differentiable through τ − calculus developed by the author. Thus all techniques of Functional analysis may be applied to any algorithm. 
 
-Library dC++ implements the theory of τ − calculus in a natural way, needing only replacement of the type double with a differentiable variable var. Thus all C++ written code is compliable with the library. dC++ supports all external C++ libraries written in generic programming paradigm.
+Library dC++ implements the theory of τ − calculus in a natural way, needing only replacement of the type double with a differentiable variable [var](/include/var.h). Thus all C++ written code is compliable with the library. dC++ supports all external C++ libraries written in generic programming paradigm.
 
 This is the openSource version.
 
@@ -29,7 +29,7 @@ We will need the folowing functions
 * dotProduct(vec1,vec2)
 * matVecProduct(mat,vec)
 
-By coding e(x), we will learn about the class tau, which allows one to create it's own differentiable maps, returning a differentiable variable var.
+By coding e(x), we will learn about the class [tau](include/tau.h), which allows one to create it's own differentiable maps, returning a differentiable variable [var](/include/var.h).
 First we create maps double->double, for e(x) and its' derivative.
 ```c++
 //y=e^x
@@ -42,7 +42,7 @@ double deMap(double x){
     return std::exp(x);
 }
 ```
-We create a differentiable map e(x), by providing tau with the above functions.
+We create a differentiable map e(x), by providing [tau](include/tau.h) with the above functions.
 ```c++
 //create a differentiable mapping
 tau e=tau(eMap,deMap);
@@ -180,3 +180,5 @@ int main(){
 }
 
 ```
+
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">dC++</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://si.linkedin.com/in/zigasajovic" property="cc:attributionName" rel="cc:attributionURL">Žiga Sajovic</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
