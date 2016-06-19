@@ -12,9 +12,9 @@ This is the openSource version.
 As algorithms become differentiable, so does a whole new set of procedures. Algorithms involving solving equations, approximating models, SVD decomposition, eigen vector/value calculation, etc. as one of their steps, Runge-Kutta and other approximation methods, all become differentiable and can be subjected to standard methods of Functional analysis, thus providing exact derivatives of analyticaly non-computable expressions.
 
 ###Tutorial
-As most programmers face the need of differentiability through machine learning, we use the concept of a recursive neural network as a vessel for this tutorial.
+As most programmers face the need of differentiability through machine learning, we use the concept of a Recursive Neural Network as a vessel for this tutorial.
 
-We will create a simple 2-layer deep Neural Network with 10 recursive layers. 20 layers all together. Each layer will have sigmoid activation functions, ending with a softmax layer, producing a distribution. We will code all the functions as we go (even though much of such functionality comes with the library), for educational purposes.
+We will create a simple 2-layers deep Neural Network with 10 recursive layers. 20 layers all together. Each layer will have sigmoid activation functions, ending with a softmax layer, producing a distribution. We will code all the functions as we go (even though much of such functionality comes with the library), for educational purposes.
 
 First we include the necessities
 
@@ -23,11 +23,11 @@ First we include the necessities
 #include <dC.h>
 ```
 We will need the folowing functions
-* e(x)
-* sigmoid(x)
-* softmax(vec)
-* dotProduct(vec1,vec2)
-* matVecProduct(mat,vec)
+* [e(x)](https://en.wikipedia.org/wiki/Exponential_function)
+* [sigmoid(x)](https://en.wikipedia.org/wiki/Sigmoid_function)
+* [softmax(vec)](https://en.wikipedia.org/wiki/Softmax_function)
+* [dotProduct(vec1,vec2)](https://en.wikipedia.org/wiki/Dot_product)
+* [matVecProduct(mat,vec)](https://en.wikipedia.org/wiki/Matrix_multiplication)
 
 By coding e(x), we will learn about the class [tau](include/tau.h), which allows one to create it's own differentiable maps, returning a differentiable variable [var](/include/var.h).
 First we create maps double->double, for e(x) and its' derivative.
