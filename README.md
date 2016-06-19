@@ -99,7 +99,7 @@ void recursionNet(var *input, var layer1[2][2],var layer2[2][2],var *result, int
 }
 ```
 All that is left, is the main function in which we will learn about the initialization of differentiable variables. Note, how we do not initialize the input vector, but we do initialize the weight matricies, as only their derivatives are of interest.
-Finally, we call recursionNet, for a depth of 10 layers and display its' gradient and image.
+Finally, we call recursionNet, for a depth of 10 layers and display its' Jacobian and image.
 ```c++
 int main(){
     //create input vector
@@ -126,7 +126,7 @@ int main(){
     var out[2];
     //run for 10 recursive steps
     recursionNet(input,firstMat,secondMat,out,10);
-    //display the image and the gradient
+    //display the image and the Jacobian
     for(int i=0;i<2;i++)dC::print(out[i]);
 }
 ```
@@ -134,7 +134,7 @@ int main(){
 ###External libraries
 
 Usage with external libraries written in generic paradigm is demonstrated on the example of [Eigen](http://eigen.tuxfamily.org/). 
-We will code a perceptron with sigmoid activations, following by softmax normalization, taking 24x24 image as an input and outputting a 10 class classifier. We will use dC++ provided mappings.
+We will code a perceptron with sigmoid activations, following by softmax normalization, taking 28x28 image as an input and outputting a 10 class classifier. We will use dC++ provided mappings.
 
 ```c++
 #include <iostream>
@@ -160,14 +160,14 @@ int main(){
     const int imgSize=28*28;
     const Eigen::Matrix<var,1,imgSize>input=Eigen::Matrix<var,1,imgSize>::Random(1,imgSize);
     //    number of outputs of the layer
-    const int numOfOutOnFirstLevel=1;
+    const int numOfOutOnFirstLevel=10;
     //    matrix of weights on the first level (imgSizeXnumOfOutOnFirstLevel)
     Eigen::Matrix<var,imgSize,numOfOutOnFirstLevel>firstLayerVars=Eigen::Matrix<var,imgSize,numOfOutOnFirstLevel>::Random(imgSize,numOfOutOnFirstLevel);
     //    initializing weights
     dC::init(firstLayerVars);
     //    mapping of the first layer --> resulting in 10x1 vector
     Eigen::Matrix<var,numOfOutOnFirstLevel,1>firstLayerOutput=input*firstLayerVars;
-    //    apply reLu layer --> resulting in 10x1 vector
+    //    apply sigmoid layer --> resulting in 10x1 vector
     dC::map_by_element(firstLayerOutput,&dC::sigmoid);
     //    apply sofmax layer --> resulting in 10x1 vector
     softmax(firstLayerOutput);
