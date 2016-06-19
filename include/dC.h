@@ -2,6 +2,7 @@
 #define DC_H
 #include "operators.h"
 #include "tau.h"
+//comment out, if you don't have Eigen installed
 #include <eigen3/Eigen/Core>
 
 
@@ -18,6 +19,8 @@ namespace dC{
     var reLu(const var& v);
     var reLuLeak(const var& v, double leak);
     void print(const var& v);
+    //comment out the next two functions, if you don't have Eigen installed
+    //starting here
     template <typename Derived>
     void init(Eigen::MatrixBase<Derived>& matrix){
             for (size_t i=0, nRows=matrix.rows(), nCols=matrix.cols(); i<nCols; ++i)
@@ -28,5 +31,6 @@ namespace dC{
             for (size_t i=0, nRows=matrix.rows(), nCols=matrix.cols(); i<nCols; ++i)
                 for (size_t j=0; j<nRows; ++j)matrix(j,i)=fun(matrix(j,i));
     }
+    //ending here
 }
 #endif // DC_H
