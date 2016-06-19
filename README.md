@@ -1,5 +1,5 @@
 # dCpp
-differentiable C++; conditionals, loops, recursion and all things C++
+Differentiable C++; conditionals, loops, recursion and all things C++
 
 ###Abstract
 Algorithms were defined as a non-Abelian subgroup (or more generally a submonoid) of operators acting on a virtual space. By defining a norm on this space, and the notion of a limit, we show the operators to be differentiable through τ − calculus developed by the author. Thus all techniques of Functional analysis may be applied to any algorithm. 
@@ -14,7 +14,7 @@ As algorithms become differentiable, so does a whole new set of procedures. Algo
 ###Tutorial
 As most programmers face the need of differentiability through machine learning, we use the concept of a recursive neural network as a vessel for this tutorial.
 
-We will create a simple 2-layer deep Neural Network with 5 recursive layers. 10 layers all together. Each layer will have sigmoid activation functions, ending with a softmax layer, producing a distribution. We will code all the functions as we go (even though much of such functionality comes with the library), for educational purposes.
+We will create a simple 2-layer deep Neural Network with 10 recursive layers. 20 layers all together. Each layer will have sigmoid activation functions, ending with a softmax layer, producing a distribution. We will code all the functions as we go (even though much of such functionality comes with the library), for educational purposes.
 
 First we include the necessities
 
@@ -98,7 +98,7 @@ void recursionNet(var *input, var layer1[2][2],var layer2[2][2],var *result, int
     }
 }
 ```
-All that is left, is the main function in which we will learn about the initialization of differentiable variables. Note, how we do not initialize the input vector, but we do initialize the weight matricies, as only their derivatives are of interest.
+All that is left, is the main function in which we will learn about the initialization of differentiable variables [var](/include/var.h). Note, how we do not initialize the input vector, but we do initialize the weight matricies, as only their derivatives are of interest.
 Finally, we call recursionNet, for a depth of 10 layers and display its' Jacobian and image.
 ```c++
 int main(){
