@@ -65,7 +65,7 @@ void example4(){
     //output of the second layer
     var secondOut[2];
     //matrix vector multiplication
-    matMul(secondOut,secondMat,input,m,n);
+    matMul(secondOut,secondMat,firstOut,m,n);
     //apply the softmax mapping
     softmaxMap(secondOut,m);
     //display the image and the gradient
