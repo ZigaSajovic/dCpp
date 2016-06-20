@@ -6,6 +6,8 @@
 \usepackage{amsfonts}
 \usepackage{amsthm}
 \newcommand{\RR}{\mathbb{R}}
+\newcommand{\II}{\mathbb{I}}
+\newcommand{\JJ}{\mathbb{J}}
 \title{Avtomatsko odvajanje}
 \author{Žiga Sajovic, Martin Vuk}
 \begin{document}
@@ -137,11 +139,14 @@ vrednosti in podobne ne bodo vključene v našem modelu, ampak jih upoštevamo
 zgolj kot parametre, ki sicer vplivajo na potek programa, vendar njihovega
 vpliva ne moremo infinitezimalno obravnavati. Če predpostavimo, da so vse
 spremenjivke, ki nas zanimajo tipa \texttt{float}, si lahko stanje spomina
-predstavljamo kot $n$-razsežni realni vektor. Vsaka spremenljivka(lokacija v
+predstavljamo kot $n$-razsežni realni vektor\footnote[1]{omejitev, da je
+  spremenljivka tipa \texttt{float}, smo vpeljali zgolj zaradi enostavnosti.
+  Odvajamo lahko po poljubnem tipu, ki to dopušča. Če bi npr. definirali
+  poseben tip, ki bi predstavljal funkcijo, bi na isti način lahko računali
+  funkcijski odvod, kot ga poznamo v variacijskem računu.}. Vsaka spremenljivka(lokacija v
 spominu) predstavlja eno komponento tega vektorja. Množico vseh možnih stanj
 spomina, s katerim razpolaga program, lahko modeliramo z $n$-razsežnim
-vektorskim prostorom $\RR^n$\footnote[1]{Pri za sedaj zanemarimo, da realne
-  vrednosti zaokrožimo v števila s plavjočo vejico}.  Računalniški program, ki
+vektorskim prostorom $\RR^n$.  Računalniški program, ki
 ima na voljo $n$-mest v spominu, si lahko predstavljamo kot preslikavo
 \begin{equation}
   \label{eq:program_kot_preslikava}
@@ -153,7 +158,26 @@ programskem jeziku, predstavljajo generatorje vseh možnih programomv v tem
 monoidu.
  
 Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
-Zato 
+Označimo z $e_i,\quad i=1,2,\ldots n$ standardne bazne vektorje v $\RR^n$ in z
+$\II\subset\{1,2,\ldots n\}$ množico indeksov. Indeksi v $\II$ ustrezajo
+posameznim spremenljivkam (indeksi določajo lokacijo spremenljivke v spominu). Naj bo $V_\II$ vektorski
+podprostor napet na vektorje $\{e_i;\quad i\in\II\}$. Označimo z 
+$\mathcal{P}_\II$ projekcijo na $V_i$, z $\mathcal{I}_\II$ pa vložitev $V_\II$ v
+$\RR^n$. Vložitev $\mathcal{I}_\II$ ni mišljena kot linearna preslikava, ampak
+dopuščamo, da so vrednosti spremenljivk, ki niso v $\II$, poljubne. Recimo, da nas zanima nabor spremenljivk z indeksi $\II$, ki jih
+program $P$ izračuna na podlagi nabora spremenljivk z indeksi $\mathbb{J}$.
+Preslikavo med $V_\JJ\to V_\II$, ki jo določa program $P$, lahko zapišemo kot
+\begin{equation}
+  \label{eq:zozitev}
+  P^{\JJ}_{\II}=\mathcal{P}_\II\circ P\circ \mathcal{I}_\JJ 
+\end{equation}
+Odvod preslikave $ P^{\JJ}_{\II}$ je enak produktu
+\begin{equation*}
+  P^{\JJ}_{\II}=P_\II\cdot DP\cdot I_\JJ,   
+\end{equation*}
+kjer sta $P_\II$ in  $I_\JJ$ matriki, ki ustrezata projekciji na $V_\II$ oziroma
+vložitvi $V_\JJ$ v $\RR^n$.
+
 \subsection{Kontrolne strukture}   
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
