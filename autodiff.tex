@@ -61,8 +61,8 @@ lahko predstavimo kot kompozitum preslikav $\phi_k$, defniranih z vsako vrstico 
 \end{equation*}
 
 Odvod preslikave $F$ lahko po verižnem pravilu izrazimo kot produkt Jacobijevih matrik
-$D\phi_i$ preslikav $\phi_i$. Ker nas zanima le odvod $y$ po $x$, matriko $DF$ pomnožimo
-z leve in desne z vektorjem $(0,1)$ 
+$D\phi_i$ preslikav $\phi_i$. Ker nas zanima le odvod $y$ po $x$, matriko $DF$
+pomnožimo z leve in desne z vektorjem $(0,1)$ 
 \begin{equation}
 \label{eq:kompozitum}
   \frac{dy}{dx} =
@@ -88,12 +88,12 @@ Vrednost $(dx_k,dy_k)$ lahko definiramo rekurzivno
 \end{equation}
 V našem primeru je 
 \begin{equation*}
-  \phi_1(x,y)=(x,x/2)\text{ in } \phi_n(x,y)=(x,\frac{1}{2}\left( y+\frac{x}{y} \right))
+  \phi_1(x,y)=(x,x/2)\text{ in } \phi_n(x,y)=\left(x,\frac{1}{2}\left( y+\frac{x}{y} \right)\right)
 \end{equation*}
-Odvode funkcij $\phi$ lahko hitro izračunamo. Ker nas zanima le odvod
-$\frac{dy}{dx}$ in se vrednost spremenljivke $x$ ne spreminja tekom programa, lahko izraze precej poenostavimo.
+Vrednost spremenljivke $x$ se ne spreminja tekom programa, zato je dovolj, da
+spremljamo le vrednosti odvoda po $y$
 \begin{equation*}
-  \frac{d}{dx}\phi_0(x)=1/2\text{ in } \frac{d}{dx}\phi_n(y)=\frac{1}{2}\left( \frac{dy}{dx}+\left(\frac{1}{y}-\frac{x}{y^2}\frac{dy}{dx}\right) \right)
+  \frac{d}{dx}\phi_0(x,y(x))_2=1/2\text{ in }\frac{d}{dx}\phi_k(x,y(x))_2=\frac{1}{2}\left( \frac{dy}{dx}+\left(\frac{1}{y}-\frac{x}{y^2}\frac{dy}{dx}\right) \right)
 \end{equation*}
  
 Naslednji program poleg vrednosti funkcije (spremenljivka \texttt{y}) računa
@@ -106,6 +106,41 @@ while abs(y*y-x) > eps:
   y = (y+x/y)/2
 \end{verbatim}
 
-\section{Direktno odvajanje}
-\section{Obratno odvajanje}
+\section{Avtomatsko odvajanje}
+Na uvodnem primeru smo videli, da si lahko računalniški program predstavljamo
+kot vektorsko funkcijo več spremenljivk. Vektorska funkcija, ki predstavlja
+program, je podana kot kompozitum preslikav, ki ustrezajo posameznim vrsticam
+programa. Program za odvod smo napisali tako, da smo vsaki vrstici
+programa dodali vrstico, ki je izračunala odvod. Ta postopek lahko namesto nas
+opravi računalnik (od tod ime avtomatski odvod). V nadaljevanju bomo opisali dva
+načina, kako je to izvedeno v obstoječih knjižnicah. 
+
+Oglejmo si matematični model, s katerim lahko utemeljimo postopke avtomatičnega
+odvajanja. Računalniški spomin si lahko predstavljamo Upoštevamo le vrednosti
+tipa \texttt{float} (števila s plavajočo vejico), s katerimi v računalniku
+predstavljamo realna števila. Ostale spremenljivke, kot so števci v zankah, logične
+vrednosti in podobne ne bodo vključene v našem modelu, ampak jih upoštevamo
+zgolj kot parametre, ki sicer vplivajo na potek programa, vendar njihovega
+vpliva ne moremo infinitezimalno obravnavati. Če predpostavimo, da so vse
+spremenjivke, ki nas zanimajo tipa \texttt{float}, si lahko stanje spomina
+predstavljamo kot $n$-razsežni realni vektor. Vsaka spremenljivka(lokacija v
+spominu) predstavlja eno komponento tega vektorja. Množico vseh možnih stanj
+spomina, s katerim razpolaga program, lahko modeliramo z $n$-razsežnim
+vektorskim prostorom $\RR^n$\footnote[1]{Pri za sedaj zanemarimo, da realne
+  vrednosti zaokrožimo v števila s plavjočo vejico}.  Računalniški program, ki
+ima na voljo $n$-mest v spominu, si lahko predstavljamo kot preslikavo
+\begin{equation}
+  \label{eq:program_kot_preslikava}
+  P: \RR^n\to\RR^n
+\end{equation}
+Množica vseh takih preslikav opremljena z operacijo kompozituma je monoid.
+Preslikave, ki so določene z osnovnimi ukazi in operacijami v določenem
+programskem jeziku, predstavljajo generatorje vseh možnih programomv v tem
+monoidu.
+ 
+Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
+Zato 
+\subsection{Kontrolne strukture}   
+\subsection{Direktno odvajanje}
+\subsection{Obratno odvajanje}
 \end{document}
