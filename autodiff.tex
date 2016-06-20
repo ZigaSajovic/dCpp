@@ -11,10 +11,24 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-  Funcije pogosto implementiramo kot računalniški program. Če je funkcija
-  odvedljiva, nas zanima, koliko je njen odvod? Avtomatsko odvajanje je
-  je skupno ime za različne postopke, s katerimi lahko odvedemo računalniški
-  program.
+  Dandanes matematične funkcije pogosto računamo z računalniki. Če je funkcija
+  odvedljiva, nas včasih zanima tudi, koliko je njen odvod. Večina bralcev verjetno
+  pozna simbolično odvajanje izrazov ali numerično odvajanje s končnimi
+  diferencami. V tem prispevku bova predstavila še en način, kako lahko določimo
+  odvode funkcije, ki jo računamo z računalniškim programom. \emph{Avtomatsko
+    odvajanje} je skupno ime za različne postopke, s katerimi program, ki računa
+  vrednosti odvedljive funkcije, preoblikujemo v program, ki izračuna odvod. 
+  Večina algoritmov za avtomatsko odvajanje znajo to narediti brez dodatnega
+  človekovega posega (odtod ime avtomatski). Za razliko
+  od numeričnega odvajanja ne trpijo za izgubo natančnosti. Prednost pred
+  simboličnim odvajanjem, pa je v tem, da jih lahko uporabimo tudi v primeru, ko
+  ne poznamo eksplicitne formule, ampak vrednosti računamo s programom.
+
+  Avtomatsko odvajanje je uporabno povsod, kjer potrebujemo 
+  odvode funkcij, ki jih računamo s kompleksnimi algoritmi. Tipični primeri so
+  optimizacija parametrov pri strojnem učenju, računanje odvoda preslikave, ki nima
+  eksplicitne formulacije (npr. Poincarejeva preslikava za dinamične sisteme,
+  lastne vrednosti matrik, ...).
 \end{abstract}
 \section{Uvod}
 Za začetek si oglejmo preprost primer, na katerem ilustriramo osnovno idejo.
