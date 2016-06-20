@@ -5,17 +5,107 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+\newcommand{\RR}{\mathbb{R}}
 \title{Avtomatsko odvajanje}
 \author{Žiga Sajovic, Martin Vuk}
 \begin{document}
 \maketitle
 \begin{abstract}
-
   Funcije pogosto implementiramo kot računalniški program. Če je funkcija
   odvedljiva, nas zanima, koliko je njen odvod? Avtomatsko odvajanje je
-  je skupno ime za različne postopke, s katerimi lahko odvedemo računalniški program.
+  je skupno ime za različne postopke, s katerimi lahko odvedemo računalniški
+  program.
 \end{abstract}
 \section{Uvod}
+Za začetek si oglejmo preprost primer, na katerem ilustriramo osnovno idejo.
+Recimo, da računamo vrednosti funkcije $y=\sqrt{x}$ z babilonskim oziroma Haronovim obrazcem.
+Pri tem postopku, najprej izberemo začetni približek za
+kvadratni koren $y_0=y_z$. Nato pa z rekurzivno formulo
+\begin{equation*}
+  y_n=\frac{1}{2}\left( y_{n-1}+\frac{x}{y_{n-1}} \right)
+\end{equation*}
+računamo člene zaporedja $y_n$. Zaporedje $y_n$ konvergira zelo hitro k
+vrednosti $\sqrt{x}$, zato so vrednosti $y_n$ že po nekaj korakih zelo blizu
+iskani vrednosti $\sqrt{x}$. Opisani postopek lahko prevedemo v računalniški
+program. Na primer v programskem jeziku Python, bi program izgledal takole 
+
+\begin{verbatim}
+y = x/2
+while abs(y*y-x) > 5e-11:
+  y = (y+x/y)/2
+\end{verbatim}
+
+Pri tem smo za začetni približek izbrali $x/2$, lahko pa bi izbrali tudi kaj
+drugega. Vrednost pa nas zanima na 10 decimalk natančno. 
+Za funkcijo $f(x)$ želimo izračunati tudi njen odvod $f'(x)$. V našem
+primeru lahko odvod preprosto izrazimo s funkcijo $f'(x)=\frac{1}{2\sqrt{x}}$,
+ampak zamislimo si, da funkcije $f$ sploh ne poznamo, ampak poznamo le računalniški program za
+njen izračun. Še vedno pa bi radi izračunali vrednosti odvoda $f'(x)$. Uporabimo
+lahko numerične približke za odvod, vendar pri tem izgubimo natančnost. 
+
+Osnovna ideja avtomatskega odvajanja je v tem, da odvajamo program. Računalniški program ni nič drugega kot zaporedje osnovnih
+računskih operacij in premetavanja vrednosti po pomnilniku. V našem primeru
+uporabljamo dve spremenljivki \texttt{x} in \texttt{y}, zato si lahko vsako vrstico
+programa, ki spreminja vrednosti \texttt{x} ali \texttt{y} predstavljamo kot
+funkcijo $\phi_i:\RR^2\to\RR^2$. Označimo z $(x_k,y_k)$ vrednosti spremenljivk
+\texttt{x} in \texttt{y}, po izvedbi $k$-te vrstice programa in pred izvedbo
+$k+1$-ve vrstice. Vsaka vrstica programa določa preslikavo
+\begin{eqnarray*}
+  \phi_k&:&\RR^2\to \RR^2\\
+  \phi_k&:&(x_{k-1},y_{k-1})\mapsto (x_k,y_k).
+\end{eqnarray*}
+Celoten program predstavlja preslikavo $F:(x_0,y_0)\mapsto (x_n,y_n)$, ki jo
+lahko predstavimo kot kompozitum preslikav $\phi_k$, defniranih z vsako vrstico programa:
+\begin{equation*}
+  F(x_0,y_0) = \phi_n\circ\phi_{n-1}\circ \ldots \phi_1(x_0,y_0) = \phi_n(\phi_{n-1}(\ldots \phi_1(x_0,y_0)\ldots))
+\end{equation*}
+
+Odvod preslikave $F$ lahko po verižnem pravilu izrazimo kot produkt Jacobijevih matrik
+$D\phi_i$ preslikav $\phi_i$. Ker nas zanima le odvod $y$ po $x$, matriko $DF$ pomnožimo
+z leve in desne z vektorjem $(0,1)$ 
+\begin{equation}
+\label{eq:kompozitum}
+  \frac{dy}{dx} =
+  \begin{bmatrix}
+    0& 1
+  \end{bmatrix}
+\cdot D\phi_n(x_{n-1},y_{n-1})\cdot D\phi_{n-1}(x_{n-2},y_{n-2})\ldots D\phi_1(x_0,y_0)\cdot
+  \begin{bmatrix}
+    0\\
+    1
+  \end{bmatrix} 
+\end{equation}
+Program za računanje odvoda lahko povsem sledi originalnemu programu, le da si
+mora na vsakem koraku zapomniti vmesne vrednosti odvoda. Na vsakem
+koraku programa, si mora program za odvod zapomniti vektor
+\begin{equation*}
+\begin{bmatrix}dx_{k}\\dy_{k}\end{bmatrix} = D\phi_{k}(x_{k-1},y_{k-1})\ldots D\phi_1(x_0,y_0)\cdot \begin{bmatrix} 0\\ 1\end{bmatrix} 
+\end{equation*}
+Vrednost $(dx_k,dy_k)$ lahko definiramo rekurzivno
+\begin{equation}
+  \label{eq:rek_odvod}
+\begin{bmatrix}dx_{k}\\dy_{k}\end{bmatrix} = D\phi_{k}(x_{k-1},y_{k-1})\cdot \begin{bmatrix} dx_{k-1}\\ dy_{k-1}\end{bmatrix} 
+\end{equation}
+V našem primeru je 
+\begin{equation*}
+  \phi_1(x,y)=(x,x/2)\text{ in } \phi_n(x,y)=(x,\frac{1}{2}\left( y+\frac{x}{y} \right))
+\end{equation*}
+Odvode funkcij $\phi$ lahko hitro izračunamo. Ker nas zanima le odvod
+$\frac{dy}{dx}$ in se vrednost spremenljivke $x$ ne spreminja tekom programa, lahko izraze precej poenostavimo.
+\begin{equation*}
+  \frac{d}{dx}\phi_0(x)=1/2\text{ in } \frac{d}{dx}\phi_n(y)=\frac{1}{2}\left( \frac{dy}{dx}+\left(\frac{1}{y}-\frac{x}{y^2}\frac{dy}{dx}\right) \right)
+\end{equation*}
+ 
+Naslednji program poleg vrednosti funkcije (spremenljivka \texttt{y}) računa
+tudi njen odvod (spremenljivka \texttt{dy})
+\begin{verbatim}
+dy = 0.5
+y = x/2
+while abs(y*y-x) > eps:
+  dy = (dy + (1/y - x/(y*y)*dy)/2
+  y = (y+x/y)/2
+\end{verbatim}
+
 \section{Direktno odvajanje}
 \section{Obratno odvajanje}
 \end{document}
