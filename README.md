@@ -51,7 +51,9 @@ Using this, we may code the sigmoid map.
 ```c++
 //sigmoid map
 void sigmoid(var *v,int n){
-    for(int i=0;i<n;i++)v[i]=1/(1+e(-v[i]));
+    for(int i=0;i<n;i++){
+        v[i]=1/(1+e(-v[i]));
+    }
 }
 ```
 Now the softmax map.
@@ -62,7 +64,9 @@ void softmax(var *v, int n){
         v[i]=e(v[i]);
         sum+=v[i];
     }
-    for(int i=0;i<n;i++) v[i]/=sum;
+    for(int i=0;i<n;i++) {
+        v[i]/=sum;
+    }
 }
 ```
 Next, we code the dot product and the matrix vector multiplication. For simplicity dimensions are specific to the example.
@@ -70,12 +74,16 @@ Next, we code the dot product and the matrix vector multiplication. For simplici
 //dot product mapping
 var dotProduct(var *v1,var *v2, int n){
     var out=var(0);
-    for(int i=0;i<n;i++)out+=v1[i]*v2[i];
+    for(int i=0;i<n;i++){
+        out+=v1[i]*v2[i];
+    }
     return out;
 }
 //computes M*x
 void matVecProduct(var *out,var mat[][2],var *vec, int size1,int size2){
-    for(int i=0;i<size1;i++)out[i]=dotProd(mat[i],vec,size2);
+    for(int i=0;i<size1;i++){
+        out[i]=dotProd(mat[i],vec,size2);
+    }
 }
 ```
 We have all the tools needed to build a recursive layer. It will consist of two layers, mapping a 2-vector to a 2-vector. Output of the second layer will be recursively connected to the input of the next recursive layer.
@@ -83,7 +91,9 @@ We have all the tools needed to build a recursive layer. It will consist of two 
 ```c++
 void recursionNet(var *input, var layer1[2][2],var layer2[2][2],var *result, int depth){
     if(depth==0){
-        for(int i=0;i<2;i++)result[i]=input[i];
+        for(int i=0;i<2;i++){
+            result[i]=input[i];
+        }
         softmax(result,2);
     }
     else{
@@ -104,30 +114,42 @@ Finally, we call recursionNet, for a depth of 10 layers and display its' Jacobia
 int main(){
     //create input vector
     var input[2];
-    for(int i=0;i<2;i++)input[i]=var(i+1);
+    for(int i=0;i<2;i++){
+        input[i]=var(i+1);
+    }
     //create initial matrix
     var firstMat[2][2];
     for(int i=0;i<2;i++){
-        for(int j=0;j<2;j++)firstMat[i][j]=var((i+1)*(j+1));
+        for(int j=0;j<2;j++){
+            firstMat[i][j]=var((i+1)*(j+1));
+        }
     }
     //initialize all elements
     for(int i=0;i<2;i++){
-        for(int j=0;j<2;j++)dC::init(firstMat[i][j]);
+        for(int j=0;j<2;j++){
+            dC::init(firstMat[i][j]);
+        }
     }
     //create inital matrix for second layer
     var secondMat[2][2];
     for(int i=0;i<2;i++){
-        for(int j=0;j<2;j++)secondMat[i][j]=var((j+1)*(i+1));
+        for(int j=0;j<2;j++){
+            secondMat[i][j]=var((j+1)*(i+1));
+        }
     }
     //initialize all elements
     for(int i=0;i<2;i++){
-        for(int j=0;j<2;j++)dC::init(secondMat[i][j]);
+        for(int j=0;j<2;j++){
+            dC::init(secondMat[i][j]);
+        }
     }
     var out[2];
     //run for 10 recursive steps
     recursionNet(input,firstMat,secondMat,out,10);
     //display the image and the Jacobian
-    for(int i=0;i<2;i++)dC::print(out[i]);
+    for(int i=0;i<2;i++){
+        dC::print(out[i]);
+    }
 }
 ```
 
@@ -152,7 +174,9 @@ template <typename Derived>
             var tmp=matrix.sum();
             //divides each element by the sum
             for (size_t i=0, nRows=matrix.rows(), nCols=matrix.cols(); i<nCols; ++i)
-                for (size_t j=0; j<nRows; ++j)matrix(j,i)/=tmp;
+                for (size_t j=0; j<nRows; ++j){
+                    matrix(j,i)/=tmp;
+                }
 }
 
 int main(){
@@ -174,7 +198,9 @@ int main(){
     //    display the first output layer and its Jaccobian
     //    Jacobian is a 10x7840 matrix of derivatives
     for (size_t i=0, nRows=firstLayerOutput.rows(), nCols=firstLayerOutput.cols(); i<nCols; ++i){
-                for (size_t j=0; j<nRows; ++j) dC::print(firstLayerOutput(j,i));
+                for (size_t j=0; j<nRows; ++j) {
+                    dC::print(firstLayerOutput(j,i));
+                }
                 cout<<endl;
     }
 }
