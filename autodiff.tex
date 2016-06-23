@@ -10,6 +10,7 @@
 \newcommand{\JJ}{\mathbb{J}}
 \newcommand{\E}{\mathcal{E}}
 \newcommand{\T}{\mathcal{T}}
+\DeclareMathOperator{\interior}{int}
 \newtheorem{izrek}{Izrek}[section]
 \title{Avtomatsko odvajanje}
 \author{Žiga Sajovic, Martin Vuk}
@@ -205,7 +206,59 @@ Odvod preslikave $ P^{\JJ}_{\II}$ je enak produktu
 kjer sta $P_\II$ in  $I_\JJ$ matriki, ki ustrezata projekciji na $V_\II$ oziroma
 vložitvi $V_\JJ$ v $\RR^n$.
 
-\subsection{Kontrolne strukture}   
+\subsection{Kontrolne strukture}
+
+Do sedaj smo se omejili na operacije, ki spreminjajo vsebino spomina. Poleg
+prireditvenih ukazov, poznamo tudi kontrolne ukaze (npr. stavki \texttt{if},
+\texttt{for}, \texttt{while}, ...). Kontrolni stavki ne vplivajo neposredno na
+vrednost spremenljivk, ampak spreminjajo potek programa. Seveda bo to vplivalo
+tudi na odvod. Ampak za določen nabor vhodnih spremenljivk, bo potek programa
+vedno enak. Zato si lahko kontrolne strukture predstavljamo kot definicijo
+zlepka. Vzemimo naprimer preprost program v programskem jeziku Python
+\begin{verbatim}
+def abs(x):
+  if x<0:
+   return -x
+  else
+   return x
+\end{verbatim}
+Funkcija \texttt{abs(x)} je program, ki izračuna zlepek
+\begin{equation}
+  \label{eq:zlepek}
+  |x| =
+  \begin{cases}
+    -x;\quad x<0\\
+    x;\quad x\ge 0
+  \end{cases}
+\end{equation}
+Vsaka kontrolna struktura razdeli prostor parametrov na različna območja,
+znotraj katerih je potek programa enak. Celoten program torej razdeli prostor
+vseh možnih parametrov na končno množico območij $\{\Omega_i;\quad i=1,\ldots
+k\}$, kjer je potek programa enak. Program lahko torej v splošnem definiramo kot
+zlepek. Za $\vec{x}\in\RR^n$ je
+\begin{equation}
+  \label{eq:zlrprk_splosno}
+  P(\vec{x}) =
+  \begin{cases}
+    P_{n_11}\circ P_{(n_1-1)1}\circ\ldots P_{11}(\vec{x});&\quad \vec{x}\in\Omega_1\\
+    P_{n_22}\circ P_{(n_2-1)2}\circ\ldots P_{12}(\vec{x});&\quad \vec{x}\in\Omega_2\\
+    \vdots&\quad\vdots\\
+    P_{n_kk}\circ P_{(n_k-1)k}\circ\ldots P_{1k}(\vec{x});&\quad \vec{x}\in\Omega_k\\
+  \end{cases}
+\end{equation}
+Linearnizacija $TP$ programa $P$ je seveda tudi odvisna od začetnih parametrov
+$\vec{x}$ in jo tudi lahko podamo kot zlepek a le v notranjosti deinicijskih območij $\Omega_i$
+\begin{equation}
+  \label{eq:zlrprk_splosno}
+  TP_{\vec{x}} =
+  \begin{cases}
+    TP_{n_11}\cdot TP_{(n_1-1)1}\cdot\ldots TP_{11};&\quad \vec{x}\in\interior(\Omega_1)\\
+    TP_{n_22}\cdot TP_{(n_2-1)2}\cdot\ldots TP_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
+    \vdots&\quad\vdots\\
+    TP_{n_kk}\cdot TP_{(n_k-1)k}\cdot\ldots TP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
+  \end{cases}
+\end{equation}
+Problem je seveda na robu območij $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
 \end{document}
