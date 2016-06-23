@@ -12,7 +12,7 @@ This is the openSource version.
 As algorithms become differentiable, so does a whole new set of procedures. Algorithms involving solving equations, approximating models, SVD decomposition, eigen vector/value calculation, etc. as one of their steps, Runge-Kutta and other approximation methods, all become differentiable and can be subjected to standard methods of Functional analysis, thus providing exact derivatives of analyticaly non-computable expressions.
 
 ###Tutorial
-As most programmers face the need of differentiability through machine learning, we use the concept of a Recursive Neural Network as a vessel for this tutorial.
+As most programmers face the need of differentiability through machine learning, we use the concept of a [Reccurent Neural Network](https://en.wikipedia.org/wiki/Recurrent_neural_network) as a vessel for this tutorial.
 
 We will create a simple 2-layers deep Neural Network with 10 recursive layers. 20 layers all together. Each layer will have sigmoid activation functions, ending with a softmax layer, producing a distribution. We will code all the functions as we go (even though much of such functionality comes with the library), for educational purposes.
 
