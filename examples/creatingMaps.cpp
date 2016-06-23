@@ -3,14 +3,14 @@
 
 using namespace std;
 
-//create a simple mapping y=x^2
-double square(double x){
-    return x*x;
+//create a simple mapping y=ln(x)
+double naturalLog(double x){
+    return std::log(x);
 }
 
-//create a mapping dy/dx=2*x;
-double dSquare(double x){
-    return x*2;
+//create a mapping dy/dx=1/x;
+double dNaturalLog(double x){
+    return 1/x;
 }
 
 void example1(){
@@ -19,9 +19,9 @@ void example1(){
     //initialize x, as a differential variable
     dC:init(x);
     //create a differentiable map
-    tau t=tau(square, dSquare);
+    tau ln=tau(naturalLog, dNaturalLog);
     //map x
-    var y=t(x);
+    var y=ln(x);
     //display the maps image and its gradient
     dC::print(y);
 }
