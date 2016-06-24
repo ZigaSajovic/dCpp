@@ -34,7 +34,7 @@ First we create maps double->double, for e(x) and its' derivative.
 ```c++
 //y=e^x
 double eMap(double x){
-    return std::exp(x);;
+    return std::exp(x);
 }
 
 //dy/dx=e^x
