@@ -10,6 +10,7 @@
 \newcommand{\JJ}{\mathbb{J}}
 \newcommand{\E}{\mathcal{E}}
 \newcommand{\T}{\mathcal{T}}
+\newcommand{\VV}{\mathcal{V}}
 \DeclareMathOperator{\interior}{int}
 \newtheorem{izrek}{Izrek}[section]
 \title{Avtomatsko odvajanje}
@@ -259,6 +260,38 @@ $\vec{x}$ in jo tudi lahko podamo kot zlepek a le v notranjosti deinicijskih obm
   \end{cases}
 \end{equation}
 Problem je seveda na robu območij $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
+
+\subsection{Odvedljivost $\T$}
+Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano v \ref{eq:zlepek}).
+
+Spomnimo se popolnega diferenciala preslikave
+$$df=\sum_{\forall_i}\frac{\partial f}{\partial x_i}dx_i, x_i\in V_{i\in\II}$$
+in naj $dx_i$ predstavljajo bazo duala $V^{n*}$. Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus V^*$. Dotično nas zanima podprostor
+$$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
+(Morda bolje $T_iM$?)ki ga opremimo tenzorskim produktom, definiranim z matriko
+$$\langle e_i, e_j\rangle =
+  \begin{cases}
+    i=1\lor j=1;\quad 1\\
+    i\ne1\land j\ne 1;\quad 0
+  \end{cases}$$
+  
+  Definirajmo funktor 
+  $$\partial^{\bigoplus}:\T\to\T\bigoplus_{\forall_i}\partial_i\T$$
+  ki slika $\E\to\E+d\E$. Transformacija razširi operator monoida $\circ$, ki se pri $e_{i<1}$ izraža kot povlek.
+  
+  Skupaj z definicjami prejšnjega sestavka, lahko konstruiramo odvedljiv abstrakten stroj, ki z opisano mehaniko razširja množico Turing izračunljivih strojev.
+  
+ $$M=\langle\T, V, \partial^{\bigoplus}\rangle$$
+ \begin{itemize}
+ \item
+ $V$ služi kot množica stanj, domena ter "neskončen trak"
+ \item
+ $\T$ je množica možnih operacij nad $V$
+ \item
+ $\partial^{\bigoplus}$ razširja mnogoterost s svojim dualom 
+ \end{itemize}
+ 
+ Karkoli operira pod predstavljenimi specifikacijami, je odvedljiv Turingov stroj.
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
 \end{document}
