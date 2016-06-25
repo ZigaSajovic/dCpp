@@ -260,7 +260,7 @@ $\vec{x}$ in jo tudi lahko podamo kot zlepek a le v notranjosti deinicijskih obm
   \end{cases}
 \end{equation}
 Problem je seveda na robu območij $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
-
+\clearpage
 \subsection{Odvedljivost $\T$}
 Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano v \ref{eq:zlepek}).
 
@@ -268,30 +268,47 @@ Spomnimo se popolnega diferenciala preslikave
 $$df=\sum_{\forall_i}\frac{\partial f}{\partial x_i}dx_i, x_i\in V_{i\in\II}$$
 in naj $dx_i$ predstavljajo bazo duala $V^{n*}$. Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus V^*$. Dotično nas zanima podprostor
 $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
-(Morda bolje $T_iM$?)ki ga opremimo tenzorskim produktom, definiranim z matriko
-$$\langle e_i, e_j\rangle =
+(Morda bolje $T_iM$?)ki ga opremimo s tenzorskim produktom, definiranim z matriko
+\begin{equation}\label{eq:produkt}
+\langle e_i, e_j\rangle =
   \begin{cases}
     i=1\lor j=1;\quad 1\\
     i\ne1\land j\ne 1;\quad 0
-  \end{cases}$$
+  \end{cases}
+\end{equation}
   
   Definirajmo funktor 
-  $$\partial^{\bigoplus}:\T\to\T\bigoplus_{\forall_i}\partial_i\T$$
-  ki slika $\E\to\E+d\E$. Transformacija razširi operator monoida $\circ$, ki se pri $e_{i<1}$ izraža kot povlek.
+  \begin{equation}\label{eq:dirSumFun}
+  \partial^{\bigoplus}:\T\to\T\bigoplus_{\forall_i}\partial_i\T
+  \end{equation}
+  ki slika $\E\to\E+d\E$. Transformacija razširi operator monoida $\circ$, ki se pri $e_{i<1}$ izraža kot povlek. Primer: funkcijo množenja preslika v $(\ref{eq:produkt})$. 
   
-  Skupaj z definicjami prejšnjega sestavka, lahko konstruiramo odvedljiv abstrakten stroj, ki z opisano mehaniko razširja množico Turing izračunljivih strojev.
+  Skupaj z definicijami prejšnjih sestavkov, lahko konstruiramo odvedljiv abstrakten stroj, ki z opisano mehaniko razširja množico Turing-izračunljivih strojev.
   
- $$M=\langle\T, V, \partial^{\bigoplus}\rangle$$
+  \begin{equation}\label{eq:dTuring}
+  M=\langle\T, V, \partial^{\bigoplus}\rangle
+  \end{equation}
+
  \begin{itemize}
  \item
  $V$ služi kot množica stanj, domena ter "neskončen trak"
  \item
- $\T$ je množica možnih operacij nad $V$
+ $\T$ je množica operacij nad $V$
  \item
  $\partial^{\bigoplus}$ razširja mnogoterost s svojim dualom 
+% \item
+% $\mathcal{K}$ kontrolne strukture
  \end{itemize}
+ %na te mestu dodati navodila konstrukcije odvodov višjega reda, skozi rekurzivno definicjo, kjer dualu prišemo svoj dual
  
  Karkoli operira pod predstavljenimi specifikacijami, je odvedljiv Turingov stroj.
+ 
+ Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$ omogočimo preučevanje različnih lastnosti programa. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe prvega reda. S tem merimo odzivnost programa na vhodne podatke.
+ 
+ 
+  Večina algoritmov v uporabi, vsebuje hiper-parametre, katerih natančne vrednosti so odvisne od specifičnosti aplikacije. Skozi projekcijo na $\mathcal{H}\subset V$, kjer $\mathcal{H}$ predstavljaja hiper-parametre, algoritem interpretiramo, kot parametrično družino mnogoterosti. Uravnavanje teh hiper-parametrov, ki je navadno prepuščeno izkušnji programerja, postane ekvivalentno optimizaciji funkcij v prostoru parametrov.
+  Tako so ob konstrukciji algoritmov skozi $M$\ref{eq:dTuring}, vsi algortimi, ki vsebujejo hiper-parametre, naučljivi.
+ 
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
 \end{document}
