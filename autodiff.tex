@@ -260,7 +260,7 @@ $\vec{x}$ in jo tudi lahko podamo kot zlepek a le v notranjosti deinicijskih obm
   \end{cases}
 \end{equation}
 Problem je seveda na robu območij $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
-\clearpage
+
 \subsection{Odvedljivost $\T$}
 Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano v \ref{eq:zlepek}).
 
@@ -299,15 +299,14 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
 % \item
 % $\mathcal{K}$ kontrolne strukture
  \end{itemize}
- %na te mestu dodati navodila konstrukcije odvodov višjega reda, skozi rekurzivno definicjo, kjer dualu prišemo svoj dual
+ %na te mestu dodati navodila konstrukcije odvodov višjega reda, skozi rekurzivno definicjo, kjer dualu prišemo svoj dual. Morda pa je bolje dativ poglavje zase
  
- Karkoli operira pod predstavljenimi specifikacijami, je odvedljiv Turingov stroj.
+ Karkoli operira pod temi specifikacijami, je odvedljiv Turingov stroj.
  
- Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$ omogočimo preučevanje različnih lastnosti programa. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe prvega reda. S tem merimo odzivnost programa na vhodne podatke.
+ Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$, omogočimo preučevanje njegovega učinka na $V$. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe akcije nad $V$. S tem merimo odzivnost programa na vhodne podatke. Diagram izvajanja programa lahko predstavimo z usmerjenim grafom;- potem lahko projeciramo na, in odvajamo po kateremkoli izmed njegvih oglišč.
  
- 
-  Večina algoritmov v uporabi, vsebuje hiper-parametre, katerih natančne vrednosti so odvisne od specifičnosti aplikacije. Skozi projekcijo na $\mathcal{H}\subset V$, kjer $\mathcal{H}$ predstavljaja hiper-parametre, algoritem interpretiramo, kot parametrično družino mnogoterosti. Uravnavanje teh hiper-parametrov, ki je navadno prepuščeno izkušnji programerja, postane ekvivalentno optimizaciji funkcij v prostoru parametrov.
-  Tako so ob konstrukciji algoritmov skozi $M$\ref{eq:dTuring}, vsi algortimi, ki vsebujejo hiper-parametre, naučljivi.
+ %hiperparametri nimajo rigurozne definicje v strojnem učenju. Morda jo lahko skozi to podava. Recimo, vsi enotski vektorji, na katere lahko projeciramo in konceptualno niso vhod programa.
+  Veliko algoritmov v uporabi, vsebuje hiper-parametre\footnote[2]{v denimo Bayesianski statistiki, so hiper-parametri parametri a-priori distribucije.}, katerih natančne vrednosti so odvisne od specifičnosti aplikacije. Skozi projekcijo na $\mathcal{H}\subset V$, kjer $\mathcal{H}$ predstavljaja hiper-parametre, algoritem interpretiramo, kot parametrično družino mnogoterosti. Konstrukcija algoritmov skozi $M$ $(\ref{eq:dTuring})$ omogoča nov pristop k rešitvi problema izbire hiper-parametrov, ki je danes še odprt. Njihovo uravnavanje, ki je navadno prepuščeno izkušnji programerja, v najini formulaciji postane ekvivalentno optimizaciji funkcij v prostoru parametrov. To pa je problem s številnimi učinkovitimi predlogi rešitve, t.j. ob uvedbi ustreznega energijskega funkcionala (mere napake), postanejo ti algoritmi naučljivi.
  
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
