@@ -11,6 +11,7 @@
 \newcommand{\E}{\mathcal{E}}
 \newcommand{\T}{\mathcal{T}}
 \newcommand{\VV}{\mathcal{V}}
+\newcommand{\Op}{\partial{\bigoplus}}
 \DeclareMathOperator{\interior}{int}
 \newtheorem{izrek}{Izrek}[section]
 \title{Avtomatsko odvajanje}
@@ -282,7 +283,7 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
   \end{cases}
 \end{equation}
   
-  Definirajmo funktor 
+  Definirajmo operator 
   \begin{equation}\label{eq:dirSumFun}
   \partial^{\bigoplus}:\T\to\T\bigoplus_{\forall_i}\partial_i\T
   \end{equation}
@@ -298,9 +299,9 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  \item
  $V$ služi kot množica stanj, domena ter "neskončen trak"
  \item
- $\T$ je množica operacij nad $V$
+ $\T$ je monoid operacij nad $V$
  \item
- $\partial^{\bigoplus}$ razširja mnogoterost s svojim dualom 
+ $\partial^{\bigoplus}$ razširja operand s svojim dualom 
 % \item
 % $\mathcal{K}$ kontrolne strukture
  \end{itemize}
@@ -312,6 +313,18 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  
  %hiperparametri nimajo rigurozne definicje v strojnem učenju. Morda jo lahko skozi to podava. Recimo, vsi enotski vektorji, na katere lahko projeciramo in konceptualno niso vhod programa.
   Veliko algoritmov v uporabi, vsebuje hiper-parametre\footnote[2]{v denimo Bayesianski statistiki, so hiper-parametri parametri a-priori distribucije.}, katerih natančne vrednosti so odvisne od specifičnosti aplikacije. Skozi projekcijo na $\mathcal{H}\subset V$, kjer $\mathcal{H}$ predstavljaja hiper-parametre, algoritem interpretiramo, kot parametrično družino mnogoterosti. Konstrukcija algoritmov skozi $M$ $(\ref{eq:dTuring})$ omogoča nov pristop k rešitvi problema izbire hiper-parametrov, ki je danes še odprt. Njihovo uravnavanje, ki je navadno prepuščeno izkušnji programerja, v najini formulaciji postane ekvivalentno optimizaciji funkcij v prostoru parametrov. To pa je problem s številnimi učinkovitimi predlogi rešitve, t.j. ob uvedbi ustreznega energijskega funkcionala (mere napake), postanejo ti algoritmi naučljivi.
+ 
+ \subsection{Višji odvodi}
+ 
+ V nadaljnjem se ob odobravanju n-tega reda predpostavlja $\E\subset\mathcal{C}^n$, kar implicira obstoj $\partial^n\T$. Potenciranje operatorja popolnega diferenciala označimo z
+ $$d^nf=\sum_{\forall_{i,..,j}}\frac{\partial^n f}{\partial x_i...\partial x_j}dx_{i,..,j}, x_i\in V_{i\in\II}$$
+ Operator lahko razumem kot n-to potenco divergence, kjer vsakemu členu vsote pripišemo enotski vektor.
+ 
+ Opazimo še, da je tudi slika operatorja $\partial^{\bigoplus}$ ob aplikaciji na $\T$ monoid, od tu dalje nazivan z $\partial^{\bigoplus}\T$. Potenca operatorja je rekurzivno definirana
+ \begin{equation}\label{eq:dirSumFunN}
+	\partial^{n\bigoplus}:\T\to\partial^{n}\T\bigoplus\partial^{(n-1)\bigoplus}\T
+ \end{equation}
+ in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Operacije nad $\T$ se z rekurzivno definicijo dedujejo, tako, da so nove definicije nepotrebne.
  
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
