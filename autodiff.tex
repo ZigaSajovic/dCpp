@@ -266,13 +266,13 @@ Problem je seveda na robu območij $\partial\Omega_i$, kjer program $P$ ni nujno
 Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano v \ref{eq:zlepek}).
 
 Spomnimo se popolnega diferenciala preslikave
-$$df=\sum_{\forall_i}\frac{\partial f}{\partial x_i}dx_i, x_i\in V_{i\in\II}$$
+$$df=\sum_{\forall_j}\frac{\partial f}{\partial x_j}dx_j, x_i\in V_{j\in\JJ}$$
 
 %tukaj morda malo o dualnih številih, morda tisto spodaj E->E+dE ni dovolj za povprečnega bralca. Čeprav je ta definicja, skozi tenzorski produkt in povlek enostavnejša (vsaj zame) in čisto splošna, omogoča izračune poljubnega števila hkratnih odvodov, pri dualnih številih moraš vedno nova uvajat, in izpeljevat nova pravila za vsako dodano število. Morda je ravno to tukaj na mestu, da dodava kaj je pomankljivost tistega sistema, in kako jih najin pristop reši.
 %http://adl.stanford.edu/hyperdual/Fike_AD2012_slides.pdf
 %tukaj izpeljujejo dualna za več odvodov hkrati in za 2 red. Vidiš kako se že komplicira, za 2 spremenljivki in 2. red? Najina formulacije čist vse o pokrije z enovito definicijo, ne rabiva skos "štukat"
 
-in naj $dx_i$ predstavljajo bazo duala $V^{n*}$. Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus V^*$. Dotično nas zanima podprostor
+in naj $dx_j$ predstavljajo bazo duala $V_\JJ^{*}$. Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus_i V_\JJ^*$. Dotično nas zanima podprostor
 $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
 (Morda bolje $T_iM$?)ki ga opremimo s tenzorskim produktom, definiranim z matriko
 \begin{equation}\label{eq:produkt}
@@ -319,12 +319,13 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  V nadaljnjem se ob odobravanju n-tega reda predpostavlja $\E\subset\mathcal{C}^n$, kar implicira obstoj $\partial^n\T$. Potenciranje operatorja popolnega diferenciala označimo z
  $$d^nf=\sum_{\forall_{i,..,j}}\frac{\partial^n f}{\partial x_i...\partial x_j}dx_{i,..,j}, x_i\in V_{i\in\II}$$
  Operator lahko razumem kot n-to potenco divergence, kjer vsakemu členu vsote pripišemo enotski vektor.
- 
+ %tukaj specificiramo da je slika tudi monoid, saj je pomembno da je odvod odvedljivega stroja, tudi odvedljiv stroj. Da spet pade v isto definicijo.
  Opazimo še, da je tudi slika operatorja $\partial^{\bigoplus}$ ob aplikaciji na $\T$ monoid, od tu dalje nazivan z $\partial^{\bigoplus}\T$. Potenca operatorja je rekurzivno definirana
  \begin{equation}\label{eq:dirSumFunN}
 	\partial^{n\bigoplus}:\T\to\partial^{n}\T\bigoplus\partial^{(n-1)\bigoplus}\T
  \end{equation}
  in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Operacije nad $\T$ se z rekurzivno definicijo dedujejo, tako, da so nove definicije nepotrebne.
+ %morda tukaj nasloviva probleme z višjimi odvodi v drugih sistemov, referencirava tista 2 autorja, in da tole elegantno reši problem. Dotično, ona najavata potrebo po odvajanju programov, ki v svojem poteku izračunavajo odvode. Recimo delaš specifično numerično analizo, in v nekih korakih rabiš gradient F, in posledično je tvoj program odvisen od teh odvodov. V najini analizi je to enostavno rešeno, saj imava prostor, kjer imajo vsi odvodi koordinate, nižji so vsebovani v prostoru višjih. To odraža dejstvo da lahko katerokoli vrednost v pomnilniku ki ti pripada, uporabiš v računih.
  
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
