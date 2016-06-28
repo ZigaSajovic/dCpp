@@ -11,7 +11,8 @@
 \newcommand{\E}{\mathcal{E}}
 \newcommand{\T}{\mathcal{T}}
 \newcommand{\VV}{\mathcal{V}}
-\newcommand{\Op}{\partial{\bigoplus}}
+\newcommand{\Op}{\partial^{\bigoplus}}
+\newcommand{\op}[1]{\partial^{#1\bigoplus}}
 \DeclareMathOperator{\interior}{int}
 \newtheorem{definicija}{Definicija}[section]
 \newtheorem{izrek}{Izrek}[section]
@@ -223,69 +224,7 @@ potrebujemo vrednosti funkcije in vseh nižjih odvodov.
 
 
   
-Naj bo $\mathrm{P}\subset\T$ preslikava $V\to V$. Slika predstavlja mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano v \ref{eq:zlepek}).
 
-Spomnimo se popolnega diferenciala preslikave
-$$df=\sum_{\forall_i}\frac{\partial f}{\partial x_i}dx_i, x_i\in V_{i\in\II}$$
-
-%tukaj morda malo o dualnih številih, morda tisto spodaj E->E+dE ni dovolj za povprečnega bralca. Čeprav je ta definicja, skozi tenzorski produkt in povlek enostavnejša (vsaj zame) in čisto splošna, omogoča izračune poljubnega števila hkratnih odvodov, pri dualnih številih moraš vedno nova uvajat, in izpeljevat nova pravila za vsako dodano število. Morda je ravno to tukaj na mestu, da dodava kaj je pomankljivost tistega sistema, in kako jih najin pristop reši.
-%http://adl.stanford.edu/hyperdual/Fike_AD2012_slides.pdf
-%tukaj izpeljujejo dualna za več odvodov hkrati in za 2 red. Vidiš kako se že komplicira, za 2 spremenljivki in 2. red? Najina formulacije čist vse o pokrije z enovito definicijo, ne rabiva skos "štukat"
-
-in naj $dx_i$ predstavljajo bazo duala $V^{n*}$. Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus V^*$. Dotično nas zanima podprostor
-$$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
-(Morda bolje $T_iM$?)ki ga opremimo s tenzorskim produktom, definiranim z matriko
-\begin{equation}\label{eq:produkt}
-\langle e_i, e_j\rangle =
-  \begin{cases}
-    i=1\lor j=1;\quad 1\\
-    i\ne1\land j\ne 1;\quad 0
-  \end{cases}
-\end{equation}
-  
-Definirajmo operator 
-  \begin{equation}\label{eq:dirSumFun}
-  \partial^{\bigoplus}:\T\to\T\bigoplus_{\forall_i}\partial_i\T
-  \end{equation}
-  ki slika $\E\to\E+d\E$. Transformacija razširi operator monoida $\circ$, ki se pri $e_{i<1}$ izraža kot povlek. Primer: funkcijo množenja preslika v $(\ref{eq:produkt})$. 
-  
-  Skupaj z definicijami prejšnjih sestavkov, lahko konstruiramo odvedljiv abstrakten stroj, ki z opisano mehaniko razširja množico Turing-izračunljivih strojev.
-  
-  \begin{equation}\label{eq:dTuring}
-  M=\langle\T, V, \partial^{\bigoplus}\rangle
-  \end{equation}
-
- \begin{itemize}
- \item
- $V$ služi kot množica stanj, domena ter "neskončen trak"
- \item
- $\T$ je monoid operacij nad $V$
- \item
- $\partial^{\bigoplus}$ razširja operand s svojim dualom 
-% \item
-% $\mathcal{K}$ kontrolne strukture
- \end{itemize}
- %na te mestu dodati navodila konstrukcije odvodov višjega reda, skozi rekurzivno definicjo, kjer dualu prišemo svoj dual. Morda pa je bolje dativ poglavje zase
- 
- Karkoli operira pod temi specifikacijami, je odvedljiv Turingov stroj.
- 
- Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$, omogočimo preučevanje njegovega učinka na $V$. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe akcije nad $V$. S tem merimo odzivnost programa na vhodne podatke. Diagram izvajanja programa lahko predstavimo z usmerjenim grafom;- potem lahko projeciramo na, in odvajamo po kateremkoli izmed njegvih oglišč.
- 
- %hiperparametri nimajo rigurozne definicje v strojnem učenju. Morda jo lahko skozi to podava. Recimo, vsi enotski vektorji, na katere lahko projeciramo in konceptualno niso vhod programa.
-  Veliko algoritmov v uporabi, vsebuje hiper-parametre\footnote[2]{v denimo Bayesianski statistiki, so hiper-parametri parametri a-priori distribucije.}, katerih natančne vrednosti so odvisne od specifičnosti aplikacije. Skozi projekcijo na $\mathcal{H}\subset V$, kjer $\mathcal{H}$ predstavljaja hiper-parametre, algoritem interpretiramo, kot parametrično družino mnogoterosti. Konstrukcija algoritmov skozi $M$ $(\ref{eq:dTuring})$ omogoča nov pristop k rešitvi problema izbire hiper-parametrov, ki je danes še odprt. Njihovo uravnavanje, ki je navadno prepuščeno izkušnji programerja, v najini formulaciji postane ekvivalentno optimizaciji funkcij v prostoru parametrov. To pa je problem s številnimi učinkovitimi predlogi rešitve, t.j. ob uvedbi ustreznega energijskega funkcionala (mere napake), postanejo ti algoritmi naučljivi.
- 
- \subsection{Višji odvodi}
- 
- V nadaljnjem se ob odobravanju n-tega reda predpostavlja $\E\subset\mathcal{C}^n$, kar implicira obstoj $\partial^n\T$. Potenciranje operatorja popolnega diferenciala označimo z
- $$d^nf=\sum_{\forall_{i,..,j}}\frac{\partial^n f}{\partial x_i...\partial x_j}dx_{i,..,j}, x_i\in V_{i\in\II}$$
- Operator lahko razumem kot n-to potenco divergence, kjer vsakemu členu vsote pripišemo enotski vektor.
- 
- Opazimo še, da je tudi slika operatorja $\partial^{\bigoplus}$ ob aplikaciji na $\T$ monoid, od tu dalje nazivan z $\partial^{\bigoplus}\T$. Potenca operatorja je rekurzivno definirana
- \begin{equation}\label{eq:dirSumFunN}
-	\partial^{n\bigoplus}:\T\to\partial^{n}\T\bigoplus\partial^{(n-1)\bigoplus}\T
- \end{equation}
- in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Operacije nad $\T$ se z rekurzivno definicijo dedujejo, tako, da so nove definicije nepotrebne.
- 
 \subsection{Optimizacija prostorske zahtevnosti}
 Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
 Označimo z $e_i,\quad i=1,2,\ldots n$ standardne bazne vektorje v $\RR^n$ in z
@@ -362,6 +301,105 @@ $\vec{x}$ in jo tudi lahko podamo kot zlepek a le v notranjosti deinicijskih obm
 \end{equation}
 Problem je seveda na robu območij $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
 
+\subsection{Odvedljivost $\T$}
+Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano v \ref{eq:zlepek}).
+
+Spomnimo se popolnega diferenciala preslikave
+$$df=\sum_{\forall_j}\frac{\partial f}{\partial x_j}dx_j, x_i\in V_{j\in\JJ}$$
+
+%tukaj morda malo o dualnih številih, morda tisto spodaj E->E+dE ni dovolj za povprečnega bralca. Čeprav je ta definicja, skozi tenzorski produkt in povlek enostavnejša (vsaj zame) in čisto splošna, omogoča izračune poljubnega števila hkratnih odvodov, pri dualnih številih moraš vedno nova uvajat, in izpeljevat nova pravila za vsako dodano število. Morda je ravno to tukaj na mestu, da dodava kaj je pomankljivost tistega sistema, in kako jih najin pristop reši.
+%http://adl.stanford.edu/hyperdual/Fike_AD2012_slides.pdf
+%tukaj izpeljujejo dualna za več odvodov hkrati in za 2 red. Vidiš kako se že komplicira, za 2 spremenljivki in 2. red? Najina formulacije čist vse o pokrije z enovito definicijo, ne rabiva skos "štukat"
+
+in naj $dx_j$ predstavljajo bazo duala $V_\JJ^{*}$. Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus_i V_\JJ^*$. Dotično nas zanima podprostor
+$$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
+(Morda bolje $T_iM$?)ki ga opremimo s tenzorskim produktom, definiranim z matriko
+\begin{equation}\label{eq:produkt}
+\langle e_i, e_j\rangle =
+  \begin{cases}
+    i=1\lor j=1;\quad 1\\
+    i\ne1\land j\ne 1;\quad 0
+  \end{cases}
+\end{equation}
+  
+  Definirajmo operator 
+  \begin{equation}\label{eq:dirSumFun}
+  \partial^{\bigoplus}:\T\to\T\bigoplus_{\forall_i}\partial_i\T
+  \end{equation}
+  ki slika $\E\to\E+d\E$. Transformacija razširi operator monoida $\circ$, ki se pri $e_{i<1}$ izraža kot povlek. Primer: funkcijo množenja preslika v $(\ref{eq:produkt})$. 
+  
+  Skupaj z definicijami prejšnjih sestavkov, lahko konstruiramo odvedljiv abstrakten stroj, ki z opisano mehaniko razširja množico Turing-izračunljivih strojev.
+  
+  \begin{equation}\label{eq:dTuring}
+  M=\langle\T, V, \partial^{\bigoplus}\rangle
+  \end{equation}
+
+ \begin{itemize}
+ \item
+ $V$ služi kot množica stanj, domena ter "neskončen trak"
+ \item
+ $\T$ je monoid operacij nad $V$
+ \item
+ $\partial^{\bigoplus}$ razširja operand s svojim dualom 
+% \item
+% $\mathcal{K}$ kontrolne strukture
+ \end{itemize}
+ %na te mestu dodati navodila konstrukcije odvodov višjega reda, skozi rekurzivno definicjo, kjer dualu prišemo svoj dual. Morda pa je bolje dativ poglavje zase
+ 
+ Karkoli operira pod temi specifikacijami, je odvedljiv Turingov stroj.
+ 
+ Ob konstrukciji $M$, je potrebna le enkratna aplikacija $\Op$. Naj $\T$ označuje programski jezik generiran z $\langle\E\rangle$ in $M$ stroj, ki ga implementira. Definirajmo stroj prvega reda
+ \begin{equation}\label{eq:Mprime}
+ %\Op V je prostor v katerem se dogaja, \Op\T so preslikave/operatorji nad tem prostorom
+	 \Op M=\langle\Op\T, \Op V, \Op\rangle
+ \end{equation}
+ oziroma v poznani, konceptualno ekvivalentni notaciji
+  \begin{equation}\label{eq:M'}
+ 	 M'=\langle\T', V', \Op\rangle
+  \end{equation}
+  Vsi programi konstruirani v $M'$, skozi zaporedje akcij $\T'$ nad $V'$, v vsaki točki izvajanja vsebujejo informacijo spremembe prvega reda. Tak program označimo s $P'$. Potem je $P'V'$ mnogoterost, na vsaki točki razširjena s kotangentnim svežnjem.
+ 
+ Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$, omogočimo preučevanje njegovega učinka na $V$. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe akcije nad $V$. S tem merimo odzivnost programa na vhodne podatke. Diagram izvajanja programa lahko predstavimo z usmerjenim grafom;- potem lahko projeciramo na, in odvajamo po kateremkoli izmed njegvih oglišč.
+ 
+ %hiperparametri nimajo rigurozne definicje v strojnem učenju. Morda jo lahko skozi to podava. Recimo, vsi enotski vektorji, na katere lahko projeciramo in konceptualno niso vhod programa.
+  Veliko algoritmov v uporabi, vsebuje hiper-parametre\footnote[2]{v denimo Bayesianski statistiki, so hiper-parametri parametri a-priori distribucije.}, katerih natančne vrednosti so odvisne od specifičnosti aplikacije. Skozi projekcijo na $\mathcal{H}\subset V$, kjer $\mathcal{H}$ predstavljaja hiper-parametre, algoritem interpretiramo, kot parametrično družino mnogoterosti. Konstrukcija algoritmov skozi $M$ $(\ref{eq:dTuring})$ omogoča nov pristop k rešitvi problema izbire hiper-parametrov, ki je danes še odprt. Njihovo uravnavanje, ki je navadno prepuščeno izkušnji programerja, v najini formulaciji postane ekvivalentno optimizaciji funkcij v prostoru parametrov. To pa je problem s številnimi učinkovitimi predlogi rešitve, t.j. ob uvedbi ustreznega energijskega funkcionala (mere napake), postanejo ti algoritmi naučljivi.
+ 
+ \subsection{Višji odvodi}
+ 
+ V nadaljnjem se ob odobravanju n-tega reda predpostavlja $\E\subset\mathcal{C}^n$, kar implicira obstoj $\partial^n\T$. Potenciranje operatorja popolnega diferenciala označimo z
+ $$d^nf=\sum_{\forall_{i,..,j}}\frac{\partial^n f}{\partial x_i...\partial x_j}dx_{i,..,j}, x_i\in V_{i\in\II}$$
+ Operator lahko razumem kot n-to potenco divergence, kjer vsakemu členu vsote pripišemo enotski vektor.
+ 
+ %tukaj specificiramo da je slika tudi monoid, saj je pomembno da je odvod odvedljivega stroja, tudi odvedljiv stroj. Da spet pade v isto definicijo.
+ Opazimo še, da je tudi slika operatorja $\partial^{\bigoplus}$ ob aplikaciji na $\T$ monoid, od tu dalje nazivan z $\partial^{\bigoplus}\T$. Potenca operatorja je rekurzivno definirana
+ 
+ %tukaj je prvi opeator, ki nima bigoplus v eksponentu, je n-ta potenca divergence, drugi člen na desni strani direktne vsote pa je rekurzivno definiran operator, za en nivo nižje
+ %če tukaj natančneje definirava vsakega od operandov v izrazu, bi ljudje morali razumet zadevo?
+ \begin{equation}\label{eq:dirSumFunNRek}
+	\partial^{n\bigoplus}:\T\to\partial^{n}\T\bigoplus\partial^{(n-1)\bigoplus}\T
+ \end{equation}
+ oziroma
+ \begin{equation}\label{eq:dirSumFunN}
+ 	\partial^{n\bigoplus}:\T\to\bigoplus\limits_{0\leq i\leq n}\partial^{i}\T
+  \end{equation}
+ in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Rekurzivna defincija odraža strukturo prostora $\subseteq_{\forall_i}\op{i}\T$.
+ \begin{izrek}
+ %Morda morava tukaj govorit o \Op{n} V
+ Dimenzija prostora $\op{n}\T$ je $\frac{1-k^{n+1}}{1-k}$, kjer je k dimenzija $V$.
+ \end{izrek}
+ 
+ Dokaz je trivialen. Spominska kompleksnost modela je očitno eksponentna. Gre poudarit, da v praksi redko projeciramo na celoten $V$, pogosteje nas zanima manjša podmnožica komponent. Ob interpretacija programa skozi usmerjen graf, to pomeni, da merimo akcijo specifični oglišč v njem (ki eliminirajo vsa ostala oglišča, iz katerih obstaja pot do oglišča na katerega že projeciramo).
+ 
+ %morda tukaj nasloviva probleme z višjimi odvodi v drugih sistemov, referencirava tista 2 autorja, in da tole elegantno reši problem. Dotično, ona najavata potrebo po odvajanju programov, ki v svojem poteku izračunavajo odvode. Recimo delaš specifično numerično analizo, in v nekih korakih rabiš gradient F, in posledično je tvoj program odvisen od teh odvodov. V najini analizi je to enostavno rešeno, saj imava prostor, kjer imajo vsi odvodi koordinate, nižji so vsebovani v prostoru višjih. To odraža dejstvo da lahko katerokoli vrednost v pomnilniku ki ti pripada, uporabiš v računih.
+ 
+ \subsection{Analiza}
+ 
+ V tej fomrulaciji je stroj $M$ funkcijski prostor,  na katerega elemente lahko apliciramo metode funkcionalne analize. Začnimo s preprostejšimi.
+ 
+ Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega poznamo časovno učinkovit hevrističen $A_2$, katerega pravilnost je odvisna od začetnega približka. Skozi opisano mehaniko lahko program lineariziramo.
+ Izberemo $v\in PV$ in preslikamo v $v'\in P'V'$ (kar je potrebno storiti le enkrat). Potem lahko program $PV$ približamo z linearno aproksimacijo $v+(v'-v) (V)$, ki je konstantne kompleksnost $\mathcal{O}(1)$.
+ %enačba pomeni, da vektorju odštšteješ "realni" del
+ Slika linearizacije služi kot dober približek slike prvotnega programa.
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
 \end{document}
