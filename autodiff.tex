@@ -11,7 +11,8 @@
 \newcommand{\E}{\mathcal{E}}
 \newcommand{\T}{\mathcal{T}}
 \newcommand{\VV}{\mathcal{V}}
-\newcommand{\Op}{\partial{\bigoplus}}
+\newcommand{\Op}{\partial^{\bigoplus}}
+\newcommand{\op}[1]{\partial^{#1\bigoplus}}
 \DeclareMathOperator{\interior}{int}
 \newtheorem{izrek}{Izrek}[section]
 \title{Avtomatsko odvajanje}
@@ -325,10 +326,20 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  
  %tukaj je prvi opeator, ki nima bigoplus v eksponentu, je n-ta potenca divergence, drugi člen na desni strani direktne vsote pa je rekurzivno definiran operator, za en nivo nižje
  %če tukaj natančneje definirava vsakega od operandov v izrazu, bi ljudje morali razumet zadevo?
- \begin{equation}\label{eq:dirSumFunN}
+ \begin{equation}\label{eq:dirSumFunNRek}
 	\partial^{n\bigoplus}:\T\to\partial^{n}\T\bigoplus\partial^{(n-1)\bigoplus}\T
  \end{equation}
- in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Operacije nad $\T$ se z rekurzivno definicijo dedujejo, tako, da so nove definicije nepotrebne.
+ oziroma
+ \begin{equation}\label{eq:dirSumFunN}
+ 	\partial^{n\bigoplus}:\T\to\bigoplus\limits_{0\leq i\leq n}\partial^{i}\T
+  \end{equation}
+ in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Rekurzivna defincija odraža strukturo prostora $\subset_{\forall_i}\op{i}\T$.
+ \begin{izrek}
+ Dimenzija prostora $\op{n}\T$ je $\frac{1-k^{n+1}}{1-k}$, kjer je k dimenzija $V$.
+ \end{izrek}
+ 
+ Dokaz je trivialen. Spominska kompleksnost modela je očitno eksponentna. Gre poudarit, da v praksi redko projeciramo na celoten $V$, pogosteje nas zanima manjša podmnožica komponent. Ob interpretacija programa skozi usmerjen graf, to pomeni, da merimo akcijo specifični oglišč v njem (ki eliminirajo vsa ostala oglišča, iz katerih obstaja pot do oglišča na katerega že projeciramo).
+ 
  %morda tukaj nasloviva probleme z višjimi odvodi v drugih sistemov, referencirava tista 2 autorja, in da tole elegantno reši problem. Dotično, ona najavata potrebo po odvajanju programov, ki v svojem poteku izračunavajo odvode. Recimo delaš specifično numerično analizo, in v nekih korakih rabiš gradient F, in posledično je tvoj program odvisen od teh odvodov. V najini analizi je to enostavno rešeno, saj imava prostor, kjer imajo vsi odvodi koordinate, nižji so vsebovani v prostoru višjih. To odraža dejstvo da lahko katerokoli vrednost v pomnilniku ki ti pripada, uporabiš v računih.
  
 \subsection{Direktno odvajanje}
