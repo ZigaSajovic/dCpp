@@ -140,13 +140,13 @@ opravi računalnik (od tod ime avtomatski odvod). V nadaljevanju bomo opisali dv
 načina, kako je to izvedeno v obstoječih knjižnicah. 
 
 Oglejmo si matematični model, s katerim lahko utemeljimo postopke avtomatičnega
-odvajanja. Računalniški spomin si lahko predstavljamo Upoštevamo le vrednosti
-tipa \texttt{float} (števila s plavajočo vejico), s katerimi v računalniku
-predstavljamo realna števila. Ostale spremenljivke, kot so števci v zankah, logične
+odvajanja. V našem modelu bomo zajeli le spremenljivke predstavljene s števili s
+plavajočo vejico,  s katerimi v računalniku predstavljamo realna števila. 
+Ostale spremenljivke kot so števci v zankah, celoštevilske vrednosti, logične
 vrednosti in podobne ne bodo vključene v našem modelu, ampak jih upoštevamo
 zgolj kot parametre, ki sicer vplivajo na potek programa, vendar njihovega
 vpliva ne moremo infinitezimalno obravnavati. Če predpostavimo, da so vse
-spremenjivke, ki nas zanimajo tipa \texttt{float}, si lahko stanje spomina
+spremenjivke, ki nas zanimajo tipa \texttt{float} (ali \texttt{double)}), si lahko stanje spomina
 predstavljamo kot $n$-razsežni realni vektor\footnote[1]{omejitev, da je
   spremenljivka tipa \texttt{float}, smo vpeljali zgolj zaradi enostavnosti.
   Odvajamo lahko po poljubnem tipu, ki to dopušča. Če bi npr. definirali
@@ -397,6 +397,7 @@ $\vec{x}$ in jo tudi lahko podamo kot zlepek a le v notranjosti deinicijskih obm
 \end{equation}
 Problem je seveda na robu območij $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
 
+<<<<<<< 7eede8c5455a57ca51a57f86ab2484fabf9b358f
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
 \end{document}
@@ -623,6 +624,11 @@ predstavljajo virtualni pomnilnik
 ki ga potrebuje program za izračun vrednosti $n$-tih odvodov. Izbira $V_n\simeq
 V\oplus (V\otimes V) \oplus (V\otimes V\otimes V) \ldots$ odraža dejstvo, da za izračun vrednosti $n$-tega odvoda v neki točki $x\in V$
 potrebujemo vrednosti funkcije in vseh nižjih odvodov.
+\subsection{Odvedljivi stroji $\T$}
+\begin{definicija}
+  Trojico $(\T,V,\Op)$ imenujemo \emph{odvedljiv stroj}.
+\end{definicija}
+Če je $(\T,V,\Op)$ odvedljiv stroj, je $(\T',V',\Op')$ tudi odvedljiv stroj.
 
 Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano v \ref{eq:zlepek}).
 
