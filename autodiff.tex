@@ -310,6 +310,17 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  
  Karkoli operira pod temi specifikacijami, je odvedljiv Turingov stroj.
  
+ Ob konstrukciji $M$, je potrebna le enkratna aplikacija $\Op$. Naj $\T$ označuje programski jezik generiran z $\langle\E\rangle$ in $M$ stroj, ki ga implementira. Definirajmo stroj prvega reda
+ \begin{equation}\label{eq:Mprime}
+ %\Op V je prostor v katerem se dogaja, \Op\T so preslikave/operatorji nad tem prostorom
+	 \Op M=\langle\Op\T, \Op V, \Op\rangle
+ \end{equation}
+ oziroma v poznani, konceptualno ekvivalentni notaciji
+  \begin{equation}\label{eq:M'}
+ 	 M'=\langle\T', V', \Op\rangle
+  \end{equation}
+  Vsi programi konstruirani v $M'$, skozi zaporedje akcij $\T'$ nad $V'$, v vsaki točki izvajanja vsebujejo informacijo spremembe prvega reda. Tak program označimo s $P'$. Potem je $P'V'$ mnogoterost, na vsaki točki razširjena s kotangentnim svežnjem.
+ 
  Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$, omogočimo preučevanje njegovega učinka na $V$. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe akcije nad $V$. S tem merimo odzivnost programa na vhodne podatke. Diagram izvajanja programa lahko predstavimo z usmerjenim grafom;- potem lahko projeciramo na, in odvajamo po kateremkoli izmed njegvih oglišč.
  
  %hiperparametri nimajo rigurozne definicje v strojnem učenju. Morda jo lahko skozi to podava. Recimo, vsi enotski vektorji, na katere lahko projeciramo in konceptualno niso vhod programa.
@@ -333,7 +344,7 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  \begin{equation}\label{eq:dirSumFunN}
  	\partial^{n\bigoplus}:\T\to\bigoplus\limits_{0\leq i\leq n}\partial^{i}\T
   \end{equation}
- in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Rekurzivna defincija odraža strukturo prostora $\subset_{\forall_i}\op{i}\T$.
+ in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Rekurzivna defincija odraža strukturo prostora $\subseteq_{\forall_i}\op{i}\T$.
  \begin{izrek}
  Dimenzija prostora $\op{n}\T$ je $\frac{1-k^{n+1}}{1-k}$, kjer je k dimenzija $V$.
  \end{izrek}
