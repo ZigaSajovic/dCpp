@@ -14,6 +14,7 @@
 \newcommand{\Op}{\partial^{\bigoplus}}
 \newcommand{\op}[1]{\partial^{#1\bigoplus}}
 \DeclareMathOperator{\interior}{int}
+\newtheorem{definicija}{Definicija}[section]
 \newtheorem{izrek}{Izrek}[section]
 \title{Avtomatsko odvajanje}
 \author{Žiga Sajovic, Martin Vuk}
@@ -153,29 +154,35 @@ predstavljamo kot $n$-razsežni realni vektor\footnote[1]{omejitev, da je
   funkcijski odvod, kot ga poznamo v variacijskem računu.}. Vsaka spremenljivka(lokacija v
 spominu) predstavlja eno komponento tega vektorja. Množico vseh možnih stanj
 spomina, s katerim razpolaga program, lahko modeliramo z $n$-razsežnim
-vektorskim prostorom $\RR^n$.  Računalniški program, ki
-ima na voljo $n$-mest v spominu, si lahko predstavljamo kot preslikavo
+vektorskim prostorom $V\simeq\RR^n$. Vektorski prostor $V$ bomo imenovali
+\emph{virtualni pomnilnik programa}. Računalniški program, ki
+ima na voljo $n$-mest v virtualnem pomnilniku, si lahko predstavljamo kot preslikavo
 \begin{equation}
   \label{eq:program_kot_preslikava}
-  P: \RR^n\to\RR^n
+  P: V\to V,
 \end{equation}
-Množica vseh takih preslikav opremljena z operacijo kompozituma je monoid.
-Preslikava $P:\RR^n\to \RR^n$ je odvedljiva v $x\in\RR^n$, če obstaja linearna
-preslikava $TP_x:\RR^n\to\RR^n$, za katero je 
-\begin{equation}
-  \label{eq:frechet}
-  \lim_{h\to 0}\frac{\|P(x+h)-P(x)-TP_x(h)\|}{\|h\|} = 0.
-\end{equation}
-Preslikavo $TP_x$ imenujemo \emph{Fréchetov odvod} ali \emph{linearizacija}
-preslikave $P$. Za preslikave $\RR^n\to \RR^m$ lahko Fréchetov odvod
+kjer je $V$ vektorski prostor dimenzije $n$. Množica vseh takih preslikav
+opremljena z operacijo kompozituma je \emph{monoid}.
+\begin{definicija}
+  Naj bo $V$ Banachov vektroski prostor. Preslikava $P:V\to V$ je odvedljiva v
+  točki $x\in V$, če obstaja
+  linearen omejen operator $TP_x:V\to V$, za katerega je
+  \begin{equation}
+    \label{eq:frechet}
+    \lim_{h\to 0}\frac{\|P(x+h)-P(x)-TP_x(h)\|}{\|h\|} = 0.
+  \end{equation}
+  Preslikavo $TP_x$ imenujemo \emph{Fréchetov odvod} ali \emph{linearizacija}
+  preslikave $P$.
+\end{definicija}
+Za preslikave $\RR^n\to \RR^m$ lahko Fréchetov odvod
 izrazimo kot množenje vektorja $h$ z Jacobijevo matriko parcialnih odvodov
 komponent preslikave $P$
 \begin{equation*}
   TP_x(h) = JP(x)\cdot h.
 \end{equation*}
-Preslikave, ki so določene z osnovnimi ukazi in operacijami v določenem
-programskem jeziku, predstavljajo generatorje vseh možnih programomv v tem
-monoidu. Označimo z $E$ množico vseh elementarnih ukazov in operacij, ki so
+Preslikave, ki ustrezajo osnovnim ukazom in operacijam v določenem
+programskem jeziku, predstavljajo generatorje vseh možnih programomv v
+monoidu. Označimo z $\E$ množico vseh elementarnih ukazov in operacij, ki so
 implementirane v programskem jeziku. Označimo z $\T$ prostor končnih programov,
 ki so generirani z elementarnimi operacijami iz $\E$
 \begin{equation*}
@@ -185,9 +192,40 @@ ki so generirani z elementarnimi operacijami iz $\E$
 Predpostavimo za trenutek, da so vse elementarne operacije povsod odvedljive. 
 
 \begin{izrek}
-  Preslikava $\tau:T\to T$, ki vsakemu programu priredi njegov odvod je
-  homomorfizem monoida $(T,\circ)$. 
+  Naj bo $\tau:V\times T\to T$, $\tau:(x,P)\mapsto TP_x$ preslikava,  ki vsakemu programu
+  $P$ priredi njegov odvod v dani točki $x$. Predpostavimo še, da sta med generatorji $\E$
+  tudi operaciji seštevanja in množenja. Za vsak $x\in V$ je preslikava
+  $\tau_x:P\mapsto \tau(x,P)$ avtomorfizem monoida $(T,\circ)$. 
 \end{izrek}
+Če $\E$ vsebuje seštevanje in množenje, potem so v $\T$ tudi vse linearne preslikave
+na $V$. Dejstvo, da je $\tau_x$ homomorfizem za operacijo kompozituma, je pa 
+neposredna posledica verižnega pravila.
+
+\subsection{Odvedljivost $\T$}
+Če želimo tekom programa sproti računati tudi odvode, moramo hraniti vmesne
+vrednosti odvodov. Zato moramo pomnilnik (vektorski prostor $V$) razširiti, da
+bo vseboval tudi odvode. Odvod je linearna preslikava $V\to V$, prostor
+vseh linearnih preslikav $\mathcal{L}(V)$ je izomorfen tenzorskemu produktu
+$V^*\otimes V$. Tako za izvedbo programa, ki računa odvode, potrebujemo virtualni
+pomnilnik izomorfen prostoru $V\oplus (V^*\otimes V)$. Poleg vsake spremenljivke $x_j$, ki
+jo uporabimo v programu, si moramo zapomniti še vrednosti odvodov po vseh
+ostalih spremenljivkah $\frac{\partial x_j}{\partial x_i}$.   
+
+Za višje odvode rekurzivno definiramo zaporedje vektorskih prostorov $V_n$, ki
+predstavljajo virtualni pomnilnik
+\begin{eqnarray}
+  \label{eq:prapor}
+  V_0 &=& V\\
+  V_{n+1}&=&V\oplus (V^*\otimes V_n),
+\end{eqnarray} 
+ki ga potrebuje program za izračun vrednosti $n$-tih odvodov. Izbira $V_n\simeq
+V\oplus (V\otimes V) \oplus (V\otimes V\otimes V) \ldots$ odraža dejstvo, da za izračun vrednosti $n$-tega odvoda v neki točki $x\in V$
+potrebujemo vrednosti funkcije in vseh nižjih odvodov.
+
+
+  
+
+\subsection{Optimizacija prostorske zahtevnosti}
 Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
 Označimo z $e_i,\quad i=1,2,\ldots n$ standardne bazne vektorje v $\RR^n$ in z
 $\II\subset\{1,2,\ldots n\}$ množico indeksov. Indeksi v $\II$ ustrezajo
