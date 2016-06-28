@@ -346,6 +346,7 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
   \end{equation}
  in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Rekurzivna defincija odraža strukturo prostora $\subseteq_{\forall_i}\op{i}\T$.
  \begin{izrek}
+ %Morda morava tukaj govorit o \Op{n} V
  Dimenzija prostora $\op{n}\T$ je $\frac{1-k^{n+1}}{1-k}$, kjer je k dimenzija $V$.
  \end{izrek}
  
@@ -353,6 +354,14 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  
  %morda tukaj nasloviva probleme z višjimi odvodi v drugih sistemov, referencirava tista 2 autorja, in da tole elegantno reši problem. Dotično, ona najavata potrebo po odvajanju programov, ki v svojem poteku izračunavajo odvode. Recimo delaš specifično numerično analizo, in v nekih korakih rabiš gradient F, in posledično je tvoj program odvisen od teh odvodov. V najini analizi je to enostavno rešeno, saj imava prostor, kjer imajo vsi odvodi koordinate, nižji so vsebovani v prostoru višjih. To odraža dejstvo da lahko katerokoli vrednost v pomnilniku ki ti pripada, uporabiš v računih.
  
+ \subsection{Analiza}
+ 
+ V tej fomrulaciji je stroj $M$ funkcijski prostor,  na katerega elemente lahko apliciramo metode funkcionalne analize. Začnimo s preprostejšimi.
+ 
+ Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega poznamo časovno učinkovit hevrističen $A_2$, katerega pravilnost je odvisna od začetnega približka. Skozi opisano mehaniko lahko program lineariziramo.
+ Izberemo $v\in PV$ in preslikamo v $v'\in P'V'$ (kar je potrebno storiti le enkrat). Potem lahko program $PV$ približamo z linearno aproksimacijo $v+(v'-v) (V)$, ki je konstantne kompleksnost $\mathcal{O}(1)$.
+ %enačba pomeni, da vektorju odštšteješ "realni" del
+ Slika linearizacije služi kot dober približek slike prvotnega programa.
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
 \end{document}
