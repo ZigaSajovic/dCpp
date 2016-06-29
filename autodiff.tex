@@ -16,7 +16,7 @@
 \DeclareMathOperator{\interior}{int}
 \newtheorem{definicija}{Definicija}[section]
 \newtheorem{izrek}{Izrek}[section]
-\title{Avtomatsko odvajanje}
+\title{Odvedljivost programskih jezikov}
 \author{Žiga Sajovic, Martin Vuk}
 \begin{document}
 \maketitle
@@ -233,14 +233,6 @@ $$df=\sum_{\forall_j}\frac{\partial f}{\partial x_j}dx_j, x_i\in V_{j\in\JJ}$$
 
 in naj $dx_j$ predstavljajo bazo duala $V_\JJ^{*}$. Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus_i V_\JJ^*$. Dotično nas zanima podprostor
 $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
-(Morda bolje $T_iM$?)ki ga opremimo s tenzorskim produktom, definiranim z matriko
-\begin{equation}\label{eq:produkt}
-\langle e_i, e_j\rangle =
-  \begin{cases}
-    i=1\lor j=1;\quad 1\\
-    i\ne1\land j\ne 1;\quad 0
-  \end{cases}
-\end{equation}
   
   Definirajmo operator 
   \begin{equation}\label{eq:dirSumFun}
