@@ -213,7 +213,7 @@ ostalih spremenljivkah $\frac{\partial x_j}{\partial x_i}$.
 
 Za višje odvode rekurzivno definiramo zaporedje vektorskih prostorov $V_n$, ki
 predstavljajo virtualni pomnilnik
-\begin{eqnarray}
+\begin{eqnarray}\label{eq:V_n}
   \label{eq:prapor}
   V_0 &=& V\\
   V_{n+1}&=&V\oplus (V^*\otimes V_n),
@@ -304,15 +304,30 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  
  %morda tukaj nasloviva probleme z višjimi odvodi v drugih sistemov, referencirava tista 2 autorja, in da tole elegantno reši problem. Dotično, ona najavata potrebo po odvajanju programov, ki v svojem poteku izračunavajo odvode. Recimo delaš specifično numerično analizo, in v nekih korakih rabiš gradient F, in posledično je tvoj program odvisen od teh odvodov. V najini analizi je to enostavno rešeno, saj imava prostor, kjer imajo vsi odvodi koordinate, nižji so vsebovani v prostoru višjih. To odraža dejstvo da lahko katerokoli vrednost v pomnilniku ki ti pripada, uporabiš v računih.
  
- \subsection{Analiza}
+ \subsection{Prijemi standardne analize}
  
  V tej fomrulaciji je stroj $M$ funkcijski prostor,  na katerega elemente lahko apliciramo metode funkcionalne analize. Začnimo s preprostejšimi.
  
- Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega poznamo časovno učinkovit hevrističen $A_2$, katerega pravilnost je odvisna od začetnega približka. Skozi opisano mehaniko lahko program lineariziramo.
+ Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega iščemo približek. Z opisano mehaniko lahko program lineariziramo.
  Izberemo $v\in PV$ in preslikamo v $v'\in P'V'$ (kar je potrebno storiti le enkrat). Potem lahko program $PV$ približamo z linearno aproksimacijo $v+(v'-v) (V)$, ki je konstantne kompleksnost $\mathcal{O}(1)$.
  %enačba pomeni, da vektorju odštšteješ "realni" del
  Slika linearizacije služi kot dober približek slike prvotnega programa.
-
+ 
+ %notacije je treba dodelat niso še čisto kul
+ 
+ Za nadaljevanje je prikladno vnesti nekaj notacije. Naj $\VV^{ik}_{\JJ_k}\in\op{n}V=V_n (\ref{eq:V_n})$ predstavlja element virtualnega prostora. $\JJ_k$ je nabor indexov, $\lvert\JJ_k\rvert$ je enak redu odvoda. Index $k=\lvert\JJ_k\rvert$, zato ga v zapisu izpuščamo. 
+ \begin{equation}
+ 	\VV^{ik}_{\JJ_k}= \bigoplus\limits_{0\le k\le n} \VV^{ik}_{\JJ_k}
+ \end{equation}
+ V tej notaciji linearizacija postane
+ \begin{equation}\label{eq:linear}
+	\VV^i+\VV^i_j(v^j)
+ \end{equation}
+ Z indukcijskim korakom, lahko program razvijemo v vrsto. Opazimo naravnost izraza, glede na prostor definiran v $(\ref{eq:V_n})$.
+ \begin{equation}
+ 	\VV^i +\VV^i_j(v^j)+\frac{1}{2!}\VV^i_{jk}(v^{jk})+\frac{1}{3!}\VV^i_{jkl}(v^{jkl})+...+\frac{1}{\lvert\JJ\rvert!}\VV^i_\JJ(v^\JJ)
+ \end{equation}
+kjer se razume, da $v^{ij..n}$ predstavlja $v^iv^j...v^n$. 
 \subsection{Optimizacija prostorske zahtevnosti}
 Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
 Označimo z $e_i,\quad i=1,2,\ldots n$ standardne bazne vektorje v $\RR^n$ in z
@@ -387,416 +402,7 @@ $\vec{x}$ in jo tudi lahko podamo kot zlepek a le v notranjosti deinicijskih obm
     TP_{n_kk}\cdot TP_{(n_k-1)k}\cdot\ldots TP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
   \end{cases}
 \end{equation}
-Problem je seveda na robu območij $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
-
-<<<<<<< 7eede8c5455a57ca51a57f86ab2484fabf9b358f
-\subsection{Direktno odvajanje}
-\subsection{Obratno odvajanje}
-\end{document}
-\documentclass{article}
-
-\usepackage[slovene]{babel}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amsthm}
-\newcommand{\RR}{\mathbb{R}}
-\newcommand{\II}{\mathbb{I}}
-\newcommand{\JJ}{\mathbb{J}}
-\newcommand{\E}{\mathcal{E}}
-\newcommand{\T}{\mathcal{T}}
-\newcommand{\VV}{\mathcal{V}}
-\newcommand{\Op}{\partial^{\bigoplus}}
-\newcommand{\op}[1]{\partial^{#1\bigoplus}}
-\DeclareMathOperator{\interior}{int}
-\newtheorem{definicija}{Definicija}[section]
-\newtheorem{izrek}{Izrek}[section]
-\title{Avtomatsko odvajanje}
-\author{Žiga Sajovic, Martin Vuk}
-\begin{document}
-\maketitle
-\begin{abstract}
-  Dandanes matematične funkcije pogosto računamo z računalniki. Če je funkcija
-  odvedljiva, nas včasih zanima tudi, koliko je njen odvod. Večina bralcev verjetno
-  pozna simbolično odvajanje izrazov ali numerično odvajanje s končnimi
-  diferencami. V tem prispevku bova predstavila še en način, kako lahko določimo
-  odvode funkcije, ki jo računamo z računalniškim programom. \emph{Avtomatsko
-    odvajanje} je skupno ime za različne postopke, s katerimi program, ki računa
-  vrednosti odvedljive funkcije, preoblikujemo v program, ki izračuna odvod. 
-  Večina algoritmov za avtomatsko odvajanje znajo to narediti brez dodatnega
-  človekovega posega (odtod ime avtomatski). Za razliko
-  od numeričnega odvajanja ne trpijo za izgubo natančnosti. Prednost pred
-  simboličnim odvajanjem, pa je v tem, da jih lahko uporabimo tudi v primeru, ko
-  ne poznamo eksplicitne formule, ampak vrednosti računamo s programom.
-
-  Avtomatsko odvajanje je uporabno povsod, kjer potrebujemo 
-  odvode funkcij, ki jih računamo s kompleksnimi algoritmi. Tipični primeri so
-  optimizacija parametrov pri strojnem učenju, računanje odvoda preslikave, ki nima
-  eksplicitne formulacije (npr. Poincarejeva preslikava za dinamične sisteme,
-  lastne vrednosti matrik, ...).
-\end{abstract}
-\section{Uvod}
-Za začetek si oglejmo preprost primer, na katerem ilustriramo osnovno idejo.
-Recimo, da računamo vrednosti funkcije $y=\sqrt{x}$ z babilonskim oziroma Haronovim obrazcem.
-Pri tem postopku, najprej izberemo začetni približek za
-kvadratni koren $y_0=y_z$. Nato pa z rekurzivno formulo
-\begin{equation*}
-  y_n=\frac{1}{2}\left( y_{n-1}+\frac{x}{y_{n-1}} \right)
-\end{equation*}
-računamo člene zaporedja $y_n$. Zaporedje $y_n$ konvergira zelo hitro k
-vrednosti $\sqrt{x}$, zato so vrednosti $y_n$ že po nekaj korakih zelo blizu
-iskani vrednosti $\sqrt{x}$. Opisani postopek lahko prevedemo v računalniški
-program. Na primer v programskem jeziku Python, bi program izgledal takole 
-
-\begin{verbatim}
-y = x/2
-while abs(y*y-x) > 5e-11:
-  y = (y+x/y)/2
-\end{verbatim}
-
-Pri tem smo za začetni približek izbrali $x/2$, lahko pa bi izbrali tudi kaj
-drugega. Vrednost pa nas zanima na 10 decimalk natančno. 
-Za funkcijo $f(x)$ želimo izračunati tudi njen odvod $f'(x)$. V našem
-primeru lahko odvod preprosto izrazimo s funkcijo $f'(x)=\frac{1}{2\sqrt{x}}$,
-ampak zamislimo si, da funkcije $f$ sploh ne poznamo, ampak poznamo le računalniški program za
-njen izračun. Še vedno pa bi radi izračunali vrednosti odvoda $f'(x)$. Uporabimo
-lahko numerične približke za odvod, vendar pri tem izgubimo natančnost. 
-
-Osnovna ideja avtomatskega odvajanja je v tem, da odvajamo program. Računalniški program ni nič drugega kot zaporedje osnovnih
-računskih operacij in premetavanja vrednosti po pomnilniku. V našem primeru
-uporabljamo dve spremenljivki \texttt{x} in \texttt{y}, zato si lahko vsako vrstico
-programa, ki spreminja vrednosti \texttt{x} ali \texttt{y} predstavljamo kot
-funkcijo $\phi_i:\RR^2\to\RR^2$. Označimo z $(x_k,y_k)$ vrednosti spremenljivk
-\texttt{x} in \texttt{y}, po izvedbi $k$-te vrstice programa in pred izvedbo
-$k+1$-ve vrstice. Vsaka vrstica programa določa preslikavo
-\begin{eqnarray*}
-  \phi_k&:&\RR^2\to \RR^2\\
-  \phi_k&:&(x_{k-1},y_{k-1})\mapsto (x_k,y_k).
-\end{eqnarray*}
-Celoten program predstavlja preslikavo $F:(x_0,y_0)\mapsto (x_n,y_n)$, ki jo
-lahko predstavimo kot kompozitum preslikav $\phi_k$, defniranih z vsako vrstico programa:
-\begin{equation*}
-  F(x_0,y_0) = \phi_n\circ\phi_{n-1}\circ \ldots \phi_1(x_0,y_0) = \phi_n(\phi_{n-1}(\ldots \phi_1(x_0,y_0)\ldots))
-\end{equation*}
-
-Odvod preslikave $F$ lahko po verižnem pravilu izrazimo kot produkt Jacobijevih matrik
-$D\phi_i$ preslikav $\phi_i$. Ker nas zanima le odvod $y$ po $x$, matriko $DF$
-pomnožimo z leve in desne z vektorjem $(0,1)$ 
-\begin{equation}
-\label{eq:kompozitum}
-  \frac{dy}{dx} =
-  \begin{bmatrix}
-    0& 1
-  \end{bmatrix}
-\cdot D\phi_n(x_{n-1},y_{n-1})\cdot D\phi_{n-1}(x_{n-2},y_{n-2})\ldots D\phi_1(x_0,y_0)\cdot
-  \begin{bmatrix}
-    0\\
-    1
-  \end{bmatrix} 
-\end{equation}
-Program za računanje odvoda lahko povsem sledi originalnemu programu, le da si
-mora na vsakem koraku zapomniti vmesne vrednosti odvoda. Na vsakem
-koraku programa, si mora program za odvod zapomniti vektor
-\begin{equation*}
-\begin{bmatrix}dx_{k}\\dy_{k}\end{bmatrix} = D\phi_{k}(x_{k-1},y_{k-1})\ldots D\phi_1(x_0,y_0)\cdot \begin{bmatrix} 0\\ 1\end{bmatrix} 
-\end{equation*}
-Vrednost $(dx_k,dy_k)$ lahko definiramo rekurzivno
-\begin{equation}
-  \label{eq:rek_odvod}
-\begin{bmatrix}dx_{k}\\dy_{k}\end{bmatrix} = D\phi_{k}(x_{k-1},y_{k-1})\cdot \begin{bmatrix} dx_{k-1}\\ dy_{k-1}\end{bmatrix} 
-\end{equation}
-V našem primeru je 
-\begin{equation*}
-  \phi_1(x,y)=(x,x/2)\text{ in } \phi_n(x,y)=\left(x,\frac{1}{2}\left( y+\frac{x}{y} \right)\right)
-\end{equation*}
-Vrednost spremenljivke $x$ se ne spreminja tekom programa, zato je dovolj, da
-spremljamo le vrednosti odvoda po $y$
-\begin{equation*}
-  \frac{d}{dx}\phi_0(x,y(x))_2=1/2\text{ in }\frac{d}{dx}\phi_k(x,y(x))_2=\frac{1}{2}\left( \frac{dy}{dx}+\left(\frac{1}{y}-\frac{x}{y^2}\frac{dy}{dx}\right) \right)
-\end{equation*}
- 
-Naslednji program poleg vrednosti funkcije (spremenljivka \texttt{y}) računa
-tudi njen odvod (spremenljivka \texttt{dy})
-\begin{verbatim}
-dy = 0.5
-y = x/2
-while abs(y*y-x) > eps:
-  dy = (dy + (1/y - x/(y*y)*dy)/2
-  y = (y+x/y)/2
-\end{verbatim}
-
-\section{Avtomatsko odvajanje}
-Na uvodnem primeru smo videli, da si lahko računalniški program predstavljamo
-kot vektorsko funkcijo več spremenljivk. Vektorska funkcija, ki predstavlja
-program, je podana kot kompozitum preslikav, ki ustrezajo posameznim vrsticam
-programa. Program za odvod smo napisali tako, da smo vsaki vrstici
-programa dodali vrstico, ki je izračunala odvod. Ta postopek lahko namesto nas
-opravi računalnik (od tod ime avtomatski odvod). V nadaljevanju bomo opisali dva
-načina, kako je to izvedeno v obstoječih knjižnicah. 
-
-Oglejmo si matematični model, s katerim lahko utemeljimo postopke avtomatičnega
-odvajanja. Računalniški spomin si lahko predstavljamo Upoštevamo le vrednosti
-tipa \texttt{float} (števila s plavajočo vejico), s katerimi v računalniku
-predstavljamo realna števila. Ostale spremenljivke, kot so števci v zankah, logične
-vrednosti in podobne ne bodo vključene v našem modelu, ampak jih upoštevamo
-zgolj kot parametre, ki sicer vplivajo na potek programa, vendar njihovega
-vpliva ne moremo infinitezimalno obravnavati. Če predpostavimo, da so vse
-spremenjivke, ki nas zanimajo tipa \texttt{float}, si lahko stanje spomina
-predstavljamo kot $n$-razsežni realni vektor\footnote[1]{omejitev, da je
-  spremenljivka tipa \texttt{float}, smo vpeljali zgolj zaradi enostavnosti.
-  Odvajamo lahko po poljubnem tipu, ki to dopušča. Če bi npr. definirali
-  poseben tip, ki bi predstavljal funkcijo, bi na isti način lahko računali
-  funkcijski odvod, kot ga poznamo v variacijskem računu.}. Vsaka spremenljivka(lokacija v
-spominu) predstavlja eno komponento tega vektorja. Množico vseh možnih stanj
-spomina, s katerim razpolaga program, lahko modeliramo z $n$-razsežnim
-vektorskim prostorom $V\simeq\RR^n$. Vektorski prostor $V$ bomo imenovali
-\emph{virtualni pomnilnik programa}. Računalniški program, ki
-ima na voljo $n$-mest v virtualnem pomnilniku, si lahko predstavljamo kot preslikavo
-\begin{equation}
-  \label{eq:program_kot_preslikava}
-  P: V\to V,
-\end{equation}
-kjer je $V$ vektorski prostor dimenzije $n$. Množica vseh takih preslikav
-opremljena z operacijo kompozituma je \emph{monoid}.
-\begin{definicija}
-  Naj bo $V$ Banachov vektroski prostor. Preslikava $P:V\to V$ je odvedljiva v
-  točki $x\in V$, če obstaja
-  linearen omejen operator $TP_x:V\to V$, za katerega je
-  \begin{equation}
-    \label{eq:frechet}
-    \lim_{h\to 0}\frac{\|P(x+h)-P(x)-TP_x(h)\|}{\|h\|} = 0.
-  \end{equation}
-  Preslikavo $TP_x$ imenujemo \emph{Fréchetov odvod} ali \emph{linearizacija}
-  preslikave $P$.
-\end{definicija}
-Za preslikave $\RR^n\to \RR^m$ lahko Fréchetov odvod
-izrazimo kot množenje vektorja $h$ z Jacobijevo matriko parcialnih odvodov
-komponent preslikave $P$
-\begin{equation*}
-  TP_x(h) = JP(x)\cdot h.
-\end{equation*}
-Preslikave, ki ustrezajo osnovnim ukazom in operacijam v določenem
-programskem jeziku, predstavljajo generatorje vseh možnih programomv v
-monoidu. Označimo z $\E$ množico vseh elementarnih ukazov in operacij, ki so
-implementirane v programskem jeziku. Označimo z $\T$ prostor končnih programov,
-ki so generirani z elementarnimi operacijami iz $\E$
-\begin{equation*}
-  \T=\langle E \rangle
-\end{equation*}
-
-Predpostavimo za trenutek, da so vse elementarne operacije povsod odvedljive. 
-
-\begin{izrek}
-  Naj bo $\tau:V\times T\to T$, $\tau:(x,P)\mapsto TP_x$ preslikava,  ki vsakemu programu
-  $P$ priredi njegov odvod v dani točki $x$. Predpostavimo še, da sta med generatorji $\E$
-  tudi operaciji seštevanja in množenja. Za vsak $x\in V$ je preslikava
-  $\tau_x:P\mapsto \tau(x,P)$ avtomorfizem monoida $(T,\circ)$. 
-\end{izrek}
-Če $\E$ vsebuje seštevanje in množenje, potem so v $\T$ tudi vse linearne preslikave
-na $V$. Dejstvo, da je $\tau_x$ homomorfizem za operacijo kompozituma, je pa 
-neposredna posledica verižnega pravila.
-
-\subsection{Odvedljivost $\T$}
-Če želimo tekom programa sproti računati tudi odvode, moramo hraniti vmesne
-vrednosti odvodov. Zato moramo pomnilnik (vektorski prostor $V$) razširiti, da
-bo vseboval tudi odvode. Odvod je linearna preslikava $V\to V$, prostor
-vseh linearnih preslikav $\mathcal{L}(V)$ je izomorfen tenzorskemu produktu
-$V^*\otimes V$. Tako za izvedbo programa, ki računa odvode, potrebujemo virtualni
-pomnilnik izomorfen prostoru $V\oplus (V^*\otimes V)$. Poleg vsake spremenljivke $x_j$, ki
-jo uporabimo v programu, si moramo zapomniti še vrednosti odvodov po vseh
-ostalih spremenljivkah $\frac{\partial x_j}{\partial x_i}$.   
-
-Za višje odvode rekurzivno definiramo zaporedje vektorskih prostorov $V_n$, ki
-predstavljajo virtualni pomnilnik
-\begin{eqnarray}
-  \label{eq:prapor}
-  V_0 &=& V\\
-  V_{n+1}&=&V\oplus (V^*\otimes V_n),
-\end{eqnarray} 
-ki ga potrebuje program za izračun vrednosti $n$-tih odvodov. Izbira $V_n\simeq
-V\oplus (V\otimes V) \oplus (V\otimes V\otimes V) \ldots$ odraža dejstvo, da za izračun vrednosti $n$-tega odvoda v neki točki $x\in V$
-potrebujemo vrednosti funkcije in vseh nižjih odvodov.
-\subsection{Odvedljivi stroji $\T$}
-\begin{definicija}
-  Trojico $(\T,V,\Op)$ imenujemo \emph{odvedljiv stroj}.
-\end{definicija}
-Če je $(\T,V,\Op)$ odvedljiv stroj, je $(\T',V',\Op')$ tudi odvedljiv stroj.
-
-Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano v \ref{eq:zlepek}).
-
-Spomnimo se popolnega diferenciala preslikave
-$$df=\sum_{\forall_j}\frac{\partial f}{\partial x_j}dx_j, x_i\in V_{j\in\JJ}$$
-
-%tukaj morda malo o dualnih številih, morda tisto spodaj E->E+dE ni dovolj za povprečnega bralca. Čeprav je ta definicja, skozi tenzorski produkt in povlek enostavnejša (vsaj zame) in čisto splošna, omogoča izračune poljubnega števila hkratnih odvodov, pri dualnih številih moraš vedno nova uvajat, in izpeljevat nova pravila za vsako dodano število. Morda je ravno to tukaj na mestu, da dodava kaj je pomankljivost tistega sistema, in kako jih najin pristop reši.
-%http://adl.stanford.edu/hyperdual/Fike_AD2012_slides.pdf
-%tukaj izpeljujejo dualna za več odvodov hkrati in za 2 red. Vidiš kako se že komplicira, za 2 spremenljivki in 2. red? Najina formulacije čist vse o pokrije z enovito definicijo, ne rabiva skos "štukat"
-
-in naj $dx_j$ predstavljajo bazo duala $V_\JJ^{*}$. Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus_i V_\JJ^*$. Dotično nas zanima podprostor
-$$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
-(Morda bolje $T_iM$?)ki ga opremimo s tenzorskim produktom, definiranim z matriko
-\begin{equation}\label{eq:produkt}
-\langle e_i, e_j\rangle =
-  \begin{cases}
-    i=1\lor j=1;\quad 1\\
-    i\ne1\land j\ne 1;\quad 0
-  \end{cases}
-\end{equation}
-  
-  Definirajmo operator 
-  \begin{equation}\label{eq:dirSumFun}
-  \partial^{\bigoplus}:\T\to\T\bigoplus_{\forall_i}\partial_i\T
-  \end{equation}
-  ki slika $\E\to\E+d\E$. Transformacija razširi operator monoida $\circ$, ki se pri $e_{i<1}$ izraža kot povlek. Primer: funkcijo množenja preslika v $(\ref{eq:produkt})$. 
-  
-  Skupaj z definicijami prejšnjih sestavkov, lahko konstruiramo odvedljiv abstrakten stroj, ki z opisano mehaniko razširja množico Turing-izračunljivih strojev.
-  
-  \begin{equation}\label{eq:dTuring}
-  M=\langle\T, V, \partial^{\bigoplus}\rangle
-  \end{equation}
-
- \begin{itemize}
- \item
- $V$ služi kot množica stanj, domena ter "neskončen trak"
- \item
- $\T$ je monoid operacij nad $V$
- \item
- $\partial^{\bigoplus}$ razširja operand s svojim dualom 
-% \item
-% $\mathcal{K}$ kontrolne strukture
- \end{itemize}
- %na te mestu dodati navodila konstrukcije odvodov višjega reda, skozi rekurzivno definicjo, kjer dualu prišemo svoj dual. Morda pa je bolje dativ poglavje zase
- 
- Karkoli operira pod temi specifikacijami, je odvedljiv Turingov stroj.
- 
- Ob konstrukciji $M$, je potrebna le enkratna aplikacija $\Op$. Naj $\T$ označuje programski jezik generiran z $\langle\E\rangle$ in $M$ stroj, ki ga implementira. Definirajmo stroj prvega reda
- \begin{equation}\label{eq:Mprime}
- %\Op V je prostor v katerem se dogaja, \Op\T so preslikave/operatorji nad tem prostorom
-	 \Op M=\langle\Op\T, \Op V, \Op\rangle
- \end{equation}
- oziroma v poznani, konceptualno ekvivalentni notaciji
-  \begin{equation}\label{eq:M'}
- 	 M'=\langle\T', V', \Op\rangle
-  \end{equation}
-  Vsi programi konstruirani v $M'$, skozi zaporedje akcij $\T'$ nad $V'$, v vsaki točki izvajanja vsebujejo informacijo spremembe prvega reda. Tak program označimo s $P'$. Potem je $P'V'$ mnogoterost, na vsaki točki razširjena s kotangentnim svežnjem.
- 
- Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$, omogočimo preučevanje njegovega učinka na $V$. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe akcije nad $V$. S tem merimo odzivnost programa na vhodne podatke. Diagram izvajanja programa lahko predstavimo z usmerjenim grafom;- potem lahko projeciramo na, in odvajamo po kateremkoli izmed njegvih oglišč.
- 
- %hiperparametri nimajo rigurozne definicje v strojnem učenju. Morda jo lahko skozi to podava. Recimo, vsi enotski vektorji, na katere lahko projeciramo in konceptualno niso vhod programa.
-  Veliko algoritmov v uporabi, vsebuje hiper-parametre\footnote[2]{v denimo Bayesianski statistiki, so hiper-parametri parametri a-priori distribucije.}, katerih natančne vrednosti so odvisne od specifičnosti aplikacije. Skozi projekcijo na $\mathcal{H}\subset V$, kjer $\mathcal{H}$ predstavljaja hiper-parametre, algoritem interpretiramo, kot parametrično družino mnogoterosti. Konstrukcija algoritmov skozi $M$ $(\ref{eq:dTuring})$ omogoča nov pristop k rešitvi problema izbire hiper-parametrov, ki je danes še odprt. Njihovo uravnavanje, ki je navadno prepuščeno izkušnji programerja, v najini formulaciji postane ekvivalentno optimizaciji funkcij v prostoru parametrov. To pa je problem s številnimi učinkovitimi predlogi rešitve, t.j. ob uvedbi ustreznega energijskega funkcionala (mere napake), postanejo ti algoritmi naučljivi.
- 
- \subsection{Višji odvodi}
- 
- V nadaljnjem se ob odobravanju n-tega reda predpostavlja $\E\subset\mathcal{C}^n$, kar implicira obstoj $\partial^n\T$. Potenciranje operatorja popolnega diferenciala označimo z
- $$d^nf=\sum_{\forall_{i,..,j}}\frac{\partial^n f}{\partial x_i...\partial x_j}dx_{i,..,j}, x_i\in V_{i\in\II}$$
- Operator lahko razumem kot n-to potenco divergence, kjer vsakemu členu vsote pripišemo enotski vektor.
- 
- %tukaj specificiramo da je slika tudi monoid, saj je pomembno da je odvod odvedljivega stroja, tudi odvedljiv stroj. Da spet pade v isto definicijo.
- Opazimo še, da je tudi slika operatorja $\partial^{\bigoplus}$ ob aplikaciji na $\T$ monoid, od tu dalje nazivan z $\partial^{\bigoplus}\T$. Potenca operatorja je rekurzivno definirana
- 
- %tukaj je prvi opeator, ki nima bigoplus v eksponentu, je n-ta potenca divergence, drugi člen na desni strani direktne vsote pa je rekurzivno definiran operator, za en nivo nižje
- %če tukaj natančneje definirava vsakega od operandov v izrazu, bi ljudje morali razumet zadevo?
- \begin{equation}\label{eq:dirSumFunNRek}
-	\partial^{n\bigoplus}:\T\to\partial^{n}\T\bigoplus\partial^{(n-1)\bigoplus}\T
- \end{equation}
- oziroma
- \begin{equation}\label{eq:dirSumFunN}
- 	\partial^{n\bigoplus}:\T\to\bigoplus\limits_{0\leq i\leq n}\partial^{i}\T
-  \end{equation}
- in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Rekurzivna defincija odraža strukturo prostora $\subseteq_{\forall_i}\op{i}\T$.
- \begin{izrek}
- %Morda morava tukaj govorit o \Op{n} V
- Dimenzija prostora $\op{n}\T$ je $\frac{1-k^{n+1}}{1-k}$, kjer je k dimenzija $V$.
- \end{izrek}
- 
- Dokaz je trivialen. Spominska kompleksnost modela je očitno eksponentna. Gre poudarit, da v praksi redko projeciramo na celoten $V$, pogosteje nas zanima manjša podmnožica komponent. Ob interpretacija programa skozi usmerjen graf, to pomeni, da merimo akcijo specifični oglišč v njem (ki eliminirajo vsa ostala oglišča, iz katerih obstaja pot do oglišča na katerega že projeciramo).
- 
- %morda tukaj nasloviva probleme z višjimi odvodi v drugih sistemov, referencirava tista 2 autorja, in da tole elegantno reši problem. Dotično, ona najavata potrebo po odvajanju programov, ki v svojem poteku izračunavajo odvode. Recimo delaš specifično numerično analizo, in v nekih korakih rabiš gradient F, in posledično je tvoj program odvisen od teh odvodov. V najini analizi je to enostavno rešeno, saj imava prostor, kjer imajo vsi odvodi koordinate, nižji so vsebovani v prostoru višjih. To odraža dejstvo da lahko katerokoli vrednost v pomnilniku ki ti pripada, uporabiš v računih.
- 
- \subsection{Analiza}
- 
- V tej fomrulaciji je stroj $M$ funkcijski prostor,  na katerega elemente lahko apliciramo metode funkcionalne analize. Začnimo s preprostejšimi.
- 
- Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega poznamo časovno učinkovit hevrističen $A_2$, katerega pravilnost je odvisna od začetnega približka. Skozi opisano mehaniko lahko program lineariziramo.
- Izberemo $v\in PV$ in preslikamo v $v'\in P'V'$ (kar je potrebno storiti le enkrat). Potem lahko program $PV$ približamo z linearno aproksimacijo $v+(v'-v) (V)$, ki je konstantne kompleksnost $\mathcal{O}(1)$.
- %enačba pomeni, da vektorju odštšteješ "realni" del
- Slika linearizacije služi kot dober približek slike prvotnega programa.
-
-\subsection{Optimizacija prostorske zahtevnosti}
-Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
-Označimo z $e_i,\quad i=1,2,\ldots n$ standardne bazne vektorje v $\RR^n$ in z
-$\II\subset\{1,2,\ldots n\}$ množico indeksov. Indeksi v $\II$ ustrezajo
-posameznim spremenljivkam (indeksi določajo lokacijo spremenljivke v spominu). Naj bo $V_\II$ vektorski
-podprostor napet na vektorje $\{e_i;\quad i\in\II\}$. Označimo z 
-$\mathcal{P}_\II$ projekcijo na $V_i$, z $\mathcal{I}_\II$ pa vložitev $V_\II$ v
-$\RR^n$. Vložitev $\mathcal{I}_\II$ ni mišljena kot linearna preslikava, ampak
-dopuščamo, da so vrednosti spremenljivk, ki niso v $\II$, poljubne. Recimo, da nas zanima nabor spremenljivk z indeksi $\II$, ki jih
-program $P$ izračuna na podlagi nabora spremenljivk z indeksi $\mathbb{J}$.
-Preslikavo med $V_\JJ\to V_\II$, ki jo določa program $P$, lahko zapišemo kot
-\begin{equation}
-  \label{eq:zozitev}
-  P^{\JJ}_{\II}=\mathcal{P}_\II\circ P\circ \mathcal{I}_\JJ 
-\end{equation}
-Odvod preslikave $ P^{\JJ}_{\II}$ je enak produktu
-\begin{equation*}
-  P^{\JJ}_{\II}=P_\II\cdot DP\cdot I_\JJ,   
-\end{equation*}
-kjer sta $P_\II$ in  $I_\JJ$ matriki, ki ustrezata projekciji na $V_\II$ oziroma
-vložitvi $V_\JJ$ v $\RR^n$.
-
-\subsection{Kontrolne strukture}
-
-Do sedaj smo se omejili na operacije, ki spreminjajo vsebino spomina. Poleg
-prireditvenih ukazov, poznamo tudi kontrolne ukaze (npr. stavki \texttt{if},
-\texttt{for}, \texttt{while}, ...). Kontrolni stavki ne vplivajo neposredno na
-vrednost spremenljivk, ampak spreminjajo potek programa. Seveda bo to vplivalo
-tudi na odvod. Ampak za določen nabor vhodnih spremenljivk, bo potek programa
-vedno enak. Zato si lahko kontrolne strukture predstavljamo kot definicijo
-zlepka. Vzemimo naprimer preprost program v programskem jeziku Python
-\begin{verbatim}
-def abs(x):
-  if x<0:
-   return -x
-  else
-   return x
-\end{verbatim}
-Funkcija \texttt{abs(x)} je program, ki izračuna zlepek
-\begin{equation}
-  \label{eq:zlepek}
-  |x| =
-  \begin{cases}
-    -x;\quad x<0\\
-    x;\quad x\ge 0
-  \end{cases}
-\end{equation}
-Vsaka kontrolna struktura razdeli prostor parametrov na različna območja,
-znotraj katerih je potek programa enak. Celoten program torej razdeli prostor
-vseh možnih parametrov na končno množico območij $\{\Omega_i;\quad i=1,\ldots
-k\}$, kjer je potek programa enak. Program lahko torej v splošnem definiramo kot
-zlepek. Za $\vec{x}\in\RR^n$ je
-\begin{equation}
-  \label{eq:zlrprk_splosno}
-  P(\vec{x}) =
-  \begin{cases}
-    P_{n_11}\circ P_{(n_1-1)1}\circ\ldots P_{11}(\vec{x});&\quad \vec{x}\in\Omega_1\\
-    P_{n_22}\circ P_{(n_2-1)2}\circ\ldots P_{12}(\vec{x});&\quad \vec{x}\in\Omega_2\\
-    \vdots&\quad\vdots\\
-    P_{n_kk}\circ P_{(n_k-1)k}\circ\ldots P_{1k}(\vec{x});&\quad \vec{x}\in\Omega_k\\
-  \end{cases}
-\end{equation}
-Linearnizacija $TP$ programa $P$ je seveda tudi odvisna od začetnih parametrov
-$\vec{x}$ in jo tudi lahko podamo kot zlepek a le v notranjosti deinicijskih območij $\Omega_i$
-\begin{equation}
-  \label{eq:zlrprk_splosno}
-  TP_{\vec{x}} =
-  \begin{cases}
-    TP_{n_11}\cdot TP_{(n_1-1)1}\cdot\ldots TP_{11};&\quad \vec{x}\in\interior(\Omega_1)\\
-    TP_{n_22}\cdot TP_{(n_2-1)2}\cdot\ldots TP_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
-    \vdots&\quad\vdots\\
-    TP_{n_kk}\cdot TP_{(n_k-1)k}\cdot\ldots TP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
-  \end{cases}
-\end{equation}
-Problem je seveda na robu območij $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
-
+Problem je seveda na robu območju $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
 \end{document}
