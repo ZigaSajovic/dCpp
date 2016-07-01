@@ -227,18 +227,25 @@ Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja mnog
 Spomnimo se popolnega diferenciala preslikave
 $$df=\sum_{\forall_j}\frac{\partial f}{\partial x_j}dx_j, x_i\in V_{j\in\JJ}$$
 
-%tukaj morda malo o dualnih številih, morda tisto spodaj E->E+dE ni dovolj za povprečnega bralca. Čeprav je ta definicja, skozi tenzorski produkt in povlek enostavnejša (vsaj zame) in čisto splošna, omogoča izračune poljubnega števila hkratnih odvodov, pri dualnih številih moraš vedno nova uvajat, in izpeljevat nova pravila za vsako dodano število. Morda je ravno to tukaj na mestu, da dodava kaj je pomankljivost tistega sistema, in kako jih najin pristop reši.
+%tukaj morda malo o dualnih številih, morda tisto spodaj E->E+dE ni dovolj za povprečnega bralca. Čeprav je ta definicja, skozi tenzorski produkt in pushforward enostavnejša (vsaj zame) in čisto splošna, omogoča izračune poljubnega števila hkratnih odvodov, pri dualnih številih moraš vedno nova uvajat, in izpeljevat nova pravila za vsako dodano število. Morda je ravno to tukaj na mestu, da dodava kaj je pomankljivost tistega sistema, in kako jih najin pristop reši.
 %http://adl.stanford.edu/hyperdual/Fike_AD2012_slides.pdf
 %tukaj izpeljujejo dualna za več odvodov hkrati in za 2 red. Vidiš kako se že komplicira, za 2 spremenljivki in 2. red? Najina formulacije čist vse o pokrije z enovito definicijo, ne rabiva skos "štukat"
 
-in naj $dx_j$ predstavljajo bazo duala $V_\JJ^{*}$. Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus_i V_\JJ^*$. Dotično nas zanima podprostor
+in naj $dx_j$ predstavljajo bazo duala $V_\JJ^{*}$. Poslužili se bomo tako povleka (Obratno), kot potiska (Direktno), odvisno od implementacije.
+\begin{equation}\label{eq:pushfirward}
+ d_p\T: T_pV\to T_{\T x}V
+\end{equation}
+\begin{equation}
+ d_p\T(\frac{\partial}{\partial u^a})=\frac{\partial\T^b}{\partial u^a}\frac{\partial}{\partial v^b}
+\end{equation}
+Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus_i (V^*\bigotimes V)$. Dotično nas zanima podprostor
 $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
   
   Definirajmo operator 
   \begin{equation}\label{eq:dirSumFun}
   \partial^{\bigoplus}:\T\to\T\bigoplus_{\forall_i}\partial_i\T
   \end{equation}
-  ki slika $\E\to\E+d\E$. Transformacija razširi operator monoida $\circ$, ki se pri $e_{i<1}$ izraža kot povlek. Primer: funkcijo množenja preslika v $(\ref{eq:produkt})$. 
+  ki slika $\E\to\E+d\E$. Transformacija razširi operator monoida $\circ$, ki se pri $e_{i<1}$ izraža kot povlek/potisk.
   
   Skupaj z definicijami prejšnjih sestavkov, lahko konstruiramo odvedljiv abstrakten stroj, ki z opisano mehaniko razširja množico Turing-izračunljivih strojev.
   
@@ -309,7 +316,7 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  V tej fomrulaciji je stroj $M$ funkcijski prostor,  na katerega elemente lahko apliciramo metode funkcionalne analize. Začnimo s preprostejšimi.
  
  Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega iščemo približek. Z opisano mehaniko lahko program lineariziramo.
- Izberemo $v\in PV$ in preslikamo v $v'\in P'V'$ (kar je potrebno storiti le enkrat). Potem lahko program $PV$ približamo z linearno aproksimacijo $v+(v'-v) (V)$, ki je konstantne kompleksnost $\mathcal{O}(1)$.
+ Izberemo $v\in PV$ in preslikamo v $v'\in P'V'$ (kar je potrebno storiti le enkrat). Potem lahko program $PV$ približamo z linearno aproksimacijo $v+(v'-v) (V)$, ki je linearne kompleksnost $\mathcal{O}(k)$, kjer je $k$ dimenzija $V$.
  %enačba pomeni, da vektorju odštšteješ "realni" del
  Slika linearizacije služi kot dober približek slike prvotnega programa.
  
@@ -324,10 +331,14 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
 	\VV^i+\VV^i_j(v^j)
  \end{equation}
  Z indukcijskim korakom, lahko program razvijemo v vrsto. Opazimo naravnost izraza, glede na prostor definiran v $(\ref{eq:V_n})$.
- \begin{equation}
+ \begin{equation}\label{eq:vrsta}
  	\VV^i +\VV^i_j(v^j)+\frac{1}{2!}\VV^i_{jk}(v^{jk})+\frac{1}{3!}\VV^i_{jkl}(v^{jkl})+...+\frac{1}{\lvert\JJ\rvert!}\VV^i_\JJ(v^\JJ)
  \end{equation}
 kjer se razume, da $v^{ij..n}$ predstavlja $v^iv^j...v^n$. 
+
+\subsection{Geometrija P$\subset$V}
+
+
 \subsection{Optimizacija prostorske zahtevnosti}
 Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
 Označimo z $e_i,\quad i=1,2,\ldots n$ standardne bazne vektorje v $\RR^n$ in z
