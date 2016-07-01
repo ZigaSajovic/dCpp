@@ -238,7 +238,7 @@ in naj $dx_j$ predstavljajo bazo duala $V_\JJ^{*}$. Poslužili se bomo tako povl
 \begin{equation}
  d_p\T(\frac{\partial}{\partial u^a})=\frac{\partial\T^b}{\partial u^a}\frac{\partial}{\partial v^b}
 \end{equation}
-Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus_i (V^*\bigotimes V)$. Dotično nas zanima podprostor
+Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus (V^*\bigotimes V)$. Dotično nas zanima podprostor
 $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
   
   Definirajmo operator 
@@ -322,7 +322,7 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  
  %notacije je treba dodelat niso še čisto kul
  
- Za nadaljevanje je prikladno vnesti nekaj notacije. Naj $\VV^{ik}_{\JJ_k}\in\op{n}V=V_n (\ref{eq:V_n})$ predstavlja element virtualnega prostora. $\JJ_k$ je nabor indexov, $\lvert\JJ_k\rvert$ je enak redu odvoda. Index $k=\lvert\JJ_k\rvert$, zato ga v zapisu izpuščamo. 
+ Za nadaljevanje je prikladno vnesti nekaj notacije. Naj tenzor $\VV^{ik}_{\JJ_k}\in\op{n}V=V_n (\ref{eq:V_n})$ predstavlja element virtualnega prostora. $\JJ_k$ je nabor indexov, $\lvert\JJ_k\rvert$ je enak redu odvoda. Index $k=\lvert\JJ_k\rvert$, zato ga v zapisu izpuščamo. 
  \begin{equation}
  	\VV^{ik}_{\JJ_k}= \bigoplus\limits_{0\le k\le n} \VV^{ik}_{\JJ_k}
  \end{equation}
@@ -334,8 +334,17 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  \begin{equation}\label{eq:vrsta}
  	\VV^i +\VV^i_j(v^j)+\frac{1}{2!}\VV^i_{jk}(v^{jk})+\frac{1}{3!}\VV^i_{jkl}(v^{jkl})+...+\frac{1}{\lvert\JJ\rvert!}\VV^i_\JJ(v^\JJ)
  \end{equation}
-kjer se razume, da $v^{ij..n}$ predstavlja $v^iv^j...v^n$. 
-
+kjer se razume, da $v^{ij..n}$ predstavlja $v^iv^j...v^n$.
+%kar sledi ne vem če naj dava noter, ti presodi 
+Podobno lahko definiramo tenzor.
+\begin{equation}\label{eq:tenzor}
+	V^{\JJ_k}_{k}=\bigoplus\limits_{0\le k\le n} \frac{1}{\lvert\JJ\rvert!}V^{\JJ_k}_{k}
+\end{equation}
+Potem je razvoj v odrezano vrsto moč izrazit kot srkčitev
+\begin{equation}\label{eq:tenzorVrsta}
+	\VV^{ik}_{\JJ_k}V^{\JJ_k}_{k}
+\end{equation}
+Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa. 
 \subsection{Geometrija P$\subset$V}
 
 
