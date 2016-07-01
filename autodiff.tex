@@ -192,16 +192,29 @@ ki so generirani z elementarnimi operacijami iz $\E$
 Predpostavimo za trenutek, da so vse elementarne operacije povsod odvedljive. 
 
 \begin{izrek}
-  Naj bo $\tau:V\times T\to T$, $\tau:(x,P)\mapsto TP_x$ preslikava,  ki vsakemu programu
+  Naj bo $\tau:V\times \T\to \T$, $\tau:(x,P)\mapsto TP_x$ preslikava,  ki vsakemu programu
   $P$ priredi njegov odvod v dani točki $x$. Predpostavimo še, da sta med generatorji $\E$
   tudi operaciji seštevanja in množenja. Za vsak $x\in V$ je preslikava
-  $\tau_x:P\mapsto \tau(x,P)$ avtomorfizem monoida $(T,\circ)$. 
+  $\tau_x:P\mapsto \tau(x,P)$ avtomorfizem monoida $(\T,\circ)$. 
 \end{izrek}
 Če $\E$ vsebuje seštevanje in množenje, potem so v $\T$ tudi vse linearne preslikave
-na $V$. Dejstvo, da je $\tau_x$ homomorfizem za operacijo kompozituma, je pa 
+na $V$. Tako preslikava $\tau_x$ res slika nazaj v $\T$ Dejstvo, da je $\tau_x$ homomorfizem za operacijo kompozituma, je pa 
 neposredna posledica verižnega pravila.
 
-\subsection{Odvedljivost $\T$}
+\subsection{Odvedlji stroji}
+V nadaljevanju bomo definirali, kako si predstavljamo odvedljiv programski jezik
+oziroma računski stroj. Odvedljiv stroj si bomo predstavljali kot računski
+stroj, ki izvaja zaporedne enostavne operacije, ki so odvedljive, na virtualnem
+pomnilniku $V\simeq\RR^n$. Prostor $\T$ opisuje vse možne programe, na našem
+stroju, množica generatorjev $\E$ pa elementarne operacije, ki jih stroj lahko
+izvaja. Ker je $\T=\langle \E \rangle$, lahko vsak program $P$ zapišemo kot
+kompozitum elementarnih operacij $\epsilon_i$:
+\[
+P = \epsilon_k\circ\epsilon_{k-1}\ldots\epsilon_0.
+\]  
+\begin{definicija}
+ Banachov računski stroj je trojica $(\T,V,)$  
+\end{definicija}
 Če želimo tekom programa sproti računati tudi odvode, moramo hraniti vmesne
 vrednosti odvodov. Zato moramo pomnilnik (vektorski prostor $V$) razširiti, da
 bo vseboval tudi odvode. Odvod je linearna preslikava $V\to V$, prostor
@@ -219,10 +232,26 @@ predstavljajo virtualni pomnilnik
   V_{n+1}&=&V\oplus (V^*\otimes V_n),
 \end{eqnarray} 
 ki ga potrebuje program za izračun vrednosti $n$-tih odvodov. Izbira $V_n\simeq
-V\oplus (V\otimes V) \oplus (V\otimes V\otimes V) \ldots$ odraža dejstvo, da za izračun vrednosti $n$-tega odvoda v neki točki $x\in V$
+V\oplus (V^*\otimes V) \oplus (V^*\otimes V^*\otimes V) \ldots \oplus
+(V^*)^{\otimes n}\otimes V$ odraža dejstvo, da za izračun vrednosti $n$-tega odvoda v neki točki $x\in V$
 potrebujemo vrednosti funkcije in vseh nižjih odvodov.
+\begin{definicija}
+  Direktno limito zaporedja vektorskih prostorov $V_n$ imenujemo
+  \emph{univerzalni virtualni prostor} in jo označimo z $V_\infty$.
+\end{definicija}
+\begin{izrek}
+  Univerzalni virtualni prostor je izomorfen tenzorskemu produktu virtualnega
+  prostora $V$ in tenzorske algebre $T(V^*)$ duala virtualnega prostora $V^*$:
+  \begin{equation}
+\label{eq:tenzor_algebra}
+    V_\infty\simeq V\otimes T(V^*) = V \otimes\left(\bigoplus_{k=0}^\infty (V^*)^{\otimes k} \right)
+\end{equation}
 
-Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano v \ref{eq:zlepek}).
+\end{izrek}
+Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja
+mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano
+v \ref{eq:zlepek}).
+
 
 Spomnimo se popolnega diferenciala preslikave
 $$df=\sum_{\forall_j}\frac{\partial f}{\partial x_j}dx_j, x_i\in V_{j\in\JJ}$$
