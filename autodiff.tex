@@ -16,7 +16,7 @@
 \DeclareMathOperator{\interior}{int}
 \newtheorem{definicija}{Definicija}[section]
 \newtheorem{izrek}{Izrek}[section]
-\title{Odvedljivost programskih jezikov\\ $\T$-calculus}
+\title{Odvedljivi stroji}
 \author{Žiga Sajovic, Martin Vuk}
 \begin{document}
 \maketitle
@@ -248,6 +248,14 @@ potrebujemo vrednosti funkcije in vseh nižjih odvodov.
 \end{equation}
 
 \end{izrek}
+
+Elementi $V_\infty$ predstavljajo neskončne potenčne vrste kot preslikave 
+$V\to V$. Prostor $(V^*)^{\times n}\otimes V$ je izomorfen prostoru
+multilinearnih preslikav $V^{\times n}\to V$. Če poljubno
+multilinearno preslikavo komponiramo z vložitvijo $V\to V^{\times n}$ na
+diagonalo, dobimo preslikavo $V\to V$, ki se v koordinatah izraža kot linearna
+kombinacija monomov stopnje $n$.
+   
 Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja
 mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano
 v \ref{eq:zlepek}).
@@ -365,7 +373,7 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  \end{equation}
 kjer se razume, da $v^{ij..n}$ predstavlja $v^iv^j...v^n$.
 %kar sledi ne vem če naj dava noter, ti presodi 
-Podobno lahko definiramo tenzor.
+Podobno lahko definiramo tenzor, generiran z exponentno mapo $e^\VV$
 \begin{equation}\label{eq:tenzor}
 	V^{\JJ_k}_{k}=\bigoplus\limits_{0\le k\le n} \frac{1}{\lvert\JJ\rvert!}V^{\JJ_k}_{k}
 \end{equation}
