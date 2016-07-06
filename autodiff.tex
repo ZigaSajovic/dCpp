@@ -365,15 +365,14 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  \end{equation}
  V tej notaciji linearizacija postane
  \begin{equation}\label{eq:linear}
-	\VV^i+\VV^i_j(v^j)
+	\VV^i+\VV^i_j(v^j v_0^j)
  \end{equation}
  Z indukcijskim korakom, lahko program razvijemo v vrsto. Opazimo naravnost izraza, glede na prostor definiran v $(\ref{eq:V_n})$.
  \begin{equation}\label{eq:vrsta}
- 	\VV^i +\VV^i_j(v^j)+\frac{1}{\alpha_2!}\VV^i_{jk}(v^{jk})+\frac{1}{\alpha_3!}\VV^i_{jkl}(v^{jkl})+...+\frac{1}{\alpha_k!}\VV^i_\JJ(v^\JJ)
+ 	\VV^i +\VV^i_j(v^j-v_0^j)+\frac{1}{\alpha_2!}\VV^i_{jk}(v^{jk}-v_0^{jk})+\frac{1}{\alpha_3!}\VV^i_{jkl}(v^{jkl}-v_0^{jkl})+...+\frac{1}{\alpha_k!}\VV^i_\JJ(v^\JJ-v_0^\JJ)
  \end{equation}
 kjer se razume, da $v^{ij..n}$ predstavlja $v^iv^j...v^n$.
-%kar sledi ne vem če naj dava noter, ti presodi 
-Podobno lahko definiramo tenzor
+V nadaljenjem zaradi berljivosti predpostavimo centiranost okoli ničle. Podobno lahko definiramo tenzor
 \begin{equation}\label{eq:tenzor}
 	V^{\JJ_k}_{k}=\bigoplus\limits_{0\le k\le n} \frac{1}{\alpha_k!}V^{\JJ_k}_{k}
 \end{equation}
@@ -382,10 +381,8 @@ Potem je razvoj v odrezano vrsto moč izrazit kot srkčitev
 	\VV^{ik}_{\JJ_k}V^{\JJ_k}_{k}
 \end{equation}
 Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa. 
-\subsection{Geometrija P$\subset$V}
 
-
-\subsection{Optimizacija prostorske zahtevnosti}
+\subsection{Optimizacija prostorske in časovne zahtevnosti}
 Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
 Označimo z $e_i,\quad i=1,2,\ldots n$ standardne bazne vektorje v $\RR^n$ in z
 $\II\subset\{1,2,\ldots n\}$ množico indeksov. Indeksi v $\II$ ustrezajo
@@ -406,6 +403,8 @@ Odvod preslikave $ P^{\JJ}_{\II}$ je enak produktu
 \end{equation*}
 kjer sta $P_\II$ in  $I_\JJ$ matriki, ki ustrezata projekciji na $V_\II$ oziroma
 vložitvi $V_\JJ$ v $\RR^n$.
+
+
 
 \subsection{Kontrolne strukture}
 
