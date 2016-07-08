@@ -11,6 +11,8 @@
 \newcommand{\E}{\mathcal{E}}
 \newcommand{\T}{\mathcal{T}}
 \newcommand{\VV}{\mathcal{V}}
+\newcommand{\MM}{\mathcal{M}}
+\newcommand{\NN}{\mathcal{N}}
 \newcommand{\Op}{\partial^{\bigoplus}}
 \newcommand{\op}[1]{\partial^{#1\bigoplus}}
 \DeclareMathOperator{\interior}{int}
@@ -282,6 +284,9 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
   \begin{equation}\label{eq:dirSumFun}
   \partial^{\bigoplus}:\T\to\T\bigoplus_{\forall_i}\partial_i\T
   \end{equation}
+  \begin{equation}\label{eq:dirSumV}
+    \Op: V\to V\bigoplus (V^*\bigotimes V)
+    \end{equation}
   ki slika $\E\to\E+d\E$. Transformacija razširi operator monoida $\circ$, ki se pri $e_{i<1}$ izraža kot povlek/potisk.
   
   Skupaj z definicijami prejšnjih sestavkov, lahko konstruiramo odvedljiv abstrakten stroj, ki z opisano mehaniko razširja množico Turing-izračunljivih strojev.
@@ -292,7 +297,7 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
 
  \begin{itemize}
  \item
- $V$ služi kot množica stanj, domena ter "neskončen trak"
+ $V\subset V_\infty$ služi kot množica stanj, domena ter "neskončen trak"
  \item
  $\T$ je monoid operacij nad $V$
  \item
@@ -313,6 +318,17 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
   \begin{equation}\label{eq:M'}
  	 M'=\langle\T', V', \Op\rangle
   \end{equation}
+  
+  Tako je operator $\op{}$ preslikava stroja $M$ v odvedljiv stroj $M'$. Velja 
+  \begin{equation*}
+	M\subset M'
+  \end{equation*} 
+  
+  \begin{izrek}\label{izr:dM}
+	$\Op M=\langle\Op\T, \Op V, \Op\rangle$ je odvedljiv računski stroj.
+  \end{izrek}
+  Dokaz je trivialen, raširjen operator $\circ$ je dobro definiran, tako je $(\Op\T, \circ)$ monoid in $\Op V\subset V_\infty$.
+  
   Vsi programi konstruirani v $M'$, skozi zaporedje akcij $\T'$ nad $V'$, v vsaki točki izvajanja vsebujejo informacijo spremembe prvega reda. Tak program označimo s $P'$. Potem je $P'V'$ mnogoterost, na vsaki točki razširjena s kotangentnim svežnjem.
  
  Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$, omogočimo preučevanje njegovega učinka na $V$. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe akcije nad $V$. S tem merimo odzivnost programa na vhodne podatke. Diagram izvajanja programa lahko predstavimo z usmerjenim grafom;- potem lahko projeciramo na, in odvajamo po kateremkoli izmed njegvih oglišč.
@@ -327,7 +343,7 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  Operator lahko razumem kot n-to potenco divergence, kjer vsakemu členu vsote pripišemo enotski vektor.
  
  %tukaj specificiramo da je slika tudi monoid, saj je pomembno da je odvod odvedljivega stroja, tudi odvedljiv stroj. Da spet pade v isto definicijo.
- Opazimo še, da je tudi slika operatorja $\partial^{\bigoplus}$ ob aplikaciji na $\T$ monoid, od tu dalje nazivan z $\partial^{\bigoplus}\T$. Potenca operatorja je rekurzivno definirana
+ Izrek $\ref{izr:dM}$ dovoljuje rekurzivno konstrukcijo potence operatorja, ki je definirana
  
  %tukaj je prvi opeator, ki nima bigoplus v eksponentu, je n-ta potenca divergence, drugi člen na desni strani direktne vsote pa je rekurzivno definiran operator, za en nivo nižje
  %če tukaj natančneje definirava vsakega od operandov v izrazu, bi ljudje morali razumet zadevo?
@@ -341,14 +357,14 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Rekurzivna defincija odraža strukturo prostora $\subseteq_{\forall_i}\op{i}\T$.
  \begin{izrek}
  %Morda morava tukaj govorit o \Op{n} V
- Dimenzija prostora $\op{n}\T$ je $\frac{1-k^{n+1}}{1-k}$, kjer je k dimenzija $V$.
+ Dimenzija prostora $\op{n} V$ je $\frac{1-k^{n+1}}{1-k}$, kjer je k dimenzija $V$.
  \end{izrek}
  
  Dokaz je trivialen. Spominska kompleksnost modela je očitno eksponentna. Gre poudarit, da v praksi redko projeciramo na celoten $V$, pogosteje nas zanima manjša podmnožica komponent. Ob interpretacija programa skozi usmerjen graf, to pomeni, da merimo akcijo specifični oglišč v njem (ki eliminirajo vsa ostala oglišča, iz katerih obstaja pot do oglišča na katerega že projeciramo).
  
  %morda tukaj nasloviva probleme z višjimi odvodi v drugih sistemov, referencirava tista 2 autorja, in da tole elegantno reši problem. Dotično, ona najavata potrebo po odvajanju programov, ki v svojem poteku izračunavajo odvode. Recimo delaš specifično numerično analizo, in v nekih korakih rabiš gradient F, in posledično je tvoj program odvisen od teh odvodov. V najini analizi je to enostavno rešeno, saj imava prostor, kjer imajo vsi odvodi koordinate, nižji so vsebovani v prostoru višjih. To odraža dejstvo da lahko katerokoli vrednost v pomnilniku ki ti pripada, uporabiš v računih.
  
- \subsection{Prijemi standardne analize}
+ \subsection{$\T$-calculus}
  
  V tej fomrulaciji je stroj $M$ funkcijski prostor,  na katerega elemente lahko apliciramo metode funkcionalne analize. Začnimo s preprostejšimi.
  
@@ -360,19 +376,24 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  %notacije je treba dodelat niso še čisto kul
  
  Za nadaljevanje je prikladno vnesti nekaj notacije. Naj tenzor $\VV^{ik}_{\JJ_k}\in\op{n}V=V_n (\ref{eq:V_n})$ predstavlja element virtualnega prostora. $\JJ_k$ je nabor indexov, $\lvert\JJ_k\rvert$ je enak redu odvoda. Index $k=\lvert\JJ_k\rvert$, zato ga v zapisu izpuščamo. 
- \begin{equation}
+ \begin{equation}\label{eq:tenV}
  	\VV^{ik}_{\JJ_k}= \bigoplus\limits_{0\le k\le n} \VV^{ik}_{\JJ_k}
+ \end{equation}
+ Tako je $\eqref{eq:tenV}$ preslikava iz tenzorske algebre $T(V)$ v $V$
+ \begin{equation}
+ 	\VV^{ik}_{\JJ_k}:\bigoplus\limits_{0\le k\le n}V^{\JJ_k}_{k}\to V^i
  \end{equation}
  V tej notaciji linearizacija postane
  \begin{equation}\label{eq:linear}
-	\VV^i+\VV^i_j(v^j v_0^j)
+	\VV^i+\VV^i_j(v^j-v_0^j)
  \end{equation}
  Z indukcijskim korakom, lahko program razvijemo v vrsto. Opazimo naravnost izraza, glede na prostor definiran v $(\ref{eq:V_n})$.
  \begin{equation}\label{eq:vrsta}
  	\VV^i +\VV^i_j(v^j-v_0^j)+\frac{1}{\alpha_2!}\VV^i_{jk}(v^{jk}-v_0^{jk})+\frac{1}{\alpha_3!}\VV^i_{jkl}(v^{jkl}-v_0^{jkl})+...+\frac{1}{\alpha_k!}\VV^i_\JJ(v^\JJ-v_0^\JJ)
  \end{equation}
 kjer se razume, da $v^{ij..n}$ predstavlja $v^iv^j...v^n$.
-V nadaljenjem zaradi berljivosti predpostavimo centiranost okoli ničle. Podobno lahko definiramo tenzor
+V nadaljenjem zaradi berljivosti predpostavimo centiranost okoli ničle. Podobno lahko definiramo $V^{\JJ_k}_{k}\subset T(V)$ 
+
 \begin{equation}\label{eq:tenzor}
 	V^{\JJ_k}_{k}=\bigoplus\limits_{0\le k\le n} \frac{1}{\alpha_k!}V^{\JJ_k}_{k}
 \end{equation}
@@ -380,9 +401,23 @@ Potem je razvoj v odrezano vrsto moč izrazit kot srkčitev
 \begin{equation}\label{eq:tenzorVrsta}
 	\VV^{ik}_{\JJ_k}V^{\JJ_k}_{k}
 \end{equation}
-Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa. 
+Slika skrčitve je element prvotnega virtualnega prostora $V$. Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa. 
 
-\subsection{Optimizacija prostorske in časovne zahtevnosti}
+Za konstrukcijo $\eqref{eq:tenzor}$ potrebujemo en $v\subset V$, zato $\eqref{eq:tenV}$ poenostavimo v
+\begin{equation}\label{eq:tenEn}
+	\VV^{ik}_{\JJ_k}:V^k\to\bigoplus\limits_{0\le j\le k} V^{\otimes j}\to V^i
+\end{equation}
+kjer $k$ in $i$ ozačujeta dimenziji podprostorov zanimanja. Potem je $\eqref{eq:tenV}$ element komutativno asociativne unitalne algebre $S(V^*)$, kar korespondira polinomom z nedoločenkami v $V$. Ob ustrezni izbiri domene je $\VV^{ik}_{\JJ_k}\in L^2$.
+
+Nadaljevanje motiviramo s primerom. Predpostavimo fizično strojno opremo, ki implementira stroj $M$.
+
+Predpostavimo, da je osnovni prostor $V$ $\mathbb{H}ilbertov$ z notranjim produktom $\langle\cdot ,\cdot \rangle$. Potem lahko definiramo notranji produkt nad $\Phi=\{\phi: V\to V\}$ kot
+
+\begin{equation}\label{eq:innerProd}
+	\int_{\Omega}\langle\phi_1,\phi_2\rangle(V) d\textbf{v}
+\end{equation}
+kjer se razume, da $d\textbf{v}$ predstavlja mero $dv_1dv_2...dv_n$, kjer je $n$ dimenzija domene. Lastnosti notranjega produkta in integrala zagotvaljajo, da je $\eqref{eq:innerProd}$ notranji produkt nad $L^2(\Omega,V)$. Očitno je $\eqref{eq:tenV}$ (ob poenostavitvi $\eqref{eq:tenEn}$) element $\Phi$.
+\subsection{Optimizacija prostorske zahtevnosti}
 Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
 Označimo z $e_i,\quad i=1,2,\ldots n$ standardne bazne vektorje v $\RR^n$ in z
 $\II\subset\{1,2,\ldots n\}$ množico indeksov. Indeksi v $\II$ ustrezajo
