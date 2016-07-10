@@ -373,7 +373,6 @@ $$\mathcal{V}=\mathcal{M}\bigoplus_{\forall_i}\partial_i\mathcal{M}$$
  %enačba pomeni, da vektorju odštšteješ "realni" del
  Slika linearizacije služi kot dober približek slike prvotnega programa.
  
- %notacije je treba dodelat niso še čisto kul
  
  Za nadaljevanje je prikladno vnesti nekaj notacije. Naj tenzor $\VV^{ik}_{\JJ_k}\in\op{n}V=V_n (\ref{eq:V_n})$ predstavlja element virtualnega prostora. $\JJ_k$ je nabor indexov, $\lvert\JJ_k\rvert$ je enak redu odvoda. Index $k=\lvert\JJ_k\rvert$, zato ga v zapisu izpuščamo. 
  \begin{equation}\label{eq:tenV}
@@ -409,14 +408,16 @@ Za konstrukcijo $\eqref{eq:tenzor}$ potrebujemo en $v\subset V$, zato $\eqref{eq
 \end{equation}
 kjer $k$ in $i$ ozačujeta dimenziji podprostorov zanimanja. Potem je $\eqref{eq:tenV}$ element komutativno asociativne unitalne algebre $S(V^*)$, kar korespondira polinomom z nedoločenkami v $V$. Ob ustrezni izbiri domene je $\VV^{ik}_{\JJ_k}\in L^2$.
 
-Nadaljevanje motiviramo s primerom. Predpostavimo fizično strojno opremo, ki implementira stroj $M$.
+Nadaljevanje motiviramo s primerom. Predpostavimo fizično strojno opremo, ki implementira stroj $M$, ki je optimizirana za izvajanje nabora funkcij $F=\{f_1,f_2,...,f_n\}$, ki jih navaja proizvajalec. Situacija, ki je pogosta v proizvodnji GPU in CPU.
+
+Predpostavimo obstoj programa $P\subset \T$, izvajan na omenjeni strojni opremi. Kot je v praksi pogosto, smo za hitrost pripravljeni žrtvovat optimalnost in se zadovoljimo s suboptimalnim programom. Zato bi želeli program $P$ izrazit v bazi $F$. Zaradi berljivost predpostavimo, da so $F$ ortogonalizirali z eno od mnogih obstoječih metod.
 
 Predpostavimo, da je osnovni prostor $V$ $\mathbb{H}ilbertov$ z notranjim produktom $\langle\cdot ,\cdot \rangle$. Potem lahko definiramo notranji produkt nad $\Phi=\{\phi: V\to V\}$ kot
 
 \begin{equation}\label{eq:innerProd}
-	\int_{\Omega}\langle\phi_1,\phi_2\rangle(V) d\textbf{v}
+	\int_{\Omega}\langle\phi_1(v),\phi_2(v)\rangle d\textbf{v}
 \end{equation}
-kjer se razume, da $d\textbf{v}$ predstavlja mero $dv_1dv_2...dv_n$, kjer je $n$ dimenzija domene. Lastnosti notranjega produkta in integrala zagotvaljajo, da je $\eqref{eq:innerProd}$ notranji produkt nad $L^2(\Omega,V)$. Očitno je $\eqref{eq:tenV}$ (ob poenostavitvi $\eqref{eq:tenEn}$) element $\Phi$.
+kjer se razume, da $d\textbf{v}$ predstavlja mero $dv^1dv^2...dv^n$, kjer je $n$ dimenzija domene. Lastnosti notranjega produkta in integrala zagotvaljajo, da je $\eqref{eq:innerProd}$ notranji produkt nad $L^2(\Omega,V)$. Očitno je $\eqref{eq:tenV}$ (ob poenostavitvi $\eqref{eq:tenEn}$) element $\Phi$, kot so tudi $f_i\subset F$.
 \subsection{Optimizacija prostorske zahtevnosti}
 Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
 Označimo z $e_i,\quad i=1,2,\ldots n$ standardne bazne vektorje v $\RR^n$ in z
