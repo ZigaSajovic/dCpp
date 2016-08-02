@@ -410,11 +410,11 @@ kjer je $d^i$ $\eqref{eq:d}$. Tako je
 \end{equation}
 Izraz $\eqref{eq:e^d}$ je operator
 \begin{equation}
-	e^d:\F\to\F^n
+	e^{hd}:\F\to\F^n
 \end{equation}
-Za specifičen program $P\in\T$ velja
+Za specifičen program $P\in\T$ in $h=1$ velja
 \begin{equation}\label{eq:specProg}
-	(e^d)(P):V^i\to \VV^{ik}_{\JJ_k}\in V_n^i
+	(e^{d})(P):V^i\to \VV^{ik}_{\JJ_k}\in V_n^i
 \end{equation}
 saj gre za zaključen izraz; če bi nad izrazom dalje izvajali potisk/povlek, bi slikali $V^i_n\to\VV^{ik}_{\JJ_k}\in V^i_n$ $\eqref{eq:t^n}$.
 
@@ -422,8 +422,8 @@ saj gre za zaključen izraz; če bi nad izrazom dalje izvajali potisk/povlek, bi
  \begin{equation}\label{eq:tenzorVrsta}
  	P(V^i+hv) = \Big((e^{hd})(P)(V^i)\Big)v^{\JJ_k}_{k}
  \end{equation}
- 
- $$P(V^i+hv) = \VV^{ik}_{\JJ_k}v^{\JJ_k}_{k}$$
+ in pri $h=1$
+ $$P(V^i+v) = \VV^{ik}_{\JJ_k}v^{\JJ_k}_{k}$$
  
 ki je upravičena z opažanjem, da v izrazu $\eqref{eq:tenzorVrsta}$ za vsak $n$ velja
 $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(leva stran)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(desna stran)}$$
