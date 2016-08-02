@@ -341,7 +341,7 @@ Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus 
  
  V nadaljnjem se ob odobravanju n-tega reda predpostavlja $\E\subset\mathcal{C}^n$, kar implicira obstoj $\partial^n\T$. Potenciranje operatorja $d$ označimo z
 \begin{equation}\label{eq:d}
-d^nf=\sum_{\forall_{i,..,n}}\frac{\partial^n f}{\partial x_i...\partial x_n}dx_1\otimes dx_2\otimes...\otimes dx_n
+d^nf=\sum_{\forall_{i,..,k}}\frac{\partial^n f}{\partial x_i...\partial x_k}dx_i\otimes dx_j\otimes...\otimes dx_k
 \end{equation}
 Slika $d^nf$ je element $V\otimes(V^*)^{n\otimes}$.
 Potem lahko definiramo
@@ -350,7 +350,7 @@ Potem lahko definiramo
 \end{equation}
 
 \begin{equation}
-	\D^n=\sum\limits_{k=0}^{n}\sum_{\forall_{i,..,k}}\frac{\partial^n }{\partial x_i...\partial x_k}dx_1\otimes dx_2\otimes...\otimes dx_k
+	\D^n=\sum\limits_{n=0}^{n}\sum_{\forall_{i,..,k}}\frac{\partial^n }{\partial x_i...\partial x_k}dx_i\otimes dx_j\otimes...\otimes dx_k
 \end{equation}
  in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Rekurzivna defincija odraža strukturo prostora $\subseteq_{\forall_i}\D^i\T$. Algebra je dobro definirana. Izračun pokaže
  \begin{equation}
@@ -406,7 +406,7 @@ Potem lahko definiramo
 \end{equation}
 kjer je $d^i$ $\eqref{eq:d}$. Zato je
 \begin{equation}\label{eq:e^d}
-	e^d=\sum\limits_{n=0}^{\infty}\frac{1}{n!}\sum_{\forall_{i,..,j}}\frac{\partial^n }{\partial x_i...\partial x_n}dx_1\otimes dx_2\otimes...\otimes dx_n
+	e^d=\sum\limits_{n=0}^{\infty}\frac{1}{n!}\sum_{\forall_{i,..,k}}\frac{\partial^n }{\partial x_i...\partial x_k}dx_i\otimes dx_j\otimes...\otimes dx_k
 \end{equation}
 Izraz $\eqref{eq:e^d}$ je operator
 \begin{equation}
@@ -416,7 +416,7 @@ Za specifičen program $P\in\T$ velja
 \begin{equation}
 	(e^d)(P):V^i\to \VV^{ik}_{\JJ_k}\in V_n^i
 \end{equation}
-saj so gre za zaključen izraz $\eqref{eq:t^n}$; če bi nad izrazom dalje izvajali potisk/povlek, bi slikali $V^i_n\to\VV^{ik}_{\JJ_k}\in V^i_n$.
+saj so gre za zaključen izraz; če bi nad izrazom dalje izvajali potisk/povlek, bi slikali $V^i_n\to\VV^{ik}_{\JJ_k}\in V^i_n$ $\eqref{eq:t^n}$.
 
  Po $\eqref{eq:vto}$ je slika element komutativno asociativne unitalne algebre $S(V^{i*})$, kar korespondira polinomom z nedoločenkami v $V^i$. Tako je razvoj v vrsto moč izrazit kot srkčitev
  \begin{equation}\label{eq:tenzorVrsta}
@@ -425,7 +425,7 @@ saj so gre za zaključen izraz $\eqref{eq:t^n}$; če bi nad izrazom dalje izvaja
  
  $$P(V^i+v) = \VV^{ik}_{\JJ_k}v^{\JJ_k}_{k}$$
  
-ki je upravičena z opažanjem, da za vsak $n$ in $i$ velja
+ki je upravičena z opažanjem, da za vsak $n$ in vse nabore indeksov velja
 $$\lim\limits_{\lVert v\rVert\to 0}\frac{\partial^n }{\partial v_i...\partial v_n}\text{(leva stran)}=\lim\limits_{\lVert v\rVert\to 0}\frac{\partial^n }{\partial v_i...\partial v_n}\text{(desna stran)}$$
 kjer se razume, da je $v^{\JJ_k}_{k}$ generiran z enim $v\in V^i$.
 
