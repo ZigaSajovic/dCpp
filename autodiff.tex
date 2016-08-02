@@ -276,7 +276,7 @@ in naj $dx_j$ predstavljajo bazo duala $V_\JJ^{*}$. Poslužili se bomo tako povl
 \begin{equation}\label{eq:pushfirward}
  d_p\T: T_pV\to T_{\T x}V
 \end{equation}
-\begin{equation}
+\begin{equation}\label{eq:pullback}
  d_p\T(\frac{\partial}{\partial u^a})=\frac{\partial\T^b}{\partial u^a}\frac{\partial}{\partial v^b}
 \end{equation}
 Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus (V^*\bigotimes V)$.
@@ -360,10 +360,12 @@ Potem lahko definiramo
  \begin{equation}
  	\D^n:\T\to \T^{n'}
  \end{equation}
- \begin{equation}
- 	\T^{n'}:V_n\to V_n 
+ \begin{equation}\label{eq:t^n}
+ 	\T^{n'}:V_m\to V_n 
  \end{equation}
- Preslikave $\T^{n'}$ so podmnožica splošnejšega monoida $\F^n=\{f:V_n\to V_n\}$. Programe generirane s $\T^{n'}$, označimo s $P^{n'}$.
+ za $m\le n$. Gre poudarit, da je mogoče operaciji povleka $\eqref{eq:pullback}$ in potiska $\eqref{eq:pushfirward}$ izvesti le do $m$-tega reda, preostali pa vsebujejo le (v izvedbi) lokalno informacijo. V praksi uporabimo $m=1$, za (v izvedbi) lokalen gradient in $m=n$ za poln gradient. \label{note:m<=n}
+ 
+ Preslikave $\T^{n'}$ so podmnožica splošnejšega monoida $\F^n=\{f:V_m\to V_n\}$. Programe generirane s $\T^{n'}$, označimo s $P^{n'}$.
  
  $$P^{n'} = \epsilon^{n'}_k\circ\epsilon^{n'}_{k-1}\ldots\epsilon^{n'}_0.$$
  \begin{izrek}
@@ -403,26 +405,31 @@ Potem lahko definiramo
 	e^{hd}=\sum\limits_{i=0}^{\infty}\frac{(hd)^i}{i!}
 \end{equation}
 kjer je $d^i$ $\eqref{eq:d}$. Zato je
-\begin{equation}
+\begin{equation}\label{eq:e^d}
 	e^d=\sum\limits_{n=0}^{\infty}\frac{1}{n!}\sum_{\forall_{i,..,j}}\frac{\partial^n }{\partial x_i...\partial x_n}dx_1\otimes dx_2\otimes...\otimes dx_n
+\end{equation}
+Izraz $\eqref{eq:e^d}$ je operator
+\begin{equation}
+	e^d:\F\to\F^n
 \end{equation}
 Za specifičen program $P\in\T$ velja
 \begin{equation}
-	(e^d)(P):V^i\to \VV^{ik}_{\JJ_k}\in V_n
+	(e^d)(P):V^i\to \VV^{ik}_{\JJ_k}\in V_n^i
 \end{equation}
+saj so gre za zaključen izraz $\eqref{eq:t^n}$; če bi nad izrazom dalje izvajali potisk/povlek, bi slikali $V^i_n\to\VV^{ik}_{\JJ_k}\in V^i_n$.
 
  Po $\eqref{eq:vto}$ je slika element komutativno asociativne unitalne algebre $S(V^{i*})$, kar korespondira polinomom z nedoločenkami v $V^i$. Tako je razvoj v vrsto moč izrazit kot srkčitev
  \begin{equation}\label{eq:tenzorVrsta}
- 	P(V+v) = \Big((e^d)(P)(V^i)\Big)v^{\JJ_k}_{k}
+ 	P(V^i+v) = \Big((e^d)(P)(V^i)\Big)v^{\JJ_k}_{k}
  \end{equation}
  
- $$P(V+v) = \VV^{ik}_{\JJ_k}v^{\JJ_k}_{k}$$
+ $$P(V^i+v) = \VV^{ik}_{\JJ_k}v^{\JJ_k}_{k}$$
  
-ki je upravičena z opažanjem, da za vse n velja
-$$\lim\limits_{\lVert v\rVert\to 0}(\frac{\partial}{\partial v_i})^n\text{(leva stran)}=\lim\limits_{\lVert v\rVert\to 0}(\frac{\partial}{\partial v_i})^n\text{(desna stran)}$$
+ki je upravičena z opažanjem, da za vsak $n$ in $i$ velja
+$$\lim\limits_{\lVert v\rVert\to 0}\frac{\partial^n }{\partial v_i...\partial v_n}\text{(leva stran)}=\lim\limits_{\lVert v\rVert\to 0}\frac{\partial^n }{\partial v_i...\partial v_n}\text{(desna stran)}$$
 kjer se razume, da je $v^{\JJ_k}_{k}$ generiran z enim $v\in V^i$.
 
-Slika skrčitve je element prvotnega virtualnega prostora $V$. Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa. 
+Slika skrčitve je element prvotnega virtualnega prostora $V^i$. Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa. 
 
 \subsection{Optimizacija prostorske zahtevnosti}
 Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
