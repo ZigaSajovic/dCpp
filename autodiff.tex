@@ -356,7 +356,7 @@ Potem lahko definiramo
  \begin{equation}
  \D^n=\frac{1- d^{n+1}}{1- d}
  \end{equation}
- Tako so preslikave, ki operirajo nad univerzalnim vektorskim prostorom $V_n$ definirane kot slike operatorja $\D$. Operator seveda apliciramo nad $\T$.
+ Tako so preslikave, ki operirajo nad univerzalnim vektorskim prostorom $V_n$ definirane kot slike operatorja $\D^n$. Operator apliciramo na $\T$.
  \begin{equation}
  	\D^n:\T\to \T^{n'}
  \end{equation}
@@ -426,10 +426,10 @@ saj so gre za zaključen izraz; če bi nad izrazom dalje izvajali potisk/povlek,
  $$P(V^i+v) = \VV^{ik}_{\JJ_k}v^{\JJ_k}_{k}$$
  
 ki je upravičena z opažanjem, da za vsak $n$ in vse nabore indeksov velja
-$$\lim\limits_{\lVert v\rVert\to 0}\frac{\partial^n }{\partial v_i...\partial v_n}\text{(leva stran)}=\lim\limits_{\lVert v\rVert\to 0}\frac{\partial^n }{\partial v_i...\partial v_n}\text{(desna stran)}$$
+$$\lim\limits_{\lVert v\rVert\to 0}\frac{\partial^n }{\partial v_i...\partial v_k}\text{(leva stran)}=\lim\limits_{\lVert v\rVert\to 0}\frac{\partial^n }{\partial v_i...\partial v_k}\text{(desna stran)}$$
 kjer se razume, da je $v^{\JJ_k}_{k}$ generiran z enim $v\in V^i$.
 
-Slika skrčitve je element prvotnega virtualnega prostora $V^i$. Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa. 
+Slika skrčitve je element prvotnega virtualnega prostora $V^i$. Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa (upoštevajoč $\eqref{eq:t^n}$). 
 
 \subsection{Optimizacija prostorske zahtevnosti}
 Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
