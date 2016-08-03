@@ -13,6 +13,11 @@
 \newcommand{\VV}{\mathcal{V}}
 \newcommand{\MM}{\mathcal{M}}
 \newcommand{\NN}{\mathcal{N}}
+\newcommand{\e}{\mathbf{e}}
+\newcommand{\m}{\mathbf{m}}
+\newcommand{\uu}{\mathbf{u}}
+\newcommand{\vv}{\mathbf{v}}
+
 \newcommand{\Op}{\partial^{\bigoplus}}
 \newcommand{\op}[1]{\partial^{#1\bigoplus}}
 \DeclareMathOperator{\interior}{int}
@@ -125,11 +130,11 @@ spremljamo le vrednosti odvoda po $y$
 Naslednji program poleg vrednosti funkcije (spremenljivka \texttt{y}) računa
 tudi njen odvod (spremenljivka \texttt{dy})
 \begin{verbatim}
-dy = 0.5
 y = x/2
+dy = 0.5
 while abs(y*y-x) > eps:
-  dy = (dy + (1/y - x/(y*y)*dy)/2
   y = (y+x/y)/2
+  dy = (dy + (1/y - x/(y*y)*dy)/2
 \end{verbatim}
 
 \section{Avtomatsko odvajanje}
@@ -173,8 +178,12 @@ opremljena z operacijo kompozituma je \emph{monoid}.
     \label{eq:frechet}
     \lim_{h\to 0}\frac{\|P(x+h)-P(x)-TP_x(h)\|}{\|h\|} = 0.
   \end{equation}
-  Preslikavo $TP_x$ imenujemo \emph{Fréchetov odvod} ali \emph{linearizacija}
-  preslikave $P$.
+  Preslikavo $TP_x$ imenujemo \emph{Fréchetov odvod}. Preslikavo 
+  \begin{equation}
+    \label{eq:linearizacija}
+    h\mapsto P(x)+TP_x(h)
+  \end{equation}
+ imenujemo \emph{linearizacija} preslikave $P$ v točki $x$.
 \end{definicija}
 Za preslikave $\RR^n\to \RR^m$ lahko Fréchetov odvod
 izrazimo kot množenje vektorja $h$ z Jacobijevo matriko parcialnih odvodov
@@ -182,6 +191,40 @@ komponent preslikave $P$
 \begin{equation*}
   TP_x(h) = JP(x)\cdot h.
 \end{equation*}
+\subsection{Polinomske aproksimacije}
+V prejšnjem razdelku smo definirali \emph{linearizacijo} preslikave v dani
+točki. Pojem bi radi posplošili na polinome. 
+\begin{definicija}[Simetrična algebra]
+  Naj bo $V$ vektorski prostor nad obsegom $F$. \emph{Tenzorska algebra} $T(V)$ je direktna vsota
+  \begin{equation}
+    \label{eq:tenzorska_algebra}
+    T(V)=\bigoplus_{k=0}^\infty V^{\otimes k}=F\oplus V\oplus (V\otimes V)\oplus (V\otimes V\otimes V)\oplus\ldots
+  \end{equation}
+opremljena z operacijo tenzorskega produkta, ki je določena s kanoničnim
+izomorfizmom $V^{\otimes k}\otimes V^{\otimes l}\to V^{\otimes (k+1)}$. 
+\emph{Simetrična algebra} $S(V)$ je kvocientna algebra $T(V)/\mathcal{I}$, kjer
+je $\mathcal{I}$ ideal generiran z elementi oblike
+\begin{equation}
+  \label{eq:simetricna_algebra}
+  v\otimes u -u\otimes v.
+\end{equation}
+\end{definicija}
+Tenzorska algebra je množica linearnih kombinacij tenzorjev različnega ranga.
+Splošen element $T(V)$ bomo imenovali
+\emph{multitenzor}. Podobno bomo splošen element simetrične algebre imenovali
+\emph{simetrični multitenzor}.
+Če so vektorji  $\{\e_i;\quad i=1,2,\ldots n\}$ baza prostora $V$, lahko poljuben
+element $T(V)$ enolično zapišemo kot
+\begin{equation}
+  \label{eq:multitenzor}
+  \m = \sum_{\alpha\in \JJ}m_\alpha e_{\alpha_1}\otimes e_{\alpha_2}\otimes\ldots e_{\alpha_{k_\alpha}},
+\end{equation}
+kjer so koeficienti $m_\alpha\in F$ in je $\JJ$ množica vseh multiindeksov z
+vrednostmi v $\{1,2,\ldots,n\}$. Prav tako lahko vsak element simetrične algebre
+enolično zapišemo s podobno vsoto, le da gre vsota le po množici urejenih multinideksov.\footnote{Urejen multiindeks $\alpha$ dolžine $k$ je $k$-terica
+števil $(\alpha_1,\alpha_2, \ldots \alpha_k)$, kjer so vsi
+$\alpha_i\in{1,2,\ldots n}$ in velja $\alpha_i\le\alpha_j$, če je $i<j$.}.
+ 
 Preslikave, ki ustrezajo osnovnim ukazom in operacijam v določenem
 programskem jeziku, predstavljajo generatorje vseh možnih programomv v
 monoidu. Označimo z $\E$ množico vseh elementarnih ukazov in operacij, ki so
@@ -202,8 +245,65 @@ Predpostavimo za trenutek, da so vse elementarne operacije povsod odvedljive.
 Če $\E$ vsebuje seštevanje in množenje, potem so v $\T$ tudi vse linearne preslikave
 na $V$. Tako preslikava $\tau_x$ res slika nazaj v $\T$ Dejstvo, da je $\tau_x$ homomorfizem za operacijo kompozituma, je pa 
 neposredna posledica verižnega pravila.
+\subsection{Višji odvodi}
+\begin{definicija}
+Naj $P$ program (se pravi funkcija na virtualnem pomnilniku $P:V\to V$). Odvod
+reda $n$ oziroma aproksimacija stopnje 
+\end{definicija}
+\subsection{Multilinearne preslikave, polinomi in tenzorji}
+Naj bo $f_1\otimes f_2\otimes \ldots \otimes f_k\in (V^*)^{\otimes k}$
+tenzor. Tenzorju lahko priredimo multilinearno funkcijo $f:V^k\to F$ 
+\begin{eqnarray}
+  \label{eq:multilinear}
+f&:&(v_1,v_2,\ldots,v_k) \mapsto \prod_{i=1}^k f_i(v_{k-i+1}) 
+\end{eqnarray}
+Preslikava $f$ je \emph{multilinearna}. Zgornjo definicijo lahko po linearnosti
+razširimo na vse tenzorje v $(V^*)^{\otimes k}$. Tako dobimo, da je prostor
+$\mathrm{Mul}(V,k)$ multilinearnih preslikav ranga $k$ izomorfen $k$-ti stopnici
+$(V^*)^{\otimes k}$ tenzorske algebre $T(V^*)$. 
+Za vsako multilinearno preslikavo $f:V^k\to F$, ki je podana s tenzorjem
+$f_1\otimes f_2\otimes\ldots \otimes f_k$ lahko definiramo polinom $p:V\to
+F$ stopnje $k$\footnote{polinom, ki ga tako dobimo je linearna kombinacija monomov stopnje $k$}, tako da v $f$ vstavimo $(v,v,\ldots, v)$:
+\begin{equation}
+  \label{eq:polinom}
+  p(v) = f(v,v,\ldots, v) = \prod_{i=1}^kf_i(v).
+\end{equation}
+Podobno kot pri multilinearnih preslikavah, lahko definicijo (\ref{eq:polinom})
+po linearnosti razširimo na vse tenzorje iz $(V^*)^{\otimes k}$ pa tudi na
+poljubne multitenzorje, se pravi na celotno tenzorsko algebro $T(V)$. Razlika je v
+tem, da preslikava, ki tenzorjem iz $(V^*)^{\otimes k}$ priredi polinom, ni
+izomorfizem, saj je invarijantna na permutacije faktorjev v tenzorskem
+produktu. Zato lahko preslikavo podano z (\ref{eq:polinom}) razširimo na 
+simetrično algebro $S(V^*)$.
+\begin{izrek}
+  Prostor polinomov na vektorskem prostoru $V$ je izomorfen simetrični algebri
+  $S(V^*)$. Izomorfizem je podan z razširitvijo formule (\ref{eq:polinom}) po
+  linearnosti na poljubne multitenzorje.
+\end{izrek}
+Označimo z $\{\e_1,\e_2,\ldots,\e_n\}$ bazo prostora $V$ in z $\{x_1,x_2,\ldots,
+x_n\}$ dualno bazo $V^*$. Funkcionali $x_i$ niso nič drugega kot koordinatne
+funkcije v razvoju po bazi $\{\e_i\}$. Poljuben multitenzor $f\in T(V^*)$ lahko
+zapišemo kot 
+$$f = \sum_{\alpha \in \JJ}f_\alpha x_{\alpha_1}\otimes
+x_{\alpha_2}\otimes\ldots \otimes x_{\alpha_k}$$
+Če je multitenzor $f$ končen (le končno neničelnih $f_\alpha$),  mu lahko
+priredimo polinom 
+$$p(x_1\e_1+x_2\e_2+\ldots +x_n\e_n)=\sum_{\alpha \in \JJ}f_\alpha x_{\alpha_1}\cdot
+x_{\alpha_2}\cdot\ldots  x_{\alpha_{k_\alpha}}.$$
+ 
+Posvetimo se sedaj preslikavam med dvema vektorskima prostoroma $P:V\to U$.
+Pokazali bomo, da končni multitenzorji prostora $U\otimes S(V^*)$ določajo
+polinomske preslikave $U\to V$. Linearne preslikave $V\to U$ lahko predstavimo s
+tenzorji iz $U\otimes V^*$. Naj bo 
+$$f=\sum_{|\alpha|\le m}\uu_\alpha\otimes x_{\alpha_1}\otimes x_{\alpha_2}\otimes
+\ldots \otimes x_{\alpha_{k_\alpha}}$$ multitenzor reda $m$. Preslikava, ki jo
+multitenzor $f$ definira s predpisom 
+$$f(v) = \sum_{|\alpha|\le m}\left( x_{\alpha_1}(v)\cdot x_{\alpha_2}(v)\cdot
+\ldots \cdot x_{\alpha_{k_\alpha}}(v) \right)\uu_\alpha$$
+je po komponentah polinomska in vsako preslikavo $V\to U$, ki se po komponetah izraža s
+polinomi stopnje največ $m$, lahko predstavimo z multitenzorjem reda $m$.
 
-\subsection{Odvedlji stroji}
+\subsection{Odvedljivi stroji}
 V nadaljevanju bomo definirali, kako si predstavljamo odvedljiv programski jezik
 oziroma računski stroj. Odvedljiv stroj si bomo predstavljali kot računski
 stroj, ki izvaja zaporedne enostavne operacije, ki so odvedljive, na virtualnem
@@ -263,8 +363,14 @@ mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano
 v \ref{eq:zlepek}).
 
 
-Spomnimo se popolnega diferenciala preslikave
-$$df=\sum_{\forall_j}\frac{\partial f}{\partial x_j}dx_j, x_i\in V_{j\in\JJ}$$
+Spomnimo se popolnega diferenciala preslikave $f:V\to \RR$
+$$df=\sum_{\forall_j}\frac{\partial f}{\partial x_j}dx_j, x_i\in V_{j\in\JJ}.$$
+Podobno lahko definiramo totalni diferencial za preslikave $V\to U\simeq \RR^n$
+$$df = \sum_{\forall_{i,j}}\frac{\partial f_i}{\partial x_j}\e_i\otimes dx_j, x_i\in V_{j\in\JJ}.$$
+Prav tako lahko definiramo diferencialne višjega reda
+$$d^kf=\sum_{\forall_{i,\alpha}}\frac{\partial^k f}{\partial
+    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
+  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}.$$
 
 %tukaj morda malo o dualnih številih, morda tisto spodaj E->E+dE ni dovolj za povprečnega bralca. Čeprav je ta definicja, skozi tenzorski produkt in pushforward enostavnejša (vsaj zame) in čisto splošna, omogoča izračune poljubnega števila hkratnih odvodov, pri dualnih številih moraš vedno nova uvajat, in izpeljevat nova pravila za vsako dodano število. Morda je ravno to tukaj na mestu, da dodava kaj je pomankljivost tistega sistema, in kako jih najin pristop reši.
 %http://adl.stanford.edu/hyperdual/Fike_AD2012_slides.pdf
@@ -397,7 +503,7 @@ V nadaljenjem zaradi berljivosti predpostavimo centiranost okoli ničle. Podobno
 \begin{equation}\label{eq:tenzor}
 	V^{\JJ_k}_{k}=\bigoplus\limits_{0\le k\le n} \frac{1}{\alpha_k!}V^{\JJ_k}_{k}
 \end{equation}
-Potem je razvoj v odrezano vrsto moč izrazit kot srkčitev
+Potem je razvoj v odrezano vrsto moč izrazit kot skrčitev
 \begin{equation}\label{eq:tenzorVrsta}
 	\VV^{ik}_{\JJ_k}V^{\JJ_k}_{k}
 \end{equation}
@@ -419,7 +525,7 @@ Predpostavimo, da je osnovni prostor $V$ $\mathbb{H}ilbertov$ z notranjim produk
 kjer se razume, da $d\textbf{v}$ predstavlja mero $dv_1dv_2...dv_n$, kjer je $n$ dimenzija domene. Lastnosti notranjega produkta in integrala zagotvaljajo, da je $\eqref{eq:innerProd}$ notranji produkt nad $L^2(\Omega,V)$. Očitno je $\eqref{eq:tenV}$ (ob poenostavitvi $\eqref{eq:tenEn}$) element $\Phi$.
 \subsection{Optimizacija prostorske zahtevnosti}
 Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
-Označimo z $e_i,\quad i=1,2,\ldots n$ standardne bazne vektorje v $\RR^n$ in z
+Označimo z $\{\e_i,\quad i=1,2,\ldots n\}$ standardne bazne vektorje v $\RR^n$ in z
 $\II\subset\{1,2,\ldots n\}$ množico indeksov. Indeksi v $\II$ ustrezajo
 posameznim spremenljivkam (indeksi določajo lokacijo spremenljivke v spominu). Naj bo $V_\II$ vektorski
 podprostor napet na vektorje $\{e_i;\quad i\in\II\}$. Označimo z 
