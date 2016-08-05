@@ -249,7 +249,12 @@ neposredna posledica verižnega pravila.
 \subsection{Višji odvodi}
 \begin{definicija}
 Naj $P$ program (se pravi funkcija na virtualnem pomnilniku $P:V\to V$). Odvod
-reda $n$ oziroma aproksimacija stopnje 
+reda $n$ oziroma aproksimacija stopnje $n$ je polinomska preslikava
+$T^{(n)}_xP:V\to V$ stopnje $n$ za katero velja
+\begin{equation}
+  \label{eq:aprox}
+  \lim_{h\to 0}\frac{\|P(x+h)-T^{(n)}_xP(h)\|}{\|h\|^n}=0
+\end{equation}
 \end{definicija}
 \subsection{Multilinearne preslikave, polinomi in tenzorji}
 Naj bo $f_1\otimes f_2\otimes \ldots \otimes f_k\in (V^*)^{\otimes k}$
@@ -274,8 +279,8 @@ po linearnosti razširimo na vse tenzorje iz $(V^*)^{\otimes k}$ pa tudi na
 poljubne multitenzorje, se pravi na celotno tenzorsko algebro $T(V)$. Razlika je v
 tem, da preslikava, ki tenzorjem iz $(V^*)^{\otimes k}$ priredi polinom, ni
 izomorfizem, saj je invarijantna na permutacije faktorjev v tenzorskem
-produktu. Zato lahko preslikavo podano z (\ref{eq:polinom}) razširimo na 
-simetrično algebro $S(V^*)$.
+produktu. Zato preslikava podano z (\ref{eq:polinom}) definira izomorfizem
+simetrične algebre $S(V^*)$ in prostora polinomov.
 \begin{izrek}
   Prostor polinomov na vektorskem prostoru $V$ je izomorfen simetrični algebri
   $S(V^*)$. Izomorfizem je podan z razširitvijo formule (\ref{eq:polinom}) po
@@ -294,7 +299,7 @@ x_{\alpha_2}\cdot\ldots  x_{\alpha_{k_\alpha}}.$$
  
 Posvetimo se sedaj preslikavam med dvema vektorskima prostoroma $P:V\to U$.
 Pokazali bomo, da končni multitenzorji prostora $U\otimes S(V^*)$ določajo
-polinomske preslikave $U\to V$. Linearne preslikave $V\to U$ lahko predstavimo s
+polinomske preslikave $V\to U$. Linearne preslikave $V\to U$ lahko predstavimo s
 tenzorji iz $U\otimes V^*$. Naj bo 
 $$f=\sum_{|\alpha|\le m}\uu_\alpha\otimes x_{\alpha_1}\otimes x_{\alpha_2}\otimes
 \ldots \otimes x_{\alpha_{k_\alpha}}$$ multitenzor reda $m$. Preslikava, ki jo
