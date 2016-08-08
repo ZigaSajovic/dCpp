@@ -25,6 +25,7 @@
 \DeclareMathOperator{\interior}{int}
 \newtheorem{definicija}{Definicija}[section]
 \newtheorem{izrek}{Izrek}[section]
+\newtheorem{opomba}{Opomba}[section]
 \title{Odvedljivi stroji}
 \author{Žiga Sajovic, Martin Vuk}
 \begin{document}
@@ -287,12 +288,12 @@ preslikave $P$ in ga označimo z $D^2P$. Podobno lahko definiramo višje odvode
 \begin{definicija}[Višji odvodi]
   Naj bo $P:V\to U$ preslikava med dvema vektorskima prostoroma $V$ in $U$ nad
   obsegom $F$. Odvod reda $k$ je preslikava $V\to U\otimes(V^*)^{\otimes k}$, ki
-  vsaki točki $\x\in V$ priredi odvod $T_\x(D^{k-1}P)$ odvoda reda $k-1$, kot
+  vsaki točki $\x\in V$ priredi odvod $T_\x(\partial^{k-1}P)$ odvoda reda $k-1$, kot
   preslikave $V\to U\otimes (V^*)^{\otimes k-1}$:
   \begin{eqnarray}
     \label{eq:visji_odvod}
-    D^kP&:&V\to U\otimes (V^*)^{\otimes k}\\
-    D^kP&:&\x\mapsto T_\x\left( D^{k-1}P \right)
+    \partial^kP&:&V\to U\otimes (V^*)^{\otimes k}\\
+    \partial^kP&:&\x\mapsto T_\x\left( \partial^{k-1}P \right)
   \end{eqnarray}
 \end{definicija} 
 \begin{opomba}
@@ -302,8 +303,25 @@ preslikave $P$ in ga označimo z $D^2P$. Podobno lahko definiramo višje odvode
   Definicija se v svojem bistvu ne bi spremenila, le da bi bila polna
   tehnikalij, ki se jim bomo tu raje izognili. 
 \end{opomba}
- gs
+
+Iz definicije vidimo, da višji odvodi niso nič posebnega, le večkrat uporabimo
+definicijo odvoda. Problem je, da se prostor v katerega višji odvodi slikajo $V$
+vedno drugačen. Temu se lahko elegantno izognemo, če definiramo operacijo
+odvajanja na univerzalnem virtualnem prostoru $U\otimes T(V^*)$
 \begin{definicija}
+  Odvod
+  $\partial$ je operator na prostoru odvedljivih preslikav $V\to U\times T(V^*)$, ki vsaki preslikavi
+  priredi njen odvod
+  \begin{equation}
+    \label{eq:odvod_splosen}
+    \partial : P \mapsto (\partial P:\x\mapsto T_\x P)
+  \end{equation}
+\end{definicija}
+Vsako preslikavo $P:V\to U\otimes (V^*)^{\otimes k}$ lahko gledamo kot na
+preslikavo $V\to U\otimes T(V)$, če jo na drugem faktorju komponiramo z naravno vložitvijo $(V^*)^{\otimes k}\hookrightarrow T(V^*)$. Tako lahko višje odvode gledamo kot
+na potence operatorja $\partial$. 
+
+\begin{definicija}[Aproksimacija s Taylorjevim polinomom]
 Naj $P$ program (se pravi funkcija na virtualnem pomnilniku $P:V\to V$). Odvod
 reda $n$ oziroma aproksimacija stopnje $n$ je polinomska preslikava
 $T^{(n)}_xP:V\to V$ stopnje $n$ za katero velja
