@@ -14,6 +14,7 @@
 \newcommand{\MM}{\mathcal{M}}
 \newcommand{\NN}{\mathcal{N}}
 \newcommand{\e}{\mathbf{e}}
+\newcommand{\x}{\mathbf{x}}
 \newcommand{\m}{\mathbf{m}}
 \newcommand{\uu}{\mathbf{u}}
 \newcommand{\vv}{\mathbf{v}}
@@ -192,9 +193,32 @@ komponent preslikave $P$
 \begin{equation*}
   TP_x(h) = JP(x)\cdot h.
 \end{equation*}
-\subsection{Polinomske aproksimacije}
-V prejšnjem razdelku smo definirali \emph{linearizacijo} preslikave v dani
-točki. Pojem bi radi posplošili na polinome. 
+\subsection{Višji odvodi in polinomske aproksimacije}
+V prejšnjem razdelku smo definirali odvod kot \emph{linearizacijo} preslikave v dani
+točki. Pojem bi radi posplošili na polinome višjih stopenj.  
+ Naj bo $V$ vektorski prostor nad obsegom $F$. Linearne preslikave $V\to V$
+ lahko predstavimo s tenzorji 2. reda iz prostora $V\otimes V^*$. Če je
+ $\vv\otimes f\in V\otimes V^*$, je preslikava
+ \begin{equation}
+   \label{eq:lin_tenzor}
+   \x \mapsto f(\x)\cdot \vv
+ \end{equation}
+linearna preslikava (v koordinatah je matrika te preslikave produkt stopca $\vv$
+in vrstice $f$). Vsako linearno preslikavo lahko zapišemo kot linearno
+kombinacijo preslikav te vrste.
+
+Podobno lahko definiramo monomske preslikave $V\to V$. Označimo z $V^{\otimes k}
+= V\otimes V\ldots \otimes V$ tenzorski produkt $k$-kopij prostora $V$. Število
+$k$ imenujemo \emph{red} tenzorja. Tenzorji reda $0$  so skalarji $V^{\otimes
+  0}=F$, medtem ko so tenzorji reda 1 vektorji. Poljuben tenzor reda $k$ iz
+prostora $(V*)^{\otimes k}$, definira multilinearno funkcijo $V^k\to F$. Na
+tenzorjih oblike $f_1\otimes f_2\otimes \ldots\otimes f_k$ je definirana s
+formulo
+\begin{equation}
+  \label{eq:multilinear_f}
+  (\vv_1,\vv_2,\ldots,v_k) = f_k(\vv_1)f_{k-1}(\vv_2)\cdots f_1(\vv_k)
+\end{equation}
+ki se po linearnosti razširi na ves $(V^*)^{\otimes k}$.
 \begin{definicija}[Simetrična algebra]
   Naj bo $V$ vektorski prostor nad obsegom $F$. \emph{Tenzorska algebra} $T(V)$ je direktna vsota
   \begin{equation}
@@ -246,7 +270,39 @@ Predpostavimo za trenutek, da so vse elementarne operacije povsod odvedljive.
 Če $\E$ vsebuje seštevanje in množenje, potem so v $\T$ tudi vse linearne preslikave
 na $V$. Tako preslikava $\tau_x$ res slika nazaj v $\T$ Dejstvo, da je $\tau_x$ homomorfizem za operacijo kompozituma, je pa 
 neposredna posledica verižnega pravila.
+
 \subsection{Višji odvodi}
+Naj bo $P:V\to U$ odvedljiva v vsaki točki $\x\in V$. Odvod $T_\x P$ preslikave $P$ je v
+vsaki točki linearna preslikava, ki jo lahko predstavimo s tenzorjem iz
+$U\otimes V^*$. Odvod definira preslikavo 
+\begin{eqnarray}
+  \label{eq:odvod_preslikava}
+  DP&:& V\to U\otimes V^*\\
+  DP&:& \x \mapsto T_\x P.
+\end{eqnarray}
+Če gledamo na odvod kot na preslikavo $DP:V\to U\otimes V^*$, lahko zopet govorimo
+o njeni odvedljivosti. Odvod preslikave $DP$ imenujemo \emph{drugi odvod}
+preslikave $P$ in ga označimo z $D^2P$. Podobno lahko definiramo višje odvode
+
+\begin{definicija}[Višji odvodi]
+  Naj bo $P:V\to U$ preslikava med dvema vektorskima prostoroma $V$ in $U$ nad
+  obsegom $F$. Odvod reda $k$ je preslikava $V\to U\otimes(V^*)^{\otimes k}$, ki
+  vsaki točki $\x\in V$ priredi odvod $T_\x(D^{k-1}P)$ odvoda reda $k-1$, kot
+  preslikave $V\to U\otimes (V^*)^{\otimes k-1}$:
+  \begin{eqnarray}
+    \label{eq:visji_odvod}
+    D^kP&:&V\to U\otimes (V^*)^{\otimes k}\\
+    D^kP&:&\x\mapsto T_\x\left( D^{k-1}P \right)
+  \end{eqnarray}
+\end{definicija} 
+\begin{opomba}
+   V zgornji definiciji smo predpostavili, da je preslikava $P$ in njeni odvodi v
+  vseh točkah $v$ odvedljivi. Seveda se lahko dogodi, da v nekaterih točkah
+  odvod reda $k$ ne obstaja. V tem primeru bi lahko domeno $V$ ustrezno zožali.
+  Definicija se v svojem bistvu ne bi spremenila, le da bi bila polna
+  tehnikalij, ki se jim bomo tu raje izognili. 
+\end{opomba}
+ gs
 \begin{definicija}
 Naj $P$ program (se pravi funkcija na virtualnem pomnilniku $P:V\to V$). Odvod
 reda $n$ oziroma aproksimacija stopnje $n$ je polinomska preslikava
