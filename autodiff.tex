@@ -20,6 +20,7 @@
 \newcommand{\vv}{\mathbf{v}}
 \newcommand{\F}{\mathcal{F}}
 \newcommand{\D}{\mathcal{D}}
+\newcommand{\dd}{\partial}
 \newcommand{\Op}{\partial^{\bigoplus}}
 \newcommand{\op}[1]{\partial^{#1\bigoplus}}
 \DeclareMathOperator{\interior}{int}
@@ -290,7 +291,7 @@ preslikave $P$ in ga označimo z $D^2P$. Podobno lahko definiramo višje odvode
   obsegom $F$. Odvod reda $k$ je preslikava $V\to U\otimes(V^*)^{\otimes k}$, ki
   vsaki točki $\x\in V$ priredi odvod $T_\x(\partial^{k-1}P)$ odvoda reda $k-1$, kot
   preslikave $V\to U\otimes (V^*)^{\otimes k-1}$:
-  \begin{eqnarray}
+  \begin{eqnarray}\label{eq:partial}
     \label{eq:visji_odvod}
     \partial^kP&:&V\to U\otimes (V^*)^{\otimes k}\\
     \partial^kP&:&\x\mapsto T_\x\left( \partial^{k-1}P \right)
@@ -300,15 +301,13 @@ preslikave $P$ in ga označimo z $D^2P$. Podobno lahko definiramo višje odvode
    V zgornji definiciji smo predpostavili, da je preslikava $P$ in njeni odvodi v
   vseh točkah $v$ odvedljivi. Seveda se lahko dogodi, da v nekaterih točkah
   odvod reda $k$ ne obstaja. V tem primeru bi lahko domeno $V$ ustrezno zožali.
-  Definicija se v svojem bistvu ne bi spremenila, le da bi bila polna
-  tehnikalij, ki se jim bomo tu raje izognili. 
 \end{opomba}
 
 Iz definicije vidimo, da višji odvodi niso nič posebnega, le večkrat uporabimo
 definicijo odvoda. Problem je, da se prostor v katerega višji odvodi slikajo $V$
 vedno drugačen. Temu se lahko elegantno izognemo, če definiramo operacijo
 odvajanja na univerzalnem virtualnem prostoru $U\otimes T(V^*)$
-\begin{definicija}
+\begin{definicija}\label{def:partial}
   Odvod
   $\partial$ je operator na prostoru odvedljivih preslikav $V\to U\times T(V^*)$, ki vsaki preslikavi
   priredi njen odvod
@@ -382,8 +381,9 @@ $$f(v) = \sum_{|\alpha|\le m}\left( x_{\alpha_1}(v)\cdot x_{\alpha_2}(v)\cdot
 \ldots \cdot x_{\alpha_{k_\alpha}}(v) \right)\uu_\alpha$$
 je po komponentah polinomska in vsako preslikavo $V\to U$, ki se po komponetah izraža s
 polinomi stopnje največ $m$, lahko predstavimo z multitenzorjem reda $m$.
+  
+\subsection{Virtualni prostor}
 
-\subsection{Odvedljivi stroji}
 V nadaljevanju bomo definirali, kako si predstavljamo odvedljiv programski jezik
 oziroma računski stroj. Odvedljiv stroj si bomo predstavljali kot računski
 stroj, ki izvaja zaporedne enostavne operacije, ki so odvedljive, na virtualnem
@@ -394,9 +394,7 @@ kompozitum elementarnih operacij $\epsilon_i$:
 \[
 P = \epsilon_k\circ\epsilon_{k-1}\ldots\epsilon_0.
 \]  
-\begin{definicija}
- Banachov računski stroj je trojica $(\T,V,)$  
-\end{definicija}
+
 Če želimo tekom programa sproti računati tudi odvode, moramo hraniti vmesne
 vrednosti odvodov. Zato moramo pomnilnik (vektorski prostor $V$) razširiti, da
 bo vseboval tudi odvode. Odvod je linearna preslikava $V\to V$, prostor
@@ -437,260 +435,293 @@ multilinearnih preslikav $V^{\times n}\to V$. Če poljubno
 multilinearno preslikavo komponiramo z vložitvijo $V\to V^{\times n}$ na
 diagonalo, dobimo preslikavo $V\to V$, ki se v koordinatah izraža kot linearna
 kombinacija monomov stopnje $n$.
+
+\begin{izrek}
+ Dimenzija prostora $V_n$ je $\frac{k-k^{n+2}}{1-k}$, kjer je k dimenzija $V$.
+ \end{izrek}
+
+\begin{proof}
+	$$dim(V_n)=dim(V)\sum\limits_{i=0}^{n}dim((V^*)^{\otimes i})$$
+	$$dim(V^*)=dim(V)\land dim\Big((V)^{\otimes n}\Big)=div(V)^n$$
+	$$\implies$$
+	$$dim(V_n)=dim(V)\sum\limits_{i=0}^{n}dim(V)^{i}$$
+	$$dim(V_n)=dim(V)\frac{1-dim(V)^{n+1}}{1-dim(V)}$$
+\end{proof}
+
+Spominska kompleksnost modela je eksponentna. Gre poudarit, da v praksi redko projeciramo na celoten $V$, pogosteje nas zanima manjša podmnožica komponent.
+
+\subsection{$\T$-calculus}
+
+Za enostavnost izražanja definirajmo
+ 
+ \begin{equation}\label{eq:F^n}
+ 	\F^n:V\to V\otimes(V^*)^{n\otimes}
+ \end{equation}
+ in
+ 
+ \begin{equation}\label{eq:F_n}
+ 	\F_n:V\to V_n
+ \end{equation}
+Naj bo $\partial$ $\eqref{eq:odvod_splosen}$ definiran kot
+
+\begin{equation}\label{eq:dd}
+	\partial^k=\sum_{\forall_{i,\alpha}}\frac{\partial^k}{\partial
+	    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
+	  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}
+\end{equation}
+
+Tako je
+ 
+ \begin{equation}
+ \dd^k:\F^n\to\F^{n+k}
+ \end{equation}
+ 
+ \begin{izrek}\label{izr:linearnaNeodvisnost}
+  Množica $\{\partial^k\}$ predstavlja linearno neodvisne vektorje nad poljem $K$.
+ \end{izrek}
+ 
+ \begin{proof} 
+ $$\forall_i(c_i\in K)$$
+	  $$c_0+c_1\dd+c_2\dd^2+....+c_n\dd^n=0$$
+	$$\dd(c_0+c_1\dd+c_2\dd^2+....+c_n\dd^n)=0$$
+	$$\implies$$
+	$$(\dd)(c_0+c_1\dd+c_2\dd^2+....+c_n\dd^n)(\F)=(c_0+c_1\dd+c_2\dd^2+....+c_n\dd^n)(\F)$$
+	$$\implies$$
+	$$(\dd)(\F^n)=\F^n$$
+	$$\F^{n+1}=\F^n\iff\forall_i(c_i=0)$$
+	
+ \end{proof}
+ Definirajmo geometrijsko vrsto členov $\eqref{eq:dd}$ kot
+ 
+ \begin{equation}\label{eq:DD}
+  	\D^n=1+\dd+\dd^2+...+\dd^n
+  \end{equation}
+  
+  \begin{equation}
+  	\D^n=\sum\limits_{n=0}^{n}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
+  		    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
+  		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}
+  \end{equation}
+  
+  Tako je
+  
+   \begin{equation}
+   	\D^n:\F\to\F_{n}
+   \end{equation}
+   
+\begin{izrek}
+  Množica $\{\partial^k\}$ predstavlja bazo, ki napenja $\T_n\subset\F_n\phantom{.}\eqref{eq:F_n}$ nad $\mathbb{Z}_2$.
+ \end{izrek}
+ 
+ \begin{proof} 
+ 	$$(c_0+c_1\dd+c_2\dd^2+....+c_n\dd^n)(\T)\in\F_n$$
+ 	$$c_0+c_1\dd+c_2\dd^2+....+c_n\dd^n=\D^n\iff \forall_i(c_i=1)$$
+ 	$$\implies$$
+ 	$$(\D^n)(\T)=\T_n$$
+ 	
+  \end{proof}
+  
+
+\subsection{Analitični stroji}
    
 Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja
 mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano
 v \ref{eq:zlepek}).
 
-
-Spomnimo se popolnega diferenciala preslikave $f:V\to \RR$
-$$df=\sum_{\forall_j}\frac{\partial f}{\partial x_j}dx_j, x_i\in V_{j\in\JJ}.$$
-Podobno lahko definiramo totalni diferencial za preslikave $V\to U\simeq \RR^n$
-$$df = \sum_{\forall_{i,j}}\frac{\partial f_i}{\partial x_j}\e_i\otimes dx_j, x_i\in V_{j\in\JJ}.$$
-Prav tako lahko definiramo diferencialne višjega reda
-$$d^kf=\sum_{\forall_{i,\alpha}}\frac{\partial^k f}{\partial
-    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
-  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}.$$
-
-%tukaj morda malo o dualnih številih, morda tisto spodaj E->E+dE ni dovolj za povprečnega bralca. Čeprav je ta definicja, skozi tenzorski produkt in pushforward enostavnejša (vsaj zame) in čisto splošna, omogoča izračune poljubnega števila hkratnih odvodov, pri dualnih številih moraš vedno nova uvajat, in izpeljevat nova pravila za vsako dodano število. Morda je ravno to tukaj na mestu, da dodava kaj je pomankljivost tistega sistema, in kako jih najin pristop reši.
-%http://adl.stanford.edu/hyperdual/Fike_AD2012_slides.pdf
-%tukaj izpeljujejo dualna za več odvodov hkrati in za 2 red. Vidiš kako se že komplicira, za 2 spremenljivki in 2. red? Najina formulacije čist vse o pokrije z enovito definicijo, ne rabiva skos "štukat"
-
-in naj $dx_j$ predstavljajo bazo duala $V_\JJ^{*}$. Poslužili se bomo tako povleka (Obratno), kot potiska (Direktno), odvisno od implementacije.
-\begin{equation}\label{eq:pushfirward}
- d_p\T: T_pV\to T_{\T x}V
-\end{equation}
-\begin{equation}\label{eq:pullback}
- d_p\T(\frac{\partial}{\partial u^a})=\frac{\partial\T^b}{\partial u^a}\frac{\partial}{\partial v^b}
-\end{equation}
-Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus (V^*\bigotimes V)$.
   
-  Definirajmo operator 
-  \begin{equation}
-  \D=1+d
-  \end{equation}
-  \begin{equation}\label{eq:dirSumFun}
-  \D:\T\to\T\oplus d\T
-  \end{equation}
-  Potem
-  \begin{equation}\label{eq:dirSumV}
-    \T\oplus d\T: V\oplus (V^*\otimes V)\to V\oplus (V^*\otimes V)
-    \end{equation}
-  
-  Skupaj z definicijami prejšnjih sestavkov, lahko konstruiramo odvedljiv abstrakten stroj, ki z opisano mehaniko razširja množico Turing-izračunljivih strojev.
+  Skupaj z definicijami prejšnjih sestavkov, lahko konstruiramo analitičen abstrakten stroj, ki z opisano mehaniko razširja množico Turing-izračunljivih strojev.
   
   \begin{equation}\label{eq:dTuring}
-  M=\langle\T, V, d\rangle
+  M=\langle\T, V_\infty, \dd\rangle
   \end{equation}
 
  \begin{itemize}
  \item
- $V\subset V_\infty$ služi kot množica stanj, domena ter "neskončen trak"
+ $V_\infty$ služi kot množica stanj, domena ter "neskončen trak"
  \item
- $\T$ je monoid operacij nad $V$
+ $\T$ je monoid preslikav $V\to V$
  \item
- $d$ je diferencialni operator
-% \item
-% $\mathcal{K}$ kontrolne strukture
+ $\dd$ je diferencialni operator
  \end{itemize}
- %na te mestu dodati navodila konstrukcije odvodov višjega reda, skozi rekurzivno definicjo, kjer dualu prišemo svoj dual. Morda pa je bolje dativ poglavje zase
  
- Karkoli operira pod temi specifikacijami, je odvedljiv Turingov stroj.
+ Karkoli operira pod temi specifikacijami, je analitičen Turingov stroj.
  
- Ob konstrukciji $M$, je potrebna le enkratna aplikacija $\Op$. Naj $\T$ označuje programski jezik generiran z $\langle\E\rangle$ in $M$ stroj, ki ga implementira. Definirajmo stroj prvega reda
+ Ob konstrukciji $M$, je potrebna le enkratna aplikacija $\D$. Naj $\T$ označuje programski jezik generiran z $\langle\E\rangle$ in $M$ stroj, ki ga implementira. Definirajmo stroj $n$-tega reda
  \begin{equation}\label{eq:Mprime}
- %\Op V je prostor v katerem se dogaja, \Op\T so preslikave/operatorji nad tem prostorom
-	 \D M=\langle\D\T, V\oplus (V^*\otimes V), d\rangle
+	 \D^n M=\langle\D^n\T, V_\infty, \dd\rangle
  \end{equation}
  oziroma v poznani, konceptualno ekvivalentni notaciji
   \begin{equation}\label{eq:M'}
- 	 M'=\langle\T', V_1, d\rangle
+ 	 M_n=\langle\T_n, V_\infty, \dd\rangle
   \end{equation}
-  
-  Tako je operator $\op{}$ preslikava stroja $M$ v odvedljiv stroj $M'$. Velja 
-  \begin{equation*}
-	M\subset M'
-  \end{equation*} 
+  Tako je operator $\D^n$ preslikava analitičnega stroja $M$ v stroj $M_n$.
   
   \begin{izrek}\label{izr:dM}
-	$M'=\langle\T', V_1, d\rangle$ je odvedljiv računski stroj.
+	$M_n=\langle\T_n, V_n, \dd\rangle$ je analitičen računski stroj.
   \end{izrek}
-  Dokaz je trivialen, raširjen operator $\circ$ je dobro definiran, tako je $(\T', \circ)$ monoid in $V_1\subset V_\infty$.
   
-  Vsi programi konstruirani v $M'$, skozi zaporedje akcij $\T'$ nad $V_1$, v vsaki točki izvajanja vsebujejo informacijo spremembe prvega reda. Tak program označimo s $P'$. Potem je $P'V_1$ mnogoterost, na vsaki točki razširjena s kotangentnim svežnjem.
- 
- Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$, omogočimo preučevanje njegovega učinka na $V$. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe akcije nad $V$. S tem merimo odzivnost programa na vhodne podatke. Diagram izvajanja programa lahko predstavimo z usmerjenim grafom;- potem lahko projeciramo na, in odvajamo po kateremkoli izmed njegvih oglišč.
+  To pomeni, da nam stroj $n+1$ reda ni potrebno konstruirati skozi aplikacijo $\D^n$ na $M$, temveč lahko po Izreku $\ref{izr:dM}$ red $M_{n}$ inkrementiramo.
+
+\begin{proof}
+	Iz $\eqref{eq:DD}$ sledi	
+	$$\D^{n+1}=1+\D^n$$
+	$$\implies$$
+	$$M_{n+1}=\langle\T+\dd\T_n,V_\infty,\dd\rangle$$
+\end{proof}
   
- \subsection{Višji odvodi}
+  Vsi programi konstruirani v $M_n$, skozi zaporedje akcij $\T_n$ nad $V$, v vsaki točki izvajanja vsebujejo informacijo spremembe prvih $n$ redov. Tak program označimo s $P_n$.
+  
+  \begin{equation}
+  P_{n} = \epsilon^{n'}_k\circ\epsilon^{n'}_{k-1}\ldots\epsilon^{n'}_0
+  \end{equation}
+  
+kjer velja $\E^n\in\T^n\subset\F^n$.
  
- V nadaljnjem se ob odobravanju n-tega reda predpostavlja $\E\subset\mathcal{C}^n$, kar implicira obstoj $\partial^n\T$. Potenciranje operatorja $d$ označimo z
-\begin{equation}\label{eq:d}
-d^nf=\sum_{\forall_{i,..,k}}\frac{\partial^n f}{\partial x_i...\partial x_k}dx_i\otimes dx_j\otimes...\otimes dx_k
-\end{equation}
-Slika $d^nf$ je element $V^k\otimes(V^*)^{n\otimes}$.
-Potem lahko definiramo
-\begin{equation}\label{eq:op}
-\D^n=1+ d+ d^2+...+ d^n
-\end{equation}
-
-\begin{equation}
-	\D^n=\sum\limits_{n=0}^{n}\sum_{\forall_{i,..,k}}\frac{\partial^n }{\partial x_i...\partial x_k}dx_i\otimes dx_j\otimes...\otimes dx_k
-\end{equation}
- in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Rekurzivna defincija odraža strukturo prostora $\subseteq_{\forall_i}\D^i\T$. Algebra je dobro definirana. Izračun pokaže
+% Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$, omogočimo preučevanje njegovega učinka na $V$. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe akcije nad $V$. S tem merimo odzivnost programa na vhodne podatke. Diagram izvajanja programa lahko predstavimo z usmerjenim grafom;- potem lahko projeciramo na, in odvajamo po kateremkoli izmed njegvih oglišč.
+ 
+  \subsection{Razvoj v vrsto}
+  
+  V tej fomrulaciji je stroj $M$ funkcijski prostor,  na katerega elemente lahko apliciramo metode funkcionalne analize. Začnimo s preprostejšimi.
+  
+  Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega iščemo približek. Z opisano mehaniko lahko program lineariziramo.
+  Izberemo $v\in PV$ in preslikamo v $v'\in P'V_1$ (kar je potrebno storiti le enkrat). Potem lahko program $PV$ približamo z linearno aproksimacijo $v+(v'-v) (V)$, ki je linearne kompleksnost $\mathcal{O}(k)$, kjer je $k$ dimenzija $V$.
+  %enačba pomeni, da vektorju odštšteješ "realni" del
+  Slika linearizacije služi kot dober približek slike prvotnega programa.
+  
+  
+  Za nadaljevanje je prikladno vnesti nekaj notacije. Naj tenzor $\VV^{ik}_{\JJ_k}\in V_n (\ref{eq:V_n})$ predstavlja element virtualnega prostora. $\JJ_k$ je nabor indexov, $\lvert\JJ_k\rvert$ je enak redu odvoda. Index $k=\lvert\JJ_k\rvert$, zato ga v zapisu izpuščamo. 
+  
+  \begin{equation}\label{eq:tenV}
+  	\VV^{ik}_{\JJ_k}= \bigoplus\limits_{0\le k\le n} \VV^{ik}_{\JJ_k}
+  \end{equation}
+  
+  Tako je $\eqref{eq:tenV}$ preslikava iz tenzorske algebre $T(V)$ v $V$
+  
+  \begin{equation}\label{eq:vto}
+  	\VV^{ik}_{\JJ_k}:\bigoplus\limits_{0\le k\le n}V^{\JJ_k}_{k}\to V^i
+  \end{equation}
+  
+  V tej notaciji linearizacija postane
+  
+  \begin{equation}\label{eq:linear}
+ 	\VV^i+\VV^i_j(v^j-v_0^j)
+  \end{equation}
+  
+  Induktivno bi želeli program razvit v vrsto. Poslužimo se enakosti
+  
  \begin{equation}
- \D^n=\frac{1- d^{n+1}}{1- d}
+ 	e^{h\dd}=\sum\limits_{n=0}^{\infty}\frac{(h\dd)^n}{n!}
  \end{equation}
- Tako so preslikave, ki operirajo nad univerzalnim vektorskim prostorom $V_n$ definirane kot slike operatorja $\D^n$. Operator apliciramo na $\T$.
+ 
+ kjer je $\dd^i$ $\eqref{eq:dd}$ in polje $K$ v Izreku $\ref{izr:linearnaNeodvisnost}$ enako $\RR$. Tako je
+ 
+ \begin{equation}\label{eq:e^d}
+ 	e^{h\dd}=\sum\limits_{n=0}^{\infty}\frac{h^n}{n!}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
+ 		    x_{\alpha_1}\ldots \partial x_{\alpha_n}}\e_i\otimes
+ 		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_n}
+ \end{equation}
+ 
+ Izraz $\eqref{eq:e^d}$ je operator
+ 
  \begin{equation}
- 	\D^n:\T\to \T^{n'}
- \end{equation}
- \begin{equation}\label{eq:t^n}
- 	\T^{n'}:V_m\to V_n 
- \end{equation}
- za $m\le n$. Gre poudarit, da je mogoče operaciji povleka $\eqref{eq:pullback}$ in potiska $\eqref{eq:pushfirward}$ izvesti le do $m$-tega reda, preostali pa vsebujejo le (v izvedbi) lokalno informacijo. V praksi uporabimo $m=1$, za (v izvedbi) lokalen gradient ali $m=n$ za popoln gradient. \label{note:m<=n}
- 
- Preslikave $\T^{n'}$ so podmnožica splošnejšega monoida $\F^n=\{f:V_m\to V_n\}$. Programe generirane s $\T^{n'}$, označimo s $P^{n'}$.
- 
- $$P^{n'} = \epsilon^{n'}_k\circ\epsilon^{n'}_{k-1}\ldots\epsilon^{n'}_0.$$
- \begin{izrek}
- %Morda morava tukaj govorit o \Op{n} V
- Dimenzija prostora $V_n$ je $\frac{1-k^{n+1}}{1-k}$, kjer je k dimenzija $V$.
- \end{izrek}
- 
- Dokaz je trivialen. Spominska kompleksnost modela je očitno eksponentna. Gre poudarit, da v praksi redko projeciramo na celoten $V$, pogosteje nas zanima manjša podmnožica komponent. Ob interpretacija programa skozi usmerjen graf, to pomeni, da merimo akcijo specifični oglišč v njem (ki eliminirajo vsa ostala oglišča, iz katerih obstaja pot do oglišča na katerega že projeciramo).
- 
- %morda tukaj nasloviva probleme z višjimi odvodi v drugih sistemov, referencirava tista 2 autorja, in da tole elegantno reši problem. Dotično, ona najavata potrebo po odvajanju programov, ki v svojem poteku izračunavajo odvode. Recimo delaš specifično numerično analizo, in v nekih korakih rabiš gradient F, in posledično je tvoj program odvisen od teh odvodov. V najini analizi je to enostavno rešeno, saj imava prostor, kjer imajo vsi odvodi koordinate, nižji so vsebovani v prostoru višjih. To odraža dejstvo da lahko katerokoli vrednost v pomnilniku ki ti pripada, uporabiš v računih.
- 
- \subsection{$\T$-calculus}
- 
- V tej fomrulaciji je stroj $M$ funkcijski prostor,  na katerega elemente lahko apliciramo metode funkcionalne analize. Začnimo s preprostejšimi.
- 
- Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega iščemo približek. Z opisano mehaniko lahko program lineariziramo.
- Izberemo $v\in PV$ in preslikamo v $v'\in P'V_1$ (kar je potrebno storiti le enkrat). Potem lahko program $PV$ približamo z linearno aproksimacijo $v+(v'-v) (V)$, ki je linearne kompleksnost $\mathcal{O}(k)$, kjer je $k$ dimenzija $V$.
- %enačba pomeni, da vektorju odštšteješ "realni" del
- Slika linearizacije služi kot dober približek slike prvotnega programa.
- 
- 
- Za nadaljevanje je prikladno vnesti nekaj notacije. Naj tenzor $\VV^{ik}_{\JJ_k}\in V_n (\ref{eq:V_n})$ predstavlja element virtualnega prostora. $\JJ_k$ je nabor indexov, $\lvert\JJ_k\rvert$ je enak redu odvoda. Index $k=\lvert\JJ_k\rvert$, zato ga v zapisu izpuščamo. 
- \begin{equation}\label{eq:tenV}
- 	\VV^{ik}_{\JJ_k}= \bigoplus\limits_{0\le k\le n} \VV^{ik}_{\JJ_k}
- \end{equation}
- Tako je $\eqref{eq:tenV}$ preslikava iz tenzorske algebre $T(V)$ v $V$
- \begin{equation}\label{eq:vto}
- 	\VV^{ik}_{\JJ_k}:\bigoplus\limits_{0\le k\le n}V^{\JJ_k}_{k}\to V^i
- \end{equation}
- V tej notaciji linearizacija postane
- \begin{equation}\label{eq:linear}
-	\VV^i+\VV^i_j(v^j-v_0^j)
+ 	e^{h\dd}:\F\to\F_n
  \end{equation}
  
- Induktivno bi želeli program razvit v vrsto. Poslužimo se enakosti
-\begin{equation}
-	e^{hd}=\sum\limits_{i=0}^{\infty}\frac{(hd)^i}{i!}
-\end{equation}
-kjer je $d^i$ $\eqref{eq:d}$. Tako je
-\begin{equation}\label{eq:e^d}
-	e^{hd}=\sum\limits_{n=0}^{\infty}\frac{1}{n!}\sum_{\forall_{i,..,k}}\frac{(h\partial)^n }{\partial x_i...\partial x_k}dx_i\otimes dx_j\otimes...\otimes dx_k
-\end{equation}
-Izraz $\eqref{eq:e^d}$ je operator
-\begin{equation}
-	e^{hd}:\F\to\F^n
-\end{equation}
-Za specifičen program $P\in\T$ in $h=1$ velja
-\begin{equation}\label{eq:specProg}
-	(e^{d})(P):V^i\to \VV^{ik}_{\JJ_k}\in V_n^i
-\end{equation}
-saj gre za zaključen izraz; če bi nad izrazom dalje izvajali potisk/povlek, bi slikali $V^i_n\to\VV^{ik}_{\JJ_k}\in V^i_n$ $\eqref{eq:t^n}$.
-
- Po $\eqref{eq:vto}$ je slika $\eqref{eq:specProg}$ element komutativno asociativne unitalne algebre $S(V^{i*})$, kar korespondira polinomom z nedoločenkami v $V^i$. Tako je razvoj v vrsto moč izrazit kot srkčitev
- \begin{equation}\label{eq:tenzorVrsta}
- 	P(V^i+hv) = \Big((e^{hd})(P)(V^i)\Big)v^{\JJ_k}_{k}
- \end{equation}
- in pri $h=1$
- $$P(V^i+v) = \VV^{ik}_{\JJ_k}v^{\JJ_k}_{k}$$
+ Za specifičen program $P\in\T$ in $h=1$ velja
  
-ki je upravičena z opažanjem, da v izrazu $\eqref{eq:tenzorVrsta}$ za vsak $n$ velja
-$$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(leva stran)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(desna stran)}$$
+ \begin{equation}\label{eq:specProg}
+ 	(e^{\dd})(P):V^i\to \VV^{ik}_{\JJ_k}\in V_n^i
+ \end{equation}
+ 
+  Po $\eqref{eq:vto}$ je slika $\eqref{eq:specProg}$ element komutativno asociativne unitalne algebre $S(V^{i*})$, kar korespondira polinomom z nedoločenkami v $V^i$. Tako je razvoj v vrsto moč izrazit kot zožitev
+  \begin{equation}\label{eq:tenzorVrsta}
+  	P(V^i+hv) = \Big((e^{h\dd})(P)(V^i)\Big)v^{\JJ_k}_{k}
+  \end{equation}
+  in po $\eqref{eq:specProg}$
+  $$P(V^i+v) = \VV^{ik}_{\JJ_k}v^{\JJ_k}_{k}$$
+ ki je upravičena z opažanjem, da v izrazu $\eqref{eq:tenzorVrsta}$ za vsak $n$ velja
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(leva stran)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(desna stran)}$$
+ 
+ Slika zožitve je element prvotnega virtualnega prostora $V^i$. Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa.   
+ 
+ \subsection{Optimizacija prostorske zahtevnosti}
+ Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
+ Označimo z $\{\e_i,\quad i=1,2,\ldots n\}$ standardne bazne vektorje v $\RR^n$ in z
+ $\II\subset\{1,2,\ldots n\}$ množico indeksov. Indeksi v $\II$ ustrezajo
+ posameznim spremenljivkam (indeksi določajo lokacijo spremenljivke v spominu). Naj bo $V_\II$ vektorski
+ podprostor napet na vektorje $\{e_i;\quad i\in\II\}$. Označimo z 
+ $\mathcal{P}_\II$ projekcijo na $V_i$, z $\mathcal{I}_\II$ pa vložitev $V_\II$ v
+ $\RR^n$. Vložitev $\mathcal{I}_\II$ ni mišljena kot linearna preslikava, ampak
+ dopuščamo, da so vrednosti spremenljivk, ki niso v $\II$, poljubne. Recimo, da nas zanima nabor spremenljivk z indeksi $\II$, ki jih
+ program $P$ izračuna na podlagi nabora spremenljivk z indeksi $\mathbb{J}$.
+ Preslikavo med $V_\JJ\to V_\II$, ki jo določa program $P$, lahko zapišemo kot
+ \begin{equation}
+   \label{eq:zozitev}
+   P^{\JJ}_{\II}=\mathcal{P}_\II\circ P\circ \mathcal{I}_\JJ 
+ \end{equation}
+ Odvod preslikave $ P^{\JJ}_{\II}$ je enak produktu
+ \begin{equation*}
+   P^{\JJ}_{\II}=P_\II\cdot DP\cdot I_\JJ,   
+ \end{equation*}
+ kjer sta $P_\II$ in  $I_\JJ$ matriki, ki ustrezata projekciji na $V_\II$ oziroma
+ vložitvi $V_\JJ$ v $\RR^n$.
+ 
+ 
+ 
+ \subsection{Kontrolne strukture}
+ 
+ Do sedaj smo se omejili na operacije, ki spreminjajo vsebino spomina. Poleg
+ prireditvenih ukazov, poznamo tudi kontrolne ukaze (npr. stavki \texttt{if},
+ \texttt{for}, \texttt{while}, ...). Kontrolni stavki ne vplivajo neposredno na
+ vrednost spremenljivk, ampak spreminjajo potek programa. Seveda bo to vplivalo
+ tudi na odvod. Ampak za določen nabor vhodnih spremenljivk, bo potek programa
+ vedno enak. Zato si lahko kontrolne strukture predstavljamo kot definicijo
+ zlepka. Vzemimo naprimer preprost program v programskem jeziku Python
+ \begin{verbatim}
+ def abs(x):
+   if x<0:
+    return -x
+   else
+    return x
+ \end{verbatim}
+ Funkcija \texttt{abs(x)} je program, ki izračuna zlepek
+ \begin{equation}
+   \label{eq:zlepek}
+   |x| =
+   \begin{cases}
+     -x;\quad x<0\\
+     x;\quad x\ge 0
+   \end{cases}
+ \end{equation}
+ Vsaka kontrolna struktura razdeli prostor parametrov na različna območja,
+ znotraj katerih je potek programa enak. Celoten program torej razdeli prostor
+ vseh možnih parametrov na končno množico območij $\{\Omega_i;\quad i=1,\ldots
+ k\}$, kjer je potek programa enak. Program lahko torej v splošnem definiramo kot
+ zlepek. Za $\vec{x}\in\RR^n$ je
+ \begin{equation}
+   \label{eq:zlrprk_splosno}
+   P(\vec{x}) =
+   \begin{cases}
+     P_{n_11}\circ P_{(n_1-1)1}\circ\ldots P_{11}(\vec{x});&\quad \vec{x}\in\Omega_1\\
+     P_{n_22}\circ P_{(n_2-1)2}\circ\ldots P_{12}(\vec{x});&\quad \vec{x}\in\Omega_2\\
+     \vdots&\quad\vdots\\
+     P_{n_kk}\circ P_{(n_k-1)k}\circ\ldots P_{1k}(\vec{x});&\quad \vec{x}\in\Omega_k\\
+   \end{cases}
+ \end{equation}
+ Linearnizacija $TP$ programa $P$ je seveda tudi odvisna od začetnih parametrov
+ $\vec{x}$ in jo tudi lahko podamo kot zlepek a le v notranjosti deinicijskih območij $\Omega_i$
+ \begin{equation}
+   \label{eq:zlrprk_splosno}
+   TP_{\vec{x}} =
+   \begin{cases}
+     TP_{n_11}\cdot TP_{(n_1-1)1}\cdot\ldots TP_{11};&\quad \vec{x}\in\interior(\Omega_1)\\
+     TP_{n_22}\cdot TP_{(n_2-1)2}\cdot\ldots TP_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
+     \vdots&\quad\vdots\\
+     TP_{n_kk}\cdot TP_{(n_k-1)k}\cdot\ldots TP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
+   \end{cases}
+ \end{equation}
+ Problem je seveda na robu območju $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
 
-Slika skrčitve je element prvotnega virtualnega prostora $V^i$. Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa (upoštevajoč $\eqref{eq:t^n}$). 
-
-\subsection{Optimizacija prostorske zahtevnosti}
-Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
-Označimo z $\{\e_i,\quad i=1,2,\ldots n\}$ standardne bazne vektorje v $\RR^n$ in z
-$\II\subset\{1,2,\ldots n\}$ množico indeksov. Indeksi v $\II$ ustrezajo
-posameznim spremenljivkam (indeksi določajo lokacijo spremenljivke v spominu). Naj bo $V_\II$ vektorski
-podprostor napet na vektorje $\{e_i;\quad i\in\II\}$. Označimo z 
-$\mathcal{P}_\II$ projekcijo na $V_i$, z $\mathcal{I}_\II$ pa vložitev $V_\II$ v
-$\RR^n$. Vložitev $\mathcal{I}_\II$ ni mišljena kot linearna preslikava, ampak
-dopuščamo, da so vrednosti spremenljivk, ki niso v $\II$, poljubne. Recimo, da nas zanima nabor spremenljivk z indeksi $\II$, ki jih
-program $P$ izračuna na podlagi nabora spremenljivk z indeksi $\mathbb{J}$.
-Preslikavo med $V_\JJ\to V_\II$, ki jo določa program $P$, lahko zapišemo kot
-\begin{equation}
-  \label{eq:zozitev}
-  P^{\JJ}_{\II}=\mathcal{P}_\II\circ P\circ \mathcal{I}_\JJ 
-\end{equation}
-Odvod preslikave $ P^{\JJ}_{\II}$ je enak produktu
-\begin{equation*}
-  P^{\JJ}_{\II}=P_\II\cdot DP\cdot I_\JJ,   
-\end{equation*}
-kjer sta $P_\II$ in  $I_\JJ$ matriki, ki ustrezata projekciji na $V_\II$ oziroma
-vložitvi $V_\JJ$ v $\RR^n$.
-
-
-
-\subsection{Kontrolne strukture}
-
-Do sedaj smo se omejili na operacije, ki spreminjajo vsebino spomina. Poleg
-prireditvenih ukazov, poznamo tudi kontrolne ukaze (npr. stavki \texttt{if},
-\texttt{for}, \texttt{while}, ...). Kontrolni stavki ne vplivajo neposredno na
-vrednost spremenljivk, ampak spreminjajo potek programa. Seveda bo to vplivalo
-tudi na odvod. Ampak za določen nabor vhodnih spremenljivk, bo potek programa
-vedno enak. Zato si lahko kontrolne strukture predstavljamo kot definicijo
-zlepka. Vzemimo naprimer preprost program v programskem jeziku Python
-\begin{verbatim}
-def abs(x):
-  if x<0:
-   return -x
-  else
-   return x
-\end{verbatim}
-Funkcija \texttt{abs(x)} je program, ki izračuna zlepek
-\begin{equation}
-  \label{eq:zlepek}
-  |x| =
-  \begin{cases}
-    -x;\quad x<0\\
-    x;\quad x\ge 0
-  \end{cases}
-\end{equation}
-Vsaka kontrolna struktura razdeli prostor parametrov na različna območja,
-znotraj katerih je potek programa enak. Celoten program torej razdeli prostor
-vseh možnih parametrov na končno množico območij $\{\Omega_i;\quad i=1,\ldots
-k\}$, kjer je potek programa enak. Program lahko torej v splošnem definiramo kot
-zlepek. Za $\vec{x}\in\RR^n$ je
-\begin{equation}
-  \label{eq:zlrprk_splosno}
-  P(\vec{x}) =
-  \begin{cases}
-    P_{n_11}\circ P_{(n_1-1)1}\circ\ldots P_{11}(\vec{x});&\quad \vec{x}\in\Omega_1\\
-    P_{n_22}\circ P_{(n_2-1)2}\circ\ldots P_{12}(\vec{x});&\quad \vec{x}\in\Omega_2\\
-    \vdots&\quad\vdots\\
-    P_{n_kk}\circ P_{(n_k-1)k}\circ\ldots P_{1k}(\vec{x});&\quad \vec{x}\in\Omega_k\\
-  \end{cases}
-\end{equation}
-Linearnizacija $TP$ programa $P$ je seveda tudi odvisna od začetnih parametrov
-$\vec{x}$ in jo tudi lahko podamo kot zlepek a le v notranjosti deinicijskih območij $\Omega_i$
-\begin{equation}
-  \label{eq:zlrprk_splosno}
-  TP_{\vec{x}} =
-  \begin{cases}
-    TP_{n_11}\cdot TP_{(n_1-1)1}\cdot\ldots TP_{11};&\quad \vec{x}\in\interior(\Omega_1)\\
-    TP_{n_22}\cdot TP_{(n_2-1)2}\cdot\ldots TP_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
-    \vdots&\quad\vdots\\
-    TP_{n_kk}\cdot TP_{(n_k-1)k}\cdot\ldots TP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
-  \end{cases}
-\end{equation}
-Problem je seveda na robu območju $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
 \end{document}
