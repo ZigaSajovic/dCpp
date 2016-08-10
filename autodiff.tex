@@ -19,7 +19,12 @@
 \newcommand{\uu}{\mathbf{u}}
 \newcommand{\vv}{\mathbf{v}}
 \newcommand{\F}{\mathcal{F}}
-\newcommand{\D}{\mathcal{D}}
+% operator odvoda
+\newcommand{\D}{\partial}
+%operator 1 + \D
+\newcommand{\Dplus}{\mathcal{D}}
+% operator 1+ \D + \D^2 + ...
+\newcommand{\sumd}{\tau}
 \newcommand{\Op}{\partial^{\bigoplus}}
 \newcommand{\op}[1]{\partial^{#1\bigoplus}}
 \DeclareMathOperator{\interior}{int}
@@ -196,7 +201,7 @@ komponent preslikave $P$
 \end{equation*}
 \subsection{Višji odvodi in polinomske aproksimacije}
 V prejšnjem razdelku smo definirali odvod kot \emph{linearizacijo} preslikave v dani
-točki. Pojem bi radi posplošili na polinome višjih stopenj.  
+točki. Pojem bi radi posplošili na aproksimacije s polinomi višjih stopenj.  
  Naj bo $V$ vektorski prostor nad obsegom $F$. Linearne preslikave $V\to V$
  lahko predstavimo s tenzorji 2. reda iz prostora $V\otimes V^*$. Če je
  $\vv\otimes f\in V\otimes V^*$, je preslikava
@@ -220,7 +225,7 @@ formulo
   (\vv_1,\vv_2,\ldots,v_k) = f_k(\vv_1)f_{k-1}(\vv_2)\cdots f_1(\vv_k)
 \end{equation}
 ki se po linearnosti razširi na ves $(V^*)^{\otimes k}$.
-\begin{definicija}[Simetrična algebra]
+\begin{definicija}[Tenzorska in simetrična algebra]
   Naj bo $V$ vektorski prostor nad obsegom $F$. \emph{Tenzorska algebra} $T(V)$ je direktna vsota
   \begin{equation}
     \label{eq:tenzorska_algebra}
@@ -251,26 +256,6 @@ enolično zapišemo s podobno vsoto, le da gre vsota le po množici urejenih mul
 števil $(\alpha_1,\alpha_2, \ldots \alpha_k)$, kjer so vsi
 $\alpha_i\in{1,2,\ldots n}$ in velja $\alpha_i\le\alpha_j$, če je $i<j$.}.
  
-Preslikave, ki ustrezajo osnovnim ukazom in operacijam v določenem
-programskem jeziku, predstavljajo generatorje vseh možnih programomv v
-monoidu. Označimo z $\E$ množico vseh elementarnih ukazov in operacij, ki so
-implementirane v programskem jeziku. Označimo z $\T$ prostor končnih programov,
-ki so generirani z elementarnimi operacijami iz $\E$
-\begin{equation*}
-  \T=\langle E \rangle
-\end{equation*}
-
-Predpostavimo za trenutek, da so vse elementarne operacije povsod odvedljive. 
-
-\begin{izrek}
-  Naj bo $\tau:V\times \T\to \T$, $\tau:(x,P)\mapsto TP_x$ preslikava,  ki vsakemu programu
-  $P$ priredi njegov odvod v dani točki $x$. Predpostavimo še, da sta med generatorji $\E$
-  tudi operaciji seštevanja in množenja. Za vsak $x\in V$ je preslikava
-  $\tau_x:P\mapsto \tau(x,P)$ avtomorfizem monoida $(\T,\circ)$. 
-\end{izrek}
-Če $\E$ vsebuje seštevanje in množenje, potem so v $\T$ tudi vse linearne preslikave
-na $V$. Tako preslikava $\tau_x$ res slika nazaj v $\T$ Dejstvo, da je $\tau_x$ homomorfizem za operacijo kompozituma, je pa 
-neposredna posledica verižnega pravila.
 
 \subsection{Višji odvodi}
 Naj bo $P:V\to U$ odvedljiva v vsaki točki $\x\in V$. Odvod $T_\x P$ preslikave $P$ je v
@@ -321,15 +306,40 @@ Vsako preslikavo $P:V\to U\otimes (V^*)^{\otimes k}$ lahko gledamo kot na
 preslikavo $V\to U\otimes T(V)$, če jo na drugem faktorju komponiramo z naravno vložitvijo $(V^*)^{\otimes k}\hookrightarrow T(V^*)$. Tako lahko višje odvode gledamo kot
 na potence operatorja $\partial$. 
 
-\begin{definicija}[Aproksimacija s Taylorjevim polinomom]
-Naj $P$ program (se pravi funkcija na virtualnem pomnilniku $P:V\to V$). Odvod
-reda $n$ oziroma aproksimacija stopnje $n$ je polinomska preslikava
-$T^{(n)}_xP:V\to V$ stopnje $n$ za katero velja
+Računanje odvodov preslkave $P:V\to U$, lahko sedaj predstavimo z eno samo
+preslikavo, ki jo bomo kasneje definirali rekurzivno:
+\begin{eqnarray}
+  \label{eq:vsi_odvodi}
+  \sumd_k = 1+\D +\D^2 +\ldots + \D^k\\ 
+\end{eqnarray}
+Operator $\sumd_k$ vsaki preslikavi $P: V\to U$ priredi preslikavo $\sumd_k:V\to
+U\otimes T(V^*)$, sestavljeno iz preslikave same in vseh odvodov reda $k$ in
+manj. Slika $\sumd_kP(\x)$ je multitenzor reda $k$, ki je direktna vsota
+vrednosti preslikave $P$ in vseh odvodov reda $k$ in manj, vseh evaluiranih v
+točki $\x$:
 \begin{equation}
-  \label{eq:aprox}
-  \lim_{h\to 0}\frac{\|P(x+h)-T^{(n)}_xP(h)\|}{\|h\|^n}=0
+  \label{eq:multi_odvod}
+  \sumd_kP(\x) = P(\x)+\D_\x P + \D^2_\x P + \ldots + \D^k_\x P.
 \end{equation}
-\end{definicija}
+\begin{izrek}
+  Operator $\sumd_k$ je potenca operatorja $(1+\D)$
+  \begin{equation}
+    \label{eq:potenca(1+d)}
+    \tau_k=(1+\D)^k
+  \end{equation}
+\end{izrek}
+Očitno velja preprosta rekurzivna zveza med $\sumd_k$ in $\sumd_{k+1}$
+\begin{equation}
+   \label{eq:rekurzija}
+   \sumd_{k+1} = 1 + \D +\D^2+\ldots \D^{k+1} = 1+\D(1+\D+\ldots +\D^{k}) = 1+\D\sumd_k
+\end{equation}
+ Zato lahko operator $\sumd_k$ definiramo kot potenco operatorja 
+ \begin{equation}
+   \label{eq:dplus1}
+   \Dplus = 1 + \D
+ \end{equation}
+in $\sumd_k=\Dplus^k=(1+\D)^k$. 
+
 \subsection{Multilinearne preslikave, polinomi in tenzorji}
 Naj bo $f_1\otimes f_2\otimes \ldots \otimes f_k\in (V^*)^{\otimes k}$
 tenzor. Tenzorju lahko priredimo multilinearno funkcijo $f:V^k\to F$ 
@@ -383,6 +393,25 @@ $$f(v) = \sum_{|\alpha|\le m}\left( x_{\alpha_1}(v)\cdot x_{\alpha_2}(v)\cdot
 je po komponentah polinomska in vsako preslikavo $V\to U$, ki se po komponetah izraža s
 polinomi stopnje največ $m$, lahko predstavimo z multitenzorjem reda $m$.
 
+Naj bosta $U, V < \RR^n$ podprostora istega vektorskega prostora. Množenje v
+univerzalnem virtualnem prostoru definiramo tako, da se ujema s kompozitumom
+polinomskih preslikav. Naj bosta $u\otimes f_1\otimes\ldots \otimes f_k$ in
+$v\otimes g_1\otimes \ldots g_l$ tenzorja. Potem je produkt
+\begin{equation}
+  \label{eq:produkt}
+ \left( u\otimes f_1\otimes\ldots \otimes f_k \right)\cdot \left(v\otimes g_1\otimes \ldots g_l\right) = f_1(v)\cdots f_k(v) u\otimes g_1^{\otimes k}\otimes \ldots \otimes g_l^{\otimes k}
+\end{equation}
+
+\begin{definicija}[Aproksimacija s Taylorjevim polinomom]
+Naj $P$ program (se pravi funkcija na virtualnem pomnilniku $P:V\to V$). Odvod
+reda $n$ oziroma aproksimacija stopnje $n$ je polinomska preslikava
+$T^{(n)}_xP:V\to V$ stopnje $n$ za katero velja
+\begin{equation}
+  \label{eq:aprox}
+  \lim_{h\to 0}\frac{\|P(x+h)-T^{(n)}_xP(h)\|}{\|h\|^n}=0
+\end{equation}
+\end{definicija}
+
 \subsection{Odvedljivi stroji}
 V nadaljevanju bomo definirali, kako si predstavljamo odvedljiv programski jezik
 oziroma računski stroj. Odvedljiv stroj si bomo predstavljali kot računski
@@ -404,7 +433,28 @@ vseh linearnih preslikav $\mathcal{L}(V)$ je izomorfen tenzorskemu produktu
 $V^*\otimes V$. Tako za izvedbo programa, ki računa odvode, potrebujemo virtualni
 pomnilnik izomorfen prostoru $V\oplus (V^*\otimes V)$. Poleg vsake spremenljivke $x_j$, ki
 jo uporabimo v programu, si moramo zapomniti še vrednosti odvodov po vseh
-ostalih spremenljivkah $\frac{\partial x_j}{\partial x_i}$.   
+ostalih spremenljivkah $\frac{\partial x_j}{\partial x_i}$.  
+ 
+Preslikave, ki ustrezajo osnovnim ukazom in operacijam v določenem
+programskem jeziku, predstavljajo generatorje vseh možnih programomv v
+monoidu. Označimo z $\E$ množico vseh elementarnih ukazov in operacij, ki so
+implementirane v programskem jeziku. Označimo z $\T$ prostor končnih programov,
+ki so generirani z elementarnimi operacijami iz $\E$
+\begin{equation*}
+  \T=\langle E \rangle
+\end{equation*}
+
+Predpostavimo za trenutek, da so vse elementarne operacije povsod odvedljive. 
+
+\begin{izrek}
+  Naj bo $\tau:V\times \T\to \T$, $\tau:(x,P)\mapsto TP_x$ preslikava,  ki vsakemu programu
+  $P$ priredi njegov odvod v dani točki $x$. Predpostavimo še, da sta med generatorji $\E$
+  tudi operaciji seštevanja in množenja. Za vsak $x\in V$ je preslikava
+  $\tau_x:P\mapsto \tau(x,P)$ avtomorfizem monoida $(\T,\circ)$. 
+\end{izrek}
+Če $\E$ vsebuje seštevanje in množenje, potem so v $\T$ tudi vse linearne preslikave
+na $V$. Tako preslikava $\tau_x$ res slika nazaj v $\T$ Dejstvo, da je $\tau_x$ homomorfizem za operacijo kompozituma, je pa 
+neposredna posledica verižnega pravila.
 
 Za višje odvode rekurzivno definiramo zaporedje vektorskih prostorov $V_n$, ki
 predstavljajo virtualni pomnilnik
@@ -430,6 +480,8 @@ potrebujemo vrednosti funkcije in vseh nižjih odvodov.
 \end{equation}
 
 \end{izrek}
+
+
 
 Elementi $V_\infty$ predstavljajo neskončne potenčne vrste kot preslikave 
 $V\to V$. Prostor $(V^*)^{\times n}\otimes V$ je izomorfen prostoru
@@ -467,10 +519,10 @@ Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus 
   
   Definirajmo operator 
   \begin{equation}
-  \D=1+d
+  \Dplus=1+d
   \end{equation}
   \begin{equation}\label{eq:dirSumFun}
-  \D:\T\to\T\oplus d\T
+  \Dplus:\T\to\T\oplus d\T
   \end{equation}
   Potem
   \begin{equation}\label{eq:dirSumV}
@@ -500,7 +552,7 @@ Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus 
  Ob konstrukciji $M$, je potrebna le enkratna aplikacija $\Op$. Naj $\T$ označuje programski jezik generiran z $\langle\E\rangle$ in $M$ stroj, ki ga implementira. Definirajmo stroj prvega reda
  \begin{equation}\label{eq:Mprime}
  %\Op V je prostor v katerem se dogaja, \Op\T so preslikave/operatorji nad tem prostorom
-	 \D M=\langle\D\T, V\oplus (V^*\otimes V), d\rangle
+	 \Dplus M=\langle\Dplus\T, V\oplus (V^*\otimes V), d\rangle
  \end{equation}
  oziroma v poznani, konceptualno ekvivalentni notaciji
   \begin{equation}\label{eq:M'}
@@ -521,7 +573,7 @@ Potem lahko definiramo prostor, ki ga generiramo kot direktno vsoto $V\bigoplus 
  
  Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$, omogočimo preučevanje njegovega učinka na $V$. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe akcije nad $V$. S tem merimo odzivnost programa na vhodne podatke. Diagram izvajanja programa lahko predstavimo z usmerjenim grafom;- potem lahko projeciramo na, in odvajamo po kateremkoli izmed njegvih oglišč.
   
- \subsection{Višji odvodi}
+ \subsection{Univerzalni virtualni pomnilnik}
  
  V nadaljnjem se ob odobravanju n-tega reda predpostavlja $\E\subset\mathcal{C}^n$, kar implicira obstoj $\partial^n\T$. Potenciranje operatorja $d$ označimo z
 \begin{equation}\label{eq:d}
@@ -530,19 +582,19 @@ d^nf=\sum_{\forall_{i,..,k}}\frac{\partial^n f}{\partial x_i...\partial x_k}dx_i
 Slika $d^nf$ je element $V^k\otimes(V^*)^{n\otimes}$.
 Potem lahko definiramo
 \begin{equation}\label{eq:op}
-\D^n=1+ d+ d^2+...+ d^n
+\Dplus^n=1+ d+ d^2+...+ d^n
 \end{equation}
 
 \begin{equation}
-	\D^n=\sum\limits_{n=0}^{n}\sum_{\forall_{i,..,k}}\frac{\partial^n }{\partial x_i...\partial x_k}dx_i\otimes dx_j\otimes...\otimes dx_k
+	\Dplus^n=\sum\limits_{n=0}^{n}\sum_{\forall_{i,..,k}}\frac{\partial^n }{\partial x_i...\partial x_k}dx_i\otimes dx_j\otimes...\otimes dx_k
 \end{equation}
- in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Rekurzivna defincija odraža strukturo prostora $\subseteq_{\forall_i}\D^i\T$. Algebra je dobro definirana. Izračun pokaže
+ in slika $\E\to\sum\limits_{i=0}^nd^i\E$. Rekurzivna defincija odraža strukturo prostora $\subseteq_{\forall_i}\Dplus^i\T$. Algebra je dobro definirana. Izračun pokaže
  \begin{equation}
- \D^n=\frac{1- d^{n+1}}{1- d}
+ \Dplus^n=\frac{1- d^{n+1}}{1- d}
  \end{equation}
- Tako so preslikave, ki operirajo nad univerzalnim vektorskim prostorom $V_n$ definirane kot slike operatorja $\D^n$. Operator apliciramo na $\T$.
+ Tako so preslikave, ki operirajo nad univerzalnim vektorskim prostorom $V_n$ definirane kot slike operatorja $\Dplus^n$. Operator apliciramo na $\T$.
  \begin{equation}
- 	\D^n:\T\to \T^{n'}
+ 	\Dplus^n:\T\to \T^{n'}
  \end{equation}
  \begin{equation}\label{eq:t^n}
  	\T^{n'}:V_m\to V_n 
