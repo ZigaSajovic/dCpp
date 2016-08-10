@@ -100,7 +100,7 @@ lahko predstavimo kot kompozitum preslikav $\phi_k$, defniranih z vsako vrstico 
 \end{equation*}
 
 Odvod preslikave $F$ lahko po verižnem pravilu izrazimo kot produkt Jacobijevih matrik
-$D\phi_i$ preslikav $\phi_i$. Ker nas zanima le odvod $y$ po $x$, matriko $DF$
+$\D\phi_i$ preslikav $\phi_i$. Ker nas zanima le odvod $y$ po $x$, matriko $\D F$
 pomnožimo z leve in desne z vektorjem $(0,1)$ 
 \begin{equation}
 \label{eq:kompozitum}
@@ -108,7 +108,7 @@ pomnožimo z leve in desne z vektorjem $(0,1)$
   \begin{bmatrix}
     0& 1
   \end{bmatrix}
-\cdot D\phi_n(x_{n-1},y_{n-1})\cdot D\phi_{n-1}(x_{n-2},y_{n-2})\ldots D\phi_1(x_0,y_0)\cdot
+\cdot \D\phi_n(x_{n-1},y_{n-1})\cdot \D\phi_{n-1}(x_{n-2},y_{n-2})\ldots \D\phi_1(x_0,y_0)\cdot
   \begin{bmatrix}
     0\\
     1
@@ -118,12 +118,12 @@ Program za računanje odvoda lahko povsem sledi originalnemu programu, le da si
 mora na vsakem koraku zapomniti vmesne vrednosti odvoda. Na vsakem
 koraku programa, si mora program za odvod zapomniti vektor
 \begin{equation*}
-\begin{bmatrix}dx_{k}\\dy_{k}\end{bmatrix} = D\phi_{k}(x_{k-1},y_{k-1})\ldots D\phi_1(x_0,y_0)\cdot \begin{bmatrix} 0\\ 1\end{bmatrix} 
+\begin{bmatrix}dx_{k}\\dy_{k}\end{bmatrix} = \D\phi_{k}(x_{k-1},y_{k-1})\ldots \D\phi_1(x_0,y_0)\cdot \begin{bmatrix} 0\\ 1\end{bmatrix} 
 \end{equation*}
 Vrednost $(dx_k,dy_k)$ lahko definiramo rekurzivno
 \begin{equation}
   \label{eq:rek_odvod}
-\begin{bmatrix}dx_{k}\\dy_{k}\end{bmatrix} = D\phi_{k}(x_{k-1},y_{k-1})\cdot \begin{bmatrix} dx_{k-1}\\ dy_{k-1}\end{bmatrix} 
+\begin{bmatrix}dx_{k}\\dy_{k}\end{bmatrix} = \D\phi_{k}(x_{k-1},y_{k-1})\cdot \begin{bmatrix} dx_{k-1}\\ dy_{k-1}\end{bmatrix} 
 \end{equation}
 V našem primeru je 
 \begin{equation*}
@@ -194,12 +194,12 @@ opremljena z operacijo kompozituma je \emph{monoid}.
  imenujemo \emph{linearizacija} preslikave $P$ v točki $x$.
 \end{definicija}
 Za preslikave $\RR^n\to \RR^m$ lahko Fréchetov odvod
-izrazimo kot množenje vektorja $h$ z Jacobijevo matriko parcialnih odvodov
+izrazimo kot množenje vektorja $h$ z Jacobijevo matriko $\D P$ parcialnih odvodov
 komponent preslikave $P$
 \begin{equation*}
-  TP_x(h) = JP(x)\cdot h.
+  TP_x(h) = \D P(x)\cdot h.
 \end{equation*}
-\subsection{Višji odvodi in polinomske aproksimacije}
+\subsection{Polinomi in simetrična algebra}
 V prejšnjem razdelku smo definirali odvod kot \emph{linearizacijo} preslikave v dani
 točki. Pojem bi radi posplošili na aproksimacije s polinomi višjih stopenj.  
  Naj bo $V$ vektorski prostor nad obsegom $F$. Linearne preslikave $V\to V$
@@ -263,28 +263,34 @@ vsaki točki linearna preslikava, ki jo lahko predstavimo s tenzorjem iz
 $U\otimes V^*$. Odvod definira preslikavo 
 \begin{eqnarray}
   \label{eq:odvod_preslikava}
-  DP&:& V\to U\otimes V^*\\
-  DP&:& \x \mapsto T_\x P.
+  \D P&:& V\to U\otimes V^*\\
+  \D P&:& \x \mapsto T_\x P.
 \end{eqnarray}
-Če gledamo na odvod kot na preslikavo $DP:V\to U\otimes V^*$, lahko zopet govorimo
-o njeni odvedljivosti. Odvod preslikave $DP$ imenujemo \emph{drugi odvod}
-preslikave $P$ in ga označimo z $D^2P$. Podobno lahko definiramo višje odvode
+Če gledamo na odvod kot na preslikavo $\D P:V\to U\otimes V^*$, lahko zopet govorimo
+o njeni odvedljivosti. Odvod preslikave $\D P$ imenujemo \emph{drugi odvod}
+preslikave $P$ in ga označimo z $\D^2P$. Drugi odvod je v vsaki točki linearna
+preslikava $V\to U\otimes V^*$, kar pomeni, da jo lahko predstavimo s tenzorjem
+iz prostora $(U\otimes V^*)\otimes V^*$. Na drugi odvod lahko zopet gledamo kot
+na preslikavo 
+$$\D^2 P:V\to U\otimes V^*\otimes V^*.$$ 
+Podobno lahko definiramo višje odvode
 
 \begin{definicija}[Višji odvodi]
-  Naj bo $P:V\to U$ preslikava med dvema vektorskima prostoroma $V$ in $U$ nad
-  obsegom $F$. Odvod reda $k$ je preslikava $V\to U\otimes(V^*)^{\otimes k}$, ki
-  vsaki točki $\x\in V$ priredi odvod $T_\x(\partial^{k-1}P)$ odvoda reda $k-1$, kot
-  preslikave $V\to U\otimes (V^*)^{\otimes k-1}$:
+  Naj bo $P:V\to U$ preslikava med dvema vektorskima prostoroma $V$ in $U$. Odvod reda $k$ je preslikava $\D^kP:V\to U\otimes(V^*)^{\otimes k}$, ki
+  vsaki točki $\x\in V$ priredi odvod $T_\x(\D^{k-1}P)$ odvoda reda $k-1$, kot
+  preslikave $\D^{k-1}P: V\to U\otimes (V^*)^{\otimes k-1}$:
   \begin{eqnarray}\label{eq:partial}
     \label{eq:visji_odvod}
-    \partial^kP&:&V\to U\otimes (V^*)^{\otimes k}\\
-    \partial^kP&:&\x\mapsto T_\x\left( \partial^{k-1}P \right)
+    \D^kP&:&V\to U\otimes (V^*)^{\otimes k}\\
+    \D^kP&:&\x\mapsto T_\x\left( \D^{k-1}P \right)
   \end{eqnarray}
 \end{definicija} 
 \begin{opomba}
-   V zgornji definiciji smo predpostavili, da je preslikava $P$ in njeni odvodi v
+   V zgornji definiciji smo predpostavili, da so preslikava $P$ in njeni odvodi v
   vseh točkah $v$ odvedljivi. Seveda se lahko dogodi, da v nekaterih točkah
   odvod reda $k$ ne obstaja. V tem primeru bi lahko domeno $V$ ustrezno zožali.
+  Zaradi jasnosti, se bomo delali, da so vse preslikave, s katerimi imamo
+  opravka povsod neskončno krat odvedljive.
 \end{opomba}
 
 Iz definicije vidimo, da višji odvodi niso nič posebnega, le večkrat uporabimo
@@ -293,16 +299,16 @@ vedno drugačen. Temu se lahko elegantno izognemo, če definiramo operacijo
 odvajanja na univerzalnem virtualnem prostoru $U\otimes T(V^*)$
 \begin{definicija}\label{def:partial}
   Odvod
-  $\partial$ je operator na prostoru odvedljivih preslikav $V\to U\times T(V^*)$, ki vsaki preslikavi
+  $\D$ je operator na prostoru odvedljivih preslikav $V\to U\times T(V^*)$, ki vsaki preslikavi
   priredi njen odvod
   \begin{equation}
     \label{eq:odvod_splosen}
-    \partial : P \mapsto (\partial P:\x\mapsto T_\x P)
+    \D : P \mapsto (\D P:\x\mapsto T_\x P)
   \end{equation}
 \end{definicija}
 Vsako preslikavo $P:V\to U\otimes (V^*)^{\otimes k}$ lahko gledamo kot na
 preslikavo $V\to U\otimes T(V)$, če jo na drugem faktorju komponiramo z naravno vložitvijo $(V^*)^{\otimes k}\hookrightarrow T(V^*)$. Tako lahko višje odvode gledamo kot
-na potence operatorja $\partial$. 
+na potence operatorja $\D$. 
 
 Računanje odvodov preslkave $P:V\to U$, lahko sedaj predstavimo z eno samo
 preslikavo, ki jo bomo kasneje definirali rekurzivno:
