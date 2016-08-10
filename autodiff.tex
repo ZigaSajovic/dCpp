@@ -31,7 +31,7 @@
 \newtheorem{definicija}{Definicija}[section]
 \newtheorem{izrek}{Izrek}[section]
 \newtheorem{opomba}{Opomba}[section]
-\title{Odvedljivi stroji}
+\title{Analitični stroji}
 \author{Žiga Sajovic, Martin Vuk}
 \begin{document}
 \maketitle
@@ -412,7 +412,8 @@ $T^{(n)}_xP:V\to V$ stopnje $n$ za katero velja
 \end{equation}
 \end{definicija}
 
-\subsection{Odvedljivi stroji}
+\subsection{Virtualni prostor}
+
 V nadaljevanju bomo definirali, kako si predstavljamo odvedljiv programski jezik
 oziroma računski stroj. Odvedljiv stroj si bomo predstavljali kot računski
 stroj, ki izvaja zaporedne enostavne operacije, ki so odvedljive, na virtualnem
@@ -431,28 +432,7 @@ vseh linearnih preslikav $\mathcal{L}(V)$ je izomorfen tenzorskemu produktu
 $V^*\otimes V$. Tako za izvedbo programa, ki računa odvode, potrebujemo virtualni
 pomnilnik izomorfen prostoru $V\oplus (V^*\otimes V)$. Poleg vsake spremenljivke $x_j$, ki
 jo uporabimo v programu, si moramo zapomniti še vrednosti odvodov po vseh
-ostalih spremenljivkah $\frac{\partial x_j}{\partial x_i}$.  
- 
-Preslikave, ki ustrezajo osnovnim ukazom in operacijam v določenem
-programskem jeziku, predstavljajo generatorje vseh možnih programomv v
-monoidu. Označimo z $\E$ množico vseh elementarnih ukazov in operacij, ki so
-implementirane v programskem jeziku. Označimo z $\T$ prostor končnih programov,
-ki so generirani z elementarnimi operacijami iz $\E$
-\begin{equation*}
-  \T=\langle E \rangle
-\end{equation*}
-
-Predpostavimo za trenutek, da so vse elementarne operacije povsod odvedljive. 
-
-\begin{izrek}
-  Naj bo $\tau:V\times \T\to \T$, $\tau:(x,P)\mapsto TP_x$ preslikava,  ki vsakemu programu
-  $P$ priredi njegov odvod v dani točki $x$. Predpostavimo še, da sta med generatorji $\E$
-  tudi operaciji seštevanja in množenja. Za vsak $x\in V$ je preslikava
-  $\tau_x:P\mapsto \tau(x,P)$ avtomorfizem monoida $(\T,\circ)$. 
-\end{izrek}
-Če $\E$ vsebuje seštevanje in množenje, potem so v $\T$ tudi vse linearne preslikave
-na $V$. Tako preslikava $\tau_x$ res slika nazaj v $\T$ Dejstvo, da je $\tau_x$ homomorfizem za operacijo kompozituma, je pa 
-neposredna posledica verižnega pravila.
+ostalih spremenljivkah $\frac{\partial x_j}{\partial x_i}$.   
 
 Za višje odvode rekurzivno definiramo zaporedje vektorskih prostorov $V_n$, ki
 predstavljajo virtualni pomnilnik
@@ -478,8 +458,6 @@ potrebujemo vrednosti funkcije in vseh nižjih odvodov.
 \end{equation}
 
 \end{izrek}
-
-
 
 Elementi $V_\infty$ predstavljajo neskončne potenčne vrste kot preslikave 
 $V\to V$. Prostor $(V^*)^{\times n}\otimes V$ je izomorfen prostoru
@@ -525,7 +503,7 @@ Naj bo $\partial$ $\eqref{eq:odvod_splosen}$ definiran kot
 Tako je
  
  \begin{equation}
- \dd^k:\F^n\to\F^{n+k}
+ \D^k:\F^n\to\F^{n+k}
  \end{equation}
  
  \begin{izrek}\label{izr:linearnaNeodvisnost}
@@ -534,23 +512,23 @@ Tako je
  
  \begin{proof} 
  $$\forall_i(c_i\in K)$$
-	  $$c_0+c_1\dd+c_2\dd^2+....+c_n\dd^n=0$$
-	$$\dd(c_0+c_1\dd+c_2\dd^2+....+c_n\dd^n)=0$$
+	  $$c_0+c_1\D+c_2\D^2+....+c_n\D^n=0$$
+	$$\D(c_0+c_1\D+c_2\D^2+....+c_n\D^n)=0$$
 	$$\implies$$
-	$$(\dd)(c_0+c_1\dd+c_2\dd^2+....+c_n\dd^n)(\F)=(c_0+c_1\dd+c_2\dd^2+....+c_n\dd^n)(\F)$$
+	$$(\D)(c_0+c_1\D+c_2\D^2+....+c_n\D^n)(\F)=(c_0+c_1\D+c_2\D^2+....+c_n\D^n)(\F)$$
 	$$\implies$$
-	$$(\dd)(\F^n)=\F^n$$
+	$$(\D)(\F^n)=\F^n$$
 	$$\F^{n+1}=\F^n\iff\forall_i(c_i=0)$$
 	
  \end{proof}
  Definirajmo geometrijsko vrsto členov $\eqref{eq:dd}$ kot
  
  \begin{equation}\label{eq:DD}
-  	\D^n=1+\dd+\dd^2+...+\dd^n
+  	\Dplus^n=1+\D+\D^2+...+\D^n
   \end{equation}
   
   \begin{equation}
-  	\D^n=\sum\limits_{n=0}^{n}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
+  	\Dplus^n=\sum\limits_{n=0}^{n}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
   		    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
   		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}
   \end{equation}
@@ -558,7 +536,7 @@ Tako je
   Tako je
   
    \begin{equation}
-   	\D^n:\F\to\F_{n}
+   	\Dplus^n:\F\to\F_{n}
    \end{equation}
    
 \begin{izrek}
@@ -566,10 +544,10 @@ Tako je
  \end{izrek}
  
  \begin{proof} 
- 	$$(c_0+c_1\dd+c_2\dd^2+....+c_n\dd^n)(\T)\in\F_n$$
- 	$$c_0+c_1\dd+c_2\dd^2+....+c_n\dd^n=\D^n\iff \forall_i(c_i=1)$$
+ 	$$(c_0+c_1\D+c_2\D^2+....+c_n\D^n)(\T)\in\F_n$$
+ 	$$c_0+c_1\D+c_2\D^2+....+c_n\D^n=\Dplus^n\iff \forall_i(c_i=1)$$
  	$$\implies$$
- 	$$(\D^n)(\T)=\T_n$$
+ 	$$(\Dplus^n)(\T)=\T_n$$
  	
   \end{proof}
   
@@ -584,7 +562,7 @@ v \ref{eq:zlepek}).
   Skupaj z definicijami prejšnjih sestavkov, lahko konstruiramo analitičen abstrakten stroj, ki z opisano mehaniko razširja množico Turing-izračunljivih strojev.
   
   \begin{equation}\label{eq:dTuring}
-  M=\langle\T, V_\infty, \dd\rangle
+  M=\langle\T, V_\infty, \D\rangle
   \end{equation}
 
  \begin{itemize}
@@ -593,32 +571,32 @@ v \ref{eq:zlepek}).
  \item
  $\T$ je monoid preslikav $V\to V$
  \item
- $\dd$ je diferencialni operator
+ $\D$ je diferencialni operator
  \end{itemize}
  
  Karkoli operira pod temi specifikacijami, je analitičen Turingov stroj.
  
- Ob konstrukciji $M$, je potrebna le enkratna aplikacija $\D$. Naj $\T$ označuje programski jezik generiran z $\langle\E\rangle$ in $M$ stroj, ki ga implementira. Definirajmo stroj $n$-tega reda
+ Ob konstrukciji $M$, je potrebna le enkratna aplikacija $\Dplus$. Naj $\T$ označuje programski jezik generiran z $\langle\E\rangle$ in $M$ stroj, ki ga implementira. Definirajmo stroj $n$-tega reda
  \begin{equation}\label{eq:Mprime}
-	 \D^n M=\langle\D^n\T, V_\infty, \dd\rangle
+	 \Dplus^n M=\langle\Dplus^n\T, V_\infty, \D\rangle
  \end{equation}
  oziroma v poznani, konceptualno ekvivalentni notaciji
   \begin{equation}\label{eq:M'}
- 	 M_n=\langle\T_n, V_\infty, \dd\rangle
+ 	 M_n=\langle\T_n, V_\infty, \D\rangle
   \end{equation}
-  Tako je operator $\D^n$ preslikava analitičnega stroja $M$ v stroj $M_n$.
+  Tako je operator $\Dplus^n$ preslikava analitičnega stroja $M$ v stroj $M_n$.
   
   \begin{izrek}\label{izr:dM}
-	$M_n=\langle\T_n, V_n, \dd\rangle$ je analitičen računski stroj.
+	$M_n=\langle\T_n, V_n, \D\rangle$ je analitičen računski stroj.
   \end{izrek}
   
-  To pomeni, da nam stroj $n+1$ reda ni potrebno konstruirati skozi aplikacijo $\D^n$ na $M$, temveč lahko po Izreku $\ref{izr:dM}$ red $M_{n}$ inkrementiramo.
+  To pomeni, da nam stroj $n+1$ reda ni potrebno konstruirati skozi aplikacijo $\Dplus^n$ na $M$, temveč lahko po Izreku $\ref{izr:dM}$ red $M_{n}$ inkrementiramo.
 
 \begin{proof}
 	Iz $\eqref{eq:DD}$ sledi	
-	$$\D^{n+1}=1+\D^n$$
+	$$\Dplus^{n+1}=1+\Dplus^n$$
 	$$\implies$$
-	$$M_{n+1}=\langle\T+\dd\T_n,V_\infty,\dd\rangle$$
+	$$M_{n+1}=\langle\T+\D\T_n,V_\infty,\D\rangle$$
 \end{proof}
   
   Vsi programi konstruirani v $M_n$, skozi zaporedje akcij $\T_n$ nad $V$, v vsaki točki izvajanja vsebujejo informacijo spremembe prvih $n$ redov. Tak program označimo s $P_n$.
@@ -662,13 +640,13 @@ kjer velja $\E^n\in\T^n\subset\F^n$.
   Induktivno bi želeli program razvit v vrsto. Poslužimo se enakosti
   
  \begin{equation}
- 	e^{h\dd}=\sum\limits_{n=0}^{\infty}\frac{(h\dd)^n}{n!}
+ 	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{(h\D)^n}{n!}
  \end{equation}
  
- kjer je $\dd^i$ $\eqref{eq:dd}$ in polje $K$ v Izreku $\ref{izr:linearnaNeodvisnost}$ enako $\RR$. Tako je
+ kjer je $\D^i$ $\eqref{eq:dd}$ in polje $K$ v Izreku $\ref{izr:linearnaNeodvisnost}$ enako $\RR$. Tako je
  
  \begin{equation}\label{eq:e^d}
- 	e^{h\dd}=\sum\limits_{n=0}^{\infty}\frac{h^n}{n!}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
+ 	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{h^n}{n!}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
  		    x_{\alpha_1}\ldots \partial x_{\alpha_n}}\e_i\otimes
  		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_n}
  \end{equation}
@@ -676,18 +654,18 @@ kjer velja $\E^n\in\T^n\subset\F^n$.
  Izraz $\eqref{eq:e^d}$ je operator
  
  \begin{equation}
- 	e^{h\dd}:\F\to\F_n
+ 	e^{h\D}:\F\to\F_n
  \end{equation}
  
  Za specifičen program $P\in\T$ in $h=1$ velja
  
  \begin{equation}\label{eq:specProg}
- 	(e^{\dd})(P):V^i\to \VV^{ik}_{\JJ_k}\in V_n^i
+ 	(e^{\D})(P):V^i\to \VV^{ik}_{\JJ_k}\in V_n^i
  \end{equation}
  
   Po $\eqref{eq:vto}$ je slika $\eqref{eq:specProg}$ element komutativno asociativne unitalne algebre $S(V^{i*})$, kar korespondira polinomom z nedoločenkami v $V^i$. Tako je razvoj v vrsto moč izrazit kot zožitev
   \begin{equation}\label{eq:tenzorVrsta}
-  	P(V^i+hv) = \Big((e^{h\dd})(P)(V^i)\Big)v^{\JJ_k}_{k}
+  	P(V^i+hv) = \Big((e^{h\D})(P)(V^i)\Big)v^{\JJ_k}_{k}
   \end{equation}
   in po $\eqref{eq:specProg}$
   $$P(V^i+v) = \VV^{ik}_{\JJ_k}v^{\JJ_k}_{k}$$
