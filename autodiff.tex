@@ -808,20 +808,25 @@ kjer velja $\E^n\in\T_n\subset\F_n$.
      P_{n_kk}\circ P_{(n_k-1)k}\circ\ldots P_{1k}(\vec{x});&\quad \vec{x}\in\Omega_k\\
    \end{cases}
  \end{equation}
- Linearnizacija $TP$ programa $P$ je seveda tudi odvisna od začetnih parametrov
- $\vec{x}$ in jo tudi lahko podamo kot zlepek a le v notranjosti deinicijskih območij $\Omega_i$
+ Diferencial $\sumd_nP$ programa $P$ je seveda tudi odvisen od začetnih parametrov
+ $\vec{x}$ in ga tudi lahko podamo kot zlepek a le v notranjosti deinicijskih območij $\Omega_i$
  \begin{equation}
-   \label{eq:zlrprk_splosno}
-   TP_{\vec{x}} =
+   \label{eq:Dzlrprk_splosno}
+   \sumd_nP_{\vec{x}} =
    \begin{cases}
-     TP_{n_11}\cdot TP_{(n_1-1)1}\cdot\ldots TP_{11};&\quad \vec{x}\in\interior(\Omega_1)\\
-     TP_{n_22}\cdot TP_{(n_2-1)2}\cdot\ldots TP_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
+     \sumd_nP_{n_11}\cdot \sumd_nP_{(n_1-1)1}\cdot\ldots \sumd_nP_{11};&\quad \vec{x}\in\interior(\Omega_1)\\
+     \sumd_nP_{n_22}\cdot \sumd_nP_{(n_2-1)2}\cdot\ldots \sumd_nP_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
      \vdots&\quad\vdots\\
-     TP_{n_kk}\cdot TP_{(n_k-1)k}\cdot\ldots TP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
+     \sumd_nP_{n_kk}\cdot \sumd_nP_{(n_k-1)k}\cdot\ldots \sumd_nP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
    \end{cases}
  \end{equation}
  Problem je seveda na robu območju $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
 
+Vejitve programa na območja izvajamo skozi pogojne stavke $(if/else)$. Število območij $\Omega_i$ je enako moči množice $\{\Omega_i\}$. Vsak pogojni stavek, povzroči binarno vejitev v izvajanju programa
+
+\begin{izrek}
+Moč množice $\{\Omega_i\}$ je enaka $\lvert\{\Omega_i \}\rvert=2^k$, kjer je $k$ število pogojnih stavkov, ki jih vsebuje program.
+\end{izrek}
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
 \end{document}
