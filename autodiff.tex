@@ -522,9 +522,11 @@ kombinacija monomov stopnje $n$.
 
 Spominska kompleksnost modela je eksponentna. Gre poudarit, da v praksi redko projeciramo na celoten $V$, pogosteje nas zanima manjša podmnožica komponent.
 
-\subsection{$\T$-calculus}
+\subsection{Algebra funkcijskih prostorov}
 
-Za enostavnost izražanja definirajmo
+Razdelajmo pojme, ki nam bodo kasneje omogočili algebraične manipulacije in analizo vzpostavljenih objektov.
+
+Za enostavnost izražanja definirajmo funkcijske prostore
  
  \begin{equation}\label{eq:F^n}
  	\F^n:V\to V\otimes(V^*)^{n\otimes}
@@ -534,7 +536,8 @@ Za enostavnost izražanja definirajmo
  \begin{equation}\label{eq:F_n}
  	\F_n:V\to V_n
  \end{equation}
-Naj bo $\partial$ $\eqref{eq:odvod_splosen}$ definiran kot
+ 
+Naj bo $\D^k$ $\eqref{eq:odvod_splosen}$ definiran kot
 
 \begin{equation}\label{eq:dd}
 	\partial^k=\sum_{\forall_{i,\alpha}}\frac{\partial^k}{\partial
@@ -542,9 +545,9 @@ Naj bo $\partial$ $\eqref{eq:odvod_splosen}$ definiran kot
 	  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}
 \end{equation}
 
-Tako je
+Tako je $\D^k$ preslikava med funkcijskimi prostori $\eqref{eq:F^n}$
  
- \begin{equation}
+ \begin{equation}\label{eq:toFn+k}
  \D^k:\F^n\to\F^{n+k}
  \end{equation}
  
@@ -563,97 +566,70 @@ Tako je
 	$$\F^{n+1}=\F^n\iff\forall_i(c_i=0)$$
 	
  \end{proof}
- Definirajmo geometrijsko vrsto členov $\eqref{eq:dd}$ kot
+ Po Izreku $\ref{izr:linearnaNeodvisnost}$ lahko edinstveno definiramo geometrijsko vrsto
  
  \begin{equation}\label{eq:DD}
-  	\Dplus^n=1+\D+\D^2+...+\D^n
+  	\sumd_n = 1+\D +\D^2 +\ldots + \D^n 
   \end{equation}
   
+  
   \begin{equation}
-  	\Dplus^n=\sum\limits_{n=0}^{n}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
+  	\sumd_n=\sum\limits_{n=0}^{n}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
   		    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
   		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}
   \end{equation}
   
-  Tako je
+  Tako je $\sumd_n$ preslikava med funkcijskimi prostori $\eqref{eq:F_n}$
   
    \begin{equation}
-   	\Dplus^n:\F\to\F_{n}
+   	\sumd_n:\F\to\F_{n}
    \end{equation}
    
-\begin{izrek}
+\begin{izrek}\label{izr:T_n}
   Množica $\{\partial^k\}$ predstavlja bazo, ki napenja $\T_n\subset\F_n\phantom{.}\eqref{eq:F_n}$ nad $\mathbb{Z}_2$.
  \end{izrek}
  
  \begin{proof} 
  	$$(c_0+c_1\D+c_2\D^2+....+c_n\D^n)(\T)\in\F_n$$
- 	$$c_0+c_1\D+c_2\D^2+....+c_n\D^n=\Dplus^n\iff \forall_i(c_i=1)$$
+ 	$$c_0+c_1\D+c_2\D^2+....+c_n\D^n=\sumd_n\iff \forall_i(c_i=1)$$
  	$$\implies$$
- 	$$(\Dplus^n)(\T)=\T_n$$
- 	
+ 	$$(\sumd_n)(\T)=\T_n$$
   \end{proof}
-  
 
-\subsection{Analitični stroji}
-   
-Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja
-mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano
-v \ref{eq:zlepek}).
+Po Izreku $\ref{izr:T_n}$ lahko računanje odvodov preslkave $P:V\to U$, predstavimo z eno samo
+preslikavo $\T\to\T_n$.
 
-  
-  Skupaj z definicijami prejšnjih sestavkov, lahko konstruiramo analitičen abstrakten stroj, ki z opisano mehaniko razširja množico Turing-izračunljivih strojev.
-  
-  \begin{equation}\label{eq:dTuring}
-  M=\langle\T, V_\infty, \D\rangle
-  \end{equation}
-
- \begin{itemize}
- \item
- $V_\infty$ služi kot množica stanj, domena ter "neskončen trak"
- \item
- $\T$ je monoid preslikav $V\to V$
- \item
- $\D$ je diferencialni operator
- \end{itemize}
- 
- Karkoli operira pod temi specifikacijami, je analitičen Turingov stroj.
- 
- Ob konstrukciji $M$, je potrebna le enkratna aplikacija $\Dplus$. Naj $\T$ označuje programski jezik generiran z $\langle\E\rangle$ in $M$ stroj, ki ga implementira. Definirajmo stroj $n$-tega reda
- \begin{equation}\label{eq:Mprime}
-	 \Dplus^n M=\langle\Dplus^n\T, V_\infty, \D\rangle
- \end{equation}
- oziroma v poznani, konceptualno ekvivalentni notaciji
-  \begin{equation}\label{eq:M'}
- 	 M_n=\langle\T_n, V_\infty, \D\rangle
-  \end{equation}
-  Tako je operator $\Dplus^n$ preslikava analitičnega stroja $M$ v stroj $M_n$.
-  
-  \begin{izrek}\label{izr:dM}
-	$M_n=\langle\T_n, V_n, \D\rangle$ je analitičen računski stroj.
-  \end{izrek}
-  
-  To pomeni, da nam stroj $n+1$ reda ni potrebno konstruirati skozi aplikacijo $\Dplus^n$ na $M$, temveč lahko po Izreku $\ref{izr:dM}$ red $M_{n}$ inkrementiramo.
-
-\begin{proof}
-	Iz $\eqref{eq:DD}$ sledi	
-	$$\Dplus^{n+1}=1+\Dplus^n$$
-	$$\implies$$
-	$$M_{n+1}=\langle\T+\D\T_n,V_\infty,\D\rangle$$
-\end{proof}
-  
-  Vsi programi konstruirani v $M_n$, skozi zaporedje akcij $\T_n$ nad $V$, v vsaki točki izvajanja vsebujejo informacijo spremembe prvih $n$ redov. Tak program označimo s $P_n$.
-  
+Operator $\sumd_k$ vsaki preslikavi $P: V\to U$ priredi preslikavo $\sumd_k:V\to
+U\otimes T(V^*)$, sestavljeno iz preslikave same in vseh odvodov reda $k$ in
+manj. Slika $\sumd_kP(\x)$ je multitenzor reda $k$, ki je direktna vsota
+vrednosti preslikave $P$ in vseh odvodov reda $k$ in manj, vseh evaluiranih v
+točki $\x$:
+$$\sumd_kP(\x)\in\T_n$$
+\begin{equation}
+  \label{eq:multi_odvod}
+  \sumd_kP(\x) = P(\x)+\D_\x P + \D^2_\x P + \ldots + \D^k_\x P.
+\end{equation}
+\begin{izrek}
+  Operator $\sumd_k$ je potenca operatorja $(1+\D)$
   \begin{equation}
-  P_{n} = \epsilon^{n'}_k\circ\epsilon^{n'}_{k-1}\ldots\epsilon^{n'}_0
+    \label{eq:potenca(1+d)}
+    \tau_k=(1+\D)^k
   \end{equation}
-  
-kjer velja $\E^n\in\T^n\subset\F^n$.
- 
-% Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$, omogočimo preučevanje njegovega učinka na $V$. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe akcije nad $V$. S tem merimo odzivnost programa na vhodne podatke. Diagram izvajanja programa lahko predstavimo z usmerjenim grafom;- potem lahko projeciramo na, in odvajamo po kateremkoli izmed njegvih oglišč.
- 
-  \subsection{Razvoj v vrsto}
-  
-  V tej fomrulaciji je stroj $M$ funkcijski prostor,  na katerega elemente lahko apliciramo metode funkcionalne analize. Začnimo s preprostejšimi.
+\end{izrek}
+Očitno velja preprosta rekurzivna zveza med $\sumd_k$ in $\sumd_{k+1}$
+\begin{equation}
+   \label{eq:rekurzija}
+   \sumd_{k+1} = 1 + \D +\D^2+\ldots \D^{k+1} = 1+\D(1+\D+\ldots +\D^{k}) = 1+\D\sumd_k
+\end{equation}
+ Zato lahko operator $\sumd_k$ definiramo kot potenco operatorja 
+ \begin{equation}
+   \label{eq:dplus1}
+   \Dplus = 1 + \D
+ \end{equation}
+in $\sumd_k=\Dplus^k=(1+\D)^k$. 
+
+
+ \subsection{Razvoj v vrsto}
   
   Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega iščemo približek. Z opisano mehaniko lahko program lineariziramo.
   Izberemo $v\in PV$ in preslikamo v $v'\in P'V_1$ (kar je potrebno storiti le enkrat). Potem lahko program $PV$ približamo z linearno aproksimacijo $v+(v'-v) (V)$, ki je linearne kompleksnost $\mathcal{O}(k)$, kjer je $k$ dimenzija $V$.
@@ -661,7 +637,7 @@ kjer velja $\E^n\in\T^n\subset\F^n$.
   Slika linearizacije služi kot dober približek slike prvotnega programa.
   
   
-  Za nadaljevanje je prikladno vnesti nekaj notacije. Naj tenzor $\VV^{ik}_{\JJ_k}\in V_n (\ref{eq:V_n})$ predstavlja element virtualnega prostora. $\JJ_k$ je nabor indexov, $\lvert\JJ_k\rvert$ je enak redu odvoda. Index $k=\lvert\JJ_k\rvert$, zato ga v zapisu izpuščamo. 
+  Za nadaljevanje je prikladno vnesti nekaj notacije. Naj multitenzor $\VV^{ik}_{\JJ_k}\in V_n (\ref{eq:V_n})$ predstavlja element virtualnega prostora. $\JJ_k$ je nabor indexov, $\lvert\JJ_k\rvert$ je enak redu odvoda. Index $k=\lvert\JJ_k\rvert$, zato ga v zapisu izpuščamo. 
   
   \begin{equation}\label{eq:tenV}
   	\VV^{ik}_{\JJ_k}= \bigoplus\limits_{0\le k\le n} \VV^{ik}_{\JJ_k}
@@ -679,13 +655,14 @@ kjer velja $\E^n\in\T^n\subset\F^n$.
  	\VV^i+\VV^i_j(v^j-v_0^j)
   \end{equation}
   
-  Induktivno bi želeli program razvit v vrsto. Poslužimo se enakosti
+  Induktivno bi želeli program razvit v vrsto. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor, ki ga množica $\{\D^k\}$ napenja nad $\RR$. Zato je izraz
+  
   
  \begin{equation}
  	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{(h\D)^n}{n!}
  \end{equation}
  
- kjer je $\D^i$ $\eqref{eq:dd}$ in polje $K$ v Izreku $\ref{izr:linearnaNeodvisnost}$ enako $\RR$. Tako je
+ dobro definiran.
  
  \begin{equation}\label{eq:e^d}
  	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{h^n}{n!}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
@@ -693,28 +670,107 @@ kjer velja $\E^n\in\T^n\subset\F^n$.
  		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_n}
  \end{equation}
  
- Izraz $\eqref{eq:e^d}$ je operator
+ Tako je $e^{h\D}$ preslikava med funkcijskimi prostori $\eqref{eq:F_n}$
  
  \begin{equation}
  	e^{h\D}:\F\to\F_n
  \end{equation}
  
- Za specifičen program $P\in\T$ in $h=1$ velja
- 
- \begin{equation}\label{eq:specProg}
- 	(e^{\D})(P):V^i\to \VV^{ik}_{\JJ_k}\in V_n^i
- \end{equation}
- 
-  Po $\eqref{eq:vto}$ je slika $\eqref{eq:specProg}$ element komutativno asociativne unitalne algebre $S(V^{i*})$, kar korespondira polinomom z nedoločenkami v $V^i$. Tako je razvoj v vrsto moč izrazit kot zožitev
-  \begin{equation}\label{eq:tenzorVrsta}
-  	P(V^i+hv) = \Big((e^{h\D})(P)(V^i)\Big)v^{\JJ_k}_{k}
+ Zato velja
+  
+  \begin{equation}\label{eq:specProg}
+  	(e^{h\D})(\F):V^i\to V_n^i
   \end{equation}
-  in po $\eqref{eq:specProg}$
-  $$P(V^i+v) = \VV^{ik}_{\JJ_k}v^{\JJ_k}_{k}$$
- ki je upravičena z opažanjem, da v izrazu $\eqref{eq:tenzorVrsta}$ za vsak $n$ velja
- $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(leva stran)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(desna stran)}$$
  
+ Po $\eqref{eq:vto}$ je $V_n$ izomorfen komutativno asociativni unitalni algebri $S(V^{i*})$, kar korespondira polinomom z nedoločenkami v $V^i$. Po $\eqref{eq:specProg}$ velja
+ 
+ \begin{equation}
+ 	(e^{h\D})(V): \F\to S(V^*)
+ \end{equation}
+ Izraz predstavlja preslikavo programa v polinom.
+ 
+\begin{izrek}
+	Za program $P\in\T$ in $v^{\JJ_k}_{k}\in T(V)$ se razvoj v vrsto izraža kot zožitev\\
+	\begin{equation}\label{eq:tenzorVrsta}
+	P(V^i+hv) = \Big((e^{h\D})(P)(V^i)\Big)v^{\JJ_k}_{k}
+	\end{equation}
+\end{izrek}
+ 
+ \begin{proof}
+ Za vsak $n$ velja $\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(LHS)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(RHS)}$\\
+ $\implies$
+ 
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n(P(V+hv))=\D^n P(V)(v^{\otimes n})$$
+ $\impliedby$
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\Big((e^{h\D})(P)(V^i)\Big)(v^{\JJ_k}_{k})=\lim\limits_{\lVert h\rVert\to 0}\Big((\D^n e^{h\D})(P)(V^i)\Big)(v^{\JJ_k}_{k})$$
+ $$\land$$
+ $$\lim\limits_{\lVert h\rVert\to 0}\D^ne^{h\D}=\lim\limits_{\lVert h\rVert\to 0}\sum\limits_{i=0}^{\infty}\frac{h^i\D^{i+n}}{i!}=\D^n$$
+ $$\implies$$
+ $$\Big(\D^n(P)(V^i)\Big)(v^{\otimes n})$$
+ \end{proof}
+  
  Slika zožitve je element prvotnega virtualnega prostora $V^i$. Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa.   
+ 
+ Razvoj v odrezano vrsto reda $N$ dobimo skozi projekcijo $e^{h\D}$ na $\{\D^N \}$.
+  
+\subsection{Analitični stroji}
+   
+Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja
+mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano
+v \ref{eq:zlepek}).
+
+  
+  Skupaj z definicijami prejšnjih sestavkov, lahko konstruiramo analitičen abstrakten stroj, ki z opisano mehaniko razširja množico Turing-izračunljivih strojev.
+  
+  \begin{definicija}
+   $M=\langle\T, V_\infty, \D\rangle$ je analitičen računski stroj.
+   
+    \begin{itemize}
+    \item
+    $V_\infty$ služi kot množica stanj, domena ter "neskončen trak"
+    \item
+    $\T$ je monoid preslikav $V\to V$
+    \item
+    $\D$ je diferencialni operator
+    \end{itemize}
+  \end{definicija}
+ 
+ Karkoli operira pod temi specifikacijami, je analitičen Turingov stroj.
+ Ob konstrukciji $M$, je potrebna le enkratna aplikacija $\Dplus: \T\to\T_1$. Naj $\T_1: V\to V_1$ označuje programski jezik prvega reda in $M_1=\langle\T_1, V_\infty, \D\rangle$ stroj, ki ga implementira. Vsak program $P_1\in\T_1$, generiran v $M_1$, v vsaki točki izvajanja nosi informacijo spremembe prvega reda.
+ 
+ Definirajmo stroj $n$-tega reda
+ \begin{equation}\label{eq:Mprime}
+	 \Dplus^n M=\langle\Dplus^n\T, V_\infty, \D\rangle
+ \end{equation}
+ oziroma v vzpostavljeni, ekvivalentni notaciji
+  \begin{equation}\label{eq:M'}
+ 	 M_n=\langle\T_n, V_\infty, \D\rangle
+  \end{equation}
+  Tako je operator $\Dplus^n$ preslikava analitičnega stroja $M$ v stroj $M_n$. Tukaj se razume, da aktira le s prvim elementom trojca.
+  
+  \begin{izrek}\label{izr:dM}
+	$M_n=\langle\T_n, V_\infty, \D\rangle$ je analitičen računski stroj.
+  \end{izrek}
+
+\begin{proof}
+	Iz $\eqref{eq:DD}$ sledi $\Dplus^{n+1}=1+\D\Dplus^n$ in po definiciji velja	
+	$$M_{n+1}=\langle\Dplus^{n+1}\T,V_\infty,\D\rangle$$
+		$$\implies$$
+	$$M_{n+1}=\langle\T+\D\T_n,V_\infty,\D\rangle$$	
+\end{proof}
+
+
+  Vsak analitičen stroj intrinzično vsebuje zmožnost razširitve reda. To pomeni, da nam stroj $n+1$ reda ni potrebno konstruirati skozi aplikacijo $\Dplus^n$ na $M$, temveč lahko po Izreku $\ref{izr:dM}$ red $M_{n}$ inkrementiramo.
+  
+  Vsi programi konstruirani v $M_n$, skozi zaporedje akcij $\T_n$ nad $V$, v vsaki točki izvajanja vsebujejo informacijo spremembe prvih $n$ redov. Tak program označimo s $P_n$.
+  
+  \begin{equation}
+  P_{n} = \epsilon^{n'}_k\circ\epsilon^{n'}_{k-1}\ldots\epsilon^{n'}_0
+  \end{equation}
+  
+kjer velja $\E^n\in\T_n\subset\F_n$.
+ 
+% Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$, omogočimo preučevanje njegovega učinka na $V$. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe akcije nad $V$. S tem merimo odzivnost programa na vhodne podatke. Diagram izvajanja programa lahko predstavimo z usmerjenim grafom;- potem lahko projeciramo na, in odvajamo po kateremkoli izmed njegvih oglišč.
  
  \subsection{Optimizacija prostorske zahtevnosti}
  Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
