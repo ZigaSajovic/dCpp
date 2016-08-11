@@ -29,6 +29,7 @@
 \newcommand{\op}[1]{\partial^{#1\bigoplus}}
 \DeclareMathOperator{\interior}{int}
 \newtheorem{definicija}{Definicija}[section]
+\newtheorem{trditev}{Trditev}[section]
 \newtheorem{izrek}{Izrek}[section]
 \newtheorem{opomba}{Opomba}[section]
 \title{Analitični stroji}
@@ -294,24 +295,32 @@ Podobno lahko definiramo višje odvode
 \end{opomba}
 
 Iz definicije vidimo, da višji odvodi niso nič posebnega, le večkrat uporabimo
-definicijo odvoda. Problem je, da se prostor v katerega višji odvodi slikajo $V$
-vedno drugačen. Temu se lahko elegantno izognemo, če definiramo operacijo
-odvajanja na univerzalnem virtualnem prostoru $U\otimes T(V^*)$
+odvajanje. Opazimo, da je prostor v katerega višji odvodi slikajo $V$
+vedno drugačen. Temu se lahko elegantno izognemo, če definiramo operator
+odvajanja na univerzalnem virtualnem prostoru $U\otimes T(V^*)$. Vsako preslikavo $P:V\to U\otimes (V^*)^{\otimes k}$ lahko gledamo kot na
+preslikavo $V\to U\otimes T(V)$, če jo na drugem faktorju komponiramo z naravno
+vložitvijo $(V^*)^{\otimes k}\hookrightarrow T(V^*)$. Tako lahko preslikavo
+$P:V\to U$ in vse njene odvode razumemo kot preslikave 
+$$\D^k P:V\to U\otimes T(V^*).$$ 
 \begin{definicija}\label{def:partial}
   Odvod
-  $\D$ je operator na prostoru odvedljivih preslikav $V\to U\times T(V^*)$, ki vsaki preslikavi
-  priredi njen odvod
+  $\D$ je operator na prostoru odvedljivih preslikav $V\to U\times T(V^*)$, ki
+  vsaki preslikavi priredi njen odvod
   \begin{equation}
     \label{eq:odvod_splosen}
     \D : P \mapsto (\D P:\x\mapsto T_\x P)
   \end{equation}
 \end{definicija}
-Vsako preslikavo $P:V\to U\otimes (V^*)^{\otimes k}$ lahko gledamo kot na
-preslikavo $V\to U\otimes T(V)$, če jo na drugem faktorju komponiramo z naravno vložitvijo $(V^*)^{\otimes k}\hookrightarrow T(V^*)$. Tako lahko višje odvode gledamo kot
-na potence operatorja $\D$. 
+Višji odvodi so torej preprosto potence operatorja $\D$.
 
-Računanje odvodov preslkave $P:V\to U$, lahko sedaj predstavimo z eno samo
-preslikavo, ki jo bomo kasneje definirali rekurzivno:
+Označimo z $T_k(V)=V^{\otimes 0}\oplus V \oplus V^{\otimes 2} \oplus \cdots
+\oplus V^{\otimes k}$ in z $S_k(V)$ ustrezen simetričen del. Prostor $U\otimes
+S_k(V^*)$ je izomorfen  prostoru vseh polinomskih preslikav $V\to U$ stopnje $k$
+ali manj. Operator $\D$ slika $U\otimes T_k(V^*)$ v $U\otimes T_{k+1}(V^*)$.
+  
+
+Računanje višjih odvodov preslkave $P:V\to U$, lahko sedaj predstavimo z eno samo
+preslikavo $\sumd_k:V\to U\otimes T(V^*)$:
 \begin{eqnarray}
   \label{eq:vsi_odvodi}
   \sumd_k = 1+\D +\D^2 +\ldots + \D^k\\ 
@@ -326,25 +335,20 @@ točki $\x$:
   \sumd_kP(\x) = P(\x)+\D_\x P + \D^2_\x P + \ldots + \D^k_\x P.
 \end{equation}
 \begin{izrek}
-  Operator $\sumd_k$ je potenca operatorja $(1+\D)$
+  Operator $\sumd_k$ je definiran rekurzivno s formulo
   \begin{equation}
     \label{eq:potenca(1+d)}
-    \tau_k=(1+\D)^k
+    \sumd_{k+1}=1+\D\sumd_{k}
   \end{equation}
+in začetnim pogojem $\tau_0=1$.
 \end{izrek}
 Očitno velja preprosta rekurzivna zveza med $\sumd_k$ in $\sumd_{k+1}$
 \begin{equation}
    \label{eq:rekurzija}
-   \sumd_{k+1} = 1 + \D +\D^2+\ldots \D^{k+1} = 1+\D(1+\D+\ldots +\D^{k}) = 1+\D\sumd_k
-\end{equation}
- Zato lahko operator $\sumd_k$ definiramo kot potenco operatorja 
- \begin{equation}
-   \label{eq:dplus1}
-   \Dplus = 1 + \D
- \end{equation}
-in $\sumd_k=\Dplus^k=(1+\D)^k$. 
+   \sumd_{k+1} = 1 + \D +\D^2+\ldots \D^{k+1} = 1+\D(1+\D+\ldots +\D^{k}) = 1+\D\sumd_k.
+\end{equation} 
 
-\subsection{Multilinearne preslikave, polinomi in tenzorji}
+\subsection{Polinomske aproksimacije in Taylorjeva vrsta}
 Naj bo $f_1\otimes f_2\otimes \ldots \otimes f_k\in (V^*)^{\otimes k}$
 tenzor. Tenzorju lahko priredimo multilinearno funkcijo $f:V^k\to F$ 
 \begin{eqnarray}
@@ -397,7 +401,6 @@ $$f(v) = \sum_{|\alpha|\le m}\left( x_{\alpha_1}(v)\cdot x_{\alpha_2}(v)\cdot
 je po komponentah polinomska in vsako preslikavo $V\to U$, ki se po komponetah izraža s
 polinomi stopnje največ $m$, lahko predstavimo z multitenzorjem reda $m$.
   
-\subsection{Virtualni prostor}
 
 Naj bosta $U, V < \RR^n$ podprostora istega vektorskega prostora. Množenje v
 univerzalnem virtualnem prostoru definiramo tako, da se ujema s kompozitumom
@@ -418,14 +421,47 @@ $T^{(n)}_xP:V\to V$ stopnje $n$ za katero velja
 \end{equation}
 \end{definicija}
 
-\subsection{Virtualni prostor}
+\subsection{Odvedljivi stroji}
 
 V nadaljevanju bomo definirali, kako si predstavljamo odvedljiv programski jezik
 oziroma računski stroj. Odvedljiv stroj si bomo predstavljali kot računski
 stroj, ki izvaja zaporedne enostavne operacije, ki so odvedljive, na virtualnem
-pomnilniku $V\simeq\RR^n$. Prostor $\T$ opisuje vse možne programe, na našem
+pomnilniku $\VV\simeq\RR^n$. 
+Zanimali nas bodo stroji, ki manipulirajo z virtualnim
+pomnilnikom $\VV$. Osnovne operacije na stroju so preslikave 
+$\epsilon_i:\VV\to \VV$.
+\begin{definicija}[računski stroj]
+  Par $(\VV,\E)$, kjer je $\VV$ končnodimenzionalen vektorski prostor in $\E$
+  končna množica preslikav $\VV\to \VV$ imenujemo \emph{računski stroj}.
+  Prostoru $\VV$ pravimo \emph{virtualni pomnilnik}, preslikavam $\epsilon_i$ pa
+  \emph{elementarne operacije}.
+\end{definicija}
+
+\begin{definicija}[Odvedljiv program z domeno]
+  Naj bosta $V<\VV$ in $U<\VV$ podprostora virtualnega pomnilnika.
+  \emph{Odvedljiv program z domeno $V$} je vsaka odvedljiva preslikava
+  \begin{equation}
+    \label{eq:odvedljiv_program}
+    P:V\to U,
+  \end{equation}
+ ki se v vsaki točki $\vv\in V$ na odprti okolici izraža kot kompozitum neke afine vložitve $i_V:V\hookrightarrow
+ \VV$, zaporedja elementarnih operacij $\epsilon_\vv^{i}$  in projekcije $pr_U:\VV\to U$
+ \begin{equation}
+   \label{eq:zapis}
+   P = pr_U\circ \epsilon_\vv^{k_\vv}\circ \cdots \circ \epsilon_\vv^1\circ i_V.
+ \end{equation}
+\end{definicija}
+\begin{opomba}
+  Domena programa $V$ določa, po katerih spremenljivkah bomo odvajali. Tekom
+  programa se to ne bo spreminljalo, zato moramo v virtualnem pomnilniku
+  rezervirati prostor le za $U\otimes S_k(V^*)$, kjer je $U$ prostor odvisnih
+  spremenljivk, ki so v danem trenutku alocirane v virtualnem pomnilniku. Faktor 
+$S_k(V^*)$ se ne spreminja, ne glede na to kakšna je dimenzija domene in ko-domene za vmesne operacije. Na ta način zmanjšamo potrebo po spominu na minimum.
+\end{opomba}
+
+Prostor $\T_V$ opisuje vse možne programe z domeno $V$, na našem
 stroju, množica generatorjev $\E$ pa elementarne operacije, ki jih stroj lahko
-izvaja. Ker je $\T=\langle \E \rangle$, lahko vsak program $P$ zapišemo kot
+izvaja. Ker je $\T_V=\langle \E \rangle$, lahko vsak program $P$ zapišemo kot
 kompozitum elementarnih operacij $\epsilon_i$:
 \[
 P = \epsilon_k\circ\epsilon_{k-1}\ldots\epsilon_0.
