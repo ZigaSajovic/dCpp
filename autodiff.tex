@@ -32,6 +32,7 @@
 \newtheorem{trditev}{Trditev}[section]
 \newtheorem{izrek}{Izrek}[section]
 \newtheorem{opomba}{Opomba}[section]
+\newtheorem{konstrukcija}{Konstrukcija}[section]
 \title{Analitični stroji}
 \author{Žiga Sajovic, Martin Vuk}
 \begin{document}
@@ -317,36 +318,6 @@ Označimo z $T_k(V)=V^{\otimes 0}\oplus V \oplus V^{\otimes 2} \oplus \cdots
 \oplus V^{\otimes k}$ in z $S_k(V)$ ustrezen simetričen del. Prostor $U\otimes
 S_k(V^*)$ je izomorfen  prostoru vseh polinomskih preslikav $V\to U$ stopnje $k$
 ali manj. Operator $\D$ slika $U\otimes T_k(V^*)$ v $U\otimes T_{k+1}(V^*)$.
-  
-
-Računanje višjih odvodov preslkave $P:V\to U$, lahko sedaj predstavimo z eno samo
-preslikavo $\sumd_k:V\to U\otimes T(V^*)$:
-\begin{eqnarray}
-  \label{eq:vsi_odvodi}
-  \sumd_k = 1+\D +\D^2 +\ldots + \D^k\\ 
-\end{eqnarray}
-Operator $\sumd_k$ vsaki preslikavi $P: V\to U$ priredi preslikavo $\sumd_k:V\to
-U\otimes T(V^*)$, sestavljeno iz preslikave same in vseh odvodov reda $k$ in
-manj. Slika $\sumd_kP(\x)$ je multitenzor reda $k$, ki je direktna vsota
-vrednosti preslikave $P$ in vseh odvodov reda $k$ in manj, vseh evaluiranih v
-točki $\x$:
-\begin{equation}
-  \label{eq:multi_odvod}
-  \sumd_kP(\x) = P(\x)+\D_\x P + \D^2_\x P + \ldots + \D^k_\x P.
-\end{equation}
-\begin{izrek}
-  Operator $\sumd_k$ je definiran rekurzivno s formulo
-  \begin{equation}
-    \label{eq:potenca(1+d)}
-    \sumd_{k+1}=1+\D\sumd_{k}
-  \end{equation}
-in začetnim pogojem $\tau_0=1$.
-\end{izrek}
-Očitno velja preprosta rekurzivna zveza med $\sumd_k$ in $\sumd_{k+1}$
-\begin{equation}
-   \label{eq:rekurzija}
-   \sumd_{k+1} = 1 + \D +\D^2+\ldots \D^{k+1} = 1+\D(1+\D+\ldots +\D^{k}) = 1+\D\sumd_k.
-\end{equation} 
 
 \subsection{Polinomske aproksimacije in Taylorjeva vrsta}
 Naj bo $f_1\otimes f_2\otimes \ldots \otimes f_k\in (V^*)^{\otimes k}$
@@ -566,7 +537,7 @@ Tako je $\D^k$ preslikava med funkcijskimi prostori $\eqref{eq:F^n}$
 	$$\F^{n+1}=\F^n\iff\forall_i(c_i=0)$$
 	
  \end{proof}
- Po Izreku $\ref{izr:linearnaNeodvisnost}$ lahko edinstveno definiramo geometrijsko vrsto
+ Definiramo lahko geometrijsko vrsto
  
  \begin{equation}\label{eq:DD}
   	\sumd_n = 1+\D +\D^2 +\ldots + \D^n 
@@ -579,14 +550,21 @@ Tako je $\D^k$ preslikava med funkcijskimi prostori $\eqref{eq:F^n}$
   		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}
   \end{equation}
   
-  Tako je $\sumd_n$ preslikava med funkcijskimi prostori $\eqref{eq:F_n}$
-  
-   \begin{equation}
-   	\sumd_n:\F\to\F_{n}
-   \end{equation}
-   
-\begin{izrek}\label{izr:T_n}
-  Množica $\{\partial^k\}$ predstavlja bazo, ki napenja $\T_n\subset\F_n\phantom{.}\eqref{eq:F_n}$ nad $\mathbb{Z}_2$.
+  Po Izreku $\ref{izr:linearnaNeodvisnost}$ je operator $\sumd_n$ edinstven.
+
+\begin{definicija}
+Naj bo $\T_n$ podprostor, ki ga množica $\{\partial^k\}$ napenja nad $\mathbb{Z}_2$.
+ \end{definicija}
+ 
+ \begin{opomba}
+        Podprostor $\T_n$ naseljujejo programi $n$-tega reda. Napetost nad $\mathbb{Z}_2$ zoža splošen prostor $\F_n$ na oglišča hiper-kocke. Odvode $(m\le n)$-tega reda izluščimo skozi projekcije na ustrezna oglišča.
+        \end{opomba}
+ 
+ \begin{izrek}\label{izr:T_n}
+ 	$\sumd_n$ je operator na prostoru $\T$, ki vsaki preslikavi priredi
+ 	\begin{equation}
+ 	\sumd_n:\T\to\T_n
+ 	\end{equation}
  \end{izrek}
  
  \begin{proof} 
@@ -604,29 +582,23 @@ U\otimes T(V^*)$, sestavljeno iz preslikave same in vseh odvodov reda $k$ in
 manj. Slika $\sumd_kP(\x)$ je multitenzor reda $k$, ki je direktna vsota
 vrednosti preslikave $P$ in vseh odvodov reda $k$ in manj, vseh evaluiranih v
 točki $\x$:
-$$\sumd_kP(\x)\in\T_n$$
 \begin{equation}
   \label{eq:multi_odvod}
   \sumd_kP(\x) = P(\x)+\D_\x P + \D^2_\x P + \ldots + \D^k_\x P.
 \end{equation}
 \begin{izrek}
-  Operator $\sumd_k$ je potenca operatorja $(1+\D)$
+  Operator $\sumd_k$ je definiran rekurzivno s formulo
   \begin{equation}
     \label{eq:potenca(1+d)}
-    \tau_k=(1+\D)^k
+    \sumd_{k+1}=1+\D\sumd_{k}
   \end{equation}
+in začetnim pogojem $\tau_0=1$.
 \end{izrek}
 Očitno velja preprosta rekurzivna zveza med $\sumd_k$ in $\sumd_{k+1}$
 \begin{equation}
    \label{eq:rekurzija}
-   \sumd_{k+1} = 1 + \D +\D^2+\ldots \D^{k+1} = 1+\D(1+\D+\ldots +\D^{k}) = 1+\D\sumd_k
-\end{equation}
- Zato lahko operator $\sumd_k$ definiramo kot potenco operatorja 
- \begin{equation}
-   \label{eq:dplus1}
-   \Dplus = 1 + \D
- \end{equation}
-in $\sumd_k=\Dplus^k=(1+\D)^k$. 
+   \sumd_{k+1} = 1 + \D +\D^2+\ldots \D^{k+1} = 1+\D(1+\D+\ldots +\D^{k}) = 1+\D\sumd_k.
+\end{equation} 
 
 
  \subsection{Razvoj v vrsto}
