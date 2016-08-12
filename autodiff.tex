@@ -319,6 +319,127 @@ Označimo z $T_k(V)=V^{\otimes 0}\oplus V \oplus V^{\otimes 2} \oplus \cdots
 S_k(V^*)$ je izomorfen  prostoru vseh polinomskih preslikav $V\to U$ stopnje $k$
 ali manj. Operator $\D$ slika $U\otimes T_k(V^*)$ v $U\otimes T_{k+1}(V^*)$.
 
+
+\subsection{Odvedljivi stroji}
+
+V nadaljevanju bomo definirali, kako si predstavljamo odvedljiv programski jezik
+oziroma računski stroj. Odvedljiv stroj si bomo predstavljali kot računski
+stroj, ki izvaja zaporedne enostavne operacije, ki so odvedljive, na virtualnem
+pomnilniku $\VV\simeq\RR^n$. 
+Zanimali nas bodo stroji, ki manipulirajo z virtualnim
+pomnilnikom $\VV$. Osnovne operacije na stroju so preslikave 
+$\epsilon_i:\VV\to \VV$.
+\begin{definicija}[računski stroj]
+  Par $(\VV,\E)$, kjer je $\VV$ končnodimenzionalen vektorski prostor in $\E$
+  končna množica preslikav $\VV\to \VV$ imenujemo \emph{računski stroj}.
+  Prostoru $\VV$ pravimo \emph{virtualni pomnilnik}, preslikavam $\epsilon_i$ pa
+  \emph{elementarne operacije}.
+\end{definicija}
+
+\begin{definicija}[Odvedljiv program z domeno]
+  Naj bosta $V<\VV$ in $U<\VV$ podprostora virtualnega pomnilnika.
+  \emph{Odvedljiv program z domeno $V$} je vsaka odvedljiva preslikava
+  \begin{equation}
+    \label{eq:odvedljiv_program}
+    P:V\to U,
+  \end{equation}
+ ki se v vsaki točki $\vv\in V$ na odprti okolici izraža kot kompozitum neke afine vložitve $i_V:V\hookrightarrow
+ \VV$, zaporedja elementarnih operacij $\epsilon_\vv^{i}$  in projekcije $pr_U:\VV\to U$
+ \begin{equation}
+   \label{eq:zapis}
+   P = pr_U\circ \epsilon_\vv^{k_\vv}\circ \cdots \circ \epsilon_\vv^1\circ i_V.
+ \end{equation}
+\end{definicija}
+\begin{opomba}
+  Domena programa $V$ določa, po katerih spremenljivkah bomo odvajali. Tekom
+  programa se to ne bo spreminljalo, zato moramo v virtualnem pomnilniku
+  rezervirati prostor le za $U\otimes S_k(V^*)$, kjer je $U$ prostor odvisnih
+  spremenljivk, ki so v danem trenutku alocirane v virtualnem pomnilniku. Faktor 
+$S_k(V^*)$ se ne spreminja, ne glede na to kakšna je dimenzija domene in
+ko-domene za vmesne operacije. Na ta način zmanjšamo potrebo po spominu na minimum.
+\end{opomba}
+Program $P:V\to U$ je \emph{brez stranskih učinkov}, če je zožitev preslikave 
+na $U^\perp$ 
+$$ pr_{U^\perp}\circ \epsilon_k\circ \cdots \circ \epsilon_k\circ i_{U^\perp}=Id_{U^\perp}$$  
+identiteta. To pomeni, da program ne spreminja pomnilnika, razen na lokacijah, 
+kamor se zapiše izhod programa. 
+ 
+\subsubsection{Komponiranje programov z domeno} 
+ 
+Program z domeno je matematični model za programerske funkcije. Domena programa 
+prostor $V$ je prostor argumentov funkcije, medtem ko je prostor $U$ prostor 
+vrednosti, ki ji funkcija vrne. Preslikava $i_V$, pove katere spremenljivke smo 
+postavili kot argumente funkciji, medtem ko $pr_U$ pove, kam smo shranili 
+vrednosti, ki jih funkcija vrne. Zaporedje ukazov $\epsilon_i$ pa pove, kako 
+funkcija vrednosti dejansko izračuna. 
+Zanima nas, kako lahko funkcije med sabo komponiramo. Naj bosta $P:V\to U$ in 
+$Q:U\to W$ programa z domeno $V$ oziroma $U$. Njuna kompozicija bo imela smisel 
+le, če je $i_U\circ pr_U$ identiteta na $\VV$. V nasprotnem primeru bi to 
+pomenilo, da se s klicem funkcije $Q$ ``pokvari'' del pomnilnika, ki nima nobene 
+zveze z argumenti funkcije $Q$ 
+
+Prostor $\T_V$ opisuje vse možne programe z domeno $V$, na našem
+stroju, množica generatorjev $\E$ pa elementarne operacije, ki jih stroj lahko
+izvaja. Ker je $\T_V=\langle \E \rangle$, lahko vsak program $P$ zapišemo kot
+kompozitum elementarnih operacij $\epsilon_i$:
+\[
+P = \epsilon_k\circ\epsilon_{k-1}\ldots\epsilon_0.
+\]  
+
+Če želimo tekom programa sproti računati tudi odvode, moramo hraniti vmesne
+vrednosti odvodov. Zato moramo pomnilnik (vektorski prostor $V$) razširiti, da
+bo vseboval tudi odvode. Odvod je linearna preslikava $V\to V$, prostor
+vseh linearnih preslikav $\mathcal{L}(V)$ je izomorfen tenzorskemu produktu
+$V^*\otimes V$. Tako za izvedbo programa, ki računa odvode, potrebujemo virtualni
+pomnilnik izomorfen prostoru $V\oplus (V^*\otimes V)$. Poleg vsake spremenljivke $x_j$, ki
+jo uporabimo v programu, si moramo zapomniti še vrednosti odvodov po vseh
+ostalih spremenljivkah $\frac{\partial x_j}{\partial x_i}$.   
+
+Za višje odvode rekurzivno definiramo zaporedje vektorskih prostorov $V_n$, ki
+predstavljajo virtualni pomnilnik
+\begin{eqnarray}\label{eq:V_n}
+  \label{eq:prapor}
+  V_0 &=& V\\
+  V_{n+1}&=&V\oplus (V^*\otimes V_n),
+\end{eqnarray} 
+ki ga potrebuje program za izračun vrednosti $n$-tih odvodov. Izbira $V_n\simeq
+V\oplus (V^*\otimes V) \oplus (V^*\otimes V^*\otimes V) \ldots \oplus
+(V^*)^{\otimes n}\otimes V$ odraža dejstvo, da za izračun vrednosti $n$-tega odvoda v neki točki $x\in V$
+potrebujemo vrednosti funkcije in vseh nižjih odvodov.
+\begin{definicija}
+  Direktno limito zaporedja vektorskih prostorov $V_n$ imenujemo
+  \emph{univerzalni virtualni prostor} in jo označimo z $V_\infty$.
+\end{definicija}
+\begin{izrek}
+  Univerzalni virtualni prostor je izomorfen tenzorskemu produktu virtualnega
+  prostora $V$ in tenzorske algebre $T(V^*)$ duala virtualnega prostora $V^*$:
+  \begin{equation}
+\label{eq:tenzor_algebra}
+    V_\infty\simeq V\otimes T(V^*) = V \otimes\left(\bigoplus_{k=0}^\infty (V^*)^{\otimes k} \right)
+\end{equation}
+
+\end{izrek}
+
+Elementi $V_\infty$ predstavljajo neskončne potenčne vrste kot preslikave 
+$V\to V$. Prostor $(V^*)^{\times n}\otimes V$ je izomorfen prostoru
+multilinearnih preslikav $V^{\times n}\to V$. Če poljubno
+multilinearno preslikavo komponiramo z vložitvijo $V\to V^{\times n}$ na
+diagonalo, dobimo preslikavo $V\to V$, ki se v koordinatah izraža kot linearna
+kombinacija monomov stopnje $n$.
+
+\begin{izrek}
+ Dimenzija prostora $V_n$ je $\frac{k-k^{n+2}}{1-k}$, kjer je k dimenzija $V$.
+ \end{izrek}
+
+\begin{proof}
+	$$dim(V_n)=dim(V)\sum\limits_{i=0}^{n}dim((V^*)^{\otimes i})$$
+	$$dim(V^*)=dim(V)\land dim\Big((V)^{\otimes n}\Big)=div(V)^n$$
+	$$\implies$$
+	$$dim(V_n)=dim(V)\sum\limits_{i=0}^{n}dim(V)^{i}$$
+	$$dim(V_n)=dim(V)\frac{1-dim(V)^{n+1}}{1-dim(V)}$$
+\end{proof}
+
+Spominska kompleksnost modela je eksponentna. Gre poudarit, da v praksi redko projeciramo na celoten $V$, pogosteje nas zanima manjša podmnožica komponent.
 \subsection{Polinomske aproksimacije in Taylorjeva vrsta}
 Naj bo $f_1\otimes f_2\otimes \ldots \otimes f_k\in (V^*)^{\otimes k}$
 tenzor. Tenzorju lahko priredimo multilinearno funkcijo $f:V^k\to F$ 
@@ -391,107 +512,6 @@ $T^{(n)}_xP:V\to V$ stopnje $n$ za katero velja
   \lim_{h\to 0}\frac{\|P(x+h)-T^{(n)}_xP(h)\|}{\|h\|^n}=0
 \end{equation}
 \end{definicija}
-
-\subsection{Odvedljivi stroji}
-
-V nadaljevanju bomo definirali, kako si predstavljamo odvedljiv programski jezik
-oziroma računski stroj. Odvedljiv stroj si bomo predstavljali kot računski
-stroj, ki izvaja zaporedne enostavne operacije, ki so odvedljive, na virtualnem
-pomnilniku $\VV\simeq\RR^n$. 
-Zanimali nas bodo stroji, ki manipulirajo z virtualnim
-pomnilnikom $\VV$. Osnovne operacije na stroju so preslikave 
-$\epsilon_i:\VV\to \VV$.
-\begin{definicija}[računski stroj]
-  Par $(\VV,\E)$, kjer je $\VV$ končnodimenzionalen vektorski prostor in $\E$
-  končna množica preslikav $\VV\to \VV$ imenujemo \emph{računski stroj}.
-  Prostoru $\VV$ pravimo \emph{virtualni pomnilnik}, preslikavam $\epsilon_i$ pa
-  \emph{elementarne operacije}.
-\end{definicija}
-
-\begin{definicija}[Odvedljiv program z domeno]
-  Naj bosta $V<\VV$ in $U<\VV$ podprostora virtualnega pomnilnika.
-  \emph{Odvedljiv program z domeno $V$} je vsaka odvedljiva preslikava
-  \begin{equation}
-    \label{eq:odvedljiv_program}
-    P:V\to U,
-  \end{equation}
- ki se v vsaki točki $\vv\in V$ na odprti okolici izraža kot kompozitum neke afine vložitve $i_V:V\hookrightarrow
- \VV$, zaporedja elementarnih operacij $\epsilon_\vv^{i}$  in projekcije $pr_U:\VV\to U$
- \begin{equation}
-   \label{eq:zapis}
-   P = pr_U\circ \epsilon_\vv^{k_\vv}\circ \cdots \circ \epsilon_\vv^1\circ i_V.
- \end{equation}
-\end{definicija}
-\begin{opomba}
-  Domena programa $V$ določa, po katerih spremenljivkah bomo odvajali. Tekom
-  programa se to ne bo spreminljalo, zato moramo v virtualnem pomnilniku
-  rezervirati prostor le za $U\otimes S_k(V^*)$, kjer je $U$ prostor odvisnih
-  spremenljivk, ki so v danem trenutku alocirane v virtualnem pomnilniku. Faktor 
-$S_k(V^*)$ se ne spreminja, ne glede na to kakšna je dimenzija domene in ko-domene za vmesne operacije. Na ta način zmanjšamo potrebo po spominu na minimum.
-\end{opomba}
-
-Prostor $\T_V$ opisuje vse možne programe z domeno $V$, na našem
-stroju, množica generatorjev $\E$ pa elementarne operacije, ki jih stroj lahko
-izvaja. Ker je $\T_V=\langle \E \rangle$, lahko vsak program $P$ zapišemo kot
-kompozitum elementarnih operacij $\epsilon_i$:
-\[
-P = \epsilon_k\circ\epsilon_{k-1}\ldots\epsilon_0.
-\]  
-
-Če želimo tekom programa sproti računati tudi odvode, moramo hraniti vmesne
-vrednosti odvodov. Zato moramo pomnilnik (vektorski prostor $V$) razširiti, da
-bo vseboval tudi odvode. Odvod je linearna preslikava $V\to V$, prostor
-vseh linearnih preslikav $\mathcal{L}(V)$ je izomorfen tenzorskemu produktu
-$V^*\otimes V$. Tako za izvedbo programa, ki računa odvode, potrebujemo virtualni
-pomnilnik izomorfen prostoru $V\oplus (V^*\otimes V)$. Poleg vsake spremenljivke $x_j$, ki
-jo uporabimo v programu, si moramo zapomniti še vrednosti odvodov po vseh
-ostalih spremenljivkah $\frac{\partial x_j}{\partial x_i}$.   
-
-Za višje odvode rekurzivno definiramo zaporedje vektorskih prostorov $V_n$, ki
-predstavljajo virtualni pomnilnik
-\begin{eqnarray}\label{eq:V_n}
-  \label{eq:prapor}
-  V_0 &=& V\\
-  V_{n+1}&=&V\oplus (V^*\otimes V_n),
-\end{eqnarray} 
-ki ga potrebuje program za izračun vrednosti $n$-tih odvodov. Izbira $V_n\simeq
-V\oplus (V^*\otimes V) \oplus (V^*\otimes V^*\otimes V) \ldots \oplus
-(V^*)^{\otimes n}\otimes V$ odraža dejstvo, da za izračun vrednosti $n$-tega odvoda v neki točki $x\in V$
-potrebujemo vrednosti funkcije in vseh nižjih odvodov.
-\begin{definicija}
-  Direktno limito zaporedja vektorskih prostorov $V_n$ imenujemo
-  \emph{univerzalni virtualni prostor} in jo označimo z $V_\infty$.
-\end{definicija}
-\begin{izrek}
-  Univerzalni virtualni prostor je izomorfen tenzorskemu produktu virtualnega
-  prostora $V$ in tenzorske algebre $T(V^*)$ duala virtualnega prostora $V^*$:
-  \begin{equation}
-\label{eq:tenzor_algebra}
-    V_\infty\simeq V\otimes T(V^*) = V \otimes\left(\bigoplus_{k=0}^\infty (V^*)^{\otimes k} \right)
-\end{equation}
-
-\end{izrek}
-
-Elementi $V_\infty$ predstavljajo neskončne potenčne vrste kot preslikave 
-$V\to V$. Prostor $(V^*)^{\times n}\otimes V$ je izomorfen prostoru
-multilinearnih preslikav $V^{\times n}\to V$. Če poljubno
-multilinearno preslikavo komponiramo z vložitvijo $V\to V^{\times n}$ na
-diagonalo, dobimo preslikavo $V\to V$, ki se v koordinatah izraža kot linearna
-kombinacija monomov stopnje $n$.
-
-\begin{izrek}
- Dimenzija prostora $V_n$ je $\frac{k-k^{n+2}}{1-k}$, kjer je k dimenzija $V$.
- \end{izrek}
-
-\begin{proof}
-	$$dim(V_n)=dim(V)\sum\limits_{i=0}^{n}dim((V^*)^{\otimes i})$$
-	$$dim(V^*)=dim(V)\land dim\Big((V)^{\otimes n}\Big)=div(V)^n$$
-	$$\implies$$
-	$$dim(V_n)=dim(V)\sum\limits_{i=0}^{n}dim(V)^{i}$$
-	$$dim(V_n)=dim(V)\frac{1-dim(V)^{n+1}}{1-dim(V)}$$
-\end{proof}
-
-Spominska kompleksnost modela je eksponentna. Gre poudarit, da v praksi redko projeciramo na celoten $V$, pogosteje nas zanima manjša podmnožica komponent.
 
 \subsection{Algebra funkcijskih prostorov}
 
