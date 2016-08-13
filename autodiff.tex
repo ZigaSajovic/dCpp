@@ -516,7 +516,7 @@ $T^{(n)}_xP:V\to V$ stopnje $n$ za katero velja
 
 \subsection{Algebra funkcijskih prostorov}
 
-Razdelajmo pojme, ki nam bodo kasneje omogočili algebraične manipulacije in analizo vzpostavljenih objektov.
+Razdelajmo pojme, ki nam bodo kasneje omogočili konstrukcijo analitičnih strojev, skozi preproste, zlahka implementirane algebraične manipulacije.
 
 Za enostavnost izražanja definirajmo funkcijske prostore
 
@@ -586,22 +586,8 @@ Tako je $\D^k$ preslikava med funkcijskimi prostori $\eqref{eq:F^n}$
  
  Kot posledica Izreka $\ref{izr:dP}$ je dvojec $(\dP,\D)$ monoid. Dejstvo, ki ga bomo sprida izkoristili pri učinkoviti implementaciji strojev poljubnega reda.
 
-\begin{definicija}
-Naj bo $\dP_n$ podprostor, ki ga množica $\{\partial^n\}$ napenja nad $\mathbb{R}$.
- \end{definicija}
- 
- \begin{izrek}\label{izr:T_n}
- 	Funkcijski prostor $\dP_n$ je izomorfen tenzorskem produktu funkcijskega prostora $\dP_0$ in tenzorske algebre duala $T(V^*)$ virtualnega prostora $V$.
- \end{izrek}
- 
- \begin{proof} 
- $$p\in\dP\implies \exists_{\II}\Big(\D^np=\sum\limits_{i\in\II} c_ip_i\otimes(V^*)^{n\otimes}\Big)$$
-  \end{proof}
-
-Po Izreku $\ref{izr:T_n}$ lahko računanje odvodov preslkave $P:V\to U$, predstavimo z eno samo
-preslikavo $\dP_0\to\dP_n$. To pomeni, da lahko programski jezik $n$-tega reda generiramo skozi linearne kombinacije prvotnega programskega jezika $\dP_0$ in virtualnim prostorom $V$.
-
-Definiramo lahko geometrijsko vrsto
+Po Izreku $\ref{izr:dP}$ lahko računanje odvodov preslkave $P:V\to U$, predstavimo z eno samo
+preslikavo. Definirajmo geometrijsko vrsto
  
  \begin{equation}\label{eq:DD}
   	\sumd_n = 1+\D +\D^2 +\ldots + \D^n 
@@ -614,9 +600,7 @@ Definiramo lahko geometrijsko vrsto
   		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}
   \end{equation}
   
-  Po Izreku $\ref{izr:linearnaNeodvisnost}$ je operator $\sumd_n$ edinstven.
-
-Operator $\sumd_k$ vsaki preslikavi $P: V\to U$ priredi preslikavo $\sumd_k:V\to
+  Po Izreku $\ref{izr:linearnaNeodvisnost}$ je operator $\sumd_n$ edinstven in vsaki preslikavi $P: V\to U$ priredi preslikavo $\sumd_k:V\to
 U\otimes T(V^*)$, sestavljeno iz preslikave same in vseh odvodov reda $k$ in
 manj. Slika $\sumd_kP(\x)$ je multitenzor reda $k$, ki je direktna vsota
 vrednosti preslikave $P$ in vseh odvodov reda $k$ in manj, vseh evaluiranih v
@@ -639,6 +623,26 @@ Očitno velja preprosta rekurzivna zveza med $\sumd_k$ in $\sumd_{k+1}$
    \sumd_{k+1} = 1 + \D +\D^2+\ldots \D^{k+1} = 1+\D(1+\D+\ldots +\D^{k}) = 1+\D\sumd_k.
 \end{equation} 
 
+\begin{definicija}
+Naj bo $\dP_n$ podprostor, ki ga množica $\{\partial^n\}$ napenja nad $\mathbb{R}$.
+ \end{definicija}
+ 
+ \begin{izrek}\label{izr:P_n}
+ 	Funkcijski prostor $\dP_n$ je izomorfen tenzorskem produktu funkcijskega prostora $\dP_0:V\to V$ in tenzorske algebre duala $T(V^*)$ virtualnega prostora $V$.
+ \end{izrek}
+ 
+ \begin{proof} 
+ Iz $\eqref{eq:P}$ sledi
+ $$p\in\dP\implies \exists_{\II}\Big(\D^np=\sum\limits_{i\in\II} c_ip_i\otimes(V^*)^{n\otimes}\Big)$$
+  \end{proof}
+  
+  Po Izreku $\ref{izr:P_n}$ velja
+  \begin{equation}
+  	\sumd_n\in\dP_0\otimes T(V^*)
+  \end{equation}
+   Zveza nam bo omogočila elegantno in učinkovito implementacijo odvodov poljubnega reda.
+
+ 
 
  \subsection{Razvoj v vrsto}
   
@@ -666,7 +670,7 @@ Očitno velja preprosta rekurzivna zveza med $\sumd_k$ in $\sumd_{k+1}$
  	\VV^i+\VV^i_j(v^j-v_0^j)
   \end{equation}
   
-  Induktivno bi želeli program razvit v vrsto. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor, ki ga množica $\{\D^k\}$ napenja nad $\RR$. Zato je izraz
+  Induktivno bi želeli program razvit v vrsto. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\RR$. Zato je izraz
   
   
  \begin{equation}
@@ -690,7 +694,7 @@ Očitno velja preprosta rekurzivna zveza med $\sumd_k$ in $\sumd_{k+1}$
  Zato velja
   
   \begin{equation}\label{eq:specProg}
-  	(e^{h\D})(\F):V^i\to V_n^i
+  	e^{h\D}:\F\times V^i\to V_n^i
   \end{equation}
  
  Po $\eqref{eq:vto}$ je $V_n$ izomorfen komutativno asociativni unitalni algebri $S(V^{i*})$, kar korespondira polinomom z nedoločenkami v $V^i$. Po $\eqref{eq:specProg}$ velja
