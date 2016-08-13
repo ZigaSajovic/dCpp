@@ -19,6 +19,7 @@
 \newcommand{\uu}{\mathbf{u}}
 \newcommand{\vv}{\mathbf{v}}
 \newcommand{\F}{\mathcal{F}}
+\newcommand{\dP}{\mathcal{P}}
 % operator odvoda
 \newcommand{\D}{\partial}
 %operator 1 + \D
@@ -518,7 +519,7 @@ $T^{(n)}_xP:V\to V$ stopnje $n$ za katero velja
 Razdelajmo pojme, ki nam bodo kasneje omogočili algebraične manipulacije in analizo vzpostavljenih objektov.
 
 Za enostavnost izražanja definirajmo funkcijske prostore
- 
+
  \begin{equation}\label{eq:F^n}
  	\F^n:V\to V\otimes(V^*)^{n\otimes}
  \end{equation}
@@ -544,10 +545,10 @@ Tako je $\D^k$ preslikava med funkcijskimi prostori $\eqref{eq:F^n}$
  
  \begin{izrek}
  	Operator $\D^k$ je rekuziven homomorfizem.
- 	$$\D^k(P_1\circ P_2)=\D^{k-1}(\D P_1\circ\D P_2)$$
+ 	$$\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-1}(\D \mathrm{f_1}\circ\D \mathrm{f_2})$$
  \end{izrek}
  
- V telesu algoritmov paradigm, kot je $\textit{deli in vladaj}$ je rekurziven homomorfizem ekvivalenten klasičnem homomorfizmu. To dejstvo sprida izkoriščamo pri učinkovitih implementacijah.
+ V telesu algoritmov paradigm, kot je $\textit{deli in vladaj}$ je rekurziven homomorfizem ekvivalenten klasičnem homomorfizmu, ki je hkrati tudi začetni pogoj. To dejstvo sprida izkoriščamo pri učinkovitih implementacijah.
  
  \begin{izrek}\label{izr:linearnaNeodvisnost}
   Množica $\{\partial^k\}$ predstavlja linearno neodvisne vektorje nad poljem $K$.
@@ -564,7 +565,43 @@ Tako je $\D^k$ preslikava med funkcijskimi prostori $\eqref{eq:F^n}$
 	$$\F^{n+1}=\F^n\iff\forall_i(c_i=0)$$
 	
  \end{proof}
- Definiramo lahko geometrijsko vrsto
+ 
+ \begin{definicija}
+ 	Neskončno odvedljiv programski jezik $\dP$, je tisti podprostor $\F$, ki zadošča relaciji
+ 	\begin{equation}\label{eq:P}
+ 		\\F=\dP\iff\D^k\F\in\F\otimes T(V^*)
+ 	\end{equation}
+ \end{definicija}
+ 
+ \begin{izrek}\label{izr:dP}
+	Programski jezik $\dP=\{\dP:V\to V_n\}$, je zaprt na diferencialni operator $\D^k$.
+ \end{izrek}
+ 
+ \begin{proof}
+ 	 Po $\eqref{eq:P}$ in simetričnosti operatorja $\D$ za vsak $k$ obstaja izomorfizem
+ 	 	\begin{equation}
+ 	 		\dP\to\D^k\dP
+ 	 	\end{equation}
+ \end{proof}
+ 
+ Kot posledica Izreka $\ref{izr:dP}$ je dvojec $(\dP,\D)$ monoid. Dejstvo, ki ga bomo sprida izkoristili pri učinkoviti implementaciji strojev poljubnega reda.
+
+\begin{definicija}
+Naj bo $\dP_n$ podprostor, ki ga množica $\{\partial^n\}$ napenja nad $\mathbb{R}$.
+ \end{definicija}
+ 
+ \begin{izrek}\label{izr:T_n}
+ 	Funkcijski prostor $\dP_n$ je izomorfen tenzorskem produktu funkcijskega prostora $\dP_0$ in tenzorske algebre duala $T(V^*)$ virtualnega prostora $V$.
+ \end{izrek}
+ 
+ \begin{proof} 
+ $$p\in\dP\implies \exists_{\II}\Big(\D^np=\sum\limits_{i\in\II} c_ip_i\otimes(V^*)^{n\otimes}\Big)$$
+  \end{proof}
+
+Po Izreku $\ref{izr:T_n}$ lahko računanje odvodov preslkave $P:V\to U$, predstavimo z eno samo
+preslikavo $\dP_0\to\dP_n$. To pomeni, da lahko programski jezik $n$-tega reda generiramo skozi linearne kombinacije prvotnega programskega jezika $\dP_0$ in virtualnim prostorom $V$.
+
+Definiramo lahko geometrijsko vrsto
  
  \begin{equation}\label{eq:DD}
   	\sumd_n = 1+\D +\D^2 +\ldots + \D^n 
@@ -578,31 +615,6 @@ Tako je $\D^k$ preslikava med funkcijskimi prostori $\eqref{eq:F^n}$
   \end{equation}
   
   Po Izreku $\ref{izr:linearnaNeodvisnost}$ je operator $\sumd_n$ edinstven.
-
-\begin{definicija}
-Naj bo $\T_n$ podprostor, ki ga množica $\{\partial^k\}$ napenja nad $\mathbb{Z}_2$.
- \end{definicija}
- 
- \begin{opomba}
-        Podprostor $\T_n$ naseljujejo programi $n$-tega reda. Napetost nad $\mathbb{Z}_2$ zoža splošen prostor $\F_n$ na oglišča hiper-kocke. Odvode $(m\le n)$-tega reda izluščimo skozi projekcije na ustrezna oglišča.
-        \end{opomba}
- 
- \begin{izrek}\label{izr:T_n}
- 	$\sumd_n$ je operator na prostoru $\T$, ki vsaki preslikavi priredi
- 	\begin{equation}
- 	\sumd_n:\T\to\T_n
- 	\end{equation}
- \end{izrek}
- 
- \begin{proof} 
- 	$$(c_0+c_1\D+c_2\D^2+....+c_n\D^n)(\T)\in\F_n$$
- 	$$c_0+c_1\D+c_2\D^2+....+c_n\D^n=\sumd_n\iff \forall_i(c_i=1)$$
- 	$$\implies$$
- 	$$(\sumd_n)(\T)=\T_n$$
-  \end{proof}
-
-Po Izreku $\ref{izr:T_n}$ lahko računanje odvodov preslkave $P:V\to U$, predstavimo z eno samo
-preslikavo $\T\to\T_n$.
 
 Operator $\sumd_k$ vsaki preslikavi $P: V\to U$ priredi preslikavo $\sumd_k:V\to
 U\otimes T(V^*)$, sestavljeno iz preslikave same in vseh odvodov reda $k$ in
