@@ -864,7 +864,7 @@ Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\
       public:
       	  int order;
           double id;
-          std::map<int,var>* dTau;
+          std::map<&var,var>* dTau;
   
           var();
           var(const var& other);
@@ -881,19 +881,19 @@ Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\
   \begin{lstlisting}
   template<class var_1, class var_2, class mapping>
   OutputIterT merge_apply(
-      var_1 first, var_2 last, var_3 output, Func func);
+      var_1 first, var_2 last, var_3 output, mapping func);
   \end{lstlisting}
   
-  ki v $\mathcal{O}(n\log(n))$ zlije dve $\textit{mapi}$, tako da pare ujemajočih se indeksov preslika s $func:V\times V\to V$, ostale pa prekopira. Sedaj se obrnemo h konstrukciji algebre nad $V_n$.
+  ki v $\mathcal{O}(n\log(n))$ zlije dve $\textit{mapi}$, tako da pare ujemajočih se indeksov preslika s $func: V^{\times n}\to V$, ostale pa prekopira. Sedaj se obrnemo h konstrukciji algebre nad $V_n$.
   
   \begin{lstlisting}
     template<class T>
     T sum_pairs(T a, T b) {
-      return std::make_pair(a.first, a.second.reduceOrder() + b.second.reduceOrder());
+      return std::make_pair(a.first, a.second + b.second);
     }
     \end{lstlisting}
   
-  Funkcija služi kot vsota po komponentah na univerzalnem virtalnem prostoru $V_n\simeq V\otimes T(V^*)$, ki skupaj z moženjem s skalarjem
+  Funkcija služi kot vsota po komponentah na univerzalnem virtalnem prostoru $V_n\simeq V\otimes T(V^*)$, ki skupaj z moženjem s skalarjem (upoštevajoč kompozicijo).
   
   \begin{lstlisting}
   template<class T>
@@ -911,38 +911,62 @@ Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\
   {
       public:
           tau();
-          tau(funDouble mapping, tau primitive);
+          tau(funDouble mapping, Vector<funVar> dVars);
           ~tau();
           var operator()(const var&v_1, const var&v_2);
       private:
-          tau primitive_v_1;
-          tau primitive_v_2;
+          Vector<funVar> dVars;
           funDouble mapping;
   }; 
   \end{lstlisting}
   
-  Po Izreku $\ref{izr:tauRek}$ lahko rekurzivno definiramo preslikave $\sumd_{n+1}\dP=(1+\D\sumd_n)\dP$, ki jih po Izreku $\ref{izr:P_n}$ generiramo z algebro nad $\dP_n$. Diferencial $\sumd$
+  Po Izreku $\ref{izr:tauRek}$ lahko rekurzivno definiramo preslikave $\sumd_{n+1}\dP=(1+\D\sumd_n)\dP$, ki jih po Izreku $\ref{izr:P_n}$ generiramo z algebro nad $\dP_n$.
   
   \begin{lstlisting}
-   var tau::operator()(const var&v_1, const var&v_2=var(0)){    
+     var tau::operator()(Vector<var&>vars){    
         var out;
-        out.real=this.mapping(v_1.real, v_2.real);
-        if(v_1.order>0||v_2.order>0){
-        	std::map<int,double> tmp_1;
-            std::map<int,double> tmp_2;
-       	 	for_each_copy(v_1.dual,v_2.dual,tmp_1, this.primitive_v_1, v_2.reduceOrder());
-       	 	for_each_copy(v_2.dual,v_1.dual,tmp_2, this.primitive_v_2, v_1.reduceOrder());
-      	 	 merge_apply(tmp_1,tmp_2, out, sum_pairs<pair<int, double> >);
-      	}
+        out.real=this.mapping(vars.id);
+        if(min_order(vars)>0){
+           for(int i=0;i<vars.size();i++){
+              std::map<&var,var> tmp;
+        	  for_each_copy(out.dTau,vars.get(i).dTau,tmp, mul_make_pair<std::pair<&var, var> >, this.dVars.get(i), vars.get(i).reduceOrder());
+        	  merge_apply(out.dTau,tmp, out.dTau, sum_pairs<pair<&var, var> >);
+          	  out.order=min(out,vars.get(i).order);
+          	}
+          }
+          return out;
+      }
+    \end{lstlisting}
+  
+  S tem smo konstruirali tudi funkcijsko algebro na prostoru programov, ki jo napenja $\{\D^n\}$ nad $\RR$ in je po Izreku $\ref{izr:P_n}$ izomorfizem $\dP\infty\simeq\dP_0\otimes T(V^*)$. Velja,
+  
+  $$tau:\dP^{\times n}\to \dP_\infty$$
+  $$tau:V\times\dP^{\times n}\to V_\infty$$
+  
+  Posledično obstaja algebra nad $V_\infty$ generirana s $tau$:
+    
+    \begin{lstlisting}
+   	var var:: operator+(double n)const;
+        var var:: operator*(double n)const;
+        var var:: operator-(double n)const;
+        var var:: operator/(double n)const;
+        var var:: operator*(const var& v)const;
+        var var:: operator/(const var& v)const;
+        var var:: operator+(const var& v)const;
+        var var:: operator-(const var& v)const;
+    \end{lstlisting}
+  Za jasnost, enega od elementov konstruiramo še eksplicitno, brez $tau$.
+  
+  \begin{lstlisting}
+    var var::operator^(double n) const{
+    	var out;
+        out.real=std::pow(this->real,n);
+        for_each_copy(this->dual, out.dual, mul_make_pair<&var, var> >, *this, n*(this->reduceOrder())^{n-1});
+        out.order=this->order;
         return out;
     }
-  \end{lstlisting}
+    \end{lstlisting}
   
-  Naj bo programski jezik generiran z množico
-    
-    $$\dP=\{+(v_1,v_2),\cdot(v_1,v_2),^{\huge{\wedge}}(v_1,v_2)\sin(v), \cos(v),e^v,\ln(v)\}$$
-    
-    Operacije, kot denimo razlika, $-$, in deljenje, $\div$, so vsebovane v $\dP$, skozi linearne kombinacije $p\in\dP$.
   
 \end{document}
 
