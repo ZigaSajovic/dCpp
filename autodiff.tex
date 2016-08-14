@@ -30,9 +30,6 @@ basicstyle=\ttfamily
 }
 
 
-\newenvironment{code}{\begin{lstlisting}}{\end{lstlisting}}
-\newenvironment{cc}{\begin{lstlisting}}{\end{lstlisting}}
-
 \newcommand{\RR}{\mathbb{R}}
 \newcommand{\II}{\mathbb{I}}
 \newcommand{\JJ}{\mathbb{J}}
@@ -47,6 +44,8 @@ basicstyle=\ttfamily
 \newcommand{\uu}{\mathbf{u}}
 \newcommand{\vv}{\mathbf{v}}
 \newcommand{\F}{\mathcal{F}}
+\newcommand{\CC}{C\nolinebreak\hspace{-.05em}\raisebox{.4ex}{\tiny\bf +}\nolinebreak\hspace{-.10em}\raisebox{.4ex}{\tiny\bf +}}
+\def\CC{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\tiny\bf ++}}}
 \newcommand{\dP}{\mathcal{P}}
 % operator odvoda
 \newcommand{\D}{\partial}
@@ -571,7 +570,7 @@ Tako je $\D^k$ preslikava med funkcijskimi prostori $\eqref{eq:F^n}$
  \D^k:\F^n\to\F^{n+k}
  \end{equation}
  
- \begin{izrek}
+ \begin{izrek}\label{izr:D^nRek}
  	Operator $\D^k$ je rekuziven homomorfizem.
  	$$\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-1}(\D \mathrm{f_1}\circ\D \mathrm{f_2})$$
  \end{izrek}
@@ -637,7 +636,7 @@ točki $\x$:
   \label{eq:multi_odvod}
   \sumd_kP(\x) = P(\x)+\D_\x P + \D^2_\x P + \ldots + \D^k_\x P.
 \end{equation}
-\begin{izrek}
+\begin{izrek}\label{izr:tauRek}
   Operator $\sumd_k$ je definiran rekurzivno s formulo
   \begin{equation}
     \label{eq:potenca(1+d)}
@@ -752,65 +751,6 @@ Skozi $\eqref{eq:specProg}$ lahko konstruiramo preslikavo iz prostora programov 
 kar znova omogoča učinkovito implementacijo.
  
  Razvoj v odrezano vrsto reda $N$ dobimo skozi projekcijo $e^{h\D}$ na $\{\D^N \}$.
-  
-\subsection{Analitični stroji}
-   
-Naj bo $\mathrm{P}\subset\T$ preslikava $V_\JJ\to V_\II$. Slika predstavlja
-mnogoterost $\mathcal{M}\subset V_\II$ (dejansko je unija zlepkov kot definrano
-v \ref{eq:zlepek}).
-
-  
-  Skupaj z definicijami prejšnjih sestavkov, lahko konstruiramo analitičen abstrakten stroj, ki z opisano mehaniko razširja množico Turing-izračunljivih strojev.
-  
-  \begin{definicija}
-   $M=\langle\T, V_\infty, \D\rangle$ je analitičen računski stroj.
-   
-    \begin{itemize}
-    \item
-    $V_\infty$ služi kot množica stanj, domena ter "neskončen trak"
-    \item
-    $\T$ je monoid preslikav $V\to V$
-    \item
-    $\D$ je diferencialni operator
-    \end{itemize}
-  \end{definicija}
- 
- Karkoli operira pod temi specifikacijami, je analitičen Turingov stroj.
- Ob konstrukciji $M$, je potrebna le enkratna aplikacija $\Dplus: \T\to\T_1$. Naj $\T_1: V\to V_1$ označuje programski jezik prvega reda in $M_1=\langle\T_1, V_\infty, \D\rangle$ stroj, ki ga implementira. Vsak program $P_1\in\T_1$, generiran v $M_1$, v vsaki točki izvajanja nosi informacijo spremembe prvega reda.
- 
- Definirajmo stroj $n$-tega reda
- \begin{equation}\label{eq:Mprime}
-	 \Dplus^n M=\langle\Dplus^n\T, V_\infty, \D\rangle
- \end{equation}
- oziroma v vzpostavljeni, ekvivalentni notaciji
-  \begin{equation}\label{eq:M'}
- 	 M_n=\langle\T_n, V_\infty, \D\rangle
-  \end{equation}
-  Tako je operator $\Dplus^n$ preslikava analitičnega stroja $M$ v stroj $M_n$. Tukaj se razume, da aktira le s prvim elementom trojca.
-  
-  \begin{izrek}\label{izr:dM}
-	$M_n=\langle\T_n, V_\infty, \D\rangle$ je analitičen računski stroj.
-  \end{izrek}
-
-\begin{proof}
-	Iz $\eqref{eq:DD}$ sledi $\Dplus^{n+1}=1+\D\Dplus^n$ in po definiciji velja	
-	$$M_{n+1}=\langle\Dplus^{n+1}\T,V_\infty,\D\rangle$$
-		$$\implies$$
-	$$M_{n+1}=\langle\T+\D\T_n,V_\infty,\D\rangle$$	
-\end{proof}
-
-
-  Vsak analitičen stroj intrinzično vsebuje zmožnost razširitve reda. To pomeni, da nam stroj $n+1$ reda ni potrebno konstruirati skozi aplikacijo $\Dplus^n$ na $M$, temveč lahko po Izreku $\ref{izr:dM}$ red $M_{n}$ inkrementiramo.
-  
-  Vsi programi konstruirani v $M_n$, skozi zaporedje akcij $\T_n$ nad $V$, v vsaki točki izvajanja vsebujejo informacijo spremembe prvih $n$ redov. Tak program označimo s $P_n$.
-  
-  \begin{equation}
-  P_{n} = \epsilon^{n'}_k\circ\epsilon^{n'}_{k-1}\ldots\epsilon^{n'}_0
-  \end{equation}
-  
-kjer velja $\E^n\in\T_n\subset\F_n$.
- 
-% Z ustrezno izbiro projekcije $\mathcal{P}_\II$ programa, kot $\mathcal{M}\subset V$, omogočimo preučevanje njegovega učinka na $V$. Projeciramo lahko na enotske vektorje, ki predstavljajo konceptualni vhod programa in proučujemo spremembe akcije nad $V$. S tem merimo odzivnost programa na vhodne podatke. Diagram izvajanja programa lahko predstavimo z usmerjenim grafom;- potem lahko projeciramo na, in odvajamo po kateremkoli izmed njegvih oglišč.
  
  \subsection{Optimizacija prostorske zahtevnosti}
  Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
@@ -911,6 +851,98 @@ Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\
     $\dP$ je monoid preslikav $p\in\dP:V\to V\iff\D^k p\in \dP\otimes T(V^*)$
     \end{itemize}
   \end{definicija}
-  Vse kar operira pod temi specifikacijami je $\textit{analitičen računski stroj}$ z zmožnostjo implementacije neskončno odvedljivega programskega jezika $\dP_\infty$. 
+  Vse kar operira pod temi specifikacijami je $\textit{analitičen računski stroj}$ z zmožnostjo implementacije \textit{neskončno-krat odvedljivega programskega jezika} $\dP_\infty$, saj je diferencial $\sumd_n$ linearna kombinacija množice $\{\D^n\}$. 
+  
+  \subsection{Konstrukcija}
+  Za zgled uporabe teorije predstavljamo konstrukcijo analitičnega stroja, z zmožnostjo implementacije neskončno odvedljive različice programskega jezika $\CC$ nad virtualnim pomnilnikom $V\simeq\RR$.
+  
+  Element virtualnega prostora $V_n$, implementiramo kot
+  
+  \begin{lstlisting}
+  class var
+  {
+      public:
+      	  int order;
+          double id;
+          std::map<int,var>* dTau;
+  
+          var();
+          var(const var& other);
+          ~var();
+          var(double value);
+          void init(int order);
+          var& decreseOrder();
+          var& operator=(const var& v);
+          var& operator=(double n);
+  };       
+  \end{lstlisting}
+  
+  Pred nadaljevajem predpostavimo obstoj sledeče funkcije generične paradigme
+  \begin{lstlisting}
+  template<class var_1, class var_2, class mapping>
+  OutputIterT merge_apply(
+      var_1 first, var_2 last, var_3 output, Func func);
+  \end{lstlisting}
+  
+  ki v $\mathcal{O}(n\log(n))$ zlije dve $\textit{mapi}$, tako da pare ujemajočih se indeksov preslika s $func:V\times V\to V$, ostale pa prekopira. Sedaj se obrnemo h konstrukciji algebre nad $V_n$.
+  
+  \begin{lstlisting}
+    template<class T>
+    T sum_pairs(T a, T b) {
+      return std::make_pair(a.first, a.second.reduceOrder() + b.second.reduceOrder());
+    }
+    \end{lstlisting}
+  
+  Funkcija služi kot vsota po komponentah na univerzalnem virtalnem prostoru $V_n\simeq V\otimes T(V^*)$, ki skupaj z moženjem s skalarjem
+  
+  \begin{lstlisting}
+  template<class T>
+  T mul_make_pair(var_1 a, var_2 b) {
+    return std::make_pair(a.first, a.second.reduceOrder() *b);
+  }
+  \end{lstlisting}
+  
+  omogoča generiranje linearnih kombinacij. Z objektom $dTau$ modeliramo multitenzor $\D\sumd_{n-1}(\dP)$. Očitno velja $\sumd_n\dP=id+dTau$. Generična narava nam bo omogočila konstrukcijo večih operacij.
+  
+  Po Izreku $\ref{izr:D^nRek}$ lahko rekurzivno definiramo preslikave $\D^{n+1}(\mathrm{p}_2,\circ\mathrm{p}_1)=\D^n(\D\mathrm{p}_2\circ\D\mathrm{p}_1)$, za vsako komponento $\D^n\dP:V\to V_n$ posebej. Tako je konstrukcija diferenciala $\sumd_n\dP:V\to V_n$ preprosta, saj po Izreku $\ref{izr:dP}$ velja $\sumd_n\in\dP_0\otimes T(V^*)$.
+  
+  \begin{lstlisting}
+  class tau
+  {
+      public:
+          tau();
+          tau(funDouble mapping, tau primitive);
+          ~tau();
+          var operator()(const var&v_1, const var&v_2);
+      private:
+          tau primitive_v_1;
+          tau primitive_v_2;
+          funDouble mapping;
+  }; 
+  \end{lstlisting}
+  
+  Po Izreku $\ref{izr:tauRek}$ lahko rekurzivno definiramo preslikave $\sumd_{n+1}\dP=(1+\D\sumd_n)\dP$, ki jih po Izreku $\ref{izr:P_n}$ generiramo z algebro nad $\dP_n$. Diferencial $\sumd$
+  
+  \begin{lstlisting}
+   var tau::operator()(const var&v_1, const var&v_2=var(0)){    
+        var out;
+        out.real=this.mapping(v_1.real, v_2.real);
+        if(v_1.order>0||v_2.order>0){
+        	std::map<int,double> tmp_1;
+            std::map<int,double> tmp_2;
+       	 	for_each_copy(v_1.dual,v_2.dual,tmp_1, this.primitive_v_1, v_2.reduceOrder());
+       	 	for_each_copy(v_2.dual,v_1.dual,tmp_2, this.primitive_v_2, v_1.reduceOrder());
+      	 	 merge_apply(tmp_1,tmp_2, out, sum_pairs<pair<int, double> >);
+      	}
+        return out;
+    }
+  \end{lstlisting}
+  
+  Naj bo programski jezik generiran z množico
+    
+    $$\dP=\{+(v_1,v_2),\cdot(v_1,v_2),^{\huge{\wedge}}(v_1,v_2)\sin(v), \cos(v),e^v,\ln(v)\}$$
+    
+    Operacije, kot denimo razlika, $-$, in deljenje, $\div$, so vsebovane v $\dP$, skozi linearne kombinacije $p\in\dP$.
+  
 \end{document}
 
