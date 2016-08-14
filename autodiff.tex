@@ -5,6 +5,34 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+
+\usepackage{color}
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+
+\usepackage{listings}
+
+\lstset{language=[GNU]C++,
+showspaces=false,
+showtabs=false,
+breaklines=true,
+showstringspaces=false,
+breakatwhitespace=true,
+escapeinside={(*@}{@*)},
+commentstyle=\color{greencomments},
+keywordstyle=\color{bluekeywords}\bfseries,
+stringstyle=\color{redstrings},
+basicstyle=\ttfamily
+}
+
+
+\newenvironment{code}{\begin{lstlisting}}{\end{lstlisting}}
+\newenvironment{cc}{\begin{lstlisting}}{\end{lstlisting}}
+
 \newcommand{\RR}{\mathbb{R}}
 \newcommand{\II}{\mathbb{I}}
 \newcommand{\JJ}{\mathbb{J}}
@@ -628,7 +656,7 @@ Naj bo $\dP_n$ podprostor, ki ga množica $\{\partial^n\}$ napenja nad $\mathbb{
  \end{definicija}
  
  \begin{izrek}\label{izr:P_n}
- 	Funkcijski prostor $\dP_n$ je izomorfen tenzorskem produktu funkcijskega prostora $\dP_0:V\to V$ in tenzorske algebre duala $T(V^*)$ virtualnega prostora $V$.
+ 	Funkcijski prostor $\dP_n$ je izomorfen tenzorskem produktu funkcijskega prostora $\dP_0:V\to V$ in tenzorske algebre $T(V^*)$ duala virtualnega prostora $V$.
  	
  	\begin{equation}
  	\label{eq:P_algebra}
@@ -638,24 +666,20 @@ Naj bo $\dP_n$ podprostor, ki ga množica $\{\partial^n\}$ napenja nad $\mathbb{
  
  \begin{proof} 
  Iz $\eqref{eq:P}$ sledi
- $$p\in\dP\implies \exists_{\II}\Big(\D^np=\sum\limits_{i\in\II} c_ip_i\otimes(V^*)^{n\otimes}\Big)$$
+ $$p\in\dP\iff \exists_{\II}\Big(\D^np=\sum\limits_{i\in\II} c_ip_i\otimes(V^*)^{n\otimes}\Big)$$
   \end{proof}
   
   Po Izreku $\ref{izr:P_n}$ velja
   \begin{equation}
   	\sumd_n\in\dP_0\otimes T(V^*)
   \end{equation}
-   Zveza nam bo omogočila elegantno in učinkovito implementacijo odvodov poljubnega reda. Posledično, kolikor lahko implementiramo programski jezik prvega reda, lahko implementiramo tudi programski jezik poljubnega reda.
+   Zveza nam bo omogočila elegantno in učinkovito implementacijo odvodov poljubnega reda. Posledično, v kolikor lahko implementiramo programski jezik prvega reda, lahko implementiramo tudi programski jezik poljubnega reda.
    
         \begin{opomba}
         Seveda enako velja za vse rodovne funkcije tipa
         $$\dP\to\dP_n$$
         \end{opomba}
         
-
-
- 
-
  \subsection{Razvoj v vrsto}
   
   Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega iščemo približek. Z opisano mehaniko lahko program lineariziramo.
@@ -687,7 +711,7 @@ Naj bo $\dP_n$ podprostor, ki ga množica $\{\partial^n\}$ napenja nad $\mathbb{
  Zato velja
   
   \begin{equation}\label{eq:specProg}
-  	e^{h\D}:\F\times V^i\to V_n^i
+  	e^{h\D}:\F\times V\to V_n
   \end{equation}
   
  
@@ -699,9 +723,9 @@ Skozi $\eqref{eq:specProg}$ lahko konstruiramo preslikavo iz prostora programov 
  Izraz predstavlja preslikavo programa v polinom.
  
 \begin{izrek}
-	Za program $P\in\T$ in $v^{\JJ_k}_{k}\in T(V)$ se razvoj v vrsto izraža kot zožitev\\
+	Za program $P\in\dP$ in $v^{\JJ_k}_{k}\in T(V)$ se razvoj v vrsto izraža kot zožitev\\
 	\begin{equation}\label{eq:tenzorVrsta}
-	P(V^i+hv) = \Big((e^{h\D})(P)(V^i)\Big)v^{\JJ_k}_{k}
+	P(V+hv) = \Big((e^{h\D})(P)(V)\Big)v^{\JJ_k}_{k}
 	\end{equation}
 \end{izrek}
  
@@ -711,11 +735,11 @@ Skozi $\eqref{eq:specProg}$ lahko konstruiramo preslikavo iz prostora programov 
  
  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n(P(V+hv))=\D^n P(V)(v^{\otimes n})$$
  $\impliedby$
- $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\Big((e^{h\D})(P)(V^i)\Big)(v^{\JJ_k}_{k})=\lim\limits_{\lVert h\rVert\to 0}\Big((\D^n e^{h\D})(P)(V^i)\Big)(v^{\JJ_k}_{k})$$
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\Big((e^{h\D})(P)(V)\Big)(v^{\JJ_k}_{k})=\lim\limits_{\lVert h\rVert\to 0}\Big((\D^n e^{h\D})(P)(V)\Big)(v^{\JJ_k}_{k})$$
  $$\land$$
  $$\lim\limits_{\lVert h\rVert\to 0}\D^ne^{h\D}=\lim\limits_{\lVert h\rVert\to 0}\sum\limits_{i=0}^{\infty}\frac{h^i\D^{i+n}}{i!}=\D^n$$
  $$\implies$$
- $$\Big(\D^n(P)(V^i)\Big)(v^{\otimes n})$$
+ $$\Big(\D^n(P)(V)\Big)(v^{\otimes n})$$
  \end{proof}
   
  Slika zožitve je element prvotnega virtualnega prostora $V^i$. Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa.   
@@ -873,4 +897,20 @@ Moč množice $\{\Omega_i\}$ je enaka $\lvert\{\Omega_i \}\rvert=2^k$, kjer je $
 \end{izrek}
 \subsection{Direktno odvajanje}
 \subsection{Obratno odvajanje}
+\section{Analitični stroji}
+Algoritme lahko interpretiramo, kot funkcijsko algebro nad $\dP_0:V\to V$. 
+Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\RR$, izrazimo skozi linerne kombinacije elementov $\dP_0\otimes T(V^*)$; izomorfizem, ki je generiran z dvojcem $(\dP_0,V)$ opremljenim s tenzorskim produktom. Tako sta dvojec $(\dP_0,V)$ in pripadajoča algebra zadostna pogoja za obstoj prostora neskončno odvedljivih programov $\dP_n$.
+
+\begin{definicija}
+   Dvojec $M=\langle\dP, V\rangle$ je analitičen, naskončno-krat odvedljiv računski stroj.
+   
+    \begin{itemize}
+    \item
+    $V$ virtualen prostor, "neskončen trak", opremljen s tenzorskim produktom
+    \item
+    $\dP$ je monoid preslikav $p\in\dP:V\to V\iff\D^k p\in \dP\otimes T(V^*)$
+    \end{itemize}
+  \end{definicija}
+  Vse kar operira pod temi specifikacijami je $\textit{analitičen računski stroj}$ z zmožnostjo implementacije neskončno odvedljivega programskega jezika $\dP_\infty$. 
 \end{document}
+
