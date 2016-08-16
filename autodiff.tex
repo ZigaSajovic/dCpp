@@ -835,7 +835,7 @@ Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\
   Vse kar operira pod temi specifikacijami je $\textit{analitičen računski stroj}$ z zmožnostjo implementacije \textit{neskončno-krat odvedljivega programskega jezika} $\dP_\infty$, saj je diferencial $\sumd_n$ linearna kombinacija množice $\{\D^n\}$. 
   
   \subsection{Konstrukcija}
-  Za zgled uporabe teorije predstavljamo konstrukcijo analitičnega stroja, z zmožnostjo implementacije neskončno odvedljive različice programskega jezika $\CC$ nad virtualnim prostorom $V$ nad $K$.
+  Za zgled uporabe teorije predstavljamo konstrukcijo analitičnega stroja, z zmožnostjo implementacije neskončno odvedljive različice programskega jezika $\CC$ nad virtualnim prostorom $V$ nad poljem $K$.
   
   Element virtualnega prostora $V_n$, implementiramo kot
   
@@ -879,7 +879,7 @@ Množenje s skalarjem polja $K$ omogoča produkt v večih algeberah, četudi je 
 \begin{lstlisting}
   template<class T>
   T mul_make_pair(var_1 a, var_2 b) {
-    return std::make_pair(a.first, a.second * b.reduceOrder());
+    return std::make_pair(a.first, a.second * b);
   }
   \end{lstlisting}      
   
@@ -958,6 +958,12 @@ Množenje s skalarjem polja $K$ omogoča produkt v večih algeberah, četudi je 
             return out;
         }
         \end{lstlisting}
+        
+\subsection{Optimizacija časovne kompleksnosti}
+
+Konstrukcija algebre nad $\dP_n$ sloni na multilinearnih preslikavah $\eqref{eq:multilinear}$, kar je naklonjeno paralelizaciji, bodisi skozi multi-nitno programiranje, bodisi skozi implementacijo na grafičnih procesorjih.
+
+Po Izreku $\ref{izr:D^nRek}$ velja  $\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-1}(\D \mathrm{f_1}\circ\D \mathrm{f_2})$, kar se izraža kot zaporedje skalarnih produktov. Formulo se zlahka implementira skozi $\textit{breadth-first queue}$ linearnih preslikav s praznimi preseki domen.   
 
 \subsection{Optimizacija prostorske zahtevnosti}
  Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
