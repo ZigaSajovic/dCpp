@@ -61,7 +61,8 @@ basicstyle=\ttfamily
 \newtheorem{izrek}{Izrek}[section]
 \newtheorem{opomba}{Opomba}[section]
 \newtheorem{konstrukcija}{Konstrukcija}[section]
-\title{Analitični stroji}
+\newtheorem{koda}{Koda}[section]
+\title{Analitični stroji v algebri algoritmov}
 \author{Žiga Sajovic, Martin Vuk}
 \begin{document}
 \maketitle
@@ -541,7 +542,7 @@ $T^{(n)}_xP:V\to V$ stopnje $n$ za katero velja
 \end{equation}
 \end{definicija}
 
-\subsection{Algebra funkcijskih prostorov}
+\subsection{Algebra algoritmov}
 
 Razdelajmo pojme, ki nam bodo kasneje omogočili konstrukcijo analitičnih strojev, skozi preproste, zlahka implementirane algebraične manipulacije.
 
@@ -664,18 +665,23 @@ Naj bo $\dP_n$ podprostor, ki ga množica $\{\partial^n\}$ napenja nad $\mathbb{
  \end{izrek}
  
  \begin{proof} 
- Iz $\eqref{eq:P}$ sledi
- $$p\in\dP\iff \exists_{\II}\Big(\D^np=\sum\limits_{i\in\II} c_ip_i\otimes(V^*)^{n\otimes}\Big)$$
+ Indukcijska predpostavka sledi iz $\eqref{eq:P}$.
+ \begin{equation}
+ 	p\in\dP\iff \exists_{\II}\Big(\D^np=\sum\limits_{i\in\II} c_ip_i\otimes(V^*)^{n\otimes}\Big)
+ \end{equation}
+ Indukcijski korak po Izreku $\ref{izr:dP}$ sledi Izreku $\ref{izr:D^nRek}$ 
+ $$\D p_1=p_2\in \dP\implies \D^{n+1}p_1=\D^np_2$$
   \end{proof}
-  
-  Po Izreku $\ref{izr:P_n}$ velja
-  \begin{equation}
-  	\sumd_n\in\dP_0\otimes T(V^*)
-  \end{equation}
+
    Zveza nam bo omogočila elegantno in učinkovito implementacijo odvodov poljubnega reda. Posledično, v kolikor lahko implementiramo programski jezik prvega reda, lahko implementiramo tudi programski jezik poljubnega reda.
+     
+     Po Izreku $\ref{izr:P_n}$ velja
+     \begin{equation}
+     	\sumd_n\in\dP_0\otimes T(V^*)
+     \end{equation}
    
         \begin{opomba}
-        Seveda enako velja za vse rodovne funkcije tipa
+        Seveda enako velja za vse rodovne preslikave tipa
         $$\dP\to\dP_n$$
         \end{opomba}
         
@@ -750,31 +756,7 @@ Skozi $\eqref{eq:specProg}$ lahko konstruiramo preslikavo iz prostora programov 
      
 kar znova omogoča učinkovito implementacijo.
  
- Razvoj v odrezano vrsto reda $N$ dobimo skozi projekcijo $e^{h\D}$ na $\{\D^N \}$.
- 
- \subsection{Optimizacija prostorske zahtevnosti}
- Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
- Označimo z $\{\e_i,\quad i=1,2,\ldots n\}$ standardne bazne vektorje v $\RR^n$ in z
- $\II\subset\{1,2,\ldots n\}$ množico indeksov. Indeksi v $\II$ ustrezajo
- posameznim spremenljivkam (indeksi določajo lokacijo spremenljivke v spominu). Naj bo $V_\II$ vektorski
- podprostor napet na vektorje $\{e_i;\quad i\in\II\}$. Označimo z 
- $\mathcal{P}_\II$ projekcijo na $V_i$, z $\mathcal{I}_\II$ pa vložitev $V_\II$ v
- $\RR^n$. Vložitev $\mathcal{I}_\II$ ni mišljena kot linearna preslikava, ampak
- dopuščamo, da so vrednosti spremenljivk, ki niso v $\II$, poljubne. Recimo, da nas zanima nabor spremenljivk z indeksi $\II$, ki jih
- program $P$ izračuna na podlagi nabora spremenljivk z indeksi $\mathbb{J}$.
- Preslikavo med $V_\JJ\to V_\II$, ki jo določa program $P$, lahko zapišemo kot
- \begin{equation}
-   \label{eq:zozitev}
-   P^{\JJ}_{\II}=\mathcal{P}_\II\circ P\circ \mathcal{I}_\JJ 
- \end{equation}
- Odvod preslikave $ P^{\JJ}_{\II}$ je enak produktu
- \begin{equation*}
-   P^{\JJ}_{\II}=P_\II\cdot DP\cdot I_\JJ,   
- \end{equation*}
- kjer sta $P_\II$ in  $I_\JJ$ matriki, ki ustrezata projekciji na $V_\II$ oziroma
- vložitvi $V_\JJ$ v $\RR^n$.
- 
- 
+ Razvoj v odrezano vrsto reda $N$ dobimo skozi projekcijo $e^{h\D}$ na $\{\D^N \}$. 
  
  \subsection{Kontrolne strukture}
  
@@ -835,8 +817,7 @@ Vejitve programa na območja izvajamo skozi pogojne stavke $(if/else)$. Število
 \begin{izrek}
 Moč množice $\{\Omega_i\}$ je enaka $\lvert\{\Omega_i \}\rvert=2^k$, kjer je $k$ število pogojnih stavkov, ki jih vsebuje program.
 \end{izrek}
-\subsection{Direktno odvajanje}
-\subsection{Obratno odvajanje}
+\clearpage
 \section{Analitični stroji}
 Algoritme lahko interpretiramo, kot funkcijsko algebro nad $\dP_0:V\to V$. 
 Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\RR$, izrazimo skozi linerne kombinacije elementov $\dP_0\otimes T(V^*)$; izomorfizem, ki je generiran z dvojcem $(\dP_0,V)$ opremljenim s tenzorskim produktom. Tako sta dvojec $(\dP_0,V)$ in pripadajoča algebra zadostna pogoja za obstoj prostora neskončno odvedljivih programov $\dP_n$.
@@ -854,16 +835,17 @@ Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\
   Vse kar operira pod temi specifikacijami je $\textit{analitičen računski stroj}$ z zmožnostjo implementacije \textit{neskončno-krat odvedljivega programskega jezika} $\dP_\infty$, saj je diferencial $\sumd_n$ linearna kombinacija množice $\{\D^n\}$. 
   
   \subsection{Konstrukcija}
-  Za zgled uporabe teorije predstavljamo konstrukcijo analitičnega stroja, z zmožnostjo implementacije neskončno odvedljive različice programskega jezika $\CC$ nad virtualnim pomnilnikom $V\simeq\RR$.
+  Za zgled uporabe teorije predstavljamo konstrukcijo analitičnega stroja, z zmožnostjo implementacije neskončno odvedljive različice programskega jezika $\CC$ nad virtualnim prostorom $V$ nad $K$.
   
   Element virtualnega prostora $V_n$, implementiramo kot
   
   \begin{lstlisting}
+  template<class V>
   class var
   {
       public:
       	  int order;
-          double id;
+          V id;
           std::map<&var,var>* dTau;
   
           var();
@@ -877,96 +859,127 @@ Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\
   };       
   \end{lstlisting}
   
-  Pred nadaljevajem predpostavimo obstoj sledeče funkcije generične paradigme
-  \begin{lstlisting}
-  template<class var_1, class var_2, class mapping>
-  OutputIterT merge_apply(
-      var_1 first, var_2 last, var_3 output, mapping func);
-  \end{lstlisting}
+  Multitenzor $var\in V_n$ implementiramo po Izreku $\ref{izr:tauRek}$. Z objektom $dTau_n$ modeliramo $\D\sumd_{n}$. Očitno velja
   
-  ki v $\mathcal{O}(n\log(n))$ zlije dve $\textit{mapi}$, tako da pare ujemajočih se indeksov preslika s $func: V^{\times n}\to V$, ostale pa prekopira. Sedaj se obrnemo h konstrukciji algebre nad $V_n$.
+  \begin{equation}\label{eq:var}
+  var_{n+1}=(id+dTau_n)var_{n}
+  \end{equation}
   
-  \begin{lstlisting}
-    template<class T>
-    T sum_pairs(T a, T b) {
-      return std::make_pair(a.first, a.second + b.second);
-    }
-    \end{lstlisting}
-  
-  Funkcija služi kot vsota po komponentah na univerzalnem virtalnem prostoru $V_n\simeq V\otimes T(V^*)$, ki skupaj z moženjem s skalarjem (upoštevajoč kompozicijo).
-  
-  \begin{lstlisting}
-  template<class T>
-  T mul_make_pair(var_1 a, var_2 b) {
-    return std::make_pair(a.first, a.second.reduceOrder() *b);
-  }
-  \end{lstlisting}
-  
-  omogoča generiranje linearnih kombinacij. Z objektom $dTau$ modeliramo multitenzor $\D\sumd_{n-1}(\dP)$. Očitno velja $\sumd_n\dP=id+dTau$. Generična narava nam bo omogočila konstrukcijo večih operacij.
-  
-  Po Izreku $\ref{izr:D^nRek}$ lahko rekurzivno definiramo preslikave $\D^{n+1}(\mathrm{p}_2,\circ\mathrm{p}_1)=\D^n(\D\mathrm{p}_2\circ\D\mathrm{p}_1)$, za vsako komponento $\D^n\dP:V\to V_n$ posebej. Tako je konstrukcija diferenciala $\sumd_n\dP:V\to V_n$ preprosta, saj po Izreku $\ref{izr:dP}$ velja $\sumd_n\in\dP_0\otimes T(V^*)$.
-  
-  \begin{lstlisting}
-  class tau
-  {
-      public:
-          tau();
-          tau(funDouble mapping, Vector<funVar> dVars);
-          ~tau();
-          var operator()(const var&v_1, const var&v_2);
-      private:
-          Vector<funVar> dVars;
-          funDouble mapping;
-  }; 
-  \end{lstlisting}
-  
-  Po Izreku $\ref{izr:tauRek}$ lahko rekurzivno definiramo preslikave $\sumd_{n+1}\dP=(1+\D\sumd_n)\dP$, ki jih po Izreku $\ref{izr:P_n}$ generiramo z algebro nad $\dP_n$.
-  
-  \begin{lstlisting}
-     var tau::operator()(Vector<var&>vars){    
-        var out;
-        out.real=this.mapping(vars.id);
-        if(min_order(vars)>0){
-           for(int i=0;i<vars.size();i++){
-              std::map<&var,var> tmp;
-        	  for_each_copy(out.dTau,vars.get(i).dTau,tmp, mul_make_pair<std::pair<&var, var> >, this.dVars.get(i), vars.get(i).reduceOrder());
-        	  merge_apply(out.dTau,tmp, out.dTau, sum_pairs<pair<&var, var> >);
-          	  out.order=min(out,vars.get(i).order);
-          	}
-          }
-          return out;
-      }
-    \end{lstlisting}
-  
-  S tem smo konstruirali tudi funkcijsko algebro na prostoru programov, ki jo napenja $\{\D^n\}$ nad $\RR$ in je po Izreku $\ref{izr:P_n}$ izomorfizem $\dP\infty\simeq\dP_0\otimes T(V^*)$. Velja,
-  
-  $$tau:\dP^{\times n}\to \dP_\infty$$
-  $$tau:V\times\dP^{\times n}\to V_\infty$$
-  
-  Posledično obstaja algebra nad $V_\infty$ generirana s $tau$:
+  S tem se obrnemo h konstrukciji algebre nad $V_n$. Vsota po komponentah je
     
     \begin{lstlisting}
-   	var var:: operator+(double n)const;
-        var var:: operator*(double n)const;
-        var var:: operator-(double n)const;
-        var var:: operator/(double n)const;
-        var var:: operator*(const var& v)const;
-        var var:: operator/(const var& v)const;
-        var var:: operator+(const var& v)const;
-        var var:: operator-(const var& v)const;
-    \end{lstlisting}
-  Za jasnost, enega od elementov konstruiramo še eksplicitno, brez $tau$.
+      template<class T>
+      T sum_pairs(T a, T b) {
+        return std::make_pair(a.first, a.second + b.second);
+      }
+      \end{lstlisting}
+      
+Množenje s skalarjem polja $K$ omogoča produkt v večih algeberah, četudi je $V$ definiran nad samim sabo, $K=V$
+
+\begin{lstlisting}
+  template<class T>
+  T mul_make_pair(var_1 a, var_2 b) {
+    return std::make_pair(a.first, a.second * b.reduceOrder());
+  }
+  \end{lstlisting}      
   
-  \begin{lstlisting}
-    var var::operator^(double n) const{
-    	var out;
-        out.real=std::pow(this->real,n);
-        for_each_copy(this->dual, out.dual, mul_make_pair<&var, var> >, *this, n*(this->reduceOrder())^{n-1});
-        out.order=this->order;
-        return out;
-    }
+   Pred nadaljevajem predpostavimo obstoj sledeče funkcije
+    \begin{lstlisting}
+    template<class var_1, class var_2, class var_3, class mapping>
+    var_3 merge_apply(
+        var_1 first, var_2 last, var_3 output, mapping func);
     \end{lstlisting}
-  
+    
+    ki v $\mathcal{O}(n\log(n))$ zlije dve $\textit{mapi}$, tako da pare ujemajočih se indeksov preslika s $func: V^{\times n}\to V$, ostale pa prekopira. Skupaj z operacijama po komponentah imamo sedaj linearne kombinacije $var\in V_n$ nad poljem $K$. Tenzorski produkt je implicitno definiran z $var$.
+    
+     
+      Po Izrekih $\ref{izr:D^nRek}$ in $\ref{izr:dP}$ lahko preslikave $\D^{n+1}(\mathrm{p}_2,\circ\mathrm{p}_1)=\D^n(\D\mathrm{p}_2\circ\D\mathrm{p}_1)$ definiramo rekurzivno, za vsako komponento $\D^n\dP:V\to V_n$ posebej. Tako je konstrukcija diferenciala $\sumd_n\dP:V\to V_n$ preprosta, saj po Izreku $\ref{izr:P_n}$ velja $\sumd_n\in\dP_0\otimes T(V^*)$.
+        
+        \begin{lstlisting}
+        template <class V>
+        typedef V (*Vfun)(V);
+        class tau
+        {
+            public:
+                tau();
+                tau(vFun mapping, Vector<tau> dVars);
+                ~tau();
+                var operator()(Vector<var> vars);
+            private:
+                Vector<tau> dVars;
+                vFun mapping;
+        }; 
+        \end{lstlisting}
+
+      Po Izreku $\ref{izr:tauRek}$ lahko rekurzivno definiramo preslikave $\sumd_{n+1}=1+\D\sumd_n$, ki jih po Izreku $\ref{izr:P_n}$ generiramo z algebro nad $\dP_n$.\clearpage
+      
+      \begin{lstlisting}
+         var tau::operator()(Vector<var&>vars){    
+            var out;
+            out.real=this.mapping(vars.id);
+            if(min_order(vars)>0){
+               for(int i=0;i<vars.size();i++){
+                  std::map<&var,var> tmp;
+            	  for_each_copy(out.dTau,vars.get(i).dTau,tmp, mul_make_pair<std::pair<&var, var> >, this.dVars.get(i), vars.get(i).reduceOrder());
+            	  merge_apply(out.dTau,tmp, out.dTau, sum_pairs<pair<&var, var> >);
+              	  out.order=min(out,vars.get(i).order);
+              	}
+              }
+              return out;
+          }
+        \end{lstlisting}
+      
+      S tem smo konstruirali funkcijsko algebro na prostoru programov $\dP_\infty$, ki jo nad $K$ napenja $\{\D^n\}$ in je po Izreku $\ref{izr:P_n}$ izomorfizem $\dP\infty\simeq\dP_0\otimes T(V^*)$. Velja,
+      
+      $$tau:\dP^{\times n}\to \dP_\infty$$
+      $$tau:V\times\dP^{\times n}\to V_\infty$$
+    
+    Posledično obstaja algebra nad $V_\infty$ generirana s $tau$ in z identiteto preslikana v ustrezen operator:
+        
+        \begin{lstlisting}[escapeinside={(*}{*)}]
+       	    var var:: operator+(double n)const;
+            var var:: operator*(double n)const;
+            var var:: operator^(double n)const;
+            (*$\phantom{.......................................}\vdots$*)
+            var var:: operator*(const var& v)const;
+            var var:: operator^(const var& v)const;
+            var var:: operator+(const var& v)const;
+        \end{lstlisting}
+      Za jasnost, enega od elementov konstruiramo še eksplicitno, brez $tau$.
+      
+      \begin{lstlisting}
+        var var::operator^(double n) const{
+            var out;
+            out.real=std::pow(this->real,n);
+            if(this->order>0){
+            	for_each_copy(this->dTau, out.dTau, mul_make_pair<&var, var> >, *this, n*(this->reduceOrder())^{n-1});
+            }
+            out.order=this->order;
+            return out;
+        }
+        \end{lstlisting}
+
+\subsection{Optimizacija prostorske zahtevnosti}
+ Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
+ Označimo z $\{\e_i,\quad i=1,2,\ldots n\}$ standardne bazne vektorje v $\RR^n$ in z
+ $\II\subset\{1,2,\ldots n\}$ množico indeksov. Indeksi v $\II$ ustrezajo
+ posameznim spremenljivkam (indeksi določajo lokacijo spremenljivke v spominu). Naj bo $V_\II$ vektorski
+ podprostor napet na vektorje $\{e_i;\quad i\in\II\}$. Označimo z 
+ $\mathcal{P}_\II$ projekcijo na $V_i$, z $\mathcal{I}_\II$ pa vložitev $V_\II$ v
+ $\RR^n$. Vložitev $\mathcal{I}_\II$ ni mišljena kot linearna preslikava, ampak
+ dopuščamo, da so vrednosti spremenljivk, ki niso v $\II$, poljubne. Recimo, da nas zanima nabor spremenljivk z indeksi $\II$, ki jih
+ program $P$ izračuna na podlagi nabora spremenljivk z indeksi $\mathbb{J}$.
+ Preslikavo med $V_\JJ\to V_\II$, ki jo določa program $P$, lahko zapišemo kot
+ \begin{equation}
+   \label{eq:zozitev}
+   P^{\JJ}_{\II}=\mathcal{P}_\II\circ P\circ \mathcal{I}_\JJ 
+ \end{equation}
+ Odvod preslikave $ P^{\JJ}_{\II}$ je enak produktu
+ \begin{equation*}
+   P^{\JJ}_{\II}=P_\II\cdot DP\cdot I_\JJ,   
+ \end{equation*}
+ kjer sta $P_\II$ in  $I_\JJ$ matriki, ki ustrezata projekciji na $V_\II$ oziroma
+ vložitvi $V_\JJ$ v $\RR^n$.  
   
 \end{document}
 
