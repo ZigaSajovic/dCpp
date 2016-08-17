@@ -652,7 +652,7 @@ Očitno velja preprosta rekurzivna zveza med $\sumd_k$ in $\sumd_{k+1}$
 \end{equation} 
 
 \begin{definicija}
-Naj bo $\dP_n$ podprostor, ki ga množica $\{\partial^n\}$ napenja nad $\mathbb{R}$.
+Naj bo $\dP_n$ podprostor, ki ga baza $\{\partial^n\}$ napenja nad $\mathbb{R}$.
  \end{definicija}
  
  \begin{izrek}\label{izr:P_n}
@@ -865,7 +865,7 @@ Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\
   var_{n+1}=(id+dTau_n)var_{n}
   \end{equation}
   
-  S tem se obrnemo h konstrukciji algebre nad $V_n$. Vsota po komponentah je
+  S tem se obrnemo h konstrukciji algebre nad $V$. Vsota po komponentah je
     
     \begin{lstlisting}
       template<class V>
@@ -952,7 +952,7 @@ Množenje s skalarjem polja $K$ omogoča produkt v večih algeberah, četudi je 
             var out;
             out.real=std::pow(this->real,n);
             if(this->order>0){
-            	for_each_copy(this->dTau, out.dTau, mul_make_pair<&var, var> >, *this, n*(this->reduceOrder())^{n-1});
+            	for_each_copy(this->dTau, out.dTau, mul_make_pair<&var, var> >, *this, n*(this->reduceOrder())^(n-1));
             }
             out.order=this->order;
             return out;
@@ -999,7 +999,7 @@ Po Izreku $\ref{izr:D^nRek}$ velja  $\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-
  $$(1+\Shift+\Shift^2+...+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+...+\Shift^{n-1}))$$
  $$\implies$$
  $$1-\Shift^n=(1-S)\mathcal{I}_n$$
- $$\exists_n(1-\Shift)=\Shift^n\in\Shift\implies \exists_m((1-\Shift)^{-1}\in\Shift^m\in \Shift)$$
+ $$\exists_n\Big((1-\Shift)=\Shift^n\in\Shift\Big)\implies \exists_m\Big((1-\Shift)^{-1}=\Shift^m\in \Shift\Big)$$
  $$\implies$$
  $$\mathcal{I}_{n-1}=(1-\Shift^n)(\frac{1}{1-\Shift})$$
  Po Izreku $\ref{izr:e^d}$ velja
@@ -1014,7 +1014,7 @@ Po Izreku $\ref{izr:D^nRek}$ velja  $\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-
   	\frac{\D}{1-e^{h\D}}=\sum\limits_{n=0}^{\infty}c_n\frac{(h\D)^n}{n!}
   \end{equation}
   
-  dobro definiran. Izkaže se $c_i=B_i$, kjer je $B_i$ $i$-ti Bernulijevo število. Operator $(1-\Shift^n)$ predstavlja ocenitev v krajiščih
+  dobro definiran. Izkaže se $c_i=B_i$, kjer je $B_i$ $i$-to Bernulijevo število. Operator $(1-\Shift^n)$ predstavlja ocenitev v krajiščih
   
   $$(1-\Shift^n)=\Bigg\vert_0^{nv}$$
   
