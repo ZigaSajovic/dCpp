@@ -50,6 +50,7 @@
     "eq:odvod_splosen"
     "eq:odvedljiv_program"
     "eq:zapis"
+    "eq:kompozitum_domena"
     "eq:V_n"
     "eq:prapor"
     "eq:tenzor_algebra"
