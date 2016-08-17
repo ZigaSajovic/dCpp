@@ -335,20 +335,39 @@ $\epsilon_i:\VV\to \VV$.
   Prostoru $\VV$ pravimo \emph{virtualni pomnilnik}, preslikavam $\epsilon_i$ pa
   \emph{elementarne operacije}.
 \end{definicija}
+Računalniki redko uporabljajo ves pomnilnik hkrati, zato bomo definirali, kateri
+del pomnilnika sodeluje v določenem programu. Naj bo $P:\VV\to\VV$ preslikava.
+\emph{Negibni podprostor programa P} je vektorski podprostor $N<\VV$, tako da
+je $pr_N\circ P|_N=Id_N$. Negibni podprostor je podprostor, ki ga
+preslikava $P$ ne spremeni. Če je $P$ linearna preslikava, je negibni podprostor
+napet na lastne vektorje za lastno vrednost $1$. Negibni podprostor predstavlja
+del pomnilnika, ki ga program pusti na miru. K negibnemu prostoru bomo šteli
+tudi del pomnilnika, ki ga program med izvajanjem sprosti in je na koncu
+nealociran. Čeprav se fizične vrednosti v takem pomnilniku spremenijo, jih je
+smiselno ignorirati in si misliti, da ostale enake.
 
+Podprostor $U<\VV$, ki je komplement negibnega prostora $U\oplus
+N=\VV$ imenujemo \emph{aktivni podprostor programa $P$}. Običajno za $U$ vzamemo
+kar ortogonalni komplement $N^\perp$, čeprav je za naše
+razmišljanje vseeno, kateri komplementarni podprostor izberemo. Podprostor $U$,
+je prostor spremenljivk, ki jih program dejansko spremeni. Negibni prostor
+je je sestavljen iz nezasedenega dela pomnilnika, vsebuje pa tudi neodvisne
+spremenljivke, ki se tekom programa ne spreminjajo. 
+ 
 \begin{definicija}[Odvedljiv program z domeno]
-  Naj bosta $V<\VV$ in $U<\VV$ podprostora virtualnega pomnilnika.
+  Naj bosta $V$ in $U$ poljubna vektorska prostora dimenzije manjše kot $\dim \VV$.
   \emph{Odvedljiv program z domeno $V$} je vsaka odvedljiva preslikava
   \begin{equation}
     \label{eq:odvedljiv_program}
     P:V\to U,
   \end{equation}
- ki se v vsaki točki $\vv\in V$ na odprti okolici izraža kot kompozitum neke afine vložitve $i_V:V\hookrightarrow
- \VV$, zaporedja elementarnih operacij $\epsilon_\vv^{i}$  in projekcije $pr_U:\VV\to U$
+ ki se izraža kot kompozitum  afine vložitve $i_V:V\hookrightarrow \VV$,
+zaporedja elementarnih operacij $\epsilon_\vv^{i}$ in surjektivne preslikave na
+$:pr_U:\VV\to U$
  \begin{equation}
    \label{eq:zapis}
-   P = pr_U\circ \epsilon_\vv^{k_\vv}\circ \cdots \circ \epsilon_\vv^1\circ i_V.
- \end{equation}
+   P = pr_U\circ\epsilon_{k}\circ \cdots \circ \epsilon_1\circ i_V.
+ \end{equation} 
 \end{definicija}
 \begin{opomba}
   Domena programa $V$ določa, po katerih spremenljivkah bomo odvajali. Tekom
@@ -358,6 +377,7 @@ $\epsilon_i:\VV\to \VV$.
 $S_k(V^*)$ se ne spreminja, ne glede na to kakšna je dimenzija domene in
 ko-domene za vmesne operacije. Na ta način zmanjšamo potrebo po spominu na minimum.
 \end{opomba}
+
 Program $P:V\to U$ je \emph{brez stranskih učinkov}, če je zožitev preslikave 
 na $U^\perp$ 
 $$ pr_{U^\perp}\circ \epsilon_k\circ \cdots \circ \epsilon_k\circ i_{U^\perp}=Id_{U^\perp}$$  
@@ -374,17 +394,30 @@ vrednosti, ki jih funkcija vrne. Zaporedje ukazov $\epsilon_i$ pa pove, kako
 funkcija vrednosti dejansko izračuna. 
 Zanima nas, kako lahko funkcije med sabo komponiramo. Naj bosta $P:V\to U$ in 
 $Q:U\to W$ programa z domeno $V$ oziroma $U$. Njuna kompozicija bo imela smisel 
-le, če je $i_U\circ pr_U$ identiteta na $\VV$. V nasprotnem primeru bi to 
+le, če $i_U\circ pr_U$ nadomestimo z identiteto na $\VV$. V nasprotnem primeru bi to 
 pomenilo, da se s klicem funkcije $Q$ ``pokvari'' del pomnilnika, ki nima nobene 
 zveze z argumenti funkcije $Q$ 
+
+\begin{definicija}
+  Kompozitum dveh programov z domeno $P:V\to U$ in $Q:U\to W$ je program
+  $QP:V\to W$ podan kot kompozitum
+  \begin{equation}
+    \label{eq:kompozitum_domena}
+    QP = pr_W\circ \epsilon^Q_k\circ\cdots\circ \epsilon_1^Q\circ T_u\circ \epsilon^P_l\circ\cdots\circ \epsilon^P_l\circ i_V,
+  \end{equation}
+kjer sta $P=pr_U\circ\epsilon^P_l\circ\cdots\circ \epsilon^P_l\circ i_V$,
+$Q=pr_W\circ \epsilon^Q_k\circ \cdots \circ\epsilon^Q_1\circ i_u$ in $T_U$
+preslikava $T_U:\VV \to \VV$, za katero je ??. 
+\end{definicija}
 
 Prostor $\T_V$ opisuje vse možne programe z domeno $V$, na našem
 stroju, množica generatorjev $\E$ pa elementarne operacije, ki jih stroj lahko
 izvaja. Ker je $\T_V=\langle \E \rangle$, lahko vsak program $P$ zapišemo kot
 kompozitum elementarnih operacij $\epsilon_i$:
+
 \[
 P = \epsilon_k\circ\epsilon_{k-1}\ldots\epsilon_0.
-\]  
+\]
 
 Če želimo tekom programa sproti računati tudi odvode, moramo hraniti vmesne
 vrednosti odvodov. Zato moramo pomnilnik (vektorski prostor $V$) razširiti, da
