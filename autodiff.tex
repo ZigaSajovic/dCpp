@@ -702,14 +702,21 @@ kjer velja posplošeno Leibnitzevo pravilo
 p=fg\implies\sum\limits_{i+j=k}\D^if\D^jg=\D^kp
 \end{equation}
 $$\implies$$
-\begin{equation}
+\begin{equation}\label{eq:P_Prod}
 \sumd_n f\sumd_n g=\sumd_n(fg)
 \end{equation}
 
 Tako je denimo produkt nad $\dP_2$ za $f,g\in\dP$
 
 $$(f+\D f+\D^2 f)(g+\D g+\D^2 g)=fg+f\D g+g\D f+\D f\D g + f\D^2g+g\D^2 g$$
-        
+
+S tem je definicija kompozicije preslikav $\dP_n$ preprosta
+
+\begin{equation}
+\sumd_{n+1}(f\circ g)=f\circ g + \D\sumd_nf\cdot\D\sumd_ng
+\end{equation}
+
+kjer za jasnost $\cdot$ predstavlja produkt $\eqref{eq:P_Prod}$.        
  \subsection{Razvoj v vrsto}
   
   Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega iščemo približek. Z opisano mehaniko lahko program lineariziramo.
@@ -717,7 +724,7 @@ $$(f+\D f+\D^2 f)(g+\D g+\D^2 g)=fg+f\D g+g\D f+\D f\D g + f\D^2g+g\D^2 g$$
   %enačba pomeni, da vektorju odštšteješ "realni" del
   Slika linearizacije služi kot dober približek slike prvotnega programa.
   
-  Induktivno bi želeli program razvit v neskončno vrsto. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\RR$. Zato je izraz
+  Induktivno bi želeli program razvit v neskončno vrsto. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\dP$ (ki je funkcijski prostor nad $\RR$). Zato je izraz
   
   
  \begin{equation}
