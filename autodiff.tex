@@ -628,7 +628,7 @@ Tako je $\D^k$ preslikava med funkcijskimi prostori $\eqref{eq:F^n}$
  \end{proof}
  
  \begin{definicija}
- 	Neskončno odvedljiv programski jezik $\dP$, je tisti podprostor $\F$, ki zadošča relaciji
+ 	Neskončno odvedljiv programski jezik $\dP$, je vsak podprostor $\F$, ki zadošča relaciji
  	\begin{equation}\label{eq:P}
  		\\F=\dP\iff\D^k\F\in\F\otimes T(V^*)
  	\end{equation}
@@ -685,7 +685,7 @@ Očitno velja preprosta rekurzivna zveza med $\sumd_k$ in $\sumd_{k+1}$
 \end{equation} 
 
 \begin{definicija}
-Naj bo $\dP_n$ podprostor, ki ga baza $\{\partial^n\}$ napenja nad $\mathbb{R}$.
+Naj bo $\dP_n$ podprostor, ki ga baza $\{\partial^n\}$ napenja nad $\dP$.
  \end{definicija}
  
  \begin{izrek}\label{izr:P_n}
@@ -715,9 +715,41 @@ Naj bo $\dP_n$ podprostor, ki ga baza $\{\partial^n\}$ napenja nad $\mathbb{R}$.
    
         \begin{opomba}
         Seveda enako velja za vse rodovne preslikave tipa
-        $$\dP_n\to\dP_n$$
+        $$\dP\to\dP_n$$
         \end{opomba}
         
+Sedaj lahko definiramo produkt nad $\dP_n$. Po Izreku $\ref{izr:P_n}$ velja
+
+\begin{equation}
+	f,g\in\dP\implies\exists_{p\in\dP}\Big(\D^nf\D^mg=\D^{n+m}p\Big)
+\end{equation}
+Množica $\{\D^n\}$ implicira nilpotenco $k>n\implies\D^k=0$. Produkt med dvema elementoma $\dP_n$ je implicitno definiran s tenzorsko algebro. 
+
+\begin{equation}
+	\sum\limits_{i=0}^{n}\D^if\sum\limits_{j=0}^{n}\D^jg=\sum\limits_{k=0}^{n}\sum\limits_{i+j=k}\D^if\D^jg
+\end{equation}
+
+kjer velja posplošeno Leibnitzevo pravilo
+
+\begin{equation}
+p=fg\implies\sum\limits_{i+j=k}\D^if\D^jg=\D^kp
+\end{equation}
+$$\implies$$
+\begin{equation}\label{eq:P_Prod}
+\sumd_n f\sumd_n g=\sumd_n(fg)
+\end{equation}
+
+Tako je denimo produkt nad $\dP_2$ za $f,g\in\dP$
+
+$$(f+\D f+\D^2 f)(g+\D g+\D^2 g)=fg+f\D g+g\D f+\D f\D g + f\D^2g+g\D^2 g$$
+
+S tem je definicija kompozicije preslikav $\dP_n$ preprosta
+
+\begin{equation}
+\sumd_{n+1}(f\circ g)=f\circ g + \D\sumd_nf\cdot\D\sumd_ng
+\end{equation}
+
+kjer za jasnost $\cdot$ predstavlja produkt $\eqref{eq:P_Prod}$.        
  \subsection{Razvoj v vrsto}
   
   Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega iščemo približek. Z opisano mehaniko lahko program lineariziramo.
@@ -725,7 +757,7 @@ Naj bo $\dP_n$ podprostor, ki ga baza $\{\partial^n\}$ napenja nad $\mathbb{R}$.
   %enačba pomeni, da vektorju odštšteješ "realni" del
   Slika linearizacije služi kot dober približek slike prvotnega programa.
   
-  Induktivno bi želeli program razvit v neskončno vrsto. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\RR$. Zato je izraz
+  Induktivno bi želeli program razvit v neskončno vrsto. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\dP$ (ki je funkcijski prostor nad $\RR$). Zato je izraz
   
   
  \begin{equation}
@@ -850,7 +882,8 @@ Vejitve programa na območja izvajamo skozi pogojne stavke $(if/else)$. Število
 \begin{izrek}
 Moč množice $\{\Omega_i\}$ je enaka $\lvert\{\Omega_i \}\rvert=2^k$, kjer je $k$ število pogojnih stavkov, ki jih vsebuje program.
 \end{izrek}
-\clearpage
+
+
 \section{Analitični stroji}
 Algoritme lahko interpretiramo, kot funkcijsko algebro nad $\dP_0:V\to V$. 
 Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\RR$, izrazimo skozi linerne kombinacije elementov $\dP_0\otimes T(V^*)$; izomorfizem, ki je generiran z dvojcem $(\dP_0,V)$ opremljenim s tenzorskim produktom. Tako sta dvojec $(\dP_0,V)$ in pripadajoča algebra zadostna pogoja za obstoj prostora neskončno odvedljivih programov $\dP_n$.
@@ -944,7 +977,7 @@ Množenje s skalarjem polja $K$ omogoča produkt v večih algeberah, četudi je 
         }; 
         \end{lstlisting}
 
-      Po Izreku $\ref{izr:tauRek}$ lahko rekurzivno definiramo preslikave $\sumd_{n+1}=1+\D\sumd_n$, ki jih po Izreku $\ref{izr:P_n}$ generiramo z algebro nad $\dP_n$.\clearpage
+      Po Izreku $\ref{izr:tauRek}$ lahko rekurzivno definiramo preslikave $\sumd_{n+1}=1+\D\sumd_n$, ki jih po Izreku $\ref{izr:P_n}$ generiramo z algebro nad $\dP_n$.
       
       \begin{lstlisting}
          var tau::operator()(Vector<var&>vars){    

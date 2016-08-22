@@ -1,4 +1,4 @@
-# Odvedljivi stroji
+# Analitični stroji v algebri algoritmov
 
-Članek o avtomatskem odvajanju, razvoju programov v vrste in še čem. Članek je dobra razlaga,  kako deluje knjižnica 
+Članek o neskončnokrat-odvedljivih programskih jezikih v algebri algoritmov, razvoju programov v vrste in še čem. Članek je dobra razlaga delovanja knjižnice
 https://github.com/ZigaSajovic/dCpp.
