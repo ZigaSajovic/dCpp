@@ -804,12 +804,49 @@ kar znova omogoča učinkovito implementacijo.
  $\impliedby$
  $$exp(\D_fe^{h\D_g})=e^{\D_f}\prod_{i=1}^{\infty}e^{\D_f\frac{(h\D_g)^i}{i!}}$$
  $$\implies$$
- $$e^{h\D}(f\circ g)=e^{\D_f}\sum\limits_{\forall_n}h^n\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(f\Big)$$
+ $$exp(\D_fe^{h\D_g})(g)(f)=e^{\D_f}\sum\limits_{\forall_n}h^n\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(f\Big)$$
  kjer $\lambda(n)$ ozačuje particije $n$.
  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^nexp(\D_fe^{h\D_g})=\lim\limits_{\lVert h\rVert\to 0}e^{\D_f}\sum\limits_{\forall_m}n!h^{n-m}\sum\limits_{\lambda(m)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(f\Big)$$
  $$\implies$$
- $$e^{\D_f}\sum\limits_{\lambda(n)}n!\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(f\Big)$$
+ \begin{equation}\label{eq:dComposite}
+ e^{\D_f}\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(f\Big)
+ \end{equation}
+ kjer $e^{\D_f}$ opravi shift v specifično točk, saj je za ocenitev v točki ekvivalenten identiteti $e^{\D_f}(v\in V)=v$.
  \end{proof}       
+ 
+ Izraz $\eqref{eq:dComposite}$ je analog Faà di Bruno-vi formuli.
+ 
+ Operator $exp(\D_fe^{h\D_g})(g)(f)$ opravi povlek preslikave $f$ skozi $g$. Velja
+ 
+ \begin{equation}
+ exp(\D_fe^{h\D_g})(g): \dP\to\dP(g)
+ \end{equation}
+ 
+ Tako je njegov odvod $\frac{d}{dh}$
+ 
+ \begin{equation}\label{eq:dexp}
+ \frac{d}{dh}exp(\D_fe^{h\D_g})(g)=\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)
+ \end{equation}
+ 
+ Opazimo pomembno distinkcijo z operatorjem $e^{h\D_g}$, katerega odvod je
+ 
+ \begin{equation}\label{eq:de}
+\frac{d}{dh}e^{h\D_g}=\D_ge^{h\D_g}
+ \end{equation}
+ 
+ Sedaj lahko računam odvode poljubnega reda operatorja povleka. Kot primer poračunamo drugi odvod
+ 
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^2exp(\D_fe^{h\D_g})(g)=\lim\limits_{\lVert h\rVert\to 0}\frac{d}{dh}\Big(\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)\Big)$$
+ kar je po enačbah $\eqref{eq:dexp}$ in $\eqref{eq:de}$
+ $$\lim\limits_{\lVert h\rVert\to 0}(\D_f(\D_gg)\D_f(\D_gg))e^{2h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_g\D_f(\D_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)$$
+ z nekaj algebre
+ $$\lim\limits_{\lVert h\rVert\to 0}(\D^2_f(\D_gg)^2)e^{2h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_f(\D^2_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)$$
+  $$\implies$$
+ \begin{equation}
+	(\D^2_f(\D_gg)^2+\D_f(\D^2_gg))exp(\D_f)
+ \end{equation}
+ 
+ Rezultat se seveda ujema z enačbo $\eqref{eq:dComposite}$ za $n=2$.
  
  \subsection{Kontrolne strukture}
  
