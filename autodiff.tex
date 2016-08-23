@@ -788,27 +788,29 @@ kar znova omogoča učinkovito implementacijo.
   $$\sum\limits_{k=0}^{n}{n\choose k}\D^{n-k}p_1\D^kp_2$$
  \end{proof}
  
-% \begin{izrek}
-% Kompozicija preslikav $\dP_n$ se izraža kot
-% \begin{equation}
-% e^{h\D}(f\circ g)=exp(\D_fe^{h\D_g})(f,g)
-% \end{equation}
-% \end{izrek}
-% 
-%\begin{proof}
-% Za vsak $n$ velja $\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(LHS)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(RHS)}$\\
-% $\implies$
-% $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^ne^\D(f\circ g)=\lim\limits_{\lVert h\rVert\to 0}\D^ne^{h\D}(f\circ g)$$
-% $$\implies$$
-% $$\D^n(f\circ g)$$
-% $\impliedby$
-% $$exp(\D_fe^{h\D_g})=e^{\D_f}\prod_{i=1}^{\infty}e^{\D_f\frac{(h\D_g)^i}{i!}}$$
-% $$\implies$$
-% $$e^\D(f\circ g)=e^{\D_f}\sum\limits_{\forall_n}(h\D_g)^n\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}(\frac{\D_f}{l!})^k\frac{1}{k!}$$
-% kjer $\lambda(n)$ ozačuje particije $n$.
-% $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n$$
-% \end{proof}       
-% 
+ \begin{izrek}
+ Kompozicija preslikav $\dP_n$ se izraža kot
+ \begin{equation}
+ e^{h\D}(f\circ g)=exp(\D_fe^{h\D_g})(g)(f)
+ \end{equation}
+ \end{izrek}
+ 
+\begin{proof}
+ Za vsak $n$ velja $\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(LHS)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(RHS)}$\\
+ $\implies$
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^ne^\D(f\circ g)=\lim\limits_{\lVert h\rVert\to 0}\D^ne^{h\D}(f\circ g)$$
+ $$\implies$$
+ $$\D^n(f\circ g)$$
+ $\impliedby$
+ $$exp(\D_fe^{h\D_g})=e^{\D_f}\prod_{i=1}^{\infty}e^{\D_f\frac{(h\D_g)^i}{i!}}$$
+ $$\implies$$
+ $$e^{h\D}(f\circ g)=e^{\D_f}\sum\limits_{\forall_n}h^n\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(f\Big)$$
+ kjer $\lambda(n)$ ozačuje particije $n$.
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^nexp(\D_fe^{h\D_g})=\lim\limits_{\lVert h\rVert\to 0}e^{\D_f}\sum\limits_{\forall_m}n!h^{n-m}\sum\limits_{\lambda(m)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(f\Big)$$
+ $$\implies$$
+ $$e^{\D_f}\sum\limits_{\lambda(n)}n!\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(f\Big)$$
+ \end{proof}       
+ 
  \subsection{Kontrolne strukture}
  
  Do sedaj smo se omejili na operacije, ki spreminjajo vsebino spomina. Poleg
