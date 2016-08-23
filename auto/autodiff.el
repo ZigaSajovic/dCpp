@@ -2,7 +2,7 @@
  "autodiff"
  (lambda ()
    (TeX-add-to-alist 'LaTeX-provided-package-options
-                     '(("babel" "slovene") ("inputenc" "utf8")))
+                     '(("babel" "slovene") ("inputenc" "utf8") ("fontenc" "T1")))
    (TeX-run-style-hooks
     "latex2e"
     "article"
@@ -11,10 +11,15 @@
     "inputenc"
     "amsmath"
     "amsfonts"
-    "amsthm")
+    "amsthm"
+    "fontenc"
+    "inconsolata"
+    "color"
+    "listings")
    (TeX-add-symbols
     '("op" 1)
     "RR"
+    "Shift"
     "II"
     "JJ"
     "E"
@@ -28,10 +33,12 @@
     "uu"
     "vv"
     "F"
+    "dP"
     "D"
     "Dplus"
     "sumd"
-    "Op")
+    "Op"
+    "CC")
    (LaTeX-add-labels
     "eq:kompozitum"
     "eq:rek_odvod"
@@ -62,30 +69,33 @@
     "eq:F_n"
     "eq:dd"
     "eq:toFn+k"
+    "izr:D^nRek"
     "izr:linearnaNeodvisnost"
+    "eq:P"
+    "izr:dP"
     "eq:DD"
-    "izr:T_n"
     "eq:multi_odvod"
+    "izr:tauRek"
     "eq:potenca(1+d)"
     "eq:rekurzija"
-    "eq:tenV"
-    "eq:vto"
-    "eq:linear"
+    "izr:P_n"
+    "eq:P_algebra"
+    "eq:P_Prod"
     "eq:e^d"
     "eq:specProg"
+    "izr:e^d"
     "eq:tenzorVrsta"
-    "eq:Mprime"
-    "eq:M'"
-    "izr:dM"
-    "eq:zozitev"
     "eq:zlepek"
     "eq:zlrprk_splosno"
-    "eq:Dzlrprk_splosno")
+    "eq:Dzlrprk_splosno"
+    "eq:var"
+    "eq:zozitev")
    (LaTeX-add-amsthm-newtheorems
     "definicija"
     "trditev"
     "izrek"
     "opomba"
-    "konstrukcija"))
+    "konstrukcija"
+    "koda"))
  :latex)
 
