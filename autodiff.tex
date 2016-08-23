@@ -60,6 +60,7 @@ basicstyle=\ttfamily
 \newtheorem{trditev}{Trditev}[section]
 \newtheorem{izrek}{Izrek}[section]
 \newtheorem{opomba}{Opomba}[section]
+\newtheorem{posledica}{Posledica}[section]
 \newtheorem{konstrukcija}{Konstrukcija}[section]
 \newtheorem{koda}{Koda}[section]
 \title{Analitični stroji v algebri algoritmov}
@@ -574,8 +575,47 @@ $T^{(n)}_xP:V\to V$ stopnje $n$ za katero velja
   \lim_{h\to 0}\frac{\|P(x+h)-T^{(n)}_xP(h)\|}{\|h\|^n}=0
 \end{equation}
 \end{definicija}
-
-\subsection{Algebra algoritmov}
+\subsection{Kompozicija}
+V tem delu se bomo posvetili \emph{verižnemu pravilu} za odvod kompozituma in
+posledicami za višje odvode.
+\begin{izrek}[Verižno pravilo]
+  Naj bosta $f:U\to W$ in $g:V\to U$ odvedljivi preslikavi. Potem je 
+\[T_\x(f\circ g)=T_{g(\x)}f\circ T_\x g.\]
+\end{izrek}
+\begin{posledica}
+Če gledamo na odvod kot preslikave $\D g:V\to U \otimes V^*$ in $\D f:U\to
+W\otimes U^*$, se \emph{verižno pravilo} izraža kot
+\[\D(f\circ g) = (\D f\circ g)\cdot \D g,\]
+kjer je produkt $\cdot$ med tenzorji iz $W\otimes U^*$ in $U\times V^*$
+definiran s kontrakcijo, ki se na enostavnih tenzorjih izraža s formulo
+$$w\otimes f\cdot u\otimes g=f(u)w\otimes g.$$
+\end{posledica}
+\begin{proof}
+Trditev lahko preverimo v vsaki točki $\x\in V$ posebej. Prepričati se moramo
+le, da produkt tenzorjev definiran s kontrakcijo ustreza kompozitumu linearnih
+preslikav. Vzemimo dva enostavna tenzorja $w\otimes f\in W\otimes U^*$ in
+$u\otimes g\in U\otimes V^*$. Tenzorja delujeta kot linearni preslikavi ravno s
+kontrakcijo. Če je $\x\in V$, je 
+\[(w\otimes f)((u\otimes g)(\x))=(w\otimes f)(g(\x)u) = g(\x)f(u)w = (f(u)w
+  \otimes g)(\x).\]
+ Kompozitum linearnih preslikav, ki ustrezata tenzorjema $w\otimes f$ in
+ $u\otimes g$ je linearna preslikava, ki ustreza tenzorju $f(u)w\otimes g$, ki
+ pa je ravno produkt obeh tenzorjev.
+\end{proof}
+ \begin{izrek}\label{izr:D^nRek}
+ 	Operator $\D^k$ je za kompozitum dveh funkcij rekuzivno definiran z verižnim pravilom in produktom multitenzorjev:
+ 	$$\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-1}((\D \mathrm{f_1}\circ
+  f_2)\cdot \D \mathrm{f_2}),$$,
+kjer je produkt $\cdot$ multitenzorjev iz $V\otimes T(V^*)$ definiran kot
+bilinearna razširitev kontrakcije definirane na enostavnih tenzorjih s formulo
+$$(v\otimes f_1\otimes\ldots f_n)\cdot (u\otimes g_1\otimes \ldots
+ g_k) = f_n(u)v\otimes f_1\ldots f_{n-1}\otimes g_1\otimes \ldots
+ g_k. $$
+ \end{izrek}
+ \begin{opomba}[Izračunljivost višjih odvodov]
+   
+ \end{opomba}
+ \subsection{Algebra algoritmov}
 
 Razdelajmo pojme, ki nam bodo kasneje omogočili konstrukcijo analitičnih strojev, skozi preproste, zlahka implementirane algebraične manipulacije.
 
@@ -604,17 +644,7 @@ Tako je $\D^k$ preslikava med funkcijskimi prostori $\eqref{eq:F^n}$
  \D^k:\F^n\to\F^{n+k}
  \end{equation}
  
- \begin{izrek}\label{izr:D^nRek}
- 	Operator $\D^k$ je rekuzivno definiran z verižnim pravilom:
- 	$$\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-1}((\D \mathrm{f_1}\circ
-  f_2)\cdot \D \mathrm{f_2}),$$,
-kjer je produkt $\cdot$ multitenzorjev iz $V\otimes T(V^*)$ definiran kot
-bilinearna razširitev kontrakcije definirane na enostavnih tenzorjih s formulo
-$$(v\otimes f_1\otimes\ldots f_n)\cdot (u\otimes g_1\otimes \ldots
- g_k) = f_n(u)v\otimes f_1\ldots f_{n-1}\otimes g_1\otimes \ldots
- g_k $$
- \end{izrek}
- 
+
  V telesu algoritmov paradigm, kot je $\textit{deli in vladaj}$ je rekurziven homomorfizem ekvivalenten klasičnem homomorfizmu, ki je hkrati tudi začetni pogoj. To dejstvo sprida izkoriščamo pri učinkovitih implementacijah.
  
  \begin{izrek}\label{izr:linearnaNeodvisnost}

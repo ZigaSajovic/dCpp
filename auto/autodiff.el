@@ -68,11 +68,11 @@
     "eq:polinom"
     "eq:produkt"
     "eq:aprox"
+    "izr:D^nRek"
     "eq:F^n"
     "eq:F_n"
     "eq:dd"
     "eq:toFn+k"
-    "izr:D^nRek"
     "izr:linearnaNeodvisnost"
     "eq:P"
     "izr:dP"
@@ -101,6 +101,7 @@
     "trditev"
     "izrek"
     "opomba"
+    "posledica"
     "konstrukcija"
     "koda")
    (LaTeX-add-color-definecolors
