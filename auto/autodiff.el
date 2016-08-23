@@ -3,6 +3,9 @@
  (lambda ()
    (TeX-add-to-alist 'LaTeX-provided-package-options
                      '(("babel" "slovene") ("inputenc" "utf8") ("fontenc" "T1")))
+   (add-to-list 'LaTeX-verbatim-environments-local "lstlisting")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "lstinline")
+   (add-to-list 'LaTeX-verbatim-macros-with-delims-local "lstinline")
    (TeX-run-style-hooks
     "latex2e"
     "article"
@@ -80,11 +83,14 @@
     "eq:rekurzija"
     "izr:P_n"
     "eq:P_algebra"
-    "eq:P_Prod"
+    "eq:P_prod"
     "eq:e^d"
     "eq:specProg"
     "izr:e^d"
     "eq:tenzorVrsta"
+    "eq:dComposite"
+    "eq:dexp"
+    "eq:de"
     "eq:zlepek"
     "eq:zlrprk_splosno"
     "eq:Dzlrprk_splosno"
@@ -96,6 +102,10 @@
     "izrek"
     "opomba"
     "konstrukcija"
-    "koda"))
+    "koda")
+   (LaTeX-add-color-definecolors
+    "bluekeywords"
+    "greencomments"
+    "redstrings"))
  :latex)
 

@@ -605,8 +605,14 @@ Tako je $\D^k$ preslikava med funkcijskimi prostori $\eqref{eq:F^n}$
  \end{equation}
  
  \begin{izrek}\label{izr:D^nRek}
- 	Operator $\D^k$ je rekuziven homomorfizem.
- 	$$\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-1}(\D \mathrm{f_1}\D \mathrm{f_2})$$
+ 	Operator $\D^k$ je rekuzivno definiran z verižnim pravilom:
+ 	$$\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-1}((\D \mathrm{f_1}\circ
+  f_2)\cdot \D \mathrm{f_2}),$$,
+kjer je produkt $\cdot$ multitenzorjev iz $V\otimes T(V^*)$ definiran kot
+bilinearna razširitev kontrakcije definirane na enostavnih tenzorjih s formulo
+$$(v\otimes f_1\otimes\ldots f_n)\cdot (u\otimes g_1\otimes \ldots
+ g_k) = f_n(u)v\otimes f_1\ldots f_{n-1}\otimes g_1\otimes \ldots
+ g_k $$
  \end{izrek}
  
  V telesu algoritmov paradigm, kot je $\textit{deli in vladaj}$ je rekurziven homomorfizem ekvivalenten klasičnem homomorfizmu, ki je hkrati tudi začetni pogoj. To dejstvo sprida izkoriščamo pri učinkovitih implementacijah.
