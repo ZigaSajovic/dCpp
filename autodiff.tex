@@ -802,18 +802,25 @@ kar znova omogoča učinkovito implementacijo.
  $$\implies$$
  $$\D^n(f\circ g)$$
  $\impliedby$
- $$exp(\D_fe^{h\D_g})=e^{\D_f}\prod_{i=1}^{\infty}e^{\D_f\frac{(h\D_g)^i}{i!}}$$
+ $$exp(\D_fe^{h\D_g})=\prod_{i=1}^{\infty}e^{\D_f\frac{(h\D_g)^i}{i!}}\Big(e^{\D_f}\Big)$$
  $$\implies$$
- $$exp(\D_fe^{h\D_g})(g)(f)=e^{\D_f}\sum\limits_{\forall_n}h^n\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(f\Big)$$
+ $$exp(\D_fe^{h\D_g})(g)(f)=\sum\limits_{\forall_n}h^n\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(\Big(e^{\D_f}\Big)f\Big)$$
  kjer $\lambda(n)$ ozačuje particije $n$.
- $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^nexp(\D_fe^{h\D_g})=\lim\limits_{\lVert h\rVert\to 0}e^{\D_f}\sum\limits_{\forall_m}n!h^{n-m}\sum\limits_{\lambda(m)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(f\Big)$$
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^nexp(\D_fe^{h\D_g})=\lim\limits_{\lVert h\rVert\to 0}\sum\limits_{\forall_m}n!h^{n-m}\sum\limits_{\lambda(m)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(\Big(e^{\D_f}\Big)f\Big)$$
  $$\implies$$
  \begin{equation}\label{eq:dComposite}
- e^{\D_f}\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(f\Big)
+ \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f\Big)
  \end{equation}
- kjer $e^{\D_f}$ opravi shift v specifično točk, saj je za ocenitev v točki ekvivalenten identiteti $e^{\D_f}(v\in V)=v$.
+ kjer $e^{\D_f}$ preslika $\dP\to\dP_n$. 
  \end{proof}       
- 
+ \begin{opomba}
+ Zato je včasih smiselno predhodno aplicirat $g(v)\in V$ na $f$, saj $e^\D$ apliciran na konstanto predstavlja identiteto in tako dobimo odvod v točki $v\in V$ namesto razvoja v multitenzor.
+  $$\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f(g(v))\Big)$$
+  $$\implies$$
+  \begin{equation}\label{eq:dCompositePoint}
+  \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(f(g(v))\Big)
+  \end{equation}
+ \end{opomba}
  Izraz $\eqref{eq:dComposite}$ je analog Faà di Bruno-vi formuli.
  
  Operator $exp(\D_fe^{h\D_g})(g)(f)$ opravi povlek preslikave $f$ skozi $g$. Velja
@@ -839,7 +846,7 @@ kar znova omogoča učinkovito implementacijo.
  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^2exp(\D_fe^{h\D_g})(g)=\lim\limits_{\lVert h\rVert\to 0}\frac{d}{dh}\Big(\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)\Big)$$
  kar je po enačbah $\eqref{eq:dexp}$ in $\eqref{eq:de}$
  $$\lim\limits_{\lVert h\rVert\to 0}(\D_f(\D_gg)\D_f(\D_gg))e^{2h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_g\D_f(\D_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)$$
- z nekaj algebre
+ z nekaj algebre in ustrezne aplikacije
  $$\lim\limits_{\lVert h\rVert\to 0}(\D^2_f(\D_gg)^2)e^{2h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_f(\D^2_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)$$
   $$\implies$$
  \begin{equation}
