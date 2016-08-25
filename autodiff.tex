@@ -230,11 +230,13 @@ $F:\VV\to\VV$ in $G:\VV\to \VV$ je njun kompozitum
 $$F\circ G:\VV\xrightarrow{G} \VV\xrightarrow{F} \VV$$ 
 zopet preslikava iz prostora
 $\VV^\VV$. Prostor preslikav $(\VV^\VV, \circ)$ je \emph{monoid}. Računalniški
-program si lahko predstavljamo kot zaporedje osnovnih ukazov. Če se omejimo0 le
+program si lahko predstavljamo kot zaporedje osnovnih ukazov. Če se omejimo le
 na učinke, ki jih ima program na pomnilnik, lahko vsak program $P$, če ga
 gledamo kot preslikava iz
-$\VV^\VV$, zapišemo kot kompozitum zaporedja elementarnih preslikav. 
-
+$\VV^\VV$, zapišemo kot kompozitum zaporedja elementarnih preslikav: 
+\[
+P = \epsilon_n\circ\epsilon_{n-1}\circ \ldots \epsilon_1.
+\]
 
 Računalniki redko uporabljajo ves pomnilnik hkrati, zato bomo definirali, kateri
 del pomnilnika sodeluje v določenem programu. Naj bo $P:\VV\to\VV$ preslikava.
@@ -254,6 +256,30 @@ razmišljanje vseeno, kateri komplementarni podprostor izberemo. Podprostor $U$,
 je prostor spremenljivk, ki jih program dejansko spremeni. Negibni prostor
 je je sestavljen iz nezasedenega dela pomnilnika, vsebuje pa tudi neodvisne
 spremenljivke, ki se tekom programa ne spreminjajo.
+
+\subsection{Parametri, vhodne in izhodne spremenljivke}
+Naj bo $V<\VV$ podprostor virtualnega pomnilnika in naj bo ${\e_1,\ldots,\e_k}$
+baza prostora $V$. Označimo z ${x_1,x_2,\ldots,x_k}$ dualno bazo $V^*$. Elementi $x_i$
+so koordinatne funkcije na $\VV$ in ustrezajo spremenljivkam v programu.
+Zanimalo nas bo, kako je aktivni del pomnilnika odvisen od vrednosti
+spremenljivk $x_i$. Spremenljivke $x_i$ bomo imenovali \emph{vhodne
+  spremenljivke}, podprostor $V$ pa \emph{vhodni podprostor}. Vektor v vhodnem
+prostoru je nabor vrednosti vhodnih spremenljivk.
+ 
+Aktivni prostor programa je podprostor virtualnega pomnilnika, ki ga program
+spremeni. 
+\begin{definicija}[Domena programa]
+  \emph{Domena programa $P:\VV\to\VV$} je podprostor $V<\VV$ minimalne dimenzije za
+  katerega obstaja neka projekcija $pr_V:\VV\to V$ na podprostor $V$, 
+  da velja 
+  $$P\circ i_V\circ pr_V=P.$$ 
+\end{definicija}
+Preslikava $i_V\circ pr_V$ je preslikava, ki izbrani komplement podprostora $V$
+postavi na nič. Pogoj $P\circ i_V\circ pr_V=P$ pomeni, da je vrednost preslikave
+$P$ odvisna le od komponente iz $V$, ne pa tudi od njenega komplementa. Domena
+programa je podprostor določen s spremenljivkami, katerih začetna vrednost
+vpliva na končni rezultat programa. Podprostor $V$ ni enolično določen, je pa
+dimenzija takega prostora enolično določena.
 \section{Odvod}
 \begin{definicija}
   Naj bo $V$ Banachov vektroski prostor. Preslikava $P:V\to V$ je odvedljiva v
@@ -397,7 +423,14 @@ ali manj. Operator $\D$ slika $U\otimes T_k(V^*)$ v $U\otimes T_{k+1}(V^*)$.
 
 \subsection{Odvedljivi stroji}
 
- 
+\begin{definicija}[Odvedljivi stroji]
+  Računkski stroj $(\VV,E)$ je odvedljiv stroj, če za vsako elementarno operacijo
+  $\epsilon\in E$, z domeno $V_\epsilon$ in kodomeno $U_\epsilon$, lahko preslikavo 
+$$\D \epsilon:V_\epsilon\to U_\epsilon\otimes
+V_\epsilon$$ 
+zapišemo kot program računskega stroja $(\VV,E)$ z domeno $V_\epsilon$ in kodomeno
+  $U_\epsilon \otimes V^*$. 
+\end{definicija}
  
 \begin{definicija}[Odvedljiv program z domeno]
   Naj bosta $V$ in $U$ poljubna vektorska prostora dimenzije manjše kot $\dim \VV$.
