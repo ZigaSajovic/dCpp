@@ -177,7 +177,7 @@ while abs(y*y-x) > eps:
   dy = (dy + (1/y - x/(y*y)*dy)/2
 \end{verbatim}
 
-\section{Avtomatsko odvajanje}
+\section{Programi kot preslikave vektorskih prostorov}
 Na uvodnem primeru smo videli, da si lahko računalniški program predstavljamo
 kot vektorsko funkcijo več spremenljivk. Vektorska funkcija, ki predstavlja
 program, je podana kot kompozitum preslikav, ki ustrezajo posameznim vrsticam
@@ -201,15 +201,60 @@ predstavljamo kot $n$-razsežni realni vektor\footnote[1]{omejitev, da je
   funkcijski odvod, kot ga poznamo v variacijskem računu.}. Vsaka spremenljivka(lokacija v
 spominu) predstavlja eno komponento tega vektorja. Množico vseh možnih stanj
 spomina, s katerim razpolaga program, lahko modeliramo z $n$-razsežnim
-vektorskim prostorom $V\simeq\RR^n$. Vektorski prostor $V$ bomo imenovali
+vektorskim prostorom $\VV\simeq\RR^n$. Vektorski prostor $\VV$ bomo imenovali
 \emph{virtualni pomnilnik programa}. Računalniški program, ki
 ima na voljo $n$-mest v virtualnem pomnilniku, si lahko predstavljamo kot preslikavo
 \begin{equation}
   \label{eq:program_kot_preslikava}
-  P: V\to V,
+  P: \VV\to \VV,
 \end{equation}
-kjer je $V$ vektorski prostor dimenzije $n$. Množica vseh takih preslikav
-opremljena z operacijo kompozituma je \emph{monoid}.
+kjer je $\VV$ vektorski prostor dimenzije $n$.
+
+V nadaljevanju bomo definirali, kako si predstavljamo odvedljiv programski jezik
+oziroma računski stroj. Odvedljiv stroj si bomo predstavljali kot računski
+stroj, ki izvaja zaporedne enostavne operacije, ki so odvedljive, na virtualnem
+pomnilniku $\VV\simeq\RR^n$. 
+Zanimali nas bodo stroji, ki manipulirajo z virtualnim
+pomnilnikom $\VV$. Osnovne operacije na stroju so preslikave 
+$\epsilon_i:\VV\to \VV$.
+\begin{definicija}[računski stroj]
+  Par $(\VV,\E)$, kjer je $\VV$ končnodimenzionalen vektorski prostor in $\E$
+  končna množica preslikav $\VV\to \VV$ imenujemo \emph{računski stroj}.
+  Prostoru $\VV$ pravimo \emph{virtualni pomnilnik}, preslikavam $\epsilon_i$ pa
+  \emph{elementarne operacije}.
+\end{definicija}
+\subsection{Monoid preslikav na virtualnem pomnilniku}
+Označimo z $\VV^\VV$ prostor preslikav $\VV\to \VV$. Množiča $\VV^\VV$
+je naravno opremljena z operacijo kompozituma $\circ$. Če imamo dve preslikavi
+$F:\VV\to\VV$ in $G:\VV\to \VV$ je njun kompozitum 
+$$F\circ G:\VV\xrightarrow{G} \VV\xrightarrow{F} \VV$$ 
+zopet preslikava iz prostora
+$\VV^\VV$. Prostor preslikav $(\VV^\VV, \circ)$ je \emph{monoid}. Računalniški
+program si lahko predstavljamo kot zaporedje osnovnih ukazov. Če se omejimo0 le
+na učinke, ki jih ima program na pomnilnik, lahko vsak program $P$, če ga
+gledamo kot preslikava iz
+$\VV^\VV$, zapišemo kot kompozitum zaporedja elementarnih preslikav. 
+
+
+Računalniki redko uporabljajo ves pomnilnik hkrati, zato bomo definirali, kateri
+del pomnilnika sodeluje v določenem programu. Naj bo $P:\VV\to\VV$ preslikava.
+\emph{Negibni podprostor programa P} je vektorski podprostor $N<\VV$, tako da
+je $pr_N\circ P|_N=Id_N$. Negibni podprostor je podprostor, ki ga
+preslikava $P$ ne spremeni. Če je $P$ linearna preslikava, je negibni podprostor
+napet na lastne vektorje za lastno vrednost $1$. Negibni podprostor predstavlja
+del pomnilnika, ki ga program pusti na miru. K negibnemu prostoru bomo šteli
+tudi del pomnilnika, ki ga program med izvajanjem sprosti in je na koncu
+nealociran. Čeprav se fizične vrednosti v takem pomnilniku spremenijo, jih je
+smiselno ignorirati in si misliti, da so ostale enake.
+
+Podprostor $U<\VV$, ki je komplement negibnega prostora $U\oplus
+N=\VV$ imenujemo \emph{aktivni podprostor programa $P$}. Običajno za $U$ vzamemo
+kar ortogonalni komplement $N^\perp$, čeprav je za naše
+razmišljanje vseeno, kateri komplementarni podprostor izberemo. Podprostor $U$,
+je prostor spremenljivk, ki jih program dejansko spremeni. Negibni prostor
+je je sestavljen iz nezasedenega dela pomnilnika, vsebuje pa tudi neodvisne
+spremenljivke, ki se tekom programa ne spreminjajo.
+\section{Odvod}
 \begin{definicija}
   Naj bo $V$ Banachov vektroski prostor. Preslikava $P:V\to V$ je odvedljiva v
   točki $x\in V$, če obstaja
@@ -352,37 +397,7 @@ ali manj. Operator $\D$ slika $U\otimes T_k(V^*)$ v $U\otimes T_{k+1}(V^*)$.
 
 \subsection{Odvedljivi stroji}
 
-V nadaljevanju bomo definirali, kako si predstavljamo odvedljiv programski jezik
-oziroma računski stroj. Odvedljiv stroj si bomo predstavljali kot računski
-stroj, ki izvaja zaporedne enostavne operacije, ki so odvedljive, na virtualnem
-pomnilniku $\VV\simeq\RR^n$. 
-Zanimali nas bodo stroji, ki manipulirajo z virtualnim
-pomnilnikom $\VV$. Osnovne operacije na stroju so preslikave 
-$\epsilon_i:\VV\to \VV$.
-\begin{definicija}[računski stroj]
-  Par $(\VV,\E)$, kjer je $\VV$ končnodimenzionalen vektorski prostor in $\E$
-  končna množica preslikav $\VV\to \VV$ imenujemo \emph{računski stroj}.
-  Prostoru $\VV$ pravimo \emph{virtualni pomnilnik}, preslikavam $\epsilon_i$ pa
-  \emph{elementarne operacije}.
-\end{definicija}
-Računalniki redko uporabljajo ves pomnilnik hkrati, zato bomo definirali, kateri
-del pomnilnika sodeluje v določenem programu. Naj bo $P:\VV\to\VV$ preslikava.
-\emph{Negibni podprostor programa P} je vektorski podprostor $N<\VV$, tako da
-je $pr_N\circ P|_N=Id_N$. Negibni podprostor je podprostor, ki ga
-preslikava $P$ ne spremeni. Če je $P$ linearna preslikava, je negibni podprostor
-napet na lastne vektorje za lastno vrednost $1$. Negibni podprostor predstavlja
-del pomnilnika, ki ga program pusti na miru. K negibnemu prostoru bomo šteli
-tudi del pomnilnika, ki ga program med izvajanjem sprosti in je na koncu
-nealociran. Čeprav se fizične vrednosti v takem pomnilniku spremenijo, jih je
-smiselno ignorirati in si misliti, da ostale enake.
-
-Podprostor $U<\VV$, ki je komplement negibnega prostora $U\oplus
-N=\VV$ imenujemo \emph{aktivni podprostor programa $P$}. Običajno za $U$ vzamemo
-kar ortogonalni komplement $N^\perp$, čeprav je za naše
-razmišljanje vseeno, kateri komplementarni podprostor izberemo. Podprostor $U$,
-je prostor spremenljivk, ki jih program dejansko spremeni. Negibni prostor
-je je sestavljen iz nezasedenega dela pomnilnika, vsebuje pa tudi neodvisne
-spremenljivke, ki se tekom programa ne spreminjajo. 
+ 
  
 \begin{definicija}[Odvedljiv program z domeno]
   Naj bosta $V$ in $U$ poljubna vektorska prostora dimenzije manjše kot $\dim \VV$.
@@ -459,7 +474,8 @@ jo uporabimo v programu, si moramo zapomniti še vrednosti odvodov po vseh
 ostalih spremenljivkah $\frac{\partial x_j}{\partial x_i}$.   
 
 Za višje odvode rekurzivno definiramo zaporedje vektorskih prostorov $V_n$, ki
-predstavljajo virtualni pomnilnik
+predstavljajo virtualni pomnilnik, ki ga potrebujemo za hranjenje vrednosti
+višjih odvodov.
 \begin{eqnarray}\label{eq:V_n}
   \label{eq:prapor}
   V_0 &=& V\\
