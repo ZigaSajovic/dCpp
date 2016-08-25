@@ -63,7 +63,7 @@ basicstyle=\ttfamily
 \newtheorem{posledica}{Posledica}[section]
 \newtheorem{konstrukcija}{Konstrukcija}[section]
 \newtheorem{koda}{Koda}[section]
-\title{Analitični stroji v algebri algoritmov}
+\title{Operator Calculus of Algorithms}
 \author{Žiga Sajovic, Martin Vuk}
 \begin{document}
 \maketitle
@@ -892,7 +892,7 @@ kar znova omogoča učinkovito implementacijo.
   \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g(v))}{l!}\Big)^k\frac{n!}{k!}\Big(f(g(v))\Big)
   \end{equation}
  \end{opomba}
- Izrek $\ref{izr:kompo}$ omgogoča enostavno implementacijo komponiranja programov $p\in\dP$ izraženih v odrezanih vrstah skozi izraz $\eqref{eq:dComposite}$.
+ Izrek $\ref{izr:kompo}$ omgogoča enostavno implementacijo komponiranja programov $p\in\dP$ izraženih v odrezanih vrstah skozi izraz $\eqref{eq:dComposite}$. 
  
  Operator $exp(\D_fe^{h\D_g})(g)(f)$ opravi povlek preslikave $f$ skozi $g$. Velja
  
@@ -925,6 +925,70 @@ kar znova omogoča učinkovito implementacijo.
  \end{equation}
  
  Rezultat se seveda ujema z enačbo $\eqref{eq:dComposite}$ za $n=2$.
+ 
+ \subsection{Operatorji}
+ 
+ Sledimo nareku dosedanjih poglavij in podrobneje raziščimi operatorje nad programskimi jeziki $\dP$. Pričnemo s preslikavami ene spremenljivke. Naj bo operator $d=\frac{d}{dx}$. Definirajmo rodovno funkcijo v spremeljivki $t$
+ 
+ \begin{equation}\label{eq:DplusBasic}
+ \Dplus=1+td+(td)^2+...+(td)^n
+ \end{equation}
+ 
+ V limiti lahko operator $\Dplus$ izrazimo kot
+ 
+ \begin{equation}\label{eq:geoD}
+	\Dplus=\frac{1}{1-td}
+ \end{equation}
+ 
+ \begin{opomba}
+ 	Izraz $\eqref{eq:geoD}$ konverigira za $\lvert t\rvert<1$, a ker gre za rodovno funkcijo je izraz smiseln.
+ \end{opomba}
+ 
+ Prednost takšnega izraza je v tem, da lahko odvode funkcije $f$ skozi izraz $\Dplus f(x)$ izluščimo skozi odvajanje po $t$, ki v prvotni funkciji sploh ne nastopa.
+ 
+ Želeli bi eksplicitno rešitev aplikacije operatorja $\Dplus$ na poljubno funkcijo.
+ 
+ $$g(x,t)=\frac{1}{1-td} f(x)$$
+ 
+ Rešitev konstruiramo skozi rešitve diferencialnih enačb. Velja
+ 
+ $$(1-td)g(x,t)=f(x)$$
+ 
+ Spremeljivka $t$ ni odvisna od $x$, zato jo v enačbi lahko tretiramo kot konstanto.
+ 
+ $$g(x)-t\frac{dg(x)}{dx}=f(x)$$
+ 
+ Splošna rešitev diferencialne enačbe je
+ 
+ \begin{equation}
+ g(x)=e^{\frac{x}{t}}\Big(c-\int\limits_1^x\frac{f(s)e^{-\frac{s}{t}}}{t}ds\Big)
+ \end{equation}
+ 
+ Opazimo enakost
+ 
+ \begin{equation}
+  \Dplus f(x)=e^{\frac{x}{t}}\Big(c-\int\limits_1^x\frac{f(s)e^{-\frac{s}{t}}}{t}ds\Big)
+ \end{equation}
+ 
+ Izraz $\Dplus f(x)$ razvijamo v vrsto v točki $t=0$, kot je razvidno je $\eqref{eq:DplusBasic}$, zato je edina izbira za konstantno $c=0$. Tako velja
+ 
+ \begin{equation}\label{eq:Dplus}
+   \Dplus f(x)=e^{\frac{x}{t}}\Big(\int\limits_1^x\frac{f(s)e^{-\frac{s}{t}}}{t}ds\Big)
+  \end{equation}
+  
+  S tem je operator $\Dplus$ izračunljiv (v kolikor je izračunljiv dotičen integral). Poskusimo izraz na (zaradi berljivosti) preprosti funkciji $\sin(x)$. Po $\eqref{eq:Dplus}$ velja
+  
+  $$\Dplus\sin(x)=\frac{\sin(x)}{t^2+1}+t\frac{\cos(x)}{t^2+1}$$
+  
+  Izraz razširimo v neskončno vrsto v točki $t=0$.
+  
+  $$\Dplus\sin(x)=\sin(x)+t\cos(x)-t^2\sin(x)-t^3\cos(x)+....$$
+  
+  Kar očitno ustreza željenem izrazu
+  
+  $$\Dplus\sin(x)=\sum\limits_{i=0}^{n}t^i\frac{d^i\sin(x)}{dx^i}$$
+  
+  kot željeno.
  
  \subsection{Kontrolne strukture}
  
