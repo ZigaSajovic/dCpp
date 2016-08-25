@@ -859,7 +859,7 @@ kar znova omogoča učinkovito implementacijo.
   $$\sum\limits_{k=0}^{n}{n\choose k}\D^{n-k}p_1\D^kp_2$$
  \end{proof}
  
- \begin{izrek}
+ \begin{izrek}\label{izr:kompo}
  Kompozicija preslikav $\dP_n$ se izraža kot
  \begin{equation}
  e^{h\D}(f\circ g)=exp(\D_fe^{h\D_g})(g)(f)
@@ -885,14 +885,14 @@ kar znova omogoča učinkovito implementacijo.
  kjer $e^{\D_f}$ preslika $\dP\to\dP_n$. 
  \end{proof}       
  \begin{opomba}
- Zato je včasih smiselno predhodno aplicirat $g(v)\in V$ na $f$, saj $e^\D$ apliciran na konstanto predstavlja identiteto in tako dobimo odvod v točki $v\in V$ namesto razvoja v multitenzor.
-  $$\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f(g(v))\Big)$$
+ Zato je včasih smiselno predhodno aplicirat $g(v)\in V$ na $f$, saj $e^\D$ apliciran na konstanto predstavlja identiteto in tako dobimo odvod $\D^n$ v točki $v\in V$ namesto razvoja v multitenzor.
+  $$\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g(v))}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f(g(v))\Big)$$
   $$\implies$$
   \begin{equation}\label{eq:dCompositePoint}
-  \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(f(g(v))\Big)
+  \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g(v))}{l!}\Big)^k\frac{n!}{k!}\Big(f(g(v))\Big)
   \end{equation}
  \end{opomba}
- Izraz $\eqref{eq:dComposite}$ je analog Faà di Bruno-vi formuli.
+ Izrek $\ref{izr:kompo}$ omgogoča enostavno implementacijo komponiranja programov $p\in\dP$ izraženih v odrezanih vrstah skozi izraz $\eqref{eq:dComposite}$.
  
  Operator $exp(\D_fe^{h\D_g})(g)(f)$ opravi povlek preslikave $f$ skozi $g$. Velja
  
