@@ -1067,13 +1067,13 @@ kar znova omogoča učinkovito implementacijo.
  	P=\sum\limits_{\forall_{f_i\in F}}\frac{\eta(P,f_i)}{\eta(f_i,f_i)}f_i
   \end{equation}
   
-  V kolikor se želimo izognit integriranju, je skozi razvita orodja problem rešljiv z linearno algebro. Z $e_n^\D$ označnimo projekcijo operatorja $e^\D$, na prvih $n$ baznih vektorjev $\{\D^i\}$. Po Izreku $\ref{izr:e^d}$ lako skozi operator $e^\D$ konstruiramo preslikavo $\eqref{eq:pToPol}$ iz prostora programov $\dP$ v prostor polinomov z nedoločenkami v  $V^i$. Z $\X$ označimo bazo funkcijskega prostora polinomov, $\X=\{\prod\limits_{\forall_j} v_i^j\}$, kjer $v_i$ napenjajo $V$ in $j$ teče po elementih potenčne indeksne množice, invariantno permutacijam (kar je ekvialentno bazi prostora tenzorskega produkta, kjer tenzorski produkt nadomesti navaden produkt, ki seveda komutira). Potem lahko $e^\D_n(P\in\dP)$ interpretiramo kot vektor linearnih kombinacij $\X$, kar je privzeto v nadaljevanju poglavja.
+  V kolikor se želimo izognit integriranju, je skozi razvita orodja problem rešljiv z linearno algebro. Z $e_n^\D$ označnimo projekcijo operatorja $e^\D$, na prvih $n$ baznih vektorjev $\{\D^i\}$. Po Izreku $\ref{izr:e^d}$ lako skozi operator $e^\D$ konstruiramo preslikavo $\eqref{eq:pToPol}$ iz prostora programov $\dP$ v prostor polinomov z nedoločenkami v  $V^k$. Z $\X$ označimo bazo funkcijskega prostora polinomov, $\X=\{\prod\limits_{\forall_j} v_i^j\}$, kjer $v_i$ napenjajo $V^k$ in $j$ teče po elementih potenčne indeksne množice, invariantno permutacijam (kar je ekvialentno bazi prostora tenzorskega produkta, kjer tenzorski produkt nadomesti navaden produkt, ki seveda komutira). Potem lahko $e^\D_n(P\in\dP)$ interpretiramo kot vektor linearnih kombinacij $\X$, kar je privzeto v nadaljevanju poglavja.
   
   S tem lahko definiramo tenzor transformacij baze $F\to\X$
   
   \begin{equation}\label{eq:matTransF}
-  A_{\X F}=\begin{pmatrix}
-  e_n^\D(f_1) & e_n^\D(f_2) & \cdots & e_n^\D(p_n)
+  T_{\X F}=\begin{pmatrix}
+  e_n^\D(f_1) & e_n^\D(f_2) & \cdots & e_n^\D(f_n)
   \end{pmatrix}
   \end{equation}
   
@@ -1081,16 +1081,17 @@ kar znova omogoča učinkovito implementacijo.
   Tenzor $\eqref{eq:matTransF}$ je matrika, v kolikor so dotične preslikave $V^m\to V$ in tenzor ranka 3, v kolikor so dotične preslikave $V^m\to V^k$. To pa je moč interpretirat, kot zaporedje matrik, za vsako izmed komponent slike preslikave.
   \end{opomba}
   
-  Tako je tenzor transformacije baze $\X\to F$ enaka
+  Tako je tenzor transformacije baze $\X\to F$ enak
   
   \begin{equation}\label{eq:matTrans}
-  A_{F\X}=A_{\X F}^{-1}
+  T_{F\X}=T_{\X F}^{-1}
   \end{equation}
-  
-  Skozi tenzor $\eqref{eq:matTrans}$ zlahka izvedemo tranformacijo baze $\X\to F$. Tako so koordinate programa $P\in\dP$ v bazi $F$
+    
+  Skozi tenzor $\eqref{eq:matTrans}$ zlahka izvedemo tranformacijo baze $\X\to F$. Za specifičen nabor funkcij $F$ (in posledično za strojno opremo $H$, s katero je nabor pogojen) je tenzor $\eqref{eq:matTrans}$ potrebno poračunat le enkrat in ga uporabimo za transformacije poljubnih programov (ob uporabi istega operatorja $e^\D_n$).
+  Tako so koordinate programa $P\in\dP$ v bazi $F$
   
   \begin{equation}\label{eq:P_F}
-  	P_F=A_{F\X}\cdot e^\D(P)
+  	P_F=T_{F\X}\cdot e^\D(P)
   \end{equation}
   
   Izraz $\eqref{eq:P_F}$ predstavlja koordinate programa $P$ v bazi $F$. Tako je program izrazljiv kot linearna kombinacija $f_i$ s pripadajočimi komponentami $P_F$ za koeficiente.
@@ -1099,7 +1100,9 @@ kar znova omogoča učinkovito implementacijo.
   P=\sum\limits_{i=0}^{n}{P_F}_if_i
   \end{equation}
   
-  V kolikor $F$ ne napenja $\dP$, oziroma smo vzeli projekcijo operatorja $e^\D_{n<N}$, izraz $P_F$ predstavlja najboljši približek prvotnega programa $P$ na $n$ komponentah $\{\D^n\}$.
+  V kolikor $F$ ne napenja $\dP$, oziroma smo vzeli projekcijo operatorja $e^\D_{n<N}$, izraz $P_F$ kljub temz predstavlja najboljši približek prvotnega programa $P$ na $n$ komponentah $\{\D^n\}$.
+  
+  Pred izračunom tenzorja $\eqref{eq:matTrans}$ je smiselno nabor funkcij $F$ razširiti z medsebojnimi kompozicijami in s tem pridobiti funkcije, ki niso izrazljive skozi linearne kombinacije, in tako povečat moč metode.
   
  \subsection{Kontrolne strukture}
  
