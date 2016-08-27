@@ -44,6 +44,7 @@ basicstyle=\ttfamily
 \newcommand{\uu}{\mathbf{u}}
 \newcommand{\vv}{\mathbf{v}}
 \newcommand{\F}{\mathcal{F}}
+\newcommand{\X}{\mathcal{X}}
 \newcommand{\CC}{C\nolinebreak\hspace{-.05em}\raisebox{.4ex}{\tiny\bf +}\nolinebreak\hspace{-.10em}\raisebox{.4ex}{\tiny\bf +}}
 \def\CC{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\tiny\bf ++}}}
 \newcommand{\dP}{\mathcal{P}}
@@ -823,7 +824,7 @@ Množica $\{\D^n\}$ implicira nilpotenco $k>n\implies\D^k=0$. Produkt med dvema 
   %enačba pomeni, da vektorju odštšteješ "realni" del
   Slika linearizacije služi kot dober približek slike prvotnega programa.
   
-  Induktivno bi želeli program razvit v neskončno vrsto. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\RR$ (ki je funkcijski prostor nad $\RR$). Zato je izraz
+  Induktivno bi želeli program razvit v neskončno vrsto. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\dP$ (ki je funkcijski prostor nad $\RR$). Zato je izraz
   
   
  \begin{equation}
@@ -853,7 +854,7 @@ Množica $\{\D^n\}$ implicira nilpotenco $k>n\implies\D^k=0$. Produkt med dvema 
  
 Skozi $\eqref{eq:specProg}$ lahko konstruiramo preslikavo iz prostora programov v prostor polinomov.  Po $\eqref{eq:tenzor_algebra}$ je $V_n$ izomorfen komutativno asociativni unitalni algebri $S(V^{i*})$, kar korespondira polinomom z nedoločenkami v $V^i$.
  
- \begin{equation}
+ \begin{equation}\label{eq:pToPol}
  	(e^{h\D})(V): \F\to S(V^*)
  \end{equation}
  Izraz predstavlja preslikavo programa v polinom.
@@ -889,23 +890,24 @@ kar znova omogoča učinkovito implementacijo.
 
  Razvoj v odrezano vrsto reda $N$ dobimo skozi projekcijo $e^{h\D}$ na $\{\D^N \}$. 
  
- \begin{izrek}
+ \begin{izrek}\label{izr:prod}
  Operator $e^{h\D}$ je automorfizem algebre nad $\dP_\infty$
  \begin{equation}
- 	e^{h\D}(p_1p_2)=e^{h\D}(p_1)e^{h\D}(p_2)
+ 	e^{h\D}(p_1\cdot p_2)=e^{h\D}(p_1)\cdot e^{h\D}(p_2)
  \end{equation}
+ kjer je $\cdot$ bilinearna preslikava.
  \end{izrek}
  
  \begin{proof}
  Za vsak $n$ velja $\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(LHS)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(RHS)}$\\
   $\implies$
-  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^ne^{h\D}(p_1p_2)=\lim\limits_{\lVert h\rVert\to 0}\D^ne^{h\D}(p_1p_2)$$
+  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^ne^{h\D}(p_1\cdot p_2)=\lim\limits_{\lVert h\rVert\to 0}\D^ne^{h\D}(p_1\cdot p_2)$$
   $$\implies$$
-  $$\D^n(p_1p_2)$$
+  $$\D^n(p_1\cdot p_2)$$
   $\impliedby$
-  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\Big(e^{h\D}(p_1)e^{h\D}(p_2)\Big)=\lim\limits_{\lVert h\rVert\to 0}\sum\limits_{k=0}^{n}{n\choose k}\D^{n-k}e^{h\D}(p_1)\D^ke^{h\D}(p_2)$$
+  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\Big(e^{h\D}(p_1)\cdot e^{h\D}(p_2)\Big)=\lim\limits_{\lVert h\rVert\to 0}\sum\limits_{k=0}^{n}{n\choose k}\D^{n-k}e^{h\D}(p_1)\cdot \D^ke^{h\D}(p_2)$$
   $$\implies$$
-  $$\sum\limits_{k=0}^{n}{n\choose k}\D^{n-k}p_1\D^kp_2$$
+  $$\sum\limits_{k=0}^{n}{n\choose k}\D^{n-k}p_1\cdot \D^kp_2$$
  \end{proof}
  
  \begin{izrek}\label{izr:kompo}
@@ -977,7 +979,7 @@ kar znova omogoča učinkovito implementacijo.
  
  \subsection{Operatorji}
  
- Sledimo nareku dosedanjih poglavij in podrobneje raziščimi operatorje nad programskimi jeziki $\dP$. Pričnemo s preslikavami ene spremenljivke. Naj bo operator $d=\frac{d}{dx}$. Definirajmo rodovno funkcijo v spremeljivki $t$
+ Sledimo nareku dosedanjih poglavij in podrobneje raziščimi operatorje nad programskimi jeziki $\dP$. Pričnemo s preslikavami ene spremenljivke. Naj bo operator $d=\frac{d}{dx}$. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\dP$ (ki je funkcijski prostor nad $\RR$), zato lahko definiramo rodovno funkcijo v spremeljivki $t$
  
  \begin{equation}\label{eq:DplusBasic}
  \Dplus=1+td+(td)^2+...+(td)^n
@@ -1019,7 +1021,7 @@ kar znova omogoča učinkovito implementacijo.
   \Dplus f(x)=e^{\frac{x}{t}}\Big(c-\int\limits_1^x\frac{f(s)e^{-\frac{s}{t}}}{t}ds\Big)
  \end{equation}
  
- Izraz $\Dplus f(x)$ razvijamo v vrsto v točki $t=0$, kot je razvidno je $\eqref{eq:DplusBasic}$, zato je edina izbira za konstantno $c=0$. Tako velja
+ Izraz $\Dplus f(x)$ razvijamo v vrsto v točki $t=0$, kot je razvidno v $\eqref{eq:DplusBasic}$, zato je edina izbira za konstantno $c=0$. Tako velja
  
  \begin{equation}\label{eq:Dplus}
    \Dplus f(x)=e^{\frac{x}{t}}\Big(\int\limits_1^x\frac{f(s)e^{-\frac{s}{t}}}{t}ds\Big)
@@ -1038,7 +1040,67 @@ kar znova omogoča učinkovito implementacijo.
   $$\Dplus\sin(x)=\sum\limits_{i=0}^{n}t^i\frac{d^i\sin(x)}{dx^i}$$
   
   kot željeno.
- 
+  
+  \subsection{Funkcijske transformacije programov}
+  
+  Analizo motiviramo s primerom. Predpostavimo strojno opremo $H$, ki je optimizirana za množico funkcij $F=\{f_i:V\to V\}$. Množico $F$ specificira proizvajalec.
+  
+  Ob tehnoloških napredkih je menjava strojne opreme pogosta, kar lahko privede do padca hitrosti v izvajanju strojne kode. Tako bi želeli razvit transformacijo programa $P\in\dP$ v bazo $F$. Pogosto smo zadovoljni z sub-optimalnim algoritmom, ki je optimiziran za strojno opremo $H$. Suboptimalnost transformacije je odvisna od same množice $F$, ali je zmožna napet prostor $\dP$, ali ne. Klasičen primer transformacije je Fourierjeva transformacija v bazi $\{sin(nx), cos(mx)\}$, ki napenja $\dP$ (kar, kot omenjeno ni nujno za poljubno množico $F$).
+  
+  Po Izreku $\ref{izr:e^d}$ lako skozi operator $e^\D$ konstruiramo preslikavo $\eqref{eq:pToPol}$ iz prostora programov $\dP$ v prostor polinomov. Tako je slika $e^\D(P\in\dP)$ integrabilna. S tem lahko definiramo notranji produkt nad $\dP$.
+  
+  \begin{izrek}
+  Za $p_1,p_2\in\dP$ se notranji produkt $\eta(p_1,p_2)$ izraža kot
+  \begin{equation}
+  	\eta(p_1,p_2)=\int_{\Omega}e^\D p_1(\vec{x})\cdot e^\D p_2(\vec{x})dx
+  \end{equation}
+  kjer $\cdot$ predstavlja notranji produkt nad $V$, saj velja $e^\D(p\in\dP):V\to V$.
+  \end{izrek}
+  
+  \begin{proof}
+  Po Izreku $\ref{izr:prod}$ velja $e^\D(p_1\cdot p_2)=e^\D(p_1)\cdot e^\D(p_2)$. Po linearnosti integrala in dobro definiranem notranjem produktu nad $V$, je zadoščeno aksiomom notranjega produkta.
+  \end{proof}
+  
+  Tako, v kolikor je $F$ ortonormirana, oziroma smo jo ortonormirali s katerim od uveljavljenih postopkov, lahko $P$ izrazimo v bazi $F$, kot
+  
+  \begin{equation}
+ 	P=\sum\limits_{\forall_{f_i\in F}}\frac{\eta(P,f_i)}{\eta(f_i,f_i)}f_i
+  \end{equation}
+  
+  V kolikor se želimo izognit integriranju, je skozi razvita orodja problem rešljiv z linearno algebro. Z $e_n^\D$ označnimo projekcijo operatorja $e^\D$, na prvih $n$ baznih vektorjev $\{\D^i\}$. Po Izreku $\ref{izr:e^d}$ lako skozi operator $e^\D$ konstruiramo preslikavo $\eqref{eq:pToPol}$ iz prostora programov $\dP$ v prostor polinomov z nedoločenkami v  $V^i$. Z $\X$ označimo bazo funkcijskega prostora polinomov, $\X=\{\prod\limits_{\forall_j} v_i^j\}$, kjer $v_i$ napenjajo $V$ in $j$ teče po elementih potenčne indeksne množice, invariantno permutacijam (kar je ekvialentno bazi prostora tenzorskega produkta, kjer tenzorski produkt nadomesti navaden produkt, ki seveda komutira). Potem lahko $e^\D_n(P\in\dP)$ interpretiramo kot vektor linearnih kombinacij $\X$, kar je privzeto v nadaljevanju poglavja.
+  
+  S tem lahko definiramo tenzor transformacij baze $F\to\X$
+  
+  \begin{equation}\label{eq:matTransF}
+  A_{\X F}=\begin{pmatrix}
+  e_n^\D(f_1) & e_n^\D(f_2) & \cdots & e_n^\D(p_n)
+  \end{pmatrix}
+  \end{equation}
+  
+  \begin{opomba}
+  Tenzor $\eqref{eq:matTransF}$ je matrika, v kolikor so dotične preslikave $V^m\to V$ in tenzor ranka 3, v kolikor so dotične preslikave $V^m\to V^k$. To pa je moč interpretirat, kot zaporedje matrik, za vsako izmed komponent slike preslikave.
+  \end{opomba}
+  
+  Tako je tenzor transformacije baze $\X\to F$ enaka
+  
+  \begin{equation}\label{eq:matTrans}
+  A_{F\X}=A_{\X F}^{-1}
+  \end{equation}
+  
+  Skozi tenzor $\eqref{eq:matTrans}$ zlahka izvedemo tranformacijo baze $\X\to F$. Tako so koordinate programa $P\in\dP$ v bazi $F$
+  
+  \begin{equation}\label{eq:P_F}
+  	P_F=A_{F\X}\cdot e^\D(P)
+  \end{equation}
+  
+  Izraz $\eqref{eq:P_F}$ predstavlja koordinate programa $P$ v bazi $F$. Tako je program izrazljiv kot linearna kombinacija $f_i$ s pripadajočimi komponentami $P_F$ za koeficiente.
+  
+  \begin{equation}
+  P=\sum\limits_{i=0}^{n}{P_F}_if_i
+  \end{equation}
+  
+  V kolikor $F$ ne napenja $\dP$, oziroma smo vzeli projekcijo operatorja $e^\D_{n<N}$, izraz $P_F$ predstavlja najboljši približek prvotnega programa $P$ na $n$ komponentah $\{\D^n\}$.
+  
  \subsection{Kontrolne strukture}
  
  Do sedaj smo se omejili na operacije, ki spreminjajo vsebino spomina. Poleg
