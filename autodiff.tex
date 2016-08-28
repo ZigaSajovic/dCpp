@@ -943,7 +943,7 @@ kar znova omogoča učinkovito implementacijo.
   \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g(v))}{l!}\Big)^k\frac{n!}{k!}\Big(f(g(v))\Big)
   \end{equation}
  \end{opomba}
- Izrek $\ref{izr:kompo}$ omgogoča enostavno implementacijo komponiranja programov $p\in\dP$ izraženih v odrezanih vrstah skozi izraz $\eqref{eq:dComposite}$. 
+ Izrek $\ref{izr:kompo}$ omogoča enostavno implementacijo komponiranja programov $p\in\dP$ izraženih v odrezanih vrstah skozi izraz $\eqref{eq:dComposite}$. 
  
  Operator $exp(\D_fe^{h\D_g})(g)(f)$ opravi povlek preslikave $f$ skozi $g$. Velja
  
@@ -976,6 +976,17 @@ kar znova omogoča učinkovito implementacijo.
  \end{equation}
  
  Rezultat se seveda ujema z enačbo $\eqref{eq:dComposite}$ za $n=2$.
+ 
+   \begin{izrek}\label{izr:komp_homo}
+   Operator $e^{h\D}$ komutira s kompozicijo nad $\dP$
+   \begin{equation}
+   e^{h\D}(p_2\circ p_1)=e^{h\D}(p_2)\circ e^{h\D}(p_1)
+   \end{equation}
+   \end{izrek}
+   
+   \begin{proof}
+   Sledi $\eqref{eq:pToPol}$ in Izreku $\ref{izr:kompo}$.
+   \end{proof}
  
  \subsection{Operatorji}
  
@@ -1102,7 +1113,7 @@ kar znova omogoča učinkovito implementacijo.
   
   V kolikor $F$ ne napenja $\dP$, oziroma smo vzeli projekcijo operatorja $e^\D_{n<N}$, izraz $P_F$ kljub temz predstavlja najboljši približek prvotnega programa $P$ na $n$ komponentah $\{\D^n\}$.
   
-  Pred izračunom tenzorja $\eqref{eq:matTrans}$ je smiselno nabor funkcij $F$ razširiti z medsebojnimi kompozicijami in s tem pridobiti funkcije, ki niso izrazljive skozi linearne kombinacije, in tako povečat moč metode.
+  Pred izračunom tenzorja $\eqref{eq:matTrans}$ je smiselno nabor funkcij $F$ razširiti z medsebojnimi kompozicijami in s tem pridobiti funkcije, ki niso izrazljive skozi linearne kombinacije (a so vseeno optimizirane delovanju na strojni opremi $H$), in tako povečat moč metode.
   
  \subsection{Kontrolne strukture}
  
