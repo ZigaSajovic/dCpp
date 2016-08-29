@@ -5,9 +5,15 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+\usepackage{caption}
+\usepackage{bbm}
 
 \usepackage[T1]{fontenc}
 \usepackage{inconsolata}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{positioning}
 
 \usepackage{color}
 \definecolor{bluekeywords}{rgb}{0.13,0.13,1}
@@ -817,7 +823,7 @@ Množica $\{\D^n\}$ implicira nilpotenco $k>n\implies\D^k=0$. Produkt med dvema 
 	\sum\limits_{i=0}^{n}\D^if\sum\limits_{j=0}^{n}\D^jg=\sum\limits_{k=0}^{n}\sum\limits_{i+j=k}\D^if\D^jg
 \end{equation}
 
- \subsection{Razvoj v vrsto}
+ \subsection{Razvoj v vrsto}\label{sec:Vrsta}
   
   Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega iščemo približek. Z opisano mehaniko lahko program lineariziramo.
   Izberemo $v\in PV$ in preslikamo v $v'\in P'V_1$ (kar je potrebno storiti le enkrat). Potem lahko program $PV$ približamo z linearno aproksimacijo $v+(v'-v) (V)$, ki je linearne kompleksnost $\mathcal{O}(k)$, kjer je $k$ dimenzija $V$.
@@ -1052,7 +1058,7 @@ kar znova omogoča učinkovito implementacijo.
   
   kot željeno.
   
-  \subsection{Funkcijske transformacije programov}
+  \subsection{Funkcijske transformacije programov}\label{sec:FTP}
   
   Analizo motiviramo s primerom. Predpostavimo strojno opremo $H$, ki je optimizirana za množico funkcij $F=\{f_i:V\to V\}$. Množico $F$ specificira proizvajalec.
   
@@ -1111,7 +1117,7 @@ kar znova omogoča učinkovito implementacijo.
   P=\sum\limits_{i=0}^{n}{P_F}_if_i
   \end{equation}
   
-  V kolikor $F$ ne napenja $\dP$, oziroma smo vzeli projekcijo operatorja $e^\D_{n<N}$, izraz $P_F$ kljub temz predstavlja najboljši približek prvotnega programa $P$ na $n$ komponentah $\{\D^n\}$.
+  V kolikor $F$ ne napenja $\dP$, oziroma smo vzeli projekcijo operatorja $e^\D_{n<N}$, izraz $P_F$ kljub temu predstavlja najboljši približek prvotnega programa $P$ na $n$ komponentah $\{\D^n\}$.
   
   Pred izračunom tenzorja $\eqref{eq:matTrans}$ je smiselno nabor funkcij $F$ razširiti z medsebojnimi kompozicijami in s tem pridobiti funkcije, ki niso izrazljive skozi linearne kombinacije (a so vseeno optimizirane delovanju na strojni opremi $H$), in tako povečat moč metode.
   
@@ -1159,23 +1165,148 @@ kar znova omogoča učinkovito implementacijo.
  $\vec{x}$ in ga tudi lahko podamo kot zlepek a le v notranjosti deinicijskih območij $\Omega_i$
  \begin{equation}
    \label{eq:Dzlrprk_splosno}
-   \sumd_nP_{\vec{x}} =
+   TP_{\vec{x}} =
    \begin{cases}
-     \sumd_nP_{n_11}\cdot \sumd_nP_{(n_1-1)1}\cdot\ldots \sumd_nP_{11};&\quad \vec{x}\in\interior(\Omega_1)\\
-     \sumd_nP_{n_22}\cdot \sumd_nP_{(n_2-1)2}\cdot\ldots \sumd_nP_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
+     TP_{n_11}\cdot TP_{(n_1-1)1}\cdot\ldots TP_{11};&\quad \vec{x}\in\interior(\Omega_1)\\
+     TP_{n_22}\cdot TP_{(n_2-1)2}\cdot\ldots TP_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
      \vdots&\quad\vdots\\
-     \sumd_nP_{n_kk}\cdot \sumd_nP_{(n_k-1)k}\cdot\ldots \sumd_nP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
+     TP_{n_kk}\cdot TP_{(n_k-1)k}\cdot\ldots TP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
    \end{cases}
  \end{equation}
  Problem je seveda na robu območju $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
 
-Vejitve programa na območja izvajamo skozi pogojne stavke $(if/else)$. Število območij $\Omega_i$ je enako moči množice $\{\Omega_i\}$. Vsak pogojni stavek, povzroči binarno vejitev v izvajanju programa
+\subsection{Uporaba in Sklep}
 
-\begin{izrek}
+Vejitve programa na območja izvajamo skozi pogojne stavke. Število območij $\Omega_i$ je enako moči množice $\{\Omega_i\}$. Vsak pogojni stavek, povzroči binarno vejitev v izvajanju programa
+
+\begin{izrek}\label{izr:st.zlepkov}
 Moč množice $\{\Omega_i\}$ je enaka $\lvert\{\Omega_i \}\rvert=2^k$, kjer je $k$ število pogojnih stavkov, ki jih vsebuje program.
 \end{izrek}
+\begin{opomba}
+Iteratorji, ki v svojem telesu ne spreminjajo izstopnih kriterijev programa ne delijo na območja.
+\end{opomba}
+Iz Izreka $\ref{izr:st.zlepkov}$ sledi, da je kompleksnost števila operiranj naivnih implementacij metod sekcij $\ref{sec:Vrsta}$ in $\ref{sec:FTP}$ eksponentna v odvisnost od števila vejitev (kjer bi operirali na vsakem območju $\Omega_i$ posebej). Ob ustrezni aplikaciji Izrekov tega članka lahko kompleksnost drastično zmanjšamo (linearno), kar je predmet pouka te sekcije.
+\vspace{10px}
 
-\newpage
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+    text width=5.5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}[node distance = 2cm, auto]
+    \node [block] (p1) {$P_1$};
+    \node [block,right of=p1,node distance=5cm] (ep1) {$e^\D(P_1)$};
+    \node [block,right of=ep1,node distance=5cm] (tep1) {$T_{F\X}\cdot e^\D(P_1)$};
+    
+    \node [decision, below of=ep1,node distance=3cm] (v1) {Vejitev};
+    
+    \node [block,below of=v1,node distance=2.75cm] (ep2) {$e^\D(P_2)$};
+    \node [block,left of=ep2,node distance=3.5cm] (p2) {$P_2$};
+    \node [block,right of=ep2,node distance=3.5cm] (tep2) {$T_{F\X}\cdot e^\D(P_2)$};
+    
+    
+    \node [block,below of=ep2,node distance=2.75cm] (ep3) {$e^\D(P_3)$};
+    \node [block,left of=ep3,node distance=5cm] (p3) {$P_3$};
+    \node [block,right of=ep3,node distance=5cm] (tep3) {$T_{F\X}\cdot e^\D(P_3)$};
+    
+    \path [line,dashed] (p1) -- node{$e^\D$}(ep1);
+    \path [line,dashed] (p2) -- node{$e^\D$}(ep2);
+    \path [line,dashed] (p3) -- node{$e^\D$}(ep3);
+   
+    \path [line,dashed] (ep1) -- node{$T_{F\X}$}(tep1);
+    \path [line,dashed] (ep2) -- node{$T_{F\X}$}(tep2);
+    \path [line,dashed] (ep3) -- node{$T_{F\X}$}(tep3);
+		
+	\coordinate [below of=ep2,node distance=1.5cm](C);
+	\coordinate [right of=C,node distance=5.25cm](D);
+	\coordinate [right of=v1,node distance=5.25cm](E);
+	\coordinate [above of=E,node distance=1.5cm](F);
+	\coordinate [above of=v1,node distance=1.5cm](G);
+	\path[line](C)--(D)--(E)--(F)--(G);
+	
+	\coordinate [above of=ep2,node distance=1.5cm](C2);
+	\coordinate [above of=p2,node distance=1.5cm](D2);
+	\coordinate [above of=tep2,node distance=1.5cm](E2);
+	\path[line](v1)--(ep2);
+	\path[line] (C2)--(D2)--(p2);
+	\path[line] (C2)--(E2)--(tep2);
+	
+	\coordinate [above of=ep3,node distance=1cm](D3);
+	\coordinate [below of=ep2,node distance=1cm](C3);
+	\coordinate [below of=p2,node distance=1cm](D3);
+	\coordinate [below of=tep2,node distance=1cm](E3);
+	\coordinate [below of=C,node distance=0.25cm](CC3);
+	\draw (p2)--(D3)--(E3)--(tep2);
+	\draw (ep2)--(C);
+	
+	\coordinate [below of=ep1,node distance=1cm](C4);
+	\coordinate [below of=p1,node distance=1cm](D4);
+	\coordinate [below of=tep1,node distance=1cm](E4);
+	\draw (p1)--(D4)--(C4);
+	\draw (tep1)--(E4)--(C4);
+	\path[line](ep1)--(v1);
+	
+	\coordinate [above of=p3,node distance=1.25cm](C5);
+	\coordinate [above of=ep3,node distance=1.25cm](D5);
+	\coordinate [above of=tep3,node distance=1.25cm](E5);
+
+	
+	\coordinate [left of=p3,node distance=1.75cm](D2);
+	\coordinate [left of=v1,node distance=6.75cm](F2);
+	\coordinate [below of=D2,node distance=1.25cm](H2);
+	\coordinate [below of=p3,node distance=1.25cm](I2);
+	\coordinate [below of=ep3,node distance=1.25cm](J2);
+	\coordinate [below of=tep3,node distance=1.25cm](K2);
+	
+	\path[line](v1)--(F2)--(D2)--(H2)--(I2)--(p3);
+	\path[line](I2)--(J2)--(ep3);
+	\path[line](J2)--(K2)--(tep3);
+	
+\end{tikzpicture}
+\vspace{3px}
+\caption{Diagram transformacij} \label{fig:diagram} 
+\end{figure}
+
+\begin{izrek}
+Program $P\in\dP$ lahko ekvivalentno predstavimo z največ $2n+1$ aplikacijami operatorja $e^\D$.
+\end{izrek}
+
+\begin{proof}
+	Programsko kodo programa $P\in\dP$ lahko predstavimo z usmerjenim grafom, kot kaže Slika $\ref{fig:diagram}$. Vsaka vejitev povzroči razdvojitev v izvajanju, a se po izvedbi vejitve vrne na točko cepitve.	
+	Po Izreku $\ref{izr:kompo}$ lahko vsako od teh vej gledamo kot na pod-program $p_i$, za katere po Izreku $\ref{izr:komp_homo}$ velja $$e^\D(p_n\circ p_{n-1}\circ\cdots\circ p_1)=e^\D(p_n)\circ e^\D(p_{n-1})\circ\cdots\circ e^\D(p_1)$$
+	
+	Tako programska koda vsebuje $2n$ vej, od prve delitve dalje, brez veje, ki privede do nje, na katere je potrebno aplicirat operator $e^\D$. Skupaj $2n+1$.
+\end{proof}
+
+Slike operatorjev $e^\D$ in $T_{F\X}$ so elementi prvotnega prostora $\dP$, katere lahko komponiramo. Tako je za $P=p_3\circ p_2\circ p_1$ slednji izraz smiseln
+
+\begin{equation}
+P=\Big(p_3\circ e^ \D(p_2)\circ T_{F\X}e^\D(p_1)\Big) \in \dP
+\end{equation}
+
+Seveda enako velja za vse permutacije aplikacije operatorjev $e^\D$ in $T_{F\X}$, kot je razvidno iz Slike $\ref{fig:diagram}$.
+
+\begin{opomba}
+Enakost je odvisna od nabora funkcij $F$, ki jih navaja proizvajalec strojne opreme.
+\end{opomba}
+
+Transformacijski tenzor $T_{F\X}$ je potrebno poračunat le enkrat, in ga je mogoče aplicirat na vse programe, ki se izvajajo na dotični strojni opremi. Enako velja za vsako vejo $p_i$, ki jih po Izreku $\ref{izr:komp_homo}$ prosto komponiramo med sebo.
+
+\begin{izrek}
+Kompozicija slik operatorja $e_n^\D(p_2)\circ e_n^\D(p_1)$ je izračunljiva v $\mathcal{O}(nlog^k(n))$, kjer je $k$ dimenzija $V$ in $n$ število baznih vektorjev $\{\D^n\}$ na katere projeciramo.
+\end{izrek}
+
+\begin{proof}
+	Po $\eqref{eq:pToPol}$ so slike operatorja $e^\D$ izomorfne simetrični algebri, katerih kompozicija je izračunljiva s FFT.
+\end{proof}
+
+Transformacije $\eqref{eq:P_F}$, je za vsako vejo potrebno poračunat le enkrat. Kompleksnost kompozicije slik transforacij $T_{F\X}\cdot e^\D(p_2)\circ T_{F\X}\cdot e^\D(p_1)$ pa je odvisna od prvotnih kompleksnosti $f_i\in F$.
+
+S tem smo pridobili orodje, ki nam omgogoča določanje računske kompleksnoti poljubnega programa $P\in\dP$, skupaj z ocenitvijo reda napake približka. Hkrati omogoča transformacijo funkcijske baze programov, in s tem implementacijo, ki je ugodnejša optimalnosti izvajanja na dotični strojni opremi. Po začetnih aplikacijah operatorjev in izvedenih transformacijah lahko program poljubnokrat uporabljamo v namen, za katerega je bil spisan. Ob tem lahko manipuliramo kompleksnost (za $k\le n$) ter preklapljamo med različicami kodnih izsekov ($p,e^\D(p),T_{F\X}\cdot e^\D(p)$), kot bolje ustreza naravi problema, ki ga program rešuje v danem trenutku.
+
 \section{Analitični stroji}
 Algoritme lahko interpretiramo, kot funkcijsko algebro nad $\dP_0:V\to V$. 
 Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\RR$, izrazimo skozi linerne kombinacije elementov $\dP_0\otimes T(V^*)$; izomorfizem, ki je generiran z dvojcem $(\dP_0,V)$ opremljenim s tenzorskim produktom. Tako sta dvojec $(\dP_0,V)$ in pripadajoča algebra zadostna pogoja za obstoj prostora neskončno odvedljivih programov $\dP_n$.
