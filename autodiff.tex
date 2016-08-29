@@ -994,71 +994,7 @@ kar znova omogoča učinkovito implementacijo.
    Sledi $\eqref{eq:pToPol}$ in Izreku $\ref{izr:kompo}$.
    \end{proof}
  
- \subsection{Operatorji}
- 
- Sledimo nareku dosedanjih poglavij in podrobneje raziščimi operatorje nad programskimi jeziki $\dP$. Pričnemo s preslikavami ene spremenljivke. Naj bo operator $d=\frac{d}{dx}$. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\dP$ (ki je funkcijski prostor nad $\RR$), zato lahko definiramo rodovno funkcijo v spremeljivki $t$
- 
- \begin{equation}\label{eq:DplusBasic}
- \Dplus=1+td+(td)^2+...+(td)^n
- \end{equation}
- 
- V limiti lahko operator $\Dplus$ izrazimo kot
- 
- \begin{equation}\label{eq:geoD}
-	\Dplus=\frac{1}{1-td}
- \end{equation}
- 
- \begin{opomba}
- 	Izraz $\eqref{eq:geoD}$ konverigira za $\lvert t\rvert<1$, a ker gre za rodovno funkcijo je izraz smiseln.
- \end{opomba}
- 
- Prednost takšnega izraza je v tem, da lahko odvode funkcije $f$ skozi izraz $\Dplus f(x)$ izluščimo skozi odvajanje po $t$, ki v prvotni funkciji sploh ne nastopa.
- 
- Želeli bi eksplicitno rešitev aplikacije operatorja $\Dplus$ na poljubno funkcijo.
- 
- $$g(x,t)=\frac{1}{1-td} f(x)$$
- 
- Rešitev konstruiramo skozi rešitve diferencialnih enačb. Velja
- 
- $$(1-td)g(x,t)=f(x)$$
- 
- Spremeljivka $t$ ni odvisna od $x$, zato jo v enačbi lahko tretiramo kot konstanto.
- 
- $$g(x)-t\frac{dg(x)}{dx}=f(x)$$
- 
- Splošna rešitev diferencialne enačbe je
- 
- \begin{equation}
- g(x)=e^{\frac{x}{t}}\Big(c-\int\limits_1^x\frac{f(s)e^{-\frac{s}{t}}}{t}ds\Big)
- \end{equation}
- 
- Opazimo enakost
- 
- \begin{equation}
-  \Dplus f(x)=e^{\frac{x}{t}}\Big(c-\int\limits_1^x\frac{f(s)e^{-\frac{s}{t}}}{t}ds\Big)
- \end{equation}
- 
- Izraz $\Dplus f(x)$ razvijamo v vrsto v točki $t=0$, kot je razvidno v $\eqref{eq:DplusBasic}$, zato je edina izbira za konstantno $c=0$. Tako velja
- 
- \begin{equation}\label{eq:Dplus}
-   \Dplus f(x)=e^{\frac{x}{t}}\Big(\int\limits_1^x\frac{f(s)e^{-\frac{s}{t}}}{t}ds\Big)
-  \end{equation}
-  
-  S tem je operator $\Dplus$ izračunljiv (v kolikor je izračunljiv dotičen integral). Poskusimo izraz na (zaradi berljivosti) preprosti funkciji $\sin(x)$. Po $\eqref{eq:Dplus}$ velja
-  
-  $$\Dplus\sin(x)=\frac{\sin(x)}{t^2+1}+t\frac{\cos(x)}{t^2+1}$$
-  
-  Izraz razširimo v neskončno vrsto v točki $t=0$.
-  
-  $$\Dplus\sin(x)=\sin(x)+t\cos(x)-t^2\sin(x)-t^3\cos(x)+....$$
-  
-  Kar očitno ustreza željenem izrazu
-  
-  $$\Dplus\sin(x)=\sum\limits_{i=0}^{n}t^i\frac{d^i\sin(x)}{dx^i}$$
-  
-  kot željeno.
-  
-  \subsection{Funkcijske transformacije programov}\label{sec:FTP}
+   \subsection{Funkcijske transformacije programov}\label{sec:FTP}
   
   Analizo motiviramo s primerom. Predpostavimo strojno opremo $H$, ki je optimizirana za množico funkcij $F=\{f_i:V\to V\}$. Množico $F$ specificira proizvajalec.
   
@@ -1305,7 +1241,7 @@ Kompozicija slik operatorja $e_n^\D(p_2)\circ e_n^\D(p_1)$ je izračunljiva v $\
 
 Transformacije $\eqref{eq:P_F}$, je za vsako vejo potrebno poračunat le enkrat. Kompleksnost kompozicije slik transforacij $T_{F\X}\cdot e^\D(p_2)\circ T_{F\X}\cdot e^\D(p_1)$ pa je odvisna od prvotnih kompleksnosti $f_i\in F$.
 
-S tem smo pridobili orodje, ki nam omgogoča določanje računske kompleksnoti poljubnega programa $P\in\dP$, skupaj z ocenitvijo reda napake približka. Hkrati omogoča transformacijo funkcijske baze programov, in s tem implementacijo, ki je ugodnejša optimalnosti izvajanja na dotični strojni opremi. Po začetnih aplikacijah operatorjev in izvedenih transformacijah lahko program poljubnokrat uporabljamo v namen, za katerega je bil spisan. Ob tem lahko manipuliramo kompleksnost (za $k\le n$) ter preklapljamo med različicami kodnih izsekov ($p,e^\D(p),T_{F\X}\cdot e^\D(p)$), kot bolje ustreza naravi problema, ki ga program rešuje v danem trenutku.
+S tem smo pridobili orodje, ki nam omgogoča določanje računske kompleksnoti poljubnega programa $P\in\dP$, skupaj z ocenitvijo reda napake približka. Hkrati omogoča transformacijo funkcijske baze programov, in s tem implementacijo, ki je ugodnejša optimalnosti izvajanja na dotični strojni opremi. Po začetnih aplikacijah operatorjev in izvedenih transformacijah lahko program poljubnokrat uporabljamo v namen, za katerega je bil spisan. Ob tem lahko manipuliramo kompleksnost (za $k\le n$) ter preklapljamo med različicami kodnih izsekov ($p$, $e^\D(p)$, $T_{F\X}\cdot e^\D(p)$), kot bolje ustreza podmnožici domene, nad katero program operira v danem trenutku.
 
 \section{Analitični stroji}
 Algoritme lahko interpretiramo, kot funkcijsko algebro nad $\dP_0:V\to V$. 
