@@ -973,17 +973,17 @@ kar znova omogoča učinkovito implementacijo.
  
  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^2exp(\D_fe^{h\D_g})(g)=\lim\limits_{\lVert h\rVert\to 0}\frac{d}{dh}\Big(\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)\Big)$$
  kar je po enačbah $\eqref{eq:dexp}$ in $\eqref{eq:de}$
- $$\lim\limits_{\lVert h\rVert\to 0}(\D_f(\D_gg)\D_f(\D_gg))e^{2h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_g\D_f(\D_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)$$
+ $$\lim\limits_{\lVert h\rVert\to 0}(\D_g\D_f(\D_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_f(\D_gg)\D_f(\D_gg))e^{2h\D_g}exp(\D_fe^{h\D_g})(g)$$
  z nekaj algebre in ustrezne aplikacije
- $$\lim\limits_{\lVert h\rVert\to 0}(\D^2_f(\D_gg)^2)e^{2h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_f(\D^2_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)$$
+ $$\lim\limits_{\lVert h\rVert\to 0}(\D_f(\D^2_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D^2_f(\D_gg)^2)e^{2h\D_g}exp(\D_fe^{h\D_g})(g)$$
   $$\implies$$
  \begin{equation}
-	(\D^2_f(\D_gg)^2+\D_f(\D^2_gg))exp(\D_f)
+	(\D_f(\D^2_gg)+\D^2_f(\D_gg)^2)exp(\D_f)
  \end{equation}
  
  Rezultat se seveda ujema z enačbo $\eqref{eq:dComposite}$ za $n=2$.
  
- Kot je razvidno iz primera, je računanje z operatorji precej enostavneje od direktnega manipuliranja funkcij. Seveda posledično omogoča enostavnejšo implementacijo, ki deluje nad poljubnimi funkcijskimi prostori. V prostoru ki ga $\{\D^n\}$ napenja nad $\dP$, denimo lahko odvode kompozicij izrazimo skozi pravila produkta Izreka $\ref{izr:prod}$ in $\eqref{eq:dexp}$, skozi operatorje same. Tako je eksplicitno poznanje pravil odvajanja kompozituma nepotrebno, saj je vsebovano v sami strukturi operatorja $exp(\D_fe^{h\D_g})$, ki pa odvajamo po klasičnih pravilih, kot v zgornjem primeru.
+ Kot je razvidno iz primera, je računanje z operatorji precej enostavneje od direktnega manipuliranja funkcij. Seveda posledično omogoča enostavnejšo implementacijo, ki deluje nad poljubnimi funkcijskimi prostori. V prostoru ki ga $\{\D^n\}$ napenja nad $\dP$, denimo lahko odvode kompozicij izrazimo skozi pravila produkta Izreka $\ref{izr:prod}$ in $\eqref{eq:dexp}$, skozi operatorje same. Tako je eksplicitno poznanje pravil odvajanja kompozituma nepotrebno, saj je vsebovano v sami strukturi operatorja $exp(\D_fe^{h\D_g})$, katerega pa odvajamo po klasičnih pravilih, kot v zgornjem primeru.
  
    \begin{izrek}\label{izr:komp_homo}
    Operator $e^{h\D}$ komutira s kompozicijo nad $\dP$
