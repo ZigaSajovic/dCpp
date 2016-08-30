@@ -983,6 +983,8 @@ kar znova omogoča učinkovito implementacijo.
  
  Rezultat se seveda ujema z enačbo $\eqref{eq:dComposite}$ za $n=2$.
  
+ Kot je razvidno iz primera, je računanje z operatorji precej enostavneje od direktnega manipuliranja funkcij. Seveda posledično omogoča enostavnejšo implementacijo, ki deluje nad poljubnimi funkcijskimi prostori. V prostoru ki ga $\{\D^n\}$ napenja nad $\dP$, denimo lahko odvode kompozicij izrazimo skozi pravila produkta Izreka $\ref{izr:prod}$ in $\eqref{eq:dexp}$, skozi operatorje same. Tako je eksplicitno poznanje pravil odvajanja kompozituma nepotrebno, saj je vsebovano v sami strukturi operatorja $exp(\D_fe^{h\D_g})$, ki pa odvajamo po klasičnih pravilih, kot v zgornjem primeru.
+ 
    \begin{izrek}\label{izr:komp_homo}
    Operator $e^{h\D}$ komutira s kompozicijo nad $\dP$
    \begin{equation}
@@ -993,6 +995,7 @@ kar znova omogoča učinkovito implementacijo.
    \begin{proof}
    Sledi $\eqref{eq:pToPol}$ in Izreku $\ref{izr:kompo}$.
    \end{proof}
+ Izreka se bomo spridom poslužili v razvoju uporabe.
  
    \subsection{Funkcijske transformacije programov}\label{sec:FTP}
   
@@ -1053,7 +1056,7 @@ kar znova omogoča učinkovito implementacijo.
   P=\sum\limits_{i=0}^{n}{P_F}_if_i
   \end{equation}
   
-  V kolikor $F$ ne napenja $\dP$, oziroma smo vzeli projekcijo operatorja $e^\D_{n<N}$, izraz $P_F$ kljub temu predstavlja najboljši približek prvotnega programa $P$ na $n$ komponentah $\{\D^n\}$.
+  V kolikor $F$ ne napenja $\dP$, oziroma smo vzeli projekcijo operatorja $e^\D_{n<N}$, izraz $P_F$ kljub temu predstavlja najboljši približek prvotnega programa $P$ na $n$ komponentah $\{\D^n\}$, v bazi $F$.
   
   Pred izračunom tenzorja $\eqref{eq:matTrans}$ je smiselno nabor funkcij $F$ razširiti z medsebojnimi kompozicijami in s tem pridobiti funkcije, ki niso izrazljive skozi linearne kombinacije (a so vseeno optimizirane delovanju na strojni opremi $H$), in tako povečat moč metode.
   
