@@ -1116,7 +1116,7 @@ kar znova omogoča učinkovito implementacijo.
      TP_{n_kk}\cdot TP_{(n_k-1)k}\cdot\ldots TP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
    \end{cases}
  \end{equation}
- Problem je seveda na robu območju $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
+ Problem je seveda na robu območju $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv. Problem, kateremu se je moč izognit s pristopi prihajajočih sekcij.
  
   \subsection{Iteratorji}
   
@@ -1151,7 +1151,7 @@ kar znova omogoča učinkovito implementacijo.
   $$\implies$$
   $$\frac{\D p(a)}{\D x}=\lambda$$
   
-  Na domeni $h(\mathcal{I})$ mape $p^n$ postanejo množenje z $\lambda^n=(\frac{\D p(a)}{\D x})^n$. Očitno velja $\lambda^n=e^{\nu n}\iff \nu=ln(\lambda)$.
+  Na domeni $h(\mathcal{I})$ preslikave $p^n$ postanejo množenje z $\lambda^n=(\frac{\D p(a)}{\D x})^n$. Očitno velja $\lambda^n=e^{\nu n}\iff \nu=ln(\lambda)$.
   
   Iteracijsko hitrost definiramo kot
   
@@ -1182,12 +1182,12 @@ kar znova omogoča učinkovito implementacijo.
   
   Tako bi pri optimizaciji z gradientnim spustom uporabili hitrost $\eqref{eq:hitrostIteracije}$, ki bi spustu dala smer in red velikosti. Induktivno bi lahko izpeljali pospešek in spremembe višjega reda.
   
-  Izračun preslikave $h$ in pogoje za obstoj, za $p$ predstavljiv s potenčno vrsto je rešil Koening, postopek, ki ga zaradi jedrnatosti izpuščamo v tem besedilu. Po Izreku $\eqref{izr:e^d}$ lahko vsak program $p\in\dP$ z aplikacijo operatorja $e^\D$ transformiramo v potenčno vrsto in se poslužimo omenjega izračuna.
+  Izračun preslikave $h$ in pogoje za obstoj, za $p$ predstavljiv s potenčno vrsto je rešil Bridges (2011), postopek, ki ga zaradi jedrnatosti izpuščamo v tem besedilu. Po Izreku $\eqref{izr:e^d}$ lahko vsak program $p\in\dP$ z aplikacijo operatorja $e^\D$ transformiramo v potenčno vrsto in se poslužimo omenjega izračuna.
   
    Kot poseben primer uporabe iteratorjev si pogledamo akumulatorje, za katere razvijemo eksplicitno obliko v odvisnosti od robnih pogojev. Z $\Shift^n$ označimo operator, ki nad programom $p$ opravi linearen premik v smeri $v$.
    
    \begin{equation}
-   \Shift^n:\dP(v)\to \dP(v_0+nv)
+   \Shift^n:\dP(v_0)\to \dP(v_0+nv)
    \end{equation}
     
     Naj bo $\Shift$ ciklična grupa generirana za specifična $v_0,v\in V$,za operaciji vsote in produkta
@@ -1208,7 +1208,7 @@ kar znova omogoča učinkovito implementacijo.
    
    $$\implies$$
    
-   $$1-\Shift^n=(1-S)\mathcal{A}_n$$
+   $$1-\Shift^n=(1-S)\mathcal{A}_{n-1}$$
    $$\exists_n\Big((1-\Shift)=\Shift^n\in\Shift\Big)\implies \exists_m\Big((1-\Shift)^{-1}=\Shift^m\in \Shift\Big)$$
    
    $$\implies$$
@@ -1347,14 +1347,14 @@ Iz Izreka $\ref{izr:st.zlepkov}$ sledi, da je kompleksnost števila operiranj na
 \end{figure}
 
 \begin{izrek}
-Program $P\in\dP$ lahko ekvivalentno predstavimo z največ $2n+1$ aplikacijami operatorja $e^\D$.
+Program $P\in\dP$ lahko ekvivalentno predstavimo z največ $2n+1$ aplikacijami operatorja $e^\D$, na $2n+1$ analitičnih pod-programov.
 \end{izrek}
 
 \begin{proof}
 	Programsko kodo programa $P\in\dP$ lahko predstavimo z usmerjenim grafom, kot kaže Slika $\ref{fig:diagram}$. Vsaka vejitev povzroči razdvojitev v izvajanju, a se po izvedbi vejitve vrne na točko cepitve.	
 	Po Izreku $\ref{izr:kompo}$ lahko vsako od teh vej gledamo kot na pod-program $p_i$, za katere po Izreku $\ref{izr:komp_homo}$ velja $$e^\D(p_n\circ p_{n-1}\circ\cdots\circ p_1)=e^\D(p_n)\circ e^\D(p_{n-1})\circ\cdots\circ e^\D(p_1)$$
 	
-	Tako programska koda vsebuje $2n$ vej, od prve delitve dalje, brez veje, ki privede do nje, na katere je potrebno aplicirat operator $e^\D$. Skupaj $2n+1$.
+	Tako programska koda vsebuje $2n$ odvedljivih vej, od prve delitve dalje, brez veje, ki privede do nje, na katere je potrebno aplicirat operator $e^\D$. Skupaj $2n+1$. Po Izreku $\ref{izr:P_n}$ je vsaka od teh vej analitična.
 \end{proof}
 
 Slike operatorjev $e^\D$ in $T_{F\X}$ so elementi prvotnega prostora $\dP$, katere lahko komponiramo. Tako je za $P=p_3\circ p_2\circ p_1$ slednji izraz smiseln
