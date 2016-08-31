@@ -1117,6 +1117,139 @@ kar znova omogoča učinkovito implementacijo.
    \end{cases}
  \end{equation}
  Problem je seveda na robu območju $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
+ 
+  \subsection{Iteratorji}
+  
+  Iterator je funkcional, ki opravlja kompozicijo programa $p\in\dP$ s samim sabo. Je eno od pogostejših orodij v uporabi v večini programskih jezikov. Zaradi  enostavnosti izražanja $n$-ti iterat programa $p\in\dP$ označimo s $p^n$. Tako je na iterat je moč gledat, kot na kompozicijski eksponent.
+  
+  Naj bo $\mathcal{I}_p$ cikličen monoid generiran z $p:V\to V$ in kompozicijo $\circ$
+  
+  \begin{equation}
+  \mathcal{I}_p=\{p^n:V\to V\iff p(a)=a\}
+  \end{equation}
+  
+ S tem se lahko vprašamo po spremembah iteracij programa, v odvisnosti od izstopnega pogoja. Odgovor bi omogočil analizo in optimizacijo samega števila potrebnih iteracij programa.
+  
+  Naj bo preslikava $h$ definirana z eigen-enačbo
+  
+  \begin{equation}\label{eq:kh}
+  h(p(x))=\lambda h(x)
+  \end{equation}
+   \begin{equation}
+   h(a)=0
+   \end{equation}
+  
+  Sklepamo lahko o akciji $h$ nad $p$
+  
+  \begin{equation}
+  h(p^n(x))=\lambda^nh(x)
+  \end{equation}
+  
+  Z odvajanjem $\eqref{eq:kh}$ v fiksni točki se dokopljemo do skalarja $\lambda$.
+  
+  $$\frac{\D h(p(a))}{\D f}\frac{\D p(a)}{\D x}=\lambda\frac{\D h(a)}{\D x}$$
+  $$\implies$$
+  $$\frac{\D p(a)}{\D x}=\lambda$$
+  
+  Na domeni $h(\mathcal{I})$ mape $p^n$ postanejo množenje z $\lambda^n=(\frac{\D p(a)}{\D x})^n$. Očitno velja $\lambda^n=e^{\nu n}\iff \nu=ln(\lambda)$.
+  
+  Iteracijsko hitrost definiramo kot
+  
+  \begin{equation}
+  v(p^n)=\D_np^n(x)
+  \end{equation}
+  
+  Seveda velja
+  
+  \begin{equation}
+  v(p^n(a))=0
+  \end{equation}
+  
+  kar je razvidno iz enačbe $\eqref{eq:kh}$ in se sklada z intuitivnim razmislekom.
+  
+  S tem se obrnemo k izračunu iteracijske hitrosti
+ 
+  $$\D_nh(p^n)=\D_n(e^{\nu n}h(x))$$
+  
+  $$\implies$$
+  
+  $$\D h(p^n(x))\D_np^n(x)=\nu e^{\nu n}h(x) \land e^{\nu n}h(x)=h(p^n(x))$$
+  $$\implies$$
+  
+  \begin{equation}\label{eq:hitrostIteracije}
+  v=\nu(\D^{-1}h)h
+  \end{equation}
+  
+  Tako bi pri optimizaciji z gradientnim spustom uporabili hitrost $\eqref{eq:hitrostIteracije}$, ki bi spustu dala smer in red velikosti. Induktivno bi lahko izpeljali pospešek in spremembe višjega reda.
+  
+  Izračun preslikave $h$ in pogoje za obstoj, za $p$ predstavljiv s potenčno vrsto je rešil Koening, postopek, ki ga zaradi jedrnatosti izpuščamo v tem besedilu. Po Izreku $\eqref{izr:e^d}$ lahko vsak program $p\in\dP$ z aplikacijo operatorja $e^\D$ transformiramo v potenčno vrsto in se poslužimo omenjega izračuna.
+  
+   Kot poseben primer uporabe iteratorjev si pogledamo akumulatorje, za katere razvijemo eksplicitno obliko v odvisnosti od robnih pogojev. Z $\Shift^n$ označimo operator, ki nad programom $p$ opravi linearen premik v smeri $v$.
+   
+   \begin{equation}
+   \Shift^n:\dP(v)\to \dP(v_0+nv)
+   \end{equation}
+    
+    Naj bo $\Shift$ ciklična grupa generirana za specifična $v_0,v\in V$,za operaciji vsote in produkta
+   
+   $$\Shift=\{\Shift^n\}$$
+   
+   Definirajmo $n$-ti akumulator kot
+   
+   $$\mathcal{A}_n=(1+\Shift+\Shift^2+\cdots+\Shift^n)$$
+   
+   Tako je izraz zanimanja
+   
+   $$\sum\limits_{h=0}^{n}\dP(v_0+hv)=(1+\Shift+\Shift^2+...+\Shift^n)(\dP)(v_0)$$
+   
+   Tudi v tem primeru nas zanimajo spremembe, v odvisnosti od robnih pogojev. S tem v mislih raziščimo akumulator $\mathcal{A}_n$
+   
+   $$(1+\Shift+\Shift^2+...+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+...+\Shift^{n-1})$$
+   
+   $$\implies$$
+   
+   $$1-\Shift^n=(1-S)\mathcal{A}_n$$
+   $$\exists_n\Big((1-\Shift)=\Shift^n\in\Shift\Big)\implies \exists_m\Big((1-\Shift)^{-1}=\Shift^m\in \Shift\Big)$$
+   
+   $$\implies$$
+   
+   $$\mathcal{A}_{n-1}=(1-\Shift^n)(\frac{1}{1-\Shift})$$
+   
+   Po Izreku $\ref{izr:e^d}$ velja
+   
+   $$e^{h\D}\dP(v_0)(v)=\dP(v_0+hv)\implies \Shift^h=e^{h\D}$$
+   
+   $$\implies$$
+   
+   $$\mathcal{A}_{n-1}=(1-\Shift^n)(\D^{-1})(\frac{\D}{1-e^{h\D}})$$
+   
+   Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\RR$. Zato je izraz   
+     
+    \begin{equation}
+    	\frac{h\D}{1-e^{h\D}}=\sum\limits_{n=0}^{\infty}c_n\frac{(h\D)^n}{n!}
+    \end{equation}
+    
+    dobro definiran. Izkaže se $c_i=B_i$, kjer je $B_i$ $i$-to Bernulijevo število. Operator $(1-\Shift^n)$ predstavlja ocenitev v krajiščih
+    
+    $$(1-\Shift^n)=\Bigg\vert_{v_0}^{nv}$$
+    
+    Tako $\mathcal{A}_{n-1}$ dobi obliko
+    
+    $$\mathcal{A}_{n-1}=(\D^{-1})(\sum\limits_{i=0}^{\infty}c_i\frac{(h\D)^i}{i!})\Bigg\vert_{v_0}^{nv}$$
+    
+    $$\implies$$
+    
+    \begin{equation}
+    \mathcal{A}_{n-1}=c_0\D^{-1}+\sum\limits_{i=1}^{\infty}c_i\frac{h^i\D^{i-1}}{i!}\Bigg\vert_{v_0}^{nv}
+    \end{equation}
+    
+    Eksplicitno moramo poznat le en inverz. Tako je akumulator $\mathcal{A}_{n-1}$ izrazljiv kot
+    
+    \begin{equation}
+    	\mathcal{A}_{n-1}\dP(v_0)=c_0\D^{-1}\dP(t)+\sum\limits_{i=1}^{\infty}c_i\frac{h^i\D^{i-1}\dP(t)}{i!}\Bigg\vert_{v_0}^{nv}
+    \end{equation}
+    
+    Izraz je funkcija robnih pogojev, zato so spremembe poljubnega reda izračunljive brez uporabe izrazov $\eqref{eq:kh}$.
 
 \subsection{Uporaba in Sklep}
 
@@ -1418,49 +1551,6 @@ Po Izreku $\ref{izr:D^nRek}$ velja  $\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-
  \end{equation*}
  kjer sta $P_\II$ in  $I_\JJ$ matriki, ki ustrezata projekciji na $V_\II$ oziroma
  vložitvi $V_\JJ$ v $\RR^n$.  
- 
- \subsection{Iteratorji}
- 
- Iterator definiramo kot preslikavo nad programskim jezikom $\dP$. Definiramo lahko dve vrsti takšni preslikav.
- 
- Naj bo $\Shift$ ciklična grupa generirana za specifičen $v\in V$,za operaciji vsote in produkta
- $$\Shift=\{s:v\in V\to v+n\in V\}$$
- Definirajmo $n$-ti iterator kot
- $$\mathcal{I}_n=(1+\Shift+\Shift^2+...+\Shift^n)$$
- $$\sum\limits_{i=0}^{n}\dP(i)=(1+\Shift+\Shift^2+...+\Shift^n)(\dP)(0)$$
- $$(1+\Shift+\Shift^2+...+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+...+\Shift^{n-1}))$$
- $$\implies$$
- $$1-\Shift^n=(1-S)\mathcal{I}_n$$
- $$\exists_n\Big((1-\Shift)=\Shift^n\in\Shift\Big)\implies \exists_m\Big((1-\Shift)^{-1}=\Shift^m\in \Shift\Big)$$
- $$\implies$$
- $$\mathcal{I}_{n-1}=(1-\Shift^n)(\frac{1}{1-\Shift})$$
- Po Izreku $\ref{izr:e^d}$ velja
- $$e^{h\D}:V\times\dP\to S(V*)$$
- $$e^{h\D}\dP(V)=\dP(V+hv)$$
- $$\implies$$
- $$\Shift^h=e^{h\D}$$
- $$\mathcal{I}_{n-1}=(1-\Shift^n)(\D^{-1})(\frac{\D}{1-e^{h\D}})$$
- Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\RR$. Zato je izraz   
    
-  \begin{equation}
-  	\frac{h\D}{1-e^{h\D}}=\sum\limits_{n=0}^{\infty}c_n\frac{(h\D)^n}{n!}
-  \end{equation}
-  
-  dobro definiran. Izkaže se $c_i=B_i$, kjer je $B_i$ $i$-to Bernulijevo število. Operator $(1-\Shift^n)$ predstavlja ocenitev v krajiščih
-  
-  $$(1-\Shift^n)=\Bigg\vert_0^{nv}$$
-  
-  $$\mathcal{I}_{n-1}=(\D^{-1})(\sum\limits_{i=0}^{\infty}c_i\frac{(h\D)^i}{i!})\Bigg\vert_0^{nv}$$
-  $$\implies$$
-  $$\mathcal{I}_{n-1}=c_0\D^{-1}+\sum\limits_{i=1}^{\infty}c_i\frac{h^i\D^{i-1}}{i!}\Bigg\vert_0^{nv}$$
-  
-  Eksplicitno moramo poznati le en inverz. Tako je iterator prve sorte
-  
-  \begin{equation}
-  	\mathcal{I}_{n-1}\dP(v)=c_0\D^{-1}\dP(t)+\sum\limits_{i=1}^{\infty}c_i\frac{h^i\D^{i-1}\dP(t)}{i!}\Bigg\vert_0^{nv}
-  \end{equation}
-  
-  Odvedljiv tudi po samem robnem pogoju.
-  
 \end{document}
 
