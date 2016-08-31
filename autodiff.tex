@@ -1151,11 +1151,11 @@ kar znova omogoča učinkovito implementacijo.
   
   Z odvajanjem $\eqref{eq:kh}$ v fiksni točki se dokopljemo do skalarja $\lambda$.
   
-  $$\frac{\D h(p(a))}{\D f}\frac{\D p(a)}{\D x}=\lambda\frac{\D h(a)}{\D x}$$
+  $$\D h(p(a))\D p(a)=\lambda\D h(a)$$
   $$\implies$$
-  $$\frac{\D p(a)}{\D x}=\lambda$$
+  $$\D p(a)=\lambda$$
   
-  Na domeni $h(\mathcal{I})$ preslikave $p^n$ postanejo množenje z $\lambda^n=(\frac{\D p(a)}{\D x})^n$. Očitno velja $\lambda^n=e^{\nu n}\iff \nu=ln(\lambda)$.
+  Na domeni $h(\mathcal{I})$ preslikave $p^n$ postanejo množenje z $\lambda^n=(\D p(a))^n$. Očitno velja $\lambda^n=e^{\nu n}\iff \nu=ln(\lambda)$.
   
   Iteracijsko hitrost definiramo kot
   
@@ -1196,9 +1196,9 @@ kar znova omogoča učinkovito implementacijo.
    $$\Shift=\{\Shift^n\}$$   
    Definirajmo $n$-ti akumulator kot 
    $$\mathcal{A}_n=(1+\Shift+\Shift^2+\cdots+\Shift^n)$$ Tako je izraz zanimanja
-   $$\sum\limits_{h=0}^{n}\dP(v_0+hv)=(1+\Shift+\Shift^2+...+\Shift^n)(\dP)(v_0)$$
+   $$\sum\limits_{h=0}^{n}\dP(v_0+hv)=(1+\Shift+\Shift^2+\cdots+\Shift^n)(\dP)(v_0)$$
    Tudi v tem primeru nas zanimajo spremembe, v odvisnosti od robnih pogojev. S tem v mislih raziščimo akumulator $\mathcal{A}_n$
-   $$(1+\Shift+\Shift^2+...+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+...+\Shift^{n-1})$$
+   $$(1+\Shift+\Shift^2+\cdots+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+\cdots+\Shift^{n-1})$$
    $$\implies$$
    $$1-\Shift^n=(1-S)\mathcal{A}_{n-1}$$
    $$\exists_n\Big((1-\Shift)=\Shift^n\in\Shift\Big)\implies \exists_m\Big((1-\Shift)^{-1}=\Shift^m\in \Shift\Big)$$
