@@ -1120,7 +1120,11 @@ kar znova omogoča učinkovito implementacijo.
  
   \subsection{Iteratorji}
   
-  Iterator je funkcional, ki opravlja kompozicijo programa $p\in\dP$ s samim sabo. Je eno od pogostejših orodij v uporabi v večini programskih jezikov. Zaradi  enostavnosti izražanja $n$-ti iterat programa $p\in\dP$ označimo s $p^n$. Tako je na iterat je moč gledat, kot na kompozicijski eksponent.
+  Iterator je funkcional, ki opravlja kompozicijo programa $p\in\dP$ s samim sabo. Je eno od pogostejših orodij v uporabi v večini programskih jezikov. Zaradi  enostavnosti izražanja $n$-ti iterat programa $p\in\dP:V\to V$ označimo s $p^n$. Tako je na iterat je moč gledat, kot na kompozicijski eksponent.
+  
+  Poenostavimo splošen primer in spoznajmo problem. Program $p\in\dP$ lineariziramo okoli točke $0$. Potem za $v\in V$ velja $P(v)=\D p(0)\cdot v$. Posledično je $n$-ti iterat $P^n(v)=(\D p(0))^n\cdot v$. Matriko $\D p(0)$ je moč diagonalizirat $\D p(0)=S\Lambda S^{-1}$, kjer je $\Lambda$ diagonalna matrika lastnih vrednosti in $S$ matrika pripadajočih lastnih vektorjev. Tako je $n$-ti itearat $P^n(v)=S\Lambda^nS^{-1}\cdot v$.
+  
+  Takšen izraz za $n$-ti iterat je funkcija v $n$, števiu iteracij, in kot tak odvedljiv po robnih pogojih iterata. S tem smo pridobili zmožnost mere spremembe v odvisnost od zveznega števila iteracih. Pojav želimo posplošit na splošne na eigen-preslikave.
   
   Naj bo $\mathcal{I}_p$ cikličen monoid generiran z $p:V\to V$ in kompozicijo $\circ$
   
@@ -1170,12 +1174,9 @@ kar znova omogoča učinkovito implementacijo.
   S tem se obrnemo k izračunu iteracijske hitrosti
  
   $$\D_nh(p^n)=\D_n(e^{\nu n}h(x))$$
-  
   $$\implies$$
-  
   $$\D h(p^n(x))\D_np^n(x)=\nu e^{\nu n}h(x) \land e^{\nu n}h(x)=h(p^n(x))$$
   $$\implies$$
-  
   \begin{equation}\label{eq:hitrostIteracije}
   v=\nu(\D^{-1}h)h
   \end{equation}
@@ -1192,63 +1193,38 @@ kar znova omogoča učinkovito implementacijo.
     
     Naj bo $\Shift$ ciklična grupa generirana za specifična $v_0,v\in V$,za operaciji vsote in produkta
    
-   $$\Shift=\{\Shift^n\}$$
-   
-   Definirajmo $n$-ti akumulator kot
-   
-   $$\mathcal{A}_n=(1+\Shift+\Shift^2+\cdots+\Shift^n)$$
-   
-   Tako je izraz zanimanja
-   
+   $$\Shift=\{\Shift^n\}$$   
+   Definirajmo $n$-ti akumulator kot 
+   $$\mathcal{A}_n=(1+\Shift+\Shift^2+\cdots+\Shift^n)$$ Tako je izraz zanimanja
    $$\sum\limits_{h=0}^{n}\dP(v_0+hv)=(1+\Shift+\Shift^2+...+\Shift^n)(\dP)(v_0)$$
-   
    Tudi v tem primeru nas zanimajo spremembe, v odvisnosti od robnih pogojev. S tem v mislih raziščimo akumulator $\mathcal{A}_n$
-   
    $$(1+\Shift+\Shift^2+...+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+...+\Shift^{n-1})$$
-   
    $$\implies$$
-   
    $$1-\Shift^n=(1-S)\mathcal{A}_{n-1}$$
    $$\exists_n\Big((1-\Shift)=\Shift^n\in\Shift\Big)\implies \exists_m\Big((1-\Shift)^{-1}=\Shift^m\in \Shift\Big)$$
-   
    $$\implies$$
-   
    $$\mathcal{A}_{n-1}=(1-\Shift^n)(\frac{1}{1-\Shift})$$
-   
    Po Izreku $\ref{izr:e^d}$ velja
-   
    $$e^{h\D}\dP(v_0)(v)=\dP(v_0+hv)\implies \Shift^h=e^{h\D}$$
-   
    $$\implies$$
-   
    $$\mathcal{A}_{n-1}=(1-\Shift^n)(\D^{-1})(\frac{\D}{1-e^{h\D}})$$
-   
    Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\RR$. Zato je izraz   
      
     \begin{equation}
     	\frac{h\D}{1-e^{h\D}}=\sum\limits_{n=0}^{\infty}c_n\frac{(h\D)^n}{n!}
     \end{equation}
-    
     dobro definiran. Izkaže se $c_i=B_i$, kjer je $B_i$ $i$-to Bernulijevo število. Operator $(1-\Shift^n)$ predstavlja ocenitev v krajiščih
-    
     $$(1-\Shift^n)=\Bigg\vert_{v_0}^{nv}$$
-    
     Tako $\mathcal{A}_{n-1}$ dobi obliko
-    
     $$\mathcal{A}_{n-1}=(\D^{-1})(\sum\limits_{i=0}^{\infty}c_i\frac{(h\D)^i}{i!})\Bigg\vert_{v_0}^{nv}$$
-    
     $$\implies$$
-    
     \begin{equation}
     \mathcal{A}_{n-1}=c_0\D^{-1}+\sum\limits_{i=1}^{\infty}c_i\frac{h^i\D^{i-1}}{i!}\Bigg\vert_{v_0}^{nv}
     \end{equation}
-    
     Eksplicitno moramo poznat le en inverz. Tako je akumulator $\mathcal{A}_{n-1}$ izrazljiv kot
-    
     \begin{equation}
     	\mathcal{A}_{n-1}\dP(v_0)=c_0\D^{-1}\dP(t)+\sum\limits_{i=1}^{\infty}c_i\frac{h^i\D^{i-1}\dP(t)}{i!}\Bigg\vert_{v_0}^{nv}
     \end{equation}
-    
     Izraz je funkcija robnih pogojev, zato so spremembe poljubnega reda izračunljive brez uporabe izrazov $\eqref{eq:kh}$.
 
 \subsection{Uporaba in Sklep}
