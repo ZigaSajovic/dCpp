@@ -953,13 +953,10 @@ kar znova omogoča učinkovito implementacijo.
  \end{equation}
  
  Opazimo pomembno distinkcijo z operatorjem $e^{h\D_g}$, katerega odvod je
- 
  \begin{equation}\label{eq:de}
 \frac{d}{dh}e^{h\D_g}=\D_ge^{h\D_g}
  \end{equation}
- 
  Sedaj lahko računam odvode poljubnega reda operatorja povleka. Kot primer poračunamo drugi odvod
- 
  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^2exp(\D_fe^{h\D_g})(g)=\lim\limits_{\lVert h\rVert\to 0}\frac{d}{dh}\Big(\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)\Big)$$
  kar je po enačbah $\eqref{eq:dexp}$ in $\eqref{eq:de}$
  $$\lim\limits_{\lVert h\rVert\to 0}(\D_g\D_f(\D_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_f(\D_gg)\D_f(\D_gg))e^{2h\D_g}exp(\D_fe^{h\D_g})(g)$$
@@ -970,7 +967,7 @@ kar znova omogoča učinkovito implementacijo.
 	(\D_f(\D^2_gg)+\D^2_f(\D_gg)^2)exp(\D_f)
  \end{equation}
  
- Rezultat se seveda ujema z enačbo $\eqref{eq:dComposite}$ za $n=2$.
+ Tako smo skozi osnovna pravila izračunali operator drugega odvoda kompozicije z $g$, ki ga apliciramo, na poljuben program. Rezultat se seveda ujema z enačbo $\eqref{eq:dComposite}$ za $n=2$.
  
  Kot je razvidno iz primera, je računanje z operatorji precej enostavneje od direktnega manipuliranja funkcijskih vrst, kot smo storili v dokazu Izreka $\ref{izr:kompo}$. Seveda posledično omogoča enostavnejšo implementacijo, ki deluje nad poljubnimi funkcijskimi prostori. V prostoru ki ga $\{\D^n\}$ napenja nad $\dP$, lahko odvode kompozicij izrazimo skozi pravila produkta Izreka $\ref{izr:prod}$, ter $\eqref{eq:dexp}$ in $\eqref{eq:de}$, skozi operatorje same. Tako je eksplicitno poznavanje pravil odvajanja kompozituma nepotrebno, saj je vsebovano v sami strukturi operatorja $exp(\D_fe^{h\D_g})$, katerega pa odvajamo po osnovnih pravilih, kot v zgornjem primeru.
  
@@ -1111,7 +1108,7 @@ kar znova omogoča učinkovito implementacijo.
   
   Iterator je funkcional, ki opravlja kompozicijo programa $p\in\dP$ s samim sabo. Je eno od pogostejših orodij v uporabi v večini programskih jezikov. Zaradi  enostavnosti izražanja $n$-ti iterat programa $p\in\dP:V\to V$ označimo s $p^n$. Tako je na iterat je moč gledat, kot na kompozicijski eksponent.
   
-  Preučimo preprost primer in spoznajmo problem. Program $p\in\dP$ lineariziramo okoli točke $p(a)=0$. Potem za $v\in V$ velja $P(v)=\D p(a)\cdot v$. Posledično je $n$-ti iterat $P^n(v)=(\D p(a))^n\cdot v$. Matriko $\D p(a)$ je moč diagonalizirat $\D p(0)=S\Lambda S^{-1}$, kjer je $\Lambda$ diagonalna matrika lastnih vrednosti in $S$ matrika pripadajočih lastnih vektorjev. Tako je $n$-ti itearat $P^n(v)=S\Lambda^nS^{-1}\cdot v$.
+  Preučimo preprost primer in spoznajmo problem. Program $p\in\dP$ lineariziramo okoli točke $p(a)=0$. Potem za $v\in V$ velja $P(v)=\D p(a)\cdot v$. Posledično je $n$-ti iterat $P^n(v)=(\D p(a))^n\cdot v$. Matriko $\D p(a)$ je moč diagonalizirat $\D p(a)=S\Lambda S^{-1}$, kjer je $\Lambda$ diagonalna matrika lastnih vrednosti in $S$ matrika pripadajočih lastnih vektorjev. Tako je $n$-ti itearat $P^n(v)=S\Lambda^nS^{-1}\cdot v$.
   
   Takšen izraz za $n$-ti iterat je funkcija v $n$, števiu iteracij, in kot tak odvedljiv po robnih pogojih iterata. S tem smo pridobili zmožnost mere spremembe iteratorja v odvisnost od zveznega števila iteracih. Pojav želimo posplošit na splošne na eigen-preslikave.
   
