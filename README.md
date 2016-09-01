@@ -1,6 +1,6 @@
 # Operatorska analiza  v Algebri algoritmov
 
-##Povzetek
+###Povzetek
 
 V tem članku razvijemo teorijo analitičnih strojev, ki implementirajo neskončno-krat odvedljive programske jezike, in operatorjev nad njimi.
 
