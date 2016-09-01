@@ -967,7 +967,7 @@ kar znova omogoča učinkovito implementacijo.
 	(\D_f(\D^2_gg)+\D^2_f(\D_gg)^2)exp(\D_f)
  \end{equation}
  
- Tako smo skozi osnovna pravila izračunali operator drugega odvoda kompozicije z $g$, ki ga apliciramo, na poljuben program. Rezultat se seveda ujema z enačbo $\eqref{eq:dComposite}$ za $n=2$.
+ Tako smo brez dodatnih pravil izračunali operator drugega odvoda kompozicije z $g$, ki ga apliciramo na poljuben program. Rezultat se seveda ujema z enačbo $\eqref{eq:dComposite}$ za $n=2$.
  
  Kot je razvidno iz primera, je računanje z operatorji precej enostavneje od direktnega manipuliranja funkcijskih vrst, kot smo storili v dokazu Izreka $\ref{izr:kompo}$. Seveda posledično omogoča enostavnejšo implementacijo, ki deluje nad poljubnimi funkcijskimi prostori. V prostoru ki ga $\{\D^n\}$ napenja nad $\dP$, lahko odvode kompozicij izrazimo skozi pravila produkta Izreka $\ref{izr:prod}$, ter $\eqref{eq:dexp}$ in $\eqref{eq:de}$, skozi operatorje same. Tako je eksplicitno poznavanje pravil odvajanja kompozituma nepotrebno, saj je vsebovano v sami strukturi operatorja $exp(\D_fe^{h\D_g})$, katerega pa odvajamo po osnovnih pravilih, kot v zgornjem primeru.
  
