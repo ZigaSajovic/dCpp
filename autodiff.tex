@@ -80,7 +80,7 @@ basicstyle=\ttfamily
   Programski jezik definiramo kot monoid v funkcijskem vektorskem prostoru preslikav nad virtualnim pomnilnikom. Virtualni pomnilnik konstruiramo skozi tenzorsko algebro in ga opremimo s pripadajočo algebro algoritmov. Skozi to algebro konstruiramo diferencialne operatorje, ki nad programskimi jeziki napenjajo prostor neskončno-krat odvedljivih programov. Predstavimo celostno teorijo operatorjev, ki omogoča analizo programov in izračune na nivoju operatorjev samih, kar je seveda naklonjeno splošni implementaciji. Skozi teorijo izpeljemo nove operatorje, ki program razvijejo v neskončne potenčne vrste v algebri algoritmov. Teorijo uporabimo za analizo iteratorjev v programskih jezikih, in njihove odvisnosti od izstopnih pogojev. 
   
   Z razvitim konstruiramo funkcijske transformacije programov v poljubni funkcijski bazi (navadno tisti, ki jo kot optimalno navaja proizvajalec strojne opreme). 
-  Tako s teorijo pridobimo nov pristop k analizi programov in sposobnost določanja časovne kompleksnosti algoritmov, z vedenjem reda napak aproksimacije.
+  Tako s teorijo pridobimo nov pristop k analizi programov in sposobnost določanja časovne kompleksnosti algoritmov, s poznavanjem reda napak aproksimacije.
 \end{abstract}
 \section{Uvod}
 Za začetek si oglejmo preprost primer, na katerem ilustriramo osnovno idejo.
@@ -971,7 +971,7 @@ kar znova omogoča učinkovito implementacijo.
  
  Kot je razvidno iz primera, je računanje z operatorji precej enostavneje od direktnega manipuliranja funkcijskih vrst, kot smo storili v dokazu Izreka $\ref{izr:kompo}$. Seveda posledično omogoča enostavnejšo implementacijo, ki deluje nad poljubnimi funkcijskimi prostori. V prostoru ki ga $\{\D^n\}$ napenja nad $\dP$, lahko odvode kompozicij izrazimo skozi pravila produkta Izreka $\ref{izr:prod}$, ter $\eqref{eq:dexp}$ in $\eqref{eq:de}$, skozi operatorje same. Tako je eksplicitno poznavanje pravil odvajanja kompozituma nepotrebno, saj je vsebovano v sami strukturi operatorja $exp(\D_fe^{h\D_g})$, katerega pa odvajamo po osnovnih pravilih, kot v zgornjem primeru.
  
- \begin{equation}
+ \begin{equation}\label{eq:dkompo}
  \D^n(f\circ g)=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^nexp(\D_fe^{h\D_g})(g)(f)
  \end{equation}
  
@@ -1193,7 +1193,7 @@ kar znova omogoča učinkovito implementacijo.
    Po Izreku $\ref{izr:e^d}$ velja
    $$e^{h\D}\dP(v_0)(v)=\dP(v_0+hv)\implies \Shift^h=e^{h\D}$$
    $$\implies$$
-   $$\mathcal{A}_{n-1}=(1-\Shift^n)(\D^{-1})(\frac{\D}{1-e^{h\D}})$$
+   $$\mathcal{A}_{n-1}=(1-\Shift^n)(\D^{-1})(\frac{\D}{1-e^{\D}})$$
    Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\RR$. Zato je izraz   
      
     \begin{equation}
@@ -1202,16 +1202,25 @@ kar znova omogoča učinkovito implementacijo.
     dobro definiran. Izkaže se $c_i=B_i$, kjer je $B_i$ $i$-to Bernulijevo število. Operator $(1-\Shift^n)$ predstavlja ocenitev v krajiščih
     $$(1-\Shift^n)=\Bigg\vert_{v_0}^{nv}$$
     Tako $\mathcal{A}_{n-1}$ dobi obliko
-    $$\mathcal{A}_{n-1}=(\D^{-1})(\sum\limits_{i=0}^{\infty}c_i\frac{(h\D)^i}{i!})\Bigg\vert_{v_0}^{nv}$$
+    $$\mathcal{A}_{n-1}=(\D^{-1})(\sum\limits_{i=0}^{\infty}c_i\frac{\D^i}{i!})\Bigg\vert_{v_0}^{nv}$$
     $$\implies$$
     \begin{equation}
-    \mathcal{A}_{n-1}=c_0\D^{-1}+\sum\limits_{i=1}^{\infty}c_i\frac{h^i\D^{i-1}}{i!}\Bigg\vert_{v_0}^{nv}
+    \mathcal{A}_{n-1}=c_0\D^{-1}+\sum\limits_{i=1}^{\infty}c_i\frac{\D^{i-1}}{i!}\Bigg\vert_{v_0}^{nv}
     \end{equation}
     Eksplicitno moramo poznat le en inverz. Tako je akumulator $\mathcal{A}_{n-1}$ izrazljiv kot
     \begin{equation}
-    	\mathcal{A}_{n-1}\dP(v_0)=c_0\D^{-1}\dP(t)+\sum\limits_{i=1}^{\infty}c_i\frac{h^i\D^{i-1}\dP(t)}{i!}\Bigg\vert_{v_0}^{nv}
+    	\mathcal{A}_{n-1}\dP(v_0)=c_0\D^{-1}\dP(t)+\sum\limits_{i=1}^{\infty}c_i\frac{\D^{i-1}\dP(t)}{i!}\Bigg\vert_{v_0}^{nv}
     \end{equation}
-    Izraz je funkcija robnih pogojev, zato so spremembe poljubnega reda izračunljive brez uporabe izrazov $\eqref{eq:kh}$.
+    Izraz je funkcija robnih pogojev, zato so spremembe poljubnega reda izračunljive brez uporabe izrazov $\eqref{eq:kh}$. Imamo operator $\mathcal{A}_n\in\dP_\infty$, tako, da lahko računamo kar z njim samim, kot v primeru kompozicije $\eqref{eq:dkompo}$.
+
+    $$\frac{d^k}{dn^k}\mathcal{A}_{n-1}=\frac{d^k}{dn^k}\Big((1-\Shift^n)(\frac{1}{1-e^\D})\Big)\land \Shift^n=e^{n\D}$$
+        $$\implies$$
+        $$\D^n e^{n\D}(\frac{1}{1-e^\D}) = \Shift^n(\frac{\D^n}{1-e^\D})$$
+        $$\implies$$
+        \begin{equation}
+        \frac{d^k}{dn^k}\mathcal{A}_{n-1}P\vert_{n=N}(v)=\Big(\sum\limits_{i=0}^{\infty}c_i\frac{\D^{N-1+i}\dP(Nv)}{i!}\Big)\Big(v\Big)
+        \end{equation}
+    kjer evaluacija v $v\in V$ opravi ustrezno translacijo, saj je slika operatorja $\mathcal{A}_{n-1}$ element $V_n\simeq S(V^*)$.
 
 \subsection{Uporaba in Sklep}
 
