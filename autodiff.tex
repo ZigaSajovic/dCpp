@@ -70,29 +70,17 @@ basicstyle=\ttfamily
 \newtheorem{posledica}{Posledica}[section]
 \newtheorem{konstrukcija}{Konstrukcija}[section]
 \newtheorem{koda}{Koda}[section]
-\title{Operator Calculus of Algorithms}
+\title{Operatorska analiza v Algebri algoritmov}
 \author{Žiga Sajovic, Martin Vuk}
 \begin{document}
 \maketitle
 \begin{abstract}
-  Dandanes matematične funkcije pogosto računamo z računalniki. Če je funkcija
-  odvedljiva, nas včasih zanima tudi, koliko je njen odvod. Večina bralcev verjetno
-  pozna simbolično odvajanje izrazov ali numerično odvajanje s končnimi
-  diferencami. V tem prispevku bova predstavila še en način, kako lahko določimo
-  odvode funkcije, ki jo računamo z računalniškim programom. \emph{Avtomatsko
-    odvajanje} je skupno ime za različne postopke, s katerimi program, ki računa
-  vrednosti odvedljive funkcije, preoblikujemo v program, ki izračuna odvod. 
-  Večina algoritmov za avtomatsko odvajanje znajo to narediti brez dodatnega
-  človekovega posega (odtod ime avtomatski). Za razliko
-  od numeričnega odvajanja ne trpijo za izgubo natančnosti. Prednost pred
-  simboličnim odvajanjem, pa je v tem, da jih lahko uporabimo tudi v primeru, ko
-  ne poznamo eksplicitne formule, ampak vrednosti računamo s programom.
+  V tem članku razvijemo teorijo analitičnih strojev, ki implementirajo neskončno-krat odvedljive programske jezike, in operatorjev nad njimi.
 
-  Avtomatsko odvajanje je uporabno povsod, kjer potrebujemo 
-  odvode funkcij, ki jih računamo s kompleksnimi algoritmi. Tipični primeri so
-  optimizacija parametrov pri strojnem učenju, računanje odvoda preslikave, ki nima
-  eksplicitne formulacije (npr. Poincarejeva preslikava za dinamične sisteme,
-  lastne vrednosti matrik, ...).
+  Programski jezik definiramo kot monoid v funkcijskem vektorskem prostoru preslikav nad virtualnim pomnilnikom. Virtualni pomnilnik konstruiramo skozi tenzorsko algebro in ga opremimo s pripadajočo algebro algoritmov. Skozi to algebro konstruiramo diferencialne operatorje, ki nad programskimi jeziki napenjajo prostor neskončno-krat odvedljivih programov. Predstavimo celostno teorijo operatorjev, ki omogoča analizo programov in izračune na nivoju operatorjev samih, kar je seveda naklonjeno splošni implementaciji. Skozi teorijo izpeljemo nove operatorje, ki program razvijejo v neskončne potenčne vrste v algebri algoritmov. Teorijo uporabimo za analizo iteratorjev v programskih jezikih, in njihove odvisnosti od izstopnih pogojev. 
+  
+  Z razvitim konstruiramo funkcijske transformacije programov v poljubni funkcijski bazi (navadno tisti, ki jo kot optimalno navaja proizvajalec strojne opreme). 
+  Tako s teorijo pridobimo nov pristop k analizi programov in sposobnost določanja časovne kompleksnosti algoritmov, z vedenjem reda napak aproksimacije.
 \end{abstract}
 \section{Uvod}
 Za začetek si oglejmo preprost primer, na katerem ilustriramo osnovno idejo.
@@ -673,7 +661,8 @@ $$(v\otimes f_1\otimes\ldots f_n)\cdot (u\otimes g_1\otimes \ldots
    enakim postopkom kot prvi odvod. Če le znamo izračunati odvode osnovnih
    ukazov in implementiramo množenje tenzorjev. TODO bolje objasni.
  \end{opomba}
- \subsection{Algebra algoritmov}
+ 
+ \section{Operatorska analiza v Algebri algoritmov}
 
 Razdelajmo pojme, ki nam bodo kasneje omogočili konstrukcijo analitičnih strojev, skozi preproste, zlahka implementirane algebraične manipulacije.
 
@@ -1122,7 +1111,7 @@ kar znova omogoča učinkovito implementacijo.
   
   Iterator je funkcional, ki opravlja kompozicijo programa $p\in\dP$ s samim sabo. Je eno od pogostejših orodij v uporabi v večini programskih jezikov. Zaradi  enostavnosti izražanja $n$-ti iterat programa $p\in\dP:V\to V$ označimo s $p^n$. Tako je na iterat je moč gledat, kot na kompozicijski eksponent.
   
-  Preučimo preprost primer in spoznajmo problem. Program $p\in\dP$ lineariziramo okoli točke $0$. Potem za $v\in V$ velja $P(v)=\D p(0)\cdot v$. Posledično je $n$-ti iterat $P^n(v)=(\D p(0))^n\cdot v$. Matriko $\D p(0)$ je moč diagonalizirat $\D p(0)=S\Lambda S^{-1}$, kjer je $\Lambda$ diagonalna matrika lastnih vrednosti in $S$ matrika pripadajočih lastnih vektorjev. Tako je $n$-ti itearat $P^n(v)=S\Lambda^nS^{-1}\cdot v$.
+  Preučimo preprost primer in spoznajmo problem. Program $p\in\dP$ lineariziramo okoli točke $p(a)=0$. Potem za $v\in V$ velja $P(v)=\D p(a)\cdot v$. Posledično je $n$-ti iterat $P^n(v)=(\D p(a))^n\cdot v$. Matriko $\D p(a)$ je moč diagonalizirat $\D p(0)=S\Lambda S^{-1}$, kjer je $\Lambda$ diagonalna matrika lastnih vrednosti in $S$ matrika pripadajočih lastnih vektorjev. Tako je $n$-ti itearat $P^n(v)=S\Lambda^nS^{-1}\cdot v$.
   
   Takšen izraz za $n$-ti iterat je funkcija v $n$, števiu iteracij, in kot tak odvedljiv po robnih pogojih iterata. S tem smo pridobili zmožnost mere spremembe iteratorja v odvisnost od zveznega števila iteracih. Pojav želimo posplošit na splošne na eigen-preslikave.
   
