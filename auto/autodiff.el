@@ -41,6 +41,7 @@
     "Dplus"
     "sumd"
     "Op"
+    "interior"
     "CC")
    (LaTeX-add-labels
     "eq:kompozitum"
@@ -93,6 +94,9 @@
     "eq:dCompositePoint"
     "eq:dexp"
     "eq:de"
+    "eq:DplusBasic"
+    "eq:geoD"
+    "eq:Dplus"
     "eq:zlepek"
     "eq:zlrprk_splosno"
     "eq:Dzlrprk_splosno"
