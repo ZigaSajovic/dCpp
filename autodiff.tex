@@ -5,9 +5,15 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+\usepackage{caption}
+\usepackage{bbm}
 
 \usepackage[T1]{fontenc}
 \usepackage{inconsolata}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{positioning}
 
 \usepackage{color}
 \definecolor{bluekeywords}{rgb}{0.13,0.13,1}
@@ -44,6 +50,7 @@ basicstyle=\ttfamily
 \newcommand{\uu}{\mathbf{u}}
 \newcommand{\vv}{\mathbf{v}}
 \newcommand{\F}{\mathcal{F}}
+\newcommand{\X}{\mathcal{X}}
 \newcommand{\CC}{C\nolinebreak\hspace{-.05em}\raisebox{.4ex}{\tiny\bf +}\nolinebreak\hspace{-.10em}\raisebox{.4ex}{\tiny\bf +}}
 \def\CC{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\tiny\bf ++}}}
 \newcommand{\dP}{\mathcal{P}}
@@ -63,29 +70,17 @@ basicstyle=\ttfamily
 \newtheorem{posledica}{Posledica}[section]
 \newtheorem{konstrukcija}{Konstrukcija}[section]
 \newtheorem{koda}{Koda}[section]
-\title{Operator Calculus of Algorithms}
+\title{Operatorska analiza v Algebri algoritmov}
 \author{Žiga Sajovic, Martin Vuk}
 \begin{document}
 \maketitle
 \begin{abstract}
-  Dandanes matematične funkcije pogosto računamo z računalniki. Če je funkcija
-  odvedljiva, nas včasih zanima tudi, koliko je njen odvod. Večina bralcev verjetno
-  pozna simbolično odvajanje izrazov ali numerično odvajanje s končnimi
-  diferencami. V tem prispevku bova predstavila še en način, kako lahko določimo
-  odvode funkcije, ki jo računamo z računalniškim programom. \emph{Avtomatsko
-    odvajanje} je skupno ime za različne postopke, s katerimi program, ki računa
-  vrednosti odvedljive funkcije, preoblikujemo v program, ki izračuna odvod. 
-  Večina algoritmov za avtomatsko odvajanje znajo to narediti brez dodatnega
-  človekovega posega (odtod ime avtomatski). Za razliko
-  od numeričnega odvajanja ne trpijo za izgubo natančnosti. Prednost pred
-  simboličnim odvajanjem, pa je v tem, da jih lahko uporabimo tudi v primeru, ko
-  ne poznamo eksplicitne formule, ampak vrednosti računamo s programom.
+  V tem članku razvijemo teorijo analitičnih strojev, ki implementirajo neskončno-krat odvedljive programske jezike, in operatorjev nad njimi.
 
-  Avtomatsko odvajanje je uporabno povsod, kjer potrebujemo 
-  odvode funkcij, ki jih računamo s kompleksnimi algoritmi. Tipični primeri so
-  optimizacija parametrov pri strojnem učenju, računanje odvoda preslikave, ki nima
-  eksplicitne formulacije (npr. Poincarejeva preslikava za dinamične sisteme,
-  lastne vrednosti matrik, ...).
+  Programski jezik definiramo kot monoid v funkcijskem vektorskem prostoru preslikav nad virtualnim pomnilnikom. Virtualni pomnilnik konstruiramo skozi tenzorsko algebro in ga opremimo s pripadajočo algebro algoritmov. Skozi to algebro konstruiramo diferencialne operatorje, ki nad programskimi jeziki napenjajo prostor neskončno-krat odvedljivih programov. Predstavimo celostno teorijo operatorjev, ki omogoča analizo programov in izračune na nivoju operatorjev samih, kar je seveda naklonjeno splošni implementaciji. Skozi teorijo izpeljemo nove operatorje, ki program razvijejo v neskončne potenčne vrste v algebri algoritmov. Teorijo uporabimo za analizo iteratorjev in drugih kontrolnih struktur v programskih jezikih, in njihove odvisnosti od izstopnih pogojev. 
+  
+  Z razvitim konstruiramo funkcijske transformacije programov v poljubni funkcijski bazi (navadno tisti, ki jo kot optimalno navaja proizvajalec strojne opreme). 
+  Tako s teorijo pridobimo nov pristop k analizi programov in sposobnost določanja časovne kompleksnosti algoritmov, s poznavanjem reda napak aproksimacije.
 \end{abstract}
 \section{Uvod}
 Za začetek si oglejmo preprost primer, na katerem ilustriramo osnovno idejo.
@@ -666,7 +661,8 @@ $$(v\otimes f_1\otimes\ldots f_n)\cdot (u\otimes g_1\otimes \ldots
    enakim postopkom kot prvi odvod. Če le znamo izračunati odvode osnovnih
    ukazov in implementiramo množenje tenzorjev. TODO bolje objasni.
  \end{opomba}
- \subsection{Algebra algoritmov}
+ 
+ \section{Operatorska analiza v Algebri algoritmov}
 
 Razdelajmo pojme, ki nam bodo kasneje omogočili konstrukcijo analitičnih strojev, skozi preproste, zlahka implementirane algebraične manipulacije.
 
@@ -816,14 +812,14 @@ Množica $\{\D^n\}$ implicira nilpotenco $k>n\implies\D^k=0$. Produkt med dvema 
 	\sum\limits_{i=0}^{n}\D^if\sum\limits_{j=0}^{n}\D^jg=\sum\limits_{k=0}^{n}\sum\limits_{i+j=k}\D^if\D^jg
 \end{equation}
 
- \subsection{Razvoj v vrsto}
+ \subsection{Razvoj v vrsto}\label{sec:Vrsta}
   
   Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega iščemo približek. Z opisano mehaniko lahko program lineariziramo.
   Izberemo $v\in PV$ in preslikamo v $v'\in P'V_1$ (kar je potrebno storiti le enkrat). Potem lahko program $PV$ približamo z linearno aproksimacijo $v+(v'-v) (V)$, ki je linearne kompleksnost $\mathcal{O}(k)$, kjer je $k$ dimenzija $V$.
   %enačba pomeni, da vektorju odštšteješ "realni" del
   Slika linearizacije služi kot dober približek slike prvotnega programa.
   
-  Induktivno bi želeli program razvit v neskončno vrsto. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\RR$ (ki je funkcijski prostor nad $\RR$). Zato je izraz
+  Induktivno bi želeli program razvit v neskončno vrsto. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\dP$ (ki je funkcijski prostor nad $\RR$). Zato je izraz
   
   
  \begin{equation}
@@ -853,7 +849,7 @@ Množica $\{\D^n\}$ implicira nilpotenco $k>n\implies\D^k=0$. Produkt med dvema 
  
 Skozi $\eqref{eq:specProg}$ lahko konstruiramo preslikavo iz prostora programov v prostor polinomov.  Po $\eqref{eq:tenzor_algebra}$ je $V_n$ izomorfen komutativno asociativni unitalni algebri $S(V^{i*})$, kar korespondira polinomom z nedoločenkami v $V^i$.
  
- \begin{equation}
+ \begin{equation}\label{eq:pToPol}
  	(e^{h\D})(V): \F\to S(V^*)
  \end{equation}
  Izraz predstavlja preslikavo programa v polinom.
@@ -889,23 +885,24 @@ kar znova omogoča učinkovito implementacijo.
 
  Razvoj v odrezano vrsto reda $N$ dobimo skozi projekcijo $e^{h\D}$ na $\{\D^N \}$. 
  
- \begin{izrek}
+ \begin{izrek}\label{izr:prod}
  Operator $e^{h\D}$ je automorfizem algebre nad $\dP_\infty$
  \begin{equation}
- 	e^{h\D}(p_1p_2)=e^{h\D}(p_1)e^{h\D}(p_2)
+ 	e^{h\D}(p_1\cdot p_2)=e^{h\D}(p_1)\cdot e^{h\D}(p_2)
  \end{equation}
+ kjer je $\cdot$ bilinearna preslikava.
  \end{izrek}
  
  \begin{proof}
  Za vsak $n$ velja $\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(LHS)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(RHS)}$\\
   $\implies$
-  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^ne^{h\D}(p_1p_2)=\lim\limits_{\lVert h\rVert\to 0}\D^ne^{h\D}(p_1p_2)$$
+  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^ne^{h\D}(p_1\cdot p_2)=\lim\limits_{\lVert h\rVert\to 0}\D^ne^{h\D}(p_1\cdot p_2)$$
   $$\implies$$
-  $$\D^n(p_1p_2)$$
+  $$\D^n(p_1\cdot p_2)$$
   $\impliedby$
-  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\Big(e^{h\D}(p_1)e^{h\D}(p_2)\Big)=\lim\limits_{\lVert h\rVert\to 0}\sum\limits_{k=0}^{n}{n\choose k}\D^{n-k}e^{h\D}(p_1)\D^ke^{h\D}(p_2)$$
+  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\Big(e^{h\D}(p_1)\cdot e^{h\D}(p_2)\Big)=\lim\limits_{\lVert h\rVert\to 0}\sum\limits_{k=0}^{n}{n\choose k}\D^{n-k}e^{h\D}(p_1)\cdot \D^ke^{h\D}(p_2)$$
   $$\implies$$
-  $$\sum\limits_{k=0}^{n}{n\choose k}\D^{n-k}p_1\D^kp_2$$
+  $$\sum\limits_{k=0}^{n}{n\choose k}\D^{n-k}p_1\cdot \D^kp_2$$
  \end{proof}
  
  \begin{izrek}\label{izr:kompo}
@@ -941,7 +938,7 @@ kar znova omogoča učinkovito implementacijo.
   \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g(v))}{l!}\Big)^k\frac{n!}{k!}\Big(f(g(v))\Big)
   \end{equation}
  \end{opomba}
- Izrek $\ref{izr:kompo}$ omgogoča enostavno implementacijo komponiranja programov $p\in\dP$ izraženih v odrezanih vrstah skozi izraz $\eqref{eq:dComposite}$. 
+ Izrek $\ref{izr:kompo}$ omogoča enostavno implementacijo komponiranja programov $p\in\dP$ izraženih v odrezanih vrstah skozi izraz $\eqref{eq:dComposite}$. 
  
  Operator $exp(\D_fe^{h\D_g})(g)(f)$ opravi povlek preslikave $f$ skozi $g$. Velja
  
@@ -956,89 +953,103 @@ kar znova omogoča učinkovito implementacijo.
  \end{equation}
  
  Opazimo pomembno distinkcijo z operatorjem $e^{h\D_g}$, katerega odvod je
- 
  \begin{equation}\label{eq:de}
 \frac{d}{dh}e^{h\D_g}=\D_ge^{h\D_g}
  \end{equation}
- 
  Sedaj lahko računam odvode poljubnega reda operatorja povleka. Kot primer poračunamo drugi odvod
- 
  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^2exp(\D_fe^{h\D_g})(g)=\lim\limits_{\lVert h\rVert\to 0}\frac{d}{dh}\Big(\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)\Big)$$
  kar je po enačbah $\eqref{eq:dexp}$ in $\eqref{eq:de}$
- $$\lim\limits_{\lVert h\rVert\to 0}(\D_f(\D_gg)\D_f(\D_gg))e^{2h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_g\D_f(\D_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)$$
+ $$\lim\limits_{\lVert h\rVert\to 0}(\D_g\D_f(\D_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_f(\D_gg)\D_f(\D_gg))e^{2h\D_g}exp(\D_fe^{h\D_g})(g)$$
  z nekaj algebre in ustrezne aplikacije
- $$\lim\limits_{\lVert h\rVert\to 0}(\D^2_f(\D_gg)^2)e^{2h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_f(\D^2_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)$$
+ $$\lim\limits_{\lVert h\rVert\to 0}(\D_f(\D^2_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D^2_f(\D_gg)^2)e^{2h\D_g}exp(\D_fe^{h\D_g})(g)$$
   $$\implies$$
  \begin{equation}
-	(\D^2_f(\D_gg)^2+\D_f(\D^2_gg))exp(\D_f)
+	(\D_f(\D^2_gg)+\D^2_f(\D_gg)^2)exp(\D_f)
  \end{equation}
  
- Rezultat se seveda ujema z enačbo $\eqref{eq:dComposite}$ za $n=2$.
+ Tako smo brez dodatnih pravil izračunali operator drugega odvoda kompozicije z $g$, ki ga apliciramo na poljuben program. Rezultat se seveda ujema z enačbo $\eqref{eq:dComposite}$ za $n=2$.
  
- \subsection{Operatorji}
+ Kot je razvidno iz primera, je računanje z operatorji precej enostavneje od direktnega manipuliranja funkcijskih vrst, kot smo storili v dokazu Izreka $\ref{izr:kompo}$. Seveda posledično omogoča enostavnejšo implementacijo, ki deluje nad poljubnimi funkcijskimi prostori. V prostoru ki ga $\{\D^n\}$ napenja nad $\dP$, lahko odvode kompozicij izrazimo skozi pravila produkta Izreka $\ref{izr:prod}$, ter $\eqref{eq:dexp}$ in $\eqref{eq:de}$, skozi operatorje same. Tako je eksplicitno poznavanje pravil odvajanja kompozituma nepotrebno, saj je vsebovano v sami strukturi operatorja $exp(\D_fe^{h\D_g})$, katerega pa odvajamo po osnovnih pravilih, kot v zgornjem primeru.
  
- Sledimo nareku dosedanjih poglavij in podrobneje raziščimi operatorje nad programskimi jeziki $\dP$. Pričnemo s preslikavami ene spremenljivke. Naj bo operator $d=\frac{d}{dx}$. Definirajmo rodovno funkcijo v spremeljivki $t$
- 
- \begin{equation}\label{eq:DplusBasic}
- \Dplus=1+td+(td)^2+...+(td)^n
+ \begin{equation}\label{eq:dkompo}
+ \D^n(f\circ g)=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^nexp(\D_fe^{h\D_g})(g)(f)
  \end{equation}
  
- V limiti lahko operator $\Dplus$ izrazimo kot
+   \begin{izrek}\label{izr:komp_homo}
+   Operator $e^{h\D}$ komutira s kompozicijo nad $\dP$
+   \begin{equation}
+   e^{h\D}(p_2\circ p_1)=e^{h\D}(p_2)\circ e^{h\D}(p_1)
+   \end{equation}
+   \end{izrek}
+   
+   \begin{proof}
+   Sledi $\eqref{eq:pToPol}$ in Izreku $\ref{izr:kompo}$.
+   \end{proof}
+ Izreka se bomo spridom poslužili v razvoju uporabe.
  
- \begin{equation}\label{eq:geoD}
-	\Dplus=\frac{1}{1-td}
- \end{equation}
- 
- \begin{opomba}
- 	Izraz $\eqref{eq:geoD}$ konverigira za $\lvert t\rvert<1$, a ker gre za rodovno funkcijo je izraz smiseln.
- \end{opomba}
- 
- Prednost takšnega izraza je v tem, da lahko odvode funkcije $f$ skozi izraz $\Dplus f(x)$ izluščimo skozi odvajanje po $t$, ki v prvotni funkciji sploh ne nastopa.
- 
- Želeli bi eksplicitno rešitev aplikacije operatorja $\Dplus$ na poljubno funkcijo.
- 
- $$g(x,t)=\frac{1}{1-td} f(x)$$
- 
- Rešitev konstruiramo skozi rešitve diferencialnih enačb. Velja
- 
- $$(1-td)g(x,t)=f(x)$$
- 
- Spremeljivka $t$ ni odvisna od $x$, zato jo v enačbi lahko tretiramo kot konstanto.
- 
- $$g(x)-t\frac{dg(x)}{dx}=f(x)$$
- 
- Splošna rešitev diferencialne enačbe je
- 
- \begin{equation}
- g(x)=e^{\frac{x}{t}}\Big(c-\int\limits_1^x\frac{f(s)e^{-\frac{s}{t}}}{t}ds\Big)
- \end{equation}
- 
- Opazimo enakost
- 
- \begin{equation}
-  \Dplus f(x)=e^{\frac{x}{t}}\Big(c-\int\limits_1^x\frac{f(s)e^{-\frac{s}{t}}}{t}ds\Big)
- \end{equation}
- 
- Izraz $\Dplus f(x)$ razvijamo v vrsto v točki $t=0$, kot je razvidno je $\eqref{eq:DplusBasic}$, zato je edina izbira za konstantno $c=0$. Tako velja
- 
- \begin{equation}\label{eq:Dplus}
-   \Dplus f(x)=e^{\frac{x}{t}}\Big(\int\limits_1^x\frac{f(s)e^{-\frac{s}{t}}}{t}ds\Big)
+   \subsection{Funkcijske transformacije programov}\label{sec:FTP}
+  
+  Analizo motiviramo s primerom. Predpostavimo strojno opremo $H$, ki je optimizirana za množico funkcij $F=\{f_i:V\to V\}$. Množico $F$ specificira proizvajalec.
+  
+  Ob tehnoloških napredkih je menjava strojne opreme pogosta, kar lahko privede do padca hitrosti v izvajanju strojne kode. Tako bi želeli razvit transformacijo programa $P\in\dP$ v bazo $F$. Pogosto smo zadovoljni z sub-optimalnim algoritmom, ki je optimiziran za strojno opremo $H$. Suboptimalnost transformacije je odvisna od same množice $F$, ali je zmožna napet prostor $\dP$, ali ne. Klasičen primer transformacije je Fourierjeva transformacija v bazi $\{sin(nx), cos(mx)\}$, ki napenja $\dP$ (kar, kot omenjeno ni nujno za poljubno množico $F$).
+  
+  Po Izreku $\ref{izr:e^d}$ lako skozi operator $e^\D$ konstruiramo preslikavo $\eqref{eq:pToPol}$ iz prostora programov $\dP$ v prostor polinomov. Tako je slika $e^\D(P\in\dP)$ integrabilna. S tem lahko definiramo notranji produkt nad $\dP$.
+  
+  \begin{izrek}
+  Za $p_1,p_2\in\dP$ se notranji produkt $\eta(p_1,p_2)$ izraža kot
+  \begin{equation}
+  	\eta(p_1,p_2)=\int_{\Omega}e^\D p_1(\vec{x})\cdot e^\D p_2(\vec{x})dx
+  \end{equation}
+  kjer $\cdot$ predstavlja notranji produkt nad $V$, saj velja $e^\D(p\in\dP):V\to V$.
+  \end{izrek}
+  
+  \begin{proof}
+  Po Izreku $\ref{izr:prod}$ velja $e^\D(p_1\cdot p_2)=e^\D(p_1)\cdot e^\D(p_2)$. Po linearnosti integrala in dobro definiranem notranjem produktu nad $V$, je zadoščeno aksiomom notranjega produkta.
+  \end{proof}
+  
+  Tako, v kolikor je $F$ ortonormirana, oziroma smo jo ortonormirali s katerim od uveljavljenih postopkov, lahko $P$ izrazimo v bazi $F$, kot
+  
+  \begin{equation}
+ 	P=\sum\limits_{\forall_{f_i\in F}}\frac{\eta(P,f_i)}{\eta(f_i,f_i)}f_i
   \end{equation}
   
-  S tem je operator $\Dplus$ izračunljiv (v kolikor je izračunljiv dotičen integral). Poskusimo izraz na (zaradi berljivosti) preprosti funkciji $\sin(x)$. Po $\eqref{eq:Dplus}$ velja
+  V kolikor se želimo izognit integriranju, je skozi razvita orodja problem rešljiv z linearno algebro. Z $e_n^\D$ označnimo projekcijo operatorja $e^\D$, na prvih $n$ baznih vektorjev $\{\D^i\}$. Po Izreku $\ref{izr:e^d}$ lako skozi operator $e^\D$ konstruiramo preslikavo $\eqref{eq:pToPol}$ iz prostora programov $\dP$ v prostor polinomov z nedoločenkami v  $V^k$. Z $\X$ označimo bazo funkcijskega prostora polinomov, $\X=\{\prod\limits_{\forall_j} v_i^j\}$, kjer $v_i$ napenjajo $V^k$ in $j$ teče po elementih potenčne indeksne množice, invariantno permutacijam (kar je ekvialentno bazi prostora tenzorskega produkta, kjer tenzorski produkt nadomesti navaden produkt, ki seveda komutira). Potem lahko $e^\D_n(P\in\dP)$ interpretiramo kot vektor linearnih kombinacij $\X$, kar je privzeto v nadaljevanju poglavja.
   
-  $$\Dplus\sin(x)=\frac{\sin(x)}{t^2+1}+t\frac{\cos(x)}{t^2+1}$$
+  S tem lahko definiramo tenzor transformacij baze $F\to\X$
   
-  Izraz razširimo v neskončno vrsto v točki $t=0$.
+  \begin{equation}\label{eq:matTransF}
+  T_{\X F}=\begin{pmatrix}
+  e_n^\D(f_1) & e_n^\D(f_2) & \cdots & e_n^\D(f_n)
+  \end{pmatrix}
+  \end{equation}
   
-  $$\Dplus\sin(x)=\sin(x)+t\cos(x)-t^2\sin(x)-t^3\cos(x)+....$$
+  \begin{opomba}
+  Tenzor $\eqref{eq:matTransF}$ je matrika, v kolikor so dotične preslikave $V^m\to V$ in tenzor ranka 3, v kolikor so dotične preslikave $V^m\to V^k$. To pa je moč interpretirat, kot zaporedje matrik, za vsako izmed komponent slike preslikave.
+  \end{opomba}
   
-  Kar očitno ustreza željenem izrazu
+  Tako je tenzor transformacije baze $\X\to F$ enak
   
-  $$\Dplus\sin(x)=\sum\limits_{i=0}^{n}t^i\frac{d^i\sin(x)}{dx^i}$$
+  \begin{equation}\label{eq:matTrans}
+  T_{F\X}=T_{\X F}^{-1}
+  \end{equation}
+    
+  Skozi tenzor $\eqref{eq:matTrans}$ zlahka izvedemo tranformacijo baze $\X\to F$. Za specifičen nabor funkcij $F$ (in posledično za strojno opremo $H$, s katero je nabor pogojen) je tenzor $\eqref{eq:matTrans}$ potrebno poračunat le enkrat in ga uporabimo za transformacije poljubnih programov (ob uporabi istega operatorja $e^\D_n$).
+  Tako so koordinate programa $P\in\dP$ v bazi $F$
   
-  kot željeno.
- 
+  \begin{equation}\label{eq:P_F}
+  	P_F=T_{F\X}\cdot e^\D(P)
+  \end{equation}
+  
+  Izraz $\eqref{eq:P_F}$ predstavlja koordinate programa $P$ v bazi $F$. Tako je program izrazljiv kot linearna kombinacija $f_i$ s pripadajočimi komponentami $P_F$ za koeficiente.
+  
+  \begin{equation}
+  P=\sum\limits_{i=0}^{n}{P_F}_if_i
+  \end{equation}
+  
+  V kolikor $F$ ne napenja $\dP$, oziroma smo vzeli projekcijo operatorja $e^\D_{n<N}$, izraz $P_F$ kljub temu predstavlja najboljši približek prvotnega programa $P$ na $n$ komponentah $\{\D^n\}$, v bazi $F$.
+  
+  Pred izračunom tenzorja $\eqref{eq:matTrans}$ je smiselno nabor funkcij $F$ razširiti z medsebojnimi kompozicijami in s tem pridobiti funkcije, ki niso izrazljive skozi linearne kombinacije (a so vseeno optimizirane delovanju na strojni opremi $H$), in tako povečat moč metode.
+  
  \subsection{Kontrolne strukture}
  
  Do sedaj smo se omejili na operacije, ki spreminjajo vsebino spomina. Poleg
@@ -1083,23 +1094,266 @@ kar znova omogoča učinkovito implementacijo.
  $\vec{x}$ in ga tudi lahko podamo kot zlepek a le v notranjosti deinicijskih območij $\Omega_i$
  \begin{equation}
    \label{eq:Dzlrprk_splosno}
-   \sumd_nP_{\vec{x}} =
+   TP_{\vec{x}} =
    \begin{cases}
-     \sumd_nP_{n_11}\cdot \sumd_nP_{(n_1-1)1}\cdot\ldots \sumd_nP_{11};&\quad \vec{x}\in\interior(\Omega_1)\\
-     \sumd_nP_{n_22}\cdot \sumd_nP_{(n_2-1)2}\cdot\ldots \sumd_nP_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
+     TP_{n_11}\cdot TP_{(n_1-1)1}\cdot\ldots TP_{11};&\quad \vec{x}\in\interior(\Omega_1)\\
+     TP_{n_22}\cdot TP_{(n_2-1)2}\cdot\ldots TP_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
      \vdots&\quad\vdots\\
-     \sumd_nP_{n_kk}\cdot \sumd_nP_{(n_k-1)k}\cdot\ldots \sumd_nP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
+     TP_{n_kk}\cdot TP_{(n_k-1)k}\cdot\ldots TP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
    \end{cases}
  \end{equation}
- Problem je seveda na robu območju $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv.
+ Problem je seveda na robu območju $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv. Problem, kateremu se je moč izognit s pristopi prihajajočih sekcij.
+ 
+  \subsection{Iteratorji}
+  
+  Iterator je funkcional, ki opravlja kompozicijo programa $p\in\dP$ s samim sabo. Je eno od pogostejših orodij v uporabi v večini programskih jezikov. Zaradi  enostavnosti izražanja $n$-ti iterat programa $p\in\dP:V\to V$ označimo s $p^n$. Tako je na iterat je moč gledat, kot na kompozicijski eksponent.
+  
+  Preučimo preprost primer in spoznajmo problem. Program $p\in\dP$ lineariziramo okoli točke $p(a)=0$. Potem za $v\in V$ velja $P(v)=\D p(a)\cdot v$. Posledično je $n$-ti iterat $P^n(v)=(\D p(a))^n\cdot v$. Matriko $\D p(a)$ je moč diagonalizirat $\D p(a)=S\Lambda S^{-1}$, kjer je $\Lambda$ diagonalna matrika lastnih vrednosti in $S$ matrika pripadajočih lastnih vektorjev. Tako je $n$-ti itearat $P^n(v)=S\Lambda^nS^{-1}\cdot v$.
+  
+  Takšen izraz za $n$-ti iterat je funkcija v $n$, števiu iteracij, in kot tak odvedljiv po robnih pogojih iterata. S tem smo pridobili zmožnost mere spremembe iteratorja v odvisnost od zveznega števila iteracih. Pojav želimo posplošit na splošne na eigen-preslikave.
+  
+  Naj bo $\mathcal{I}_p$ cikličen monoid generiran z $p:V\to V$ in kompozicijo $\circ$
+  
+  \begin{equation}
+  \mathcal{I}_p=\{p^n:V\to V\iff p(a)=a\}
+  \end{equation}
+  
+ S tem se lahko vprašamo po spremembah iteracij programa, v odvisnosti od izstopnega pogoja. Odgovor bi omogočil analizo in optimizacijo samega števila potrebnih iteracij programa.
+  
+  Naj bo preslikava $h$ definirana z eigen-enačbo
+  
+  \begin{equation}\label{eq:kh}
+  h(p(x))=\lambda h(x)
+  \end{equation}
+   \begin{equation}
+   h(a)=0
+   \end{equation}
+  
+  Sklepamo lahko o akciji $h$ nad $p$
+  
+  \begin{equation}
+  h(p^n(x))=\lambda^nh(x)
+  \end{equation}
+  
+  Z odvajanjem $\eqref{eq:kh}$ v fiksni točki se dokopljemo do skalarja $\lambda$.
+  
+  $$\D h(p(a))\D p(a)=\lambda\D h(a)$$
+  $$\implies$$
+  $$\D p(a)=\lambda$$
+  
+  Na domeni $h(\mathcal{I})$ preslikave $p^n$ postanejo množenje z $\lambda^n=(\D p(a))^n$. Očitno velja $\lambda^n=e^{\nu n}\iff \nu=ln(\lambda)$.
+  
+  Iteracijsko hitrost definiramo kot
+  
+  \begin{equation}
+  v(p^n)=\D_np^n(x)
+  \end{equation}
+  
+  Seveda velja
+  
+  \begin{equation}
+  v(p^n(a))=0
+  \end{equation}
+  
+  kar je razvidno iz enačbe $\eqref{eq:kh}$ in se sklada z intuitivnim razmislekom.
+  
+  S tem se obrnemo k izračunu iteracijske hitrosti
+ 
+  $$\D_nh(p^n)=\D_n(e^{\nu n}h(x))$$
+  $$\implies$$
+  $$\D h(p^n(x))\D_np^n(x)=\nu e^{\nu n}h(x) \land e^{\nu n}h(x)=h(p^n(x))$$
+  $$\implies$$
+  \begin{equation}\label{eq:hitrostIteracije}
+  v=\nu(\D^{-1}h)h
+  \end{equation}
+  
+  Tako bi pri optimizaciji z gradientnim spustom uporabili hitrost $\eqref{eq:hitrostIteracije}$, ki bi spustu dala smer in red velikosti. Induktivno bi lahko izpeljali pospešek in spremembe višjega reda.
+  
+  Izračun preslikave $h$ in pogoje za obstoj, za $p$ predstavljiv s potenčno vrsto je rešil Bridges (2011), postopek, ki ga zaradi jedrnatosti izpuščamo v tem besedilu. Po Izreku $\eqref{izr:e^d}$ lahko vsak program $p\in\dP$ z aplikacijo operatorja $e^\D$ transformiramo v potenčno vrsto in se poslužimo omenjega izračuna.
+  
+   Kot poseben primer uporabe iteratorjev si pogledamo akumulatorje, za katere razvijemo eksplicitno obliko v odvisnosti od robnih pogojev. Z $\Shift^n$ označimo operator, ki nad programom $p$ opravi linearen premik v smeri $v$.
+   
+   \begin{equation}
+   \Shift^n:\dP(v_0)\to \dP(v_0+nv)
+   \end{equation}
+    
+    Naj bo $\Shift$ ciklična grupa generirana za specifična $v_0,v\in V$,za operaciji vsote in produkta
+   
+   $$\Shift=\{\Shift^n\}$$   
+   Definirajmo $n$-ti akumulator kot 
+   $$\mathcal{A}_n=(1+\Shift+\Shift^2+\cdots+\Shift^n)$$ Tako je izraz zanimanja
+   $$\sum\limits_{h=0}^{n}\dP(v_0+hv)=(1+\Shift+\Shift^2+\cdots+\Shift^n)(\dP)(v_0)$$
+   Tudi v tem primeru nas zanimajo spremembe, v odvisnosti od robnih pogojev. S tem v mislih raziščimo akumulator $\mathcal{A}_n$
+   $$(1+\Shift+\Shift^2+\cdots+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+\cdots+\Shift^{n-1})$$
+   $$\implies$$
+   $$1-\Shift^n=(1-S)\mathcal{A}_{n-1}$$
+   $$\exists_n\Big((1-\Shift)=\Shift^n\in\Shift\Big)\implies \exists_m\Big((1-\Shift)^{-1}=\Shift^m\in \Shift\Big)$$
+   $$\implies$$
+   $$\mathcal{A}_{n-1}=(1-\Shift^n)(\frac{1}{1-\Shift})$$
+   Po Izreku $\ref{izr:e^d}$ velja
+   $$e^{h\D}\dP(v_0)(v)=\dP(v_0+hv)\implies \Shift^h=e^{h\D}$$
+   $$\implies$$
+   $$\mathcal{A}_{n-1}=(1-\Shift^n)(\D^{-1})(\frac{\D}{1-e^{\D}})$$
+   Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\RR$. Zato je izraz   
+     
+    \begin{equation}
+    	\frac{h\D}{1-e^{h\D}}=\sum\limits_{n=0}^{\infty}c_n\frac{(h\D)^n}{n!}
+    \end{equation}
+    dobro definiran. Izkaže se $c_i=B_i$, kjer je $B_i$ $i$-to Bernulijevo število. Operator $(1-\Shift^n)$ predstavlja ocenitev v krajiščih
+    $$(1-\Shift^n)=\Bigg\vert_{v_0}^{nv}$$
+    Tako $\mathcal{A}_{n-1}$ dobi obliko
+    $$\mathcal{A}_{n-1}=(\D^{-1})(\sum\limits_{i=0}^{\infty}c_i\frac{\D^i}{i!})\Bigg\vert_{v_0}^{nv}$$
+    $$\implies$$
+    \begin{equation}
+    \mathcal{A}_{n-1}=c_0\D^{-1}+\sum\limits_{i=1}^{\infty}c_i\frac{\D^{i-1}}{i!}\Bigg\vert_{v_0}^{nv}
+    \end{equation}
+    Eksplicitno moramo poznat le en inverz. Tako je akumulator $\mathcal{A}_{n-1}$ izrazljiv kot
+    \begin{equation}
+    	\mathcal{A}_{n-1}\dP(v_0)=c_0\D^{-1}\dP(t)+\sum\limits_{i=1}^{\infty}c_i\frac{\D^{i-1}\dP(t)}{i!}\Bigg\vert_{v_0}^{nv}
+    \end{equation}
+    Izraz je funkcija robnih pogojev, zato so spremembe poljubnega reda izračunljive brez uporabe izrazov $\eqref{eq:kh}$. Imamo operator $\mathcal{A}_n\in\dP_\infty$, tako, da lahko računamo kar z njim samim, kot v primeru kompozicije $\eqref{eq:dkompo}$.
 
-Vejitve programa na območja izvajamo skozi pogojne stavke $(if/else)$. Število območij $\Omega_i$ je enako moči množice $\{\Omega_i\}$. Vsak pogojni stavek, povzroči binarno vejitev v izvajanju programa
+    $$\frac{d^k}{dn^k}\mathcal{A}_{n-1}=\frac{d^k}{dn^k}\Big((1-\Shift^n)(\frac{1}{1-e^\D})\Big)\land \Shift^n=e^{n\D}$$
+        $$\implies$$
+        $$\D^n e^{n\D}(\frac{1}{1-e^\D}) = \Shift^n(\frac{\D^n}{1-e^\D})$$
+        $$\implies$$
+        \begin{equation}
+        \frac{d^k}{dn^k}\mathcal{A}_{n-1}P\vert_{n=N}(v)=\Big(\sum\limits_{i=0}^{\infty}c_i\frac{\D^{N-1+i}\dP(Nv)}{i!}\Big)\Big(v\Big)
+        \end{equation}
+    kjer evaluacija v $v\in V$ opravi ustrezno translacijo, saj je slika operatorja $\mathcal{A}_{n-1}$ element $V_n\simeq S(V^*)$.
 
-\begin{izrek}
+\subsection{Uporaba in Sklep}
+
+Vejitve programa na območja izvajamo skozi pogojne stavke. Število območij $\Omega_i$ je enako moči množice $\{\Omega_i\}$. Vsak pogojni stavek, povzroči binarno vejitev v izvajanju programa
+
+\begin{izrek}\label{izr:st.zlepkov}
 Moč množice $\{\Omega_i\}$ je enaka $\lvert\{\Omega_i \}\rvert=2^k$, kjer je $k$ število pogojnih stavkov, ki jih vsebuje program.
 \end{izrek}
+\begin{opomba}
+Iteratorji, ki v svojem telesu ne spreminjajo izstopnih kriterijev programa ne delijo na območja.
+\end{opomba}
+Iz Izreka $\ref{izr:st.zlepkov}$ sledi, da je kompleksnost števila operiranj naivnih implementacij metod sekcij $\ref{sec:Vrsta}$ in $\ref{sec:FTP}$ eksponentna v odvisnost od števila vejitev (kjer bi operirali na vsakem območju $\Omega_i$ posebej). Ob ustrezni aplikaciji Izrekov tega članka lahko kompleksnost drastično zmanjšamo (linearno), kar je predmet pouka te sekcije.
+\vspace{10px}
 
-\newpage
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+    text width=5.5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}[node distance = 2cm, auto]
+    \node [block] (p1) {$P_1$};
+    \node [block,right of=p1,node distance=5cm] (ep1) {$e^\D(P_1)$};
+    \node [block,right of=ep1,node distance=5cm] (tep1) {$T_{F\X}\cdot e^\D(P_1)$};
+    
+    \node [decision, below of=ep1,node distance=3cm] (v1) {Vejitev};
+    
+    \node [block,below of=v1,node distance=2.75cm] (ep2) {$e^\D(P_2)$};
+    \node [block,left of=ep2,node distance=3.5cm] (p2) {$P_2$};
+    \node [block,right of=ep2,node distance=3.5cm] (tep2) {$T_{F\X}\cdot e^\D(P_2)$};
+    
+    
+    \node [block,below of=ep2,node distance=2.75cm] (ep3) {$e^\D(P_3)$};
+    \node [block,left of=ep3,node distance=5cm] (p3) {$P_3$};
+    \node [block,right of=ep3,node distance=5cm] (tep3) {$T_{F\X}\cdot e^\D(P_3)$};
+    
+    \path [line,dashed] (p1) -- node{$e^\D$}(ep1);
+    \path [line,dashed] (p2) -- node{$e^\D$}(ep2);
+    \path [line,dashed] (p3) -- node{$e^\D$}(ep3);
+   
+    \path [line,dashed] (ep1) -- node{$T_{F\X}$}(tep1);
+    \path [line,dashed] (ep2) -- node{$T_{F\X}$}(tep2);
+    \path [line,dashed] (ep3) -- node{$T_{F\X}$}(tep3);
+		
+	\coordinate [below of=ep2,node distance=1.5cm](C);
+	\coordinate [right of=C,node distance=5.25cm](D);
+	\coordinate [right of=v1,node distance=5.25cm](E);
+	\coordinate [above of=E,node distance=1.5cm](F);
+	\coordinate [above of=v1,node distance=1.5cm](G);
+	\path[line](C)--(D)--(E)--(F)--(G);
+	
+	\coordinate [above of=ep2,node distance=1.5cm](C2);
+	\coordinate [above of=p2,node distance=1.5cm](D2);
+	\coordinate [above of=tep2,node distance=1.5cm](E2);
+	\path[line](v1)--(ep2);
+	\path[line] (C2)--(D2)--(p2);
+	\path[line] (C2)--(E2)--(tep2);
+	
+	\coordinate [above of=ep3,node distance=1cm](D3);
+	\coordinate [below of=ep2,node distance=1cm](C3);
+	\coordinate [below of=p2,node distance=1cm](D3);
+	\coordinate [below of=tep2,node distance=1cm](E3);
+	\coordinate [below of=C,node distance=0.25cm](CC3);
+	\draw (p2)--(D3)--(E3)--(tep2);
+	\draw (ep2)--(C);
+	
+	\coordinate [below of=ep1,node distance=1cm](C4);
+	\coordinate [below of=p1,node distance=1cm](D4);
+	\coordinate [below of=tep1,node distance=1cm](E4);
+	\draw (p1)--(D4)--(C4);
+	\draw (tep1)--(E4)--(C4);
+	\path[line](ep1)--(v1);
+	
+	\coordinate [above of=p3,node distance=1.25cm](C5);
+	\coordinate [above of=ep3,node distance=1.25cm](D5);
+	\coordinate [above of=tep3,node distance=1.25cm](E5);
+
+	
+	\coordinate [left of=p3,node distance=1.75cm](D2);
+	\coordinate [left of=v1,node distance=6.75cm](F2);
+	\coordinate [below of=D2,node distance=1.25cm](H2);
+	\coordinate [below of=p3,node distance=1.25cm](I2);
+	\coordinate [below of=ep3,node distance=1.25cm](J2);
+	\coordinate [below of=tep3,node distance=1.25cm](K2);
+	
+	\path[line](v1)--(F2)--(D2)--(H2)--(I2)--(p3);
+	\path[line](I2)--(J2)--(ep3);
+	\path[line](J2)--(K2)--(tep3);
+	
+\end{tikzpicture}
+\vspace{3px}
+\caption{Diagram transformacij} \label{fig:diagram} 
+\end{figure}
+
+\begin{izrek}
+Program $P\in\dP$ lahko ekvivalentno predstavimo z največ $2n+1$ aplikacijami operatorja $e^\D$, na $2n+1$ analitičnih pod-programov.
+\end{izrek}
+
+\begin{proof}
+	Programsko kodo programa $P\in\dP$ lahko predstavimo z usmerjenim grafom, kot kaže Slika $\ref{fig:diagram}$. Vsaka vejitev povzroči razdvojitev v izvajanju, a se po izvedbi vejitve vrne na točko cepitve.	
+	Po Izreku $\ref{izr:kompo}$ lahko vsako od teh vej gledamo kot na pod-program $p_i$, za katere po Izreku $\ref{izr:komp_homo}$ velja $$e^\D(p_n\circ p_{n-1}\circ\cdots\circ p_1)=e^\D(p_n)\circ e^\D(p_{n-1})\circ\cdots\circ e^\D(p_1)$$
+	
+	Tako programska koda vsebuje $2n$ odvedljivih vej, od prve delitve dalje, brez veje, ki privede do nje, na katere je potrebno aplicirat operator $e^\D$. Skupaj $2n+1$. Po Izreku $\ref{izr:P_n}$ je vsaka od teh vej analitična.
+\end{proof}
+
+Slike operatorjev $e^\D$ in $T_{F\X}$ so elementi prvotnega prostora $\dP$, katere lahko komponiramo. Tako je za $P=p_3\circ p_2\circ p_1$ slednji izraz smiseln
+
+\begin{equation}
+P=\Big(p_3\circ e^ \D(p_2)\circ T_{F\X}e^\D(p_1)\Big) \in \dP
+\end{equation}
+
+Seveda enako velja za vse permutacije aplikacije operatorjev $e^\D$ in $T_{F\X}$, kot je razvidno iz Slike $\ref{fig:diagram}$.
+
+\begin{opomba}
+Enakost je odvisna od nabora funkcij $F$, ki jih navaja proizvajalec strojne opreme.
+\end{opomba}
+
+Transformacijski tenzor $T_{F\X}$ je potrebno poračunat le enkrat, in ga je mogoče aplicirat na vse programe, ki se izvajajo na dotični strojni opremi. Enako velja za vsako vejo $p_i$, ki jih po Izreku $\ref{izr:komp_homo}$ prosto komponiramo med sebo.
+
+\begin{izrek}
+Kompozicija slik operatorja $e_n^\D(p_2)\circ e_n^\D(p_1)$ je izračunljiva v $\mathcal{O}(nlog^k(n))$, kjer je $k$ dimenzija $V$ in $n$ število baznih vektorjev $\{\D^n\}$ na katere projeciramo.
+\end{izrek}
+
+\begin{proof}
+	Po $\eqref{eq:pToPol}$ so slike operatorja $e^\D$ izomorfne simetrični algebri, katerih kompozicija je izračunljiva s FFT.
+\end{proof}
+
+Transformacije $\eqref{eq:P_F}$, je za vsako vejo potrebno poračunat le enkrat. Kompleksnost kompozicije slik transforacij $T_{F\X}\cdot e^\D(p_2)\circ T_{F\X}\cdot e^\D(p_1)$ pa je odvisna od prvotnih kompleksnosti $f_i\in F$.
+
+S tem smo pridobili orodje, ki nam omgogoča določanje računske kompleksnoti poljubnega programa $P\in\dP$, skupaj z ocenitvijo reda napake približka. Hkrati omogoča transformacijo funkcijske baze programov, in s tem implementacijo, ki je ugodnejša optimalnosti izvajanja na dotični strojni opremi. Po začetnih aplikacijah operatorjev in izvedenih transformacijah lahko program poljubnokrat uporabljamo v namen, za katerega je bil spisan. Ob tem lahko manipuliramo kompleksnost (za $k\le n$) ter preklapljamo med različicami kodnih izsekov ($p$, $e^\D(p)$, $T_{F\X}\cdot e^\D(p)$), kot bolje ustreza podmnožici domene, nad katero program operira v danem trenutku.
+
 \section{Analitični stroji}
 Algoritme lahko interpretiramo, kot funkcijsko algebro nad $\dP_0:V\to V$. 
 Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\RR$, izrazimo skozi linerne kombinacije elementov $\dP_0\otimes T(V^*)$; izomorfizem, ki je generiran z dvojcem $(\dP_0,V)$ opremljenim s tenzorskim produktom. Tako sta dvojec $(\dP_0,V)$ in pripadajoča algebra zadostna pogoja za obstoj prostora neskončno odvedljivih programov $\dP_n$.
@@ -1268,49 +1522,6 @@ Po Izreku $\ref{izr:D^nRek}$ velja  $\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-
  \end{equation*}
  kjer sta $P_\II$ in  $I_\JJ$ matriki, ki ustrezata projekciji na $V_\II$ oziroma
  vložitvi $V_\JJ$ v $\RR^n$.  
- 
- \subsection{Iteratorji}
- 
- Iterator definiramo kot preslikavo nad programskim jezikom $\dP$. Definiramo lahko dve vrsti takšni preslikav.
- 
- Naj bo $\Shift$ ciklična grupa generirana za specifičen $v\in V$,za operaciji vsote in produkta
- $$\Shift=\{s:v\in V\to v+n\in V\}$$
- Definirajmo $n$-ti iterator kot
- $$\mathcal{I}_n=(1+\Shift+\Shift^2+...+\Shift^n)$$
- $$\sum\limits_{i=0}^{n}\dP(i)=(1+\Shift+\Shift^2+...+\Shift^n)(\dP)(0)$$
- $$(1+\Shift+\Shift^2+...+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+...+\Shift^{n-1}))$$
- $$\implies$$
- $$1-\Shift^n=(1-S)\mathcal{I}_n$$
- $$\exists_n\Big((1-\Shift)=\Shift^n\in\Shift\Big)\implies \exists_m\Big((1-\Shift)^{-1}=\Shift^m\in \Shift\Big)$$
- $$\implies$$
- $$\mathcal{I}_{n-1}=(1-\Shift^n)(\frac{1}{1-\Shift})$$
- Po Izreku $\ref{izr:e^d}$ velja
- $$e^{h\D}:V\times\dP\to S(V*)$$
- $$e^{h\D}\dP(V)=\dP(V+hv)$$
- $$\implies$$
- $$\Shift^h=e^{h\D}$$
- $$\mathcal{I}_{n-1}=(1-\Shift^n)(\D^{-1})(\frac{\D}{1-e^{h\D}})$$
- Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\RR$. Zato je izraz   
    
-  \begin{equation}
-  	\frac{h\D}{1-e^{h\D}}=\sum\limits_{n=0}^{\infty}c_n\frac{(h\D)^n}{n!}
-  \end{equation}
-  
-  dobro definiran. Izkaže se $c_i=B_i$, kjer je $B_i$ $i$-to Bernulijevo število. Operator $(1-\Shift^n)$ predstavlja ocenitev v krajiščih
-  
-  $$(1-\Shift^n)=\Bigg\vert_0^{nv}$$
-  
-  $$\mathcal{I}_{n-1}=(\D^{-1})(\sum\limits_{i=0}^{\infty}c_i\frac{(h\D)^i}{i!})\Bigg\vert_0^{nv}$$
-  $$\implies$$
-  $$\mathcal{I}_{n-1}=c_0\D^{-1}+\sum\limits_{i=1}^{\infty}c_i\frac{h^i\D^{i-1}}{i!}\Bigg\vert_0^{nv}$$
-  
-  Eksplicitno moramo poznati le en inverz. Tako je iterator prve sorte
-  
-  \begin{equation}
-  	\mathcal{I}_{n-1}\dP(v)=c_0\D^{-1}\dP(t)+\sum\limits_{i=1}^{\infty}c_i\frac{h^i\D^{i-1}\dP(t)}{i!}\Bigg\vert_0^{nv}
-  \end{equation}
-  
-  Odvedljiv tudi po samem robnem pogoju.
-  
 \end{document}
 
