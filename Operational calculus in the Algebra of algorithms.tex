@@ -393,6 +393,14 @@ which enables efficient implementation.
  \D^n(f\circ g)=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^nexp(\D_fe^{h\D_g})(g)(f)
  \end{equation}
  
+ \begin{opomba}
+ When applying $\D$ to an expression such as $(\D^n g)^k$, general rules for tensor calculus apply. 
+% As the operators $\D^n$ are symmetric, this means
+% \begin{equation}
+% \D(\D g)^k=n(\D g)^{k-1}\D^2g
+% \end{equation}
+ \end{opomba}
+ 
    \begin{izrek}\label{izr:komp_homo}
    The operator $e^{h\D}$ commutes with composition over $\dP$
    \begin{equation}
@@ -527,7 +535,7 @@ which enables efficient implementation.
   \mathcal{I}_p=\{p^n:V\to V\iff p(a)=a\}
   \end{equation}
   
-  Now, we may inquire towards changes in programs iterations, as dependent on exit conditions. The answer would enable analysis and optimization of the number of iterations of the program. 
+  Now, we may inquire towards changes in programs' iterations, as dependent on exit conditions. The answer would enable analysis and optimization of the number of iterations of the program. 
   
   Let $h$ be the map defined with the eigen equation
     
@@ -553,7 +561,6 @@ which enables efficient implementation.
   On the domain $h(\mathcal{I})$ the maps $p^n$ become multiplication with $\lambda^n=(\D p(a))^n$. Obviously $\lambda^n=e^{\nu n}\iff \nu=ln(\lambda)$.
   
   We define iterating velocity as
-  
   \begin{equation}
   v(p^n)=\D_np^n(x)
   \end{equation}
@@ -564,7 +571,7 @@ which enables efficient implementation.
   v(p^n(a))=0
   \end{equation}
   
-  which is deducted from the equation $\eqref{eq:kh}$ and coincides with intuition.
+  which is deduced from the equation $\eqref{eq:kh}$ and coincides with intuition.
   
   With this we turn to computation of the iterating velocity
  
