@@ -228,11 +228,11 @@ Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP$.
      \end{equation}
    	holds by Theorem $\ref{izr:P_n}$.
         \begin{opomba}
-        Of course the same holds for all generating maps of the type
+        Of course the same holds true for all generating maps of the type
         $$\dP\to\dP_n$$
         \end{opomba}
 
-Now we can define a product on $\dP_n$. By Theorem $\ref{izr:P_n}$ it holds that
+Now we define a product on $\dP_n$. By Theorem $\ref{izr:P_n}$ it holds that
 
 \begin{equation}
 	f,g\in\dP\implies\exists_{p\in\dP}\Big(\D^nf\D^mg=\D^{n+m}p\Big)
@@ -247,7 +247,7 @@ The set $\{\D^n\}$ implies nilpotency $k>n\implies\D^k=0$. The product between t
  
  We motivate the following with an example. Suppose an algorithm of high time complexity. As speed is of importance, an approximation would suffice. Using the described mechanics, we may linearize the program. We choose a $v_0\in\dP$ and linearize $P'=P(v_0)+\D P(v_0)\cdot(v-v_0)$. The latter has to be done only once.
  
- Localy, the image of the linearization is a good approximation of the original program. To extend this radius, we would like to expand said program into a series. By Theorem $\ref{izr:linearnaNeodvisnost}$  there exists $\dP_n$, that is spanned by the set $\{\D^k\}$ over $\dP$ (which is itself a function space over $V$). Thus, the expression
+ Locally, the image of the linearization is a good approximation of the original program. To extend this radius, we would like to expand said program into a series. By Theorem $\ref{izr:linearnaNeodvisnost}$  there exists $\dP_n$, that is spanned by the set $\{\D^k\}$ over $\dP$ (which is itself a function space over $V$). Thus, the expression
  \begin{equation}
  	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{(h\D)^n}{n!}
  \end{equation}
@@ -274,7 +274,7 @@ Through $\eqref{eq:specProg}$ we may construct a map from the space of programs,
  The expression represents a map from a program, to a polynomial. 
  
 \begin{izrek}\label{izr:e^d}
-	For a program $P\in\dP$ in $v^{\JJ_k}_{k}\in T(V)$ the expansion into a series is expressed as contraction\\
+	For a program $P\in\dP$ in $v^{\JJ_k}_{k}\in T(V)$ the expansion into a series is expressed as a contraction\\
 	\begin{equation}\label{eq:tenzorVrsta}
 	P(V+hv) = \Big((e^{h\D})(P)(V)\Big)v^{\JJ_k}_{k}
 	\end{equation}
@@ -322,7 +322,7 @@ which enables efficient implementation.
  \end{proof}
  
  \begin{izrek}\label{izr:kompo}
- Composition of maps $\dP_n$ is expressed as
+ Composition of maps $\dP$ is expressed as
  \begin{equation}
  e^{h\D}(f\circ g)=exp(\D_fe^{h\D_g})(g)(f)
  \end{equation}
@@ -344,10 +344,10 @@ which enables efficient implementation.
  \begin{equation}\label{eq:dComposite}
  \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f\Big)
  \end{equation}
- where $e^{\D_f}$ maps $\dP\to\dP_n$, enabling evaluation at a point. 
+ where $e^{\D_f}$ maps $\dP\to\dP_n$ enables evaluation at a point. 
  \end{proof}       
  \begin{opomba}
- As such it may be convenient to apply $g(v)\in V$ to $f$ before hand, as $e^\D$ applied to a constant represents the identity map and grants us the derivative $\D^n$ at a point $v\in V$ instead of an expansion into a multitensor (onto which we would have otherwise applied $V$, to achieve the same effect).
+ As such it may be convenient to apply $g(v)\in V$ to $f$ before hand, as $e^\D$ applied to a constant represents the identity map and grants us the derivative $\D^n$ at a point $v\in V$ instead of an expansion into a multitensor (onto which we would have otherwise applied $v\in V$, to achieve the same effect).
   $$\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g(v))}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f(g(v))\Big)$$
   $$\implies$$
   \begin{equation}\label{eq:dCompositePoint}
@@ -373,19 +373,21 @@ which enables efficient implementation.
 \frac{d}{dh}e^{h\D_g}=\D_ge^{h\D_g}
  \end{equation}
  We may now compute derivatives (of arbitrary order) of the pullback operator. As an example we compute the second derivative.
- $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^2exp(\D_fe^{h\D_g})(g)=\lim\limits_{\lVert h\rVert\to 0}\frac{d}{dh}\Big(\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)\Big)$$
+ $$(\frac{d}{dh})^2exp(\D_fe^{h\D_g})(g)=\frac{d}{dh}\Big(\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)\Big)$$
  which is by equations $\eqref{eq:dexp}$ and $\eqref{eq:de}$
- $$\lim\limits_{\lVert h\rVert\to 0}(\D_g\D_f(\D_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_f(\D_gg)\D_f(\D_gg))e^{2h\D_g}exp(\D_fe^{h\D_g})(g)$$
+ $$(\D_g\D_f(\D_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_f(\D_gg)\D_f(\D_gg))e^{2h\D_g}exp(\D_fe^{h\D_g})(g)$$
  using algebra and correct applications
- $$\lim\limits_{\lVert h\rVert\to 0}(\D_f(\D^2_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D^2_f(\D_gg)^2)e^{2h\D_g}exp(\D_fe^{h\D_g})(g)$$
-  $$\implies$$
+ \begin{equation}\label{eq:d^2comp}
+ (\D_f(\D^2_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D^2_f(\D_gg)^2)e^{2h\D_g}exp(\D_fe^{h\D_g})(g)
+ \end{equation}
+ The operator is always shifted to the evaluating point $\eqref{eq:specProg}$ $v\in V$, thus, only the behavior in the limit as $h\to 0$ is of importance. Taking this limit in the expression $\eqref{eq:d^2comp}$ we obtain
  \begin{equation}
 	(\D_f(\D^2_gg)+\D^2_f(\D_gg)^2)exp(\D_f)
  \end{equation}
  
  Thus, without imposing any additional rules, we computed the operator of the second derivative of composition with $g$, directly on the level of operators. The result of course matches the equation $\eqref{eq:dComposite}$ for $n=2$.
  
- As it is evident through the example, calculations using operators are far simpler, than direct manipulations of functional series, as was done in the proof of Theorem $\ref{izr:kompo}$. This of course enables a simpler implementation, that functions over arbitrary function spaces. In the space that is spanned by $\{\D^n\}$ over $\dP$, derivatives of compositions may be expressed using only the product rule of Theorem $\ref{izr:prod}$, and $\eqref{eq:dexp}$ and $\eqref{eq:de}$, solely through the operators. Thus, explicit knowledge of rules for differentiating compositions is unnecessary, as it is contained in the structure of the operator $exp(\D_fe^{h\D_g})$ itself, which is differentiated using standard rules, as in the above example.
+ As it is evident from the example, calculations using operators are far simpler, than direct manipulations of functional series, as it was done in the proof of Theorem $\ref{izr:kompo}$. This of course enables a simpler implementation, that functions over arbitrary function spaces. In the space that is spanned by $\{\D^n\}$ over $\dP$, derivatives of compositions may be expressed using only the product rule of Theorem $\ref{izr:prod}$, and $\eqref{eq:dexp}$ and $\eqref{eq:de}$, solely through the operators. Thus, explicit knowledge of rules for differentiating compositions is unnecessary, as it is contained in the structure of the operator $exp(\D_fe^{h\D_g})$ itself, which is differentiated using standard rules, as in the above example.
  
  \begin{equation}\label{eq:dkompo}
  \D^n(f\circ g)=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^nexp(\D_fe^{h\D_g})(g)(f)
