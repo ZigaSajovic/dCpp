@@ -76,25 +76,25 @@ basicstyle=\ttfamily
 \begin{document}
 \maketitle
 \begin{abstract}
-In this paper, we develop the theory of analytic machines, which implements infinitely-differentiable programs, and operators acting upon them.
+In this paper, we develop the theory of analytic machines, that implement infinitely-differentiable programs, and operators acting upon them.
 
-A programming language is defined as a monoid in a function vector space of mappings of the virtual memory. Virtual memory is constructed through tensor algebra and endowed with its' own algebra of algorithms. Using this algebra, we construct differential operators, that span the space of infinitely differentiable programs. We present a wholesome theory of operators, that enables analysis of programs and computations on the operator level, which favors general implementation. Through the theory, we derive new operators, that expand a program into an infinite tensor series in the algebra of algorithms. The theory is used to analyze iterators and other control structures in programming languages, and their dependencies on boundary conditions.
+A programming language is defined as a monoid in a function vector space of mappings of the virtual memory. Virtual memory is constructed through tensor algebra and endowed with its' own algebra of algorithms. Using this algebra, we construct differential operators, that span the space of infinitely-differentiable programs. We present a wholesome theory of operators, that enables analysis of programs and computations on the operator level, which favors general implementation. Through the theory, we derive new operators, that expand a program into an infinite tensor series in the algebra of algorithms. The theory is used to analyze iterators and other control structures in programming languages, and their dependencies on boundary conditions.
 
-The developed facilitates functional transformations of programs in an arbitrary function basis (usually the one specified as optimal by the hardware manufacturer). Thus, the theory grants us a new approach to program analysis and the ability to choose programs' complexity, while knowing the order of approximations' error.
+The developed facilitates functional transformations of programs in an arbitrary function basis (usually the one specified as optimal by the hardware manufacturer). Thus, the theory grants us a new approach to program analysis and the ability to choose programs' complexity, while knowing the order of the error of the approximation.
 \end{abstract}
  
  \section{Operational calculus in the Algebra of algorithms}
 
-We begin with definitions of objects in the algebra of algorithms, to be used in the construction of analytic programing languages.
+We begin with definitions of objects in the algebra of algorithms to be used in the construction of analytic programing languages.
 
-For simplicity of expression we define the following function spaces
+To simplify expressions, we define the following function spaces
 
  \begin{equation}\label{eq:F^n}
  	\F^n:V\to V\otimes(V^*)^{n\otimes}
  \end{equation}
  and
  \begin{equation}\label{eq:F_n}
- 	\F_n:V\to V\otimes T_n(V*)
+ 	\F_n:V\to V\otimes T_n(V^*)
  \end{equation}
  
 Let $\D^k$ $\eqref{eq:odvod_splosen}$ be defined as
@@ -127,27 +127,44 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
 	
  \end{proof}
  
- \begin{definicija}
- 	Infinitely differentiable programming language $\dP$ is any subspace of $\F$ satisfying the relation
+ \begin{definicija}\label{def:dP}
+ 	A differentiable programming language $\dP$ is any subspace of $\F$ satisfying the relation
  	\begin{equation}\label{eq:P}
- 		\\F=\dP\iff\D^k\F\in\F\otimes T(V^*)
+ 		\\F=\dP\iff\D\F\in\F\otimes T(V^*)
  	\end{equation}
  \end{definicija}
- 
+
+\begin{izrek}\label{izr:P}
+	Any programming language $\dP$ satisfying Definition $\ref{def:dP}$ is an infinitely differentiable programming language, satisfying the relation
+	\begin{equation}\label{eq:P_n}
+	 		\\F=\dP\iff\D^k\F\in\F\otimes T(V^*)
+	 	\end{equation}
+\end{izrek}
+\begin{proof} Induction hypothesis follows from Definition $\ref{def:dP}$
+	$$F=\dP\iff\D\F\in\F\otimes T(V^*)$$
+	Induction step is trivial
+	\begin{equation}\label{eq:inductionStep}
+	\forall_{p\in\dP}\Big(\D^{n+1}p^i_{j,k}=\D(\D^n p^i_j)_k\land(\D p)^i_j\in\dP\Big)
+	\end{equation}
+	$$\implies$$
+	$$F=\dP\iff\D^k\F\in\F\otimes T(V^*)$$
+\end{proof}
+
  \begin{izrek}\label{izr:dP}
 	Programming language $\dP=\{\dP:V\to V_n\}$, is closed under the differential operator $\D^k$.
  \end{izrek}
  
  \begin{proof}
- 	 By $\eqref{eq:P}$ and the symmetric nature of the operator $\D$ for each $k$ there exists an isomorphism
+ 	 By $\eqref{eq:P_n}$ and the symmetric nature of the operator $\D$, for each $k$ there exists an isomorphism
  	 	\begin{equation}
  	 		\dP\to\D^k\dP
  	 	\end{equation}
  \end{proof}
- 
-\begin{corollary}
-The tuple $(\dP,\D)$ is a monoid, a property to be readily employed.
+
+\begin{corollary}\label{cor:dpMonoid}
+The tuple $(\dP,\D)$ is a monoid.
 \end{corollary}
+
 By Theorem $\ref{izr:dP}$ we may represent calculation of derivatives of the map $P:V\to U$, with only one mapping. We define the geometric series
  
  \begin{equation}\label{eq:DD}
@@ -162,13 +179,13 @@ By Theorem $\ref{izr:dP}$ we may represent calculation of derivatives of the map
   \end{equation}
   
   By Theorem $\ref{izr:linearnaNeodvisnost}$ the operator $\sumd_n$ is unique and prescribes the map $P: V\to U$ with a map $\sumd_k:V\to
-U\otimes T(V^*)$, composed of the map itself and all derivatives of order $n\le k$. The image $\sumd_kP(\x)$ is a multitensor of order $k$, which is a direct sum of the maps value and all derivatives of order $n\le k$, all evaluated in the point $\x$:
+U\otimes T(V^*)$, composed of the map itself and all derivatives of order $n\le k$. The image $\sumd_kP(\x)$ is a multitensor of order $k$, which is a direct sum of the maps value and all derivatives of order $n\le k$, all evaluated at the point $\x$:
 \begin{equation}
   \label{eq:multi_odvod}
   \sumd_kP(\x) = P(\x)+\D_\x P + \D^2_\x P + \ldots + \D^k_\x P.
 \end{equation}
 \begin{izrek}\label{izr:tauRek}
-  The operator $\sumd_k$ is recursively defined by the expression
+  The operator $\sumd_k$ is recursively defined with the expression
   \begin{equation}
     \label{eq:potenca(1+d)}
     \sumd_{k+1}=1+\D\sumd_{k}
@@ -196,16 +213,10 @@ Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP$.
  	\end{equation}
  \end{izrek}
  
- \begin{proof} 
- Induction hypothesis follows from $\eqref{eq:P}$.
- \begin{equation}
- 	p\in\dP\iff \exists_{\II}\Big(\D^np=\sum\limits_{i\in\II} c_ip_i\otimes(V^*)^{n\otimes}\Big)
- \end{equation}
- Induction step by $\ref{izr:dP}$ follows from Theorem $\ref{izr:D^nRek}$ 
- $$\D p_1=p_2\in \dP\implies \D^{n+1}p_1=\D^np_2$$
+ \begin{proof} Follows directly from the proof of Theorem $\ref{izr:P}$ and argument $\eqref{eq:inductionStep}$.
   \end{proof}
   \begin{corollary}
-  If there exists a construction of a first order programming language $\dP_1$, there exists an implementations of a programming language of an arbitrary order $\dP_n$.
+  If there exists a construction of a first order programming language $\dP_1$, there exists a construction of a programming language of an arbitrary order $\dP_n$.
   \begin{equation}
   \exists_{p_1}(p_1:\dP\to\dP_1)\iff\forall_n\exists_{p_n}(p_n:\dP\to\dP_n)
   \end{equation}
@@ -237,26 +248,20 @@ The set $\{\D^n\}$ implies nilpotency $k>n\implies\D^k=0$. The product between t
  We motivate the following with an example. Suppose an algorithm of high time complexity. As speed is of importance, an approximation would suffice. Using the described mechanics, we may linearize the program. We choose a $v_0\in\dP$ and linearize $P'=P(v_0)+\D P(v_0)\cdot(v-v_0)$. The latter has to be done only once.
  
  Localy, the image of the linearization is a good approximation of the original program. To extend this radius, we would like to expand said program into a series. By Theorem $\ref{izr:linearnaNeodvisnost}$  there exists $\dP_n$, that is spanned by the set $\{\D^k\}$ over $\dP$ (which is itself a function space over $V$). Thus, the expression
-  
  \begin{equation}
  	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{(h\D)^n}{n!}
  \end{equation}
- 
  is well defined.
- 
  \begin{equation}\label{eq:e^d}
  	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{h^n}{n!}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
  		    x_{\alpha_1}\ldots \partial x_{\alpha_n}}\e_i\otimes
  		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_n}
  \end{equation}
- 
 As such, $e^{h\D}$ is a mapping between function spaces $\eqref{eq:F_n}$
- 
  \begin{equation}
  	e^{h\D}:\F\to\F_n
  \end{equation}
- 
- which implies
+ implying
   
   \begin{equation}\label{eq:specProg}
   	e^{h\D}:\F\times V\to V_n
@@ -342,14 +347,14 @@ which enables efficient implementation.
  where $e^{\D_f}$ maps $\dP\to\dP_n$, enabling evaluation at a point. 
  \end{proof}       
  \begin{opomba}
- As such it may be convenient to apply $g(v)\in V$ to $f$ before hand, as $e^\D$ applied to a constant represents the identity map and grants us the derivative $\D^n$ at a point $v\in V$ instead of an expansion into a multitensor.
+ As such it may be convenient to apply $g(v)\in V$ to $f$ before hand, as $e^\D$ applied to a constant represents the identity map and grants us the derivative $\D^n$ at a point $v\in V$ instead of an expansion into a multitensor (onto which we would have otherwise applied $V$, to achieve the same effect).
   $$\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g(v))}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f(g(v))\Big)$$
   $$\implies$$
   \begin{equation}\label{eq:dCompositePoint}
   \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g(v))}{l!}\Big)^k\frac{n!}{k!}\Big(f(g(v))\Big)
   \end{equation}
  \end{opomba}
- The Theorem $\ref{izr:kompo}$ enables a simple implementation of program composition in $\dP_n$, expressed as tensor series through the expression $\eqref{eq:dComposite}$. Yet there exists a simpler path towards such calculations on the level of operators. 
+ The Theorem $\ref{izr:kompo}$ enables a simple implementation of program composition in $\dP_n$, expressed as a tensor series through the expression $\eqref{eq:dComposite}$. Yet there exists a simpler path towards such calculations on the level of operators. 
  
  The operator $exp(\D_fe^{h\D_g})(g)(f)$ performs a pullback of the map $f$ through $g$. It holds that
  
@@ -380,7 +385,7 @@ which enables efficient implementation.
  
  Thus, without imposing any additional rules, we computed the operator of the second derivative of composition with $g$, directly on the level of operators. The result of course matches the equation $\eqref{eq:dComposite}$ for $n=2$.
  
- As it is evident through the example, calculations using operators are far simpler, than direct manipulations of functional series, as was done in th proof of Theorem $\ref{izr:kompo}$. Which of course enables a simpler implementation, that functions over arbitrary function spaces. In the space that is spanned by $\{\D^n\}$ over $\dP$, derivatives of compositions may be expressed using just the product rule of Theorem $\ref{izr:prod}$, and $\eqref{eq:dexp}$ and $\eqref{eq:de}$, solely through the operators. Thus, explicit knowledge of rules for differentiating compositions is unnecessary, as it is contained in the structure of the operator $exp(\D_fe^{h\D_g})$ itself, which is differentiated using standard rules, as in the above example.
+ As it is evident through the example, calculations using operators are far simpler, than direct manipulations of functional series, as was done in the proof of Theorem $\ref{izr:kompo}$. This of course enables a simpler implementation, that functions over arbitrary function spaces. In the space that is spanned by $\{\D^n\}$ over $\dP$, derivatives of compositions may be expressed using only the product rule of Theorem $\ref{izr:prod}$, and $\eqref{eq:dexp}$ and $\eqref{eq:de}$, solely through the operators. Thus, explicit knowledge of rules for differentiating compositions is unnecessary, as it is contained in the structure of the operator $exp(\D_fe^{h\D_g})$ itself, which is differentiated using standard rules, as in the above example.
  
  \begin{equation}\label{eq:dkompo}
  \D^n(f\circ g)=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^nexp(\D_fe^{h\D_g})(g)(f)
@@ -396,13 +401,13 @@ which enables efficient implementation.
    \begin{proof}
    Follows from $\eqref{eq:pToPol}$ and Theorem $\ref{izr:kompo}$.
    \end{proof}
- We will readily employ the Theorem in usage.
+ We readily employ Theorem $\ref{izr:komp_homo}$ in usage.
  
    \subsection{Functional transformation of programs}\label{sec:FTP}
    
    We motivate the following with an example. Lets suppose a hardware $H$, optimized for the set of functions $F=\{f_i:V\to V\}$. The set $F$ is specified by the manufacturer.
    
-   With technological advances, switching of the hardware is common, which may lead to  decline in performance of code. Thus, we would like to employ transformations of a program $P\in\dP$ in basis $F$. It is common to settle for a suboptimal algorithm, that is optimized for hardware $H$. Sub-optimality of the algorithm depends on the set $F$, whether it spans $P$, or not. A classic example of a transformation is the Fourier transform in the basis $\{sin(nx), cos(mx)\}$, that spans $\dP$ (which as stated is not true for an arbitrary set $F$).
+   With technological advances, switching the hardware is common, which can lead to a decline in performance. Thus, we would like to employ transformations of a program $P\in\dP$ in basis $F$. It is common to settle for a suboptimal algorithm, that is efficient on hardware $H$. Sub-optimality of the algorithm depends on the set $F$, whether it spans $P$, or not. A classic example of a transformation, is the Fourier transform in the basis $\{sin(nx), cos(mx)\}$, that spans $\dP$ (which as stated is not true for an arbitrary set $F$).
    
    By Theorem $\ref{izr:e^d}$, we may construct a map $\eqref{eq:pToPol}$ from the space of programs $\dP$, to the space of polynomials, using the operator $e^\D$. Thus, the image of $e^\D(P\in\dP)$ is integrable (with a suitable choice of domain). Using this, we may define an inner product over $\dP$.
    
@@ -415,7 +420,7 @@ which enables efficient implementation.
   \end{izrek}
   
   \begin{proof}
-  By Theorem $\ref{izr:prod}$ it holds that $e^\D(p_1\cdot p_2)=e^\D(p_1)\cdot e^\D(p_2)$. By linearity of the integral and a well defined inner product on $V$, the axioms of the inner product are satisfied.
+  By Theorem $\ref{izr:prod}$, it holds that $e^\D(p_1\cdot p_2)=e^\D(p_1)\cdot e^\D(p_2)$. By linearity of the integral and a well defined inner product on $V$, the axioms of the inner product are satisfied.
   \end{proof}
   
   Thus, if $F$ is orthonormal, or has been made such with one of the established methods, $P$ can be expressed in the basis $F$ as
@@ -424,7 +429,7 @@ which enables efficient implementation.
  	P=\sum\limits_{\forall_{f_i\in F}}\frac{\eta(P,f_i)}{\eta(f_i,f_i)}f_i
   \end{equation}
   
-  Seeking to avoid integration, using the developed tools, the problem is solvable using linear algebra. Čet $e^\D_n$ denote the projection of the operator $e^\D$, onto the first $n$ basis vectors $\{\D^i\}$. We can, by Theorem $\ref{izr:e^d}$, construct a map $\eqref{eq:pToPol}$ from the space of programs, to the space of polynomials, with unknowns in $V^k$, using the operator $e^\D$. let $\X$ denote the basis of the space of polynomials, $\X=\{\prod\limits_{\forall_j} v_i^j\}$, where $v_i$ span $V$. Than, we can interpret $e^\D_n(P\in\dP)$ as a vector of linear combinations of $\X$, which is assumed heron.
+  Seeking to avoid integration, using the developed tools, the problem is solvable using linear algebra. Let $e^\D_n$ denote the projection of the operator $e^\D$, onto the first $n$ basis vectors $\{\D^i\}$. We can, by Theorem $\ref{izr:e^d}$, construct a map $\eqref{eq:pToPol}$ from the space of programs, to the space of polynomials, with unknowns in $V^k$, using the operator $e^\D$. let $\X$ denote the basis of the space of polynomials, $\X=\{\prod\limits_{\forall_j} v_i^j\}$, where $v_i$ span $V$. Than, we can interpret $e^\D_n(P\in\dP)$ as a vector of linear combinations of $\X$, which is assumed heron.
   
   Thus, we define the tensor of basis transformation $F\to\X$
   
@@ -444,7 +449,7 @@ which enables efficient implementation.
   T_{F\X}=T_{\X F}^{-1}
   \end{equation}
   
-  Using the tensor $\eqref{eq:matTrans}$, we can easily perform transformation of basis $\X\to F$. For a specific set $F$ (and consequentially a hardware $H$, upon which the set $F$ is conditioned to), the tensor $\eqref{eq:matTrans}$ only has to be computed once, and can be used for transforming arbitrary programs (while using the same operator $e^\D_n$).
+  Using the tensor $\eqref{eq:matTrans}$, we can easily perform basis transformations $\X\to F$. For a specific set $F$ (and consequentially a hardware $H$, upon which the set $F$ is conditioned), the tensor $\eqref{eq:matTrans}$ only has to be computed once, and can then be used for transforming arbitrary programs (while using the same operator $e^\D_n$).
   Thus, the coordinates of program $P\in\dP$ in basis $F$ are
   
   \begin{equation}\label{eq:P_F}
@@ -459,12 +464,12 @@ which enables efficient implementation.
   
   If $F$ does not span $\dP$, or we used the projection of the operator $e^\D_{n<N}$, the expression $P_F$ still represents the best possible approximation of the original program, on components $\{\D^n\}$, in basis $F$.
   
-  It makes sense to, before computing the tensor $\eqref{eq:matTrans}$, to expand the set $F$, by mutual (nested) compositions, and gain mappings, that can not be expressed as linear combinations (but are still optimized on hardvare $H$), and so increasing the power of the method.
+  It makes sense to, before computing the tensor $\eqref{eq:matTrans}$, to expand the set $F$, by mutual (nested) compositions, and gain mappings, that can not be expressed as linear combinations (but are still optimized for hardware $H$), and so increasing the power of the method.
   
  \subsection{Control structures}
  
  Until now, we restricted ourselves to operations, that change the memories' content. Along side assignment statements, we know control statements (ex. statements \texttt{if},
-  \texttt{for}, \texttt{while}, ...). Control statements don't directly influence values of variables, but change the execution tree of the program. This of course affects the derivative. But, for a certain set of input variables, the execution of the program will always be the same. This is why we interpret control structures as a definition of a spline. Lets' take the simple case of a program in Python
+  \texttt{for}, \texttt{while}, ...). Control statements don't directly influence values of variables, but change the execution tree of the program. This of course affects the derivative. But, for a certain set of input variables, the execution of the program will always be the same. This is why we interpret control structures as a definition of a spline. Lets take the simple case of a program in Python
  \begin{verbatim}
  def abs(x):
    if x<0:
@@ -481,7 +486,7 @@ which enables efficient implementation.
      x;\quad x\ge 0
    \end{cases}
  \end{equation}
- Each control structure divides the space of parameters to different domains, in which the execution of the program is always the same. The entire program divides the space of all possible parameters to a finite set of domains $\{\Omega_i;\quad i=1,\ldots
+ Each control structure divides the space of parameters into different domains, in which the execution of the program is always the same. The entire program divides the space of all possible parameters to a finite set of domains $\{\Omega_i;\quad i=1,\ldots
   k\}$, where the programs' execution is always the same. As such, a program may in general be defined as a spline. For $\vec{x}\in\RR^n$
  \begin{equation}
    \label{eq:zlrprk_splosno}
@@ -493,7 +498,7 @@ which enables efficient implementation.
      P_{n_kk}\circ P_{(n_k-1)k}\circ\ldots P_{1k}(\vec{x});&\quad \vec{x}\in\Omega_k\\
    \end{cases}
  \end{equation}
- Differential $T$ of program $P$, is of course dependent on initial parameters $\vec{x}$, and can also be expressed as a spline, inside domains $\Omega_i$
+ The differential $T$ of a program $P$, is of course dependent on initial parameters $\vec{x}$, and can also be expressed as a spline, inside domains $\Omega_i$
  \begin{equation}
    \label{eq:Dzlrprk_splosno}
    TP_{\vec{x}} =
@@ -508,11 +513,11 @@ which enables efficient implementation.
  
   \subsection{Iterators}
   
-  Iterator is a functional, composing a program $p\in\dP$ with itself. Its' one of the most common tools in use, in most programming languages. For ease of expression, we denote the $n$-th iterate of a program $p\in\dP:V\to V$, as $p^n$. Thus, it is possible to view the iterate, as a compositional exponent.
+  Iterator is a functional, composing a program $p\in\dP$ with itself. Its' one of the most common tools in use, in most programming languages. For ease of expression, we denote the $n$-th iterate of a program $p\in\dP:V\to V$, as $p^n$. Thus, it is possible to view the iterate as a compositional exponent.
   
-  Lets examine a simple example and familiarize ourselves with the problem. The program $p\in\dP$ is linearized around the point $p(a)=0$. Than for $v\in V$ we have $P(v)=\D p(a)\cdot v$. Consequentially the $n$-th iterate is $P^n(v)=(\D p(a))^n\cdot v$. Assuming the matrix $\D p(a)$ can be diagonalized $\D p(a)=S\Lambda S^{-1}$, where $\Lambda$ is a diagonal matrix of eigen values and $S$ the matrix of corresponding eigen vectors. Thus the $n$-th iterate is $P^n(v)=S\Lambda^nS^{-1}\cdot v$.
+  Lets examine a simple example and familiarize ourselves with the concept. The program $p\in\dP$ is linearized around the point $p(a)=0$. Than for $v\in V$ we have $P(v)=\D p(a)\cdot v$. Consequentially the $n$-th iterate is $P^n(v)=(\D p(a))^n\cdot v$. Assuming the matrix $\D p(a)$ can be diagonalized $\D p(a)=S\Lambda S^{-1}$, where $\Lambda$ is a diagonal matrix of eigen values and $S$ the matrix of corresponding eigen vectors. Thus the $n$-th iterate is $P^n(v)=S\Lambda^nS^{-1}\cdot v$.
   
-  Such an expression for he $n$-th iterate is a function of $n$, the number of iterations, and is as such differentiable with respect to exit conditions of the iterate. With this, we gained the ability to measure change of the iterator, as dependent on continuous exit conditions. We seek to generalize the notion to general eigen-mappings.
+  Such an expression for he $n$-th iterate is a function of $n$, the number of iterations, and is as such differentiable with respect to exit conditions of the iterate. With this, we gained the ability to measure the change of the iterator, as dependent on continuous exit conditions. We seek to generalize the notion to general eigen-mappings.
   
   Let $\mathcal{I}_p$ be the cyclic monoid generated by $p:V\to V$ under composition $\circ$
   
@@ -522,7 +527,7 @@ which enables efficient implementation.
   
   Now, we may inquire towards changes in programs iterations, as dependent on exit conditions. The answer would enable analysis and optimization of the number of iterations of the program. 
   
-  Let $h$ be the map defined with eigen equation
+  Let $h$ be the map defined with the eigen equation
     
   \begin{equation}\label{eq:kh}
   h(p(x))=\lambda h(x)
@@ -569,9 +574,9 @@ which enables efficient implementation.
   v=\nu(\D^{-1}h)h
   \end{equation}
   
-  For example, using methods of gradient descent, we would use the velocity $\eqref{eq:hitrostIteracije}$, which would give the order and direction to the descent. Inductively, we could derive acceleration and higher order changes.
+  For example, using methods of gradient descent, we use the velocity $\eqref{eq:hitrostIteracije}$, which gives the order and direction to the descent. Inductively, we could derive acceleration and higher order changes.
   
-  Computation of he map $h$ and conditions for existence, for $p$ representable as a power series, was solved by Bridges (2011), derivation of which is omitted in this text, for the sake of brevity. By Theorem $\eqref{izr:e^d}$, we may expand each program $p\in\dP$ by applying the operator $e^\D$ into a power series and employed said computation.
+  Computation of the map $h$ and conditions for its' existence, for $p$ representable as a power series, was solved by Bridges (2011), derivation of which is omitted in this text, for the sake of brevity. By Theorem $\eqref{izr:e^d}$, we may expand each program $p\in\dP$ by applying the operator $e^\D$ into a power series and employed said computation.
   
   As a special case of iterator usage, we examine accumulators, for which we derive an explicit form, as a function of exit conditions. Let $\Shift^n$ denote the operator, that performs a linear shift of a program $p$ in the direction $v$.
    
@@ -583,7 +588,7 @@ which enables efficient implementation.
     
    $$\Shift=\{\Shift^n\}$$   
    We define the $n$-th accumulator as 
-   $$\mathcal{A}_n=(1+\Shift+\Shift^2+\cdots+\Shift^n)$$ Tako je izraz zanimanja
+   $$\mathcal{A}_n=(1+\Shift+\Shift^2+\cdots+\Shift^n)$$ Thus the expression is
    $$\sum\limits_{h=0}^{n}\dP(v_0+hv)=(1+\Shift+\Shift^2+\cdots+\Shift^n)(\dP)(v_0)$$
    As before, we are interested in changes as dependent on exit conditions. With this in mind, we explore the accumulator $\mathcal{A}_n$
    $$(1+\Shift+\Shift^2+\cdots+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+\cdots+\Shift^{n-1})$$
@@ -601,7 +606,7 @@ which enables efficient implementation.
     \begin{equation}
     	\frac{h\D}{1-e^{h\D}}=\sum\limits_{n=0}^{\infty}c_n\frac{(h\D)^n}{n!}
     \end{equation}
-    is well defined. It turns out that $c_i=B_i$, with $B_i$ being the $i$-th Bernuli number. The operator $(1-\Shift^n)$ represents evaluation at endpoints (exit conditions).
+    is well defined. It turns out that $c_i=B_i$, with $B_i$ being the $i$-th Bernoulli number. The operator $(1-\Shift^n)$ represents evaluation at endpoints (exit conditions).
     $$(1-\Shift^n)=\Bigg\vert_{v_0}^{nv}$$
     Thus $\mathcal{A}_{n-1}$ is expressed as
     $$\mathcal{A}_{n-1}=(\D^{-1})(\sum\limits_{i=0}^{\infty}c_i\frac{\D^i}{i!})\Bigg\vert_{v_0}^{nv}$$
@@ -624,12 +629,12 @@ which enables efficient implementation.
         \end{equation}
         where evaluation at $v\in V$ performs the needed translation, as the image of the operator $\mathcal{A}_{n-1}$ is an element of the $V_n\simeq S(V^*)$.
 
-\subsection{Usage and conclusions}
+\subsection{Usage and conclusions} 
 
-Branching of the program into domains is done through conditional statements. The number of domain $\Omega_i$ equals cardinality of the set $\{\Omega_i\}$. Each conditional causes a branching in programs' execution tree.
+Branching of programs into domains $\eqref{eq:zlrprk_splosno}$ is done through conditional statements. The number of domain $\Omega_i$ equals cardinality of the set $\{\Omega_i\}$. Each conditional causes a branching in programs' execution tree.
 
 \begin{izrek}\label{izr:st.zlepkov}
-Cardniality of the set $\{\Omega_i\}$ equals $\lvert\{\Omega_i \}\rvert=2^k$, where $k$ is the number of conditionals contained within the program.
+Cardinality of the set $\{\Omega_i\}$ equals $\lvert\{\Omega_i \}\rvert=2^k$, where $k$ is the number of conditionals contained within the program.
 \end{izrek}
 \begin{opomba}
 Iterators, that do not change exit conditions within from its' body, do not cause branching.
@@ -728,25 +733,25 @@ A program $P\in\dP$ can be equivalently represented with at most $2n+1$ applicat
 	Source code of a program $P\in\dP$ can be represented by a directed graph, as shown in Figure $\ref{fig:diagram}$. Each branching causes a split in the execution tree, that after completion returns to the splitting point.
 	By Theorem $\ref{izr:kompo}$, each of these branches can be viewed as a program $p_i$, for which it holds $$e^\D(p_n\circ p_{n-1}\circ\cdots\circ p_1)=e^\D(p_n)\circ e^\D(p_{n-1})\circ\cdots\circ e^\D(p_1)$$ by Theorem $\ref{izr:kompo}$.
 	
-	Thus, the source code contains $2n$ differentiable braches, from first branching on, not counting the branch leading up to it, upon which the application of the operator $e^\D$ is need. Total of $2n+1$. By Theorem $\ref{izr:P_n}$, each of these branches is analytic.
+	Thus, the source code contains $2n$ differentiable branches, from its' first branching on, not counting the branch leading up to it, upon which the application of the operator $e^\D$ is need. Total of $2n+1$. By Theorem $\ref{izr:P_n}$, each of these branches is analytic.
 \end{proof}
 
-Images of the operator $e^\D$ and $T_{F\X}$  are elements of the original space $\dP$, which may be composed. Thus, for $P=p_3\circ p_2\circ p_1$, the folowing makes sense
+Images of the operator $e^\D$ and $T_{F\X}$  are elements of the original space $\dP$, which may be composed. Thus, for $P=p_3\circ p_2\circ p_1$, the following makes sense
 
 \begin{equation}
 P=\Big(p_3\circ e^ \D(p_2)\circ T_{F\X}e^\D(p_1)\Big) \in \dP
 \end{equation}
 
-Of course the same holds for all permutations of aplications of operators $e^\D$, $T_{F\X}$ and $id$, as visible in Figure $\ref{fig:diagram}$.
+Of course the same holds true for all permutations of applications of operators $e^\D$, $T_{F\X}$ and $id$, as visible in Figure $\ref{fig:diagram}$.
 
 \begin{opomba}
 Equality depends on the set $F$, specified by the manufacturer of the hardware.
 \end{opomba}
 
-The transformation tensor $T_{F\X}$ is needed to be computed only once and can be applied to all programs running on said hardware. The same holds true for each branch $p_i$, which can, by Theorem $\ref{izr:komp_homo}$, be freely composed between them.
+The transformation tensor $T_{F\X}$ is needed to be computed only once and can then on be applied to any program running on said hardware. The same holds true for each branch $p_i$, which can, by Theorem $\ref{izr:komp_homo}$, be freely composed amongst each other.
 
 \begin{izrek}
-Composition of images of the eoperator $e_n^\D(p_2)\circ e_n^\D(p_1)$ is computable in $\mathcal{O}(nlog^k(n))$, with $k$ being the dimension of $V$ and $n$ the number of basis vectors $\{\D^n\}$ upon which we are projecting.
+Composition of images of the operator $e_n^\D(p_2)\circ e_n^\D(p_1)$ is computable in $\mathcal{O}(nlog^k(n))$, with $k$ being the dimension of $V$ and $n$ the number of basis vectors $\{\D^n\}$ upon which we are projecting.
 \end{izrek}
 
 \begin{proof}
@@ -755,22 +760,22 @@ Composition of images of the eoperator $e_n^\D(p_2)\circ e_n^\D(p_1)$ is computa
 
 Transformations $\eqref{eq:P_F}$ need to be computed only once. Complexity of the composition of images of transformations $T_{F\X}\cdot e^\D(p_2)\circ T_{F\X}\cdot e^\D(p_1)$ depends on complexities of $f_i\in F$.
 
-Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary algorithms $P\in\dP$, along with estimations and order of the error of the approximation. Simultaneously it enables transformations of function basis of programs, and with it implementations, more inclined towards efficiency on a given hardware. After initial applications of operators and performed transformations the program may be used, as many times as we please, towards the purpose it was initially designed for. By doing so, we may manipulate its' complexity (for $k\le n$) and switch between different code formulations ($p$, $e^\D(p)$, $T_{F\X}\cdot e^\D(p)$), as better suited to the nature of the domains' subset, upon which the program operates at a given moment.
+Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary algorithms $P\in\dP$, along with estimations and order of the error of the approximation. Simultaneously it enables transformations of the function basis of programs, and with it implementations, more inclined towards efficiency on a given hardware. After initial applications of operators and performed transformations the program may be used, as many times as we please, towards the purpose it was initially designed for. By doing so, we may manipulate its' complexity (for $k\le n$) and switch between different code formulations ($p$, $e^\D(p)$, $T_{F\X}\cdot e^\D(p)$), as better suited to the nature of the domains' subset, upon which the program operates at a given moment.
 
 \section{Analytic machines}
 Algorithms may be interpreted as a functional algebra over $\dP_0:V\to V$.
-By Theorem $\ref{izr:P_n}$, we can express $\dP$, that is spanned by $\{\D^n\}$ over $V$, through linear combinations of elements of $\dP_0\otimes T(V^*)$; isomorphism, generated by the tuple $(\dP_0,V)$, equipped with a tensor product. Thus the tuple  $(\dP_0,V)$ and the belonging algebra are sufficient conditions for the existence of a infinitely differentiable programing language $\dP_n$.
+By Theorem $\ref{izr:P_n}$, we can express $\dP$, that is spanned by $\{\D^n\}$ over $V$, through linear combinations of elements of $\dP_0\otimes T(V^*)$; isomorphism $\eqref{eq:P_algebra}$, generated by the tuple $(\dP_0,V)$, equipped with a tensor product. Thus the tuple  $(\dP_0,V)$ and the belonging algebra are sufficient conditions for the existence of an infinitely differentiable programing language $\dP_n$.
 
 \begin{definicija}
-   Tuple $M=\langle\dP, V\rangle$ is an analytic, infinitely  differentiable computational machine.
+   The tuple $M=\langle\dP, V\rangle$ is an analytic, infinitely  differentiable computational machine.
    
     \begin{itemize}
     \item
-    $V$ is a virtual space, "infinite tape", equiped with a tensor product
+    $V$ is a virtual space, "infinite tape", equipped with a tensor product
     \item
     $\dP$ is a monoid of mappings $p\in\dP:V\to V\iff\D^k p\in \dP\otimes T(V^*)$
     \end{itemize}
   \end{definicija}
-  Everything that operates under these specifications is an analytic machine, with the ability of implementation of infinitely differentiable programming language $\dP_\infty$, as the operator $e^\D$ is a linear combination of the set $\{\D^n\}$.
+  Everything that operates under these specifications is an analytic machine, with the ability to implement infinitely differentiable programming languages $\dP_\infty$, as the operator $e^\D$ is a linear combination of the set $\{\D^n\}$.
 \end{document}
 
