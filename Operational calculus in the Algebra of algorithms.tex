@@ -70,7 +70,7 @@ basicstyle=\ttfamily
 \newtheorem{opomba}{Remark}[section]
 \newtheorem{corollary}{Corollary}[section]
 
-\usepackage[backend=bibtex]{biblatex}
+\usepackage[sorting=none,backend=bibtex]{biblatex}
 \bibliography{biblio}
 
 
@@ -620,14 +620,14 @@ which enables efficient implementation.
     Thus $\mathcal{A}_{n-1}$ is expressed as
     $$\mathcal{A}_{n-1}=(\D^{-1})(\sum\limits_{i=0}^{\infty}c_i\frac{\D^i}{i!})\Bigg\vert_{v_0}^{nv}$$
     $$\implies$$
-    \begin{equation}
+    \begin{equation}\label{eq:acumSum}
     \mathcal{A}_{n-1}=c_0\D^{-1}+\sum\limits_{i=1}^{\infty}c_i\frac{\D^{i-1}}{i!}\Bigg\vert_{v_0}^{nv}
     \end{equation}
     Explicit knowledge of only one inverse is needed. The need which dissipates, when one is interested in changes. Thus the accumulator  $\mathcal{A}_{n-1}$ can be expressed as
     \begin{equation}
     	\mathcal{A}_{n-1}\dP(v_0)=c_0\D^{-1}\dP(t)+\sum\limits_{i=1}^{\infty}c_i\frac{\D^{i-1}\dP(t)}{i!}\Bigg\vert_{v_0}^{nv}
     \end{equation}
-    The expression is a function of exit conditions, so changes of arbitrary order are computable without expressions $\eqref{eq:kh}$. We have an operator $\mathcal{A}_n\in\dP_\infty$, and we may compute with it alone, like in the case of composition $\eqref{eq:dkompo}$.
+    The expression is a function of exit conditions, so changes of arbitrary order are computable without expressions $\eqref{eq:kh}$. When $p:V\to V$, $\eqref{eq:acumSum}$ is equivalent to the Euler-Maclaurin integral formula \cite{EulerSumAbramowitzStegun}.  We have an operator $\mathcal{A}_n\in\dP_\infty$, and we may compute with it alone, like in the case of composition $\eqref{eq:dkompo}$.
 
     $$\frac{d^k}{dn^k}\mathcal{A}_{n-1}=\frac{d^k}{dn^k}\Big((1-\Shift^n)(\frac{1}{1-e^\D})\Big)\land \Shift^n=e^{n\D}$$
         $$\implies$$
@@ -785,5 +785,7 @@ By Theorem $\ref{izr:P_n}$, we can express $\dP_n$, that is spanned by $\{\D^n\}
     \end{itemize}
   \end{definicija}
   Anything that operates under these specifications is an analytic machine, with the ability to implement infinitely differentiable programming languages $\dP_\infty$.
+  
+  \printbibliography
 \end{document}
 
