@@ -233,6 +233,18 @@ derivative as a map $\D^{k-1}P: V\to U\otimes (V^*)^{\otimes k-1}$:
   definitions above can be done locally, which would introduce mostly technical difficulties.
 \end{opomba}
 
+To each program $P:\VV\to \VV$ one can attach the effective map $P_e:I_P\to
+O_P$. The derivative of this map is of interest. 
+\begin{definicija}[Differentiable programs]
+  A program $P:\VV\to \VV$ is differentiable if there exist an embedding
+  $O_P\otimes I_P^*\hookrightarrow F_P$ of the space $O_P\otimes I_P^*$ into
+  free space $F_P$, and a program $\D P:\VV\to \VV$, such that its effective
+  map is the map
+  \begin{equation}
+    \label{eq:program_derivative}
+    P_e\oplus \D P_e:I_P\rightarrow O_P\oplus (O_P\otimes I^*).
+  \end{equation}
+\end{definicija}
 \section{Operational calculus in the Algebra of algorithms}
 
 We begin with definitions of objects in the algebra of algorithms to be used in the construction of analytic programing languages.
