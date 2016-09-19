@@ -1,0 +1,9 @@
+*.aux
+*.log
+*.synctex.gz
+*.el
+autodiff.pdf
+*.bbl
+*.tmp
+*.blg
+*.xml
