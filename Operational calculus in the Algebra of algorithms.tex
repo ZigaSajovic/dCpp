@@ -85,8 +85,36 @@ A programming language is defined as a monoid in a function vector space of mapp
 
 The developed facilitates functional transformations of programs in an arbitrary function basis (usually the one specified as optimal by the hardware manufacturer). Thus, the theory grants us a new approach to program analysis and the ability to choose programs' complexity, while knowing the order of the error of the approximation.
 \end{abstract}
- 
- \section{Operational calculus in the Algebra of algorithms}
+\section{Computer programs as maps}
+We will model computer programs as maps on a vector space. If
+we only focus on the real valued variables (of type \texttt{float} or
+\texttt{double}),  the state of the virtual memory can be seen as a high
+dimensional vector\footnote{we assume the variables of interest to be of type \texttt{float} for
+  simplicity. Theoretically any field can be used instead of $\RR$.}. 
+A set of all the possible states of the program's memory,
+can be modeled by a finite dimensional real vector space $\VV\equiv \RR^n$. We
+will call $\VV$ \emph{memory space of the program}. The effect of a computer
+program on its memory space $\VV$, can be described by a map
+\begin{equation}
+  \label{eq:map}
+  P:\VV\to \VV.
+\end{equation}
+We can compose two programs sequentially, to obtain another program, which
+results in map composition. The set of all such maps $\F=\VV^\VV$ is a
+\emph{monoid} for the operation of composition $\circ$. A programing language is
+a set of elementary operations that are sequentially applied. 
+\begin{definicija} A \emph{continuous computing machine} is a pair $(\VV,\E)$, such
+  that $\VV$ is a finite dimensional vector space over a filed $F$ and
+  $\E\subset \VV^\VV$ is a set of maps, called \emph{elementary operations}. A
+  \emph{program} is any map $P:\VV\to \VV$, that can be written as a finite  composition
+  of elementary operations
+  \begin{equation}
+    \label{eq:P_composition}
+    P=\varepsilon_k\circ\ldots \varepsilon_1;\quad \varepsilon_i\in \E
+  \end{equation}
+  
+\end{definicija}
+\section{Operational calculus in the Algebra of algorithms}
 
 We begin with definitions of objects in the algebra of algorithms to be used in the construction of analytic programing languages.
 
