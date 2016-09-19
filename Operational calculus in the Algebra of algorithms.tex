@@ -14,6 +14,7 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{positioning}
+\usetikzlibrary{cd}
 
 \usepackage{color}
 \definecolor{bluekeywords}{rgb}{0.13,0.13,1}
@@ -114,6 +115,58 @@ a set of elementary operations that are sequentially applied.
   \end{equation}
   
 \end{definicija}
+
+Denote by $e_1,\ldots e_n$ a standard basis of the memory space $\VV$ and by
+$x_1,\ldots x_n$ the dual basis of $\VV^*$. The functions $x_i$ are coordinate
+functions on $\VV$ and correspond to individual variables in the memory. For
+each program $P:\VV\to \VV$ we divide variables $x_i$ into three groups. Let us
+denote with $P_i$ the $i-th$ component of the map $P$ according to the standard
+basis. Function $P_i:\VV\to F$ is a scalar function and is equal to $x_i\circ P$.
+\begin{definicija}
+  Let $x_i$ be the variable in memory. If 
+  \begin{equation}
+    \label{eq:free}
+    \frac{\partial P_j}{\partial x_i}\equiv \delta_{ij}\wedge \frac{\partial P_i}{\partial x_j}\equiv \delta_{ij};
+  \end{equation}
+then the variable $x_i$ is called \emph{free}. If
+\begin{equation}
+  \label{eq:input}
+  \frac{\partial P_j}{\partial x_i}\not\equiv \delta_{ij};
+\end{equation}
+then the variable $x_i$ is called \emph{input parameter}. And if
+\begin{equation}
+  \label{eq:output}
+  \frac{\partial P_i}{\partial x_j}\not\equiv \delta_{ij};\quad 
+\end{equation}
+then the variable $x_i$ is called \emph{output value} of the program $P$.
+\end{definicija}
+Free variables are those that are left intact by the program and have no
+influence on the final result. The output of the program depends only on the
+values of the input variables and consists of variables that are changed during
+the program. We also define corresponding vector subspaces of the program $P$.
+\begin{definicija}
+  The \emph{input} or \emph{parameter space} is a vector subspace $I_P<\VV$,
+  spanned by the standard basis vectors, that correspond to \emph{input}
+  variables. Similarly  \emph{output space} is a subspace
+  $O_P<\VV$ is spanned by basis vectors corresponding to output variables and
+  \emph{free space} is a subspace $F_P<\VV$ spanned by the basis vectors
+  corresponding to free variables. 
+\end{definicija}
+The input and the output space of a program $P$ are the minimal
+vector subspaces spanned by the standard basis vectors, such that the map $P_e$, 
+defined by the following commutative diagram 
+\begin{equation} 
+    \label{eq:induced_map}
+\begin{tikzcd}
+  \VV \arrow{r}{P} & 
+  \VV \arrow{d}{\mathrm{pr}_{O_P}}\\
+  I_P \arrow[hook]{u}{\vec{i}\mapsto \vec{i}+\vec{f}} 
+  \arrow{r}{P_e}& O_P
+\end{tikzcd}
+  \end{equation}
+does not depend of the choice of the element 
+$\vec{f}\in F_P=(I_P+O_P)^\perp$. The map $P_e$ describes the actual effect of the
+program $P$, since it ignores the free memory. 
 \section{Operational calculus in the Algebra of algorithms}
 
 We begin with definitions of objects in the algebra of algorithms to be used in the construction of analytic programing languages.
