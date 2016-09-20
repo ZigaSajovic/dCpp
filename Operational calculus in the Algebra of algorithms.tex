@@ -16,6 +16,9 @@
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{positioning}
 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pifont}
 
 \usepackage{color}
 \definecolor{bluekeywords}{rgb}{0.13,0.13,1}
@@ -65,6 +68,7 @@ basicstyle=\ttfamily
 \newcommand{\Op}{\partial^{\bigoplus}}
 \newcommand{\op}[1]{\partial^{#1\bigoplus}}
 \DeclareMathOperator{\interior}{int}
+
 
 \newtheorem{definicija}{Definition}[section]
 \newtheorem{trditev}{Claim}[section]
@@ -229,7 +233,7 @@ derivative as a map $\D^{k-1}P: V\to U\otimes (V^*)^{\otimes k-1}$:
   \end{eqnarray}
 \end{definicija} 
 \begin{opomba}
-  For the sake of the clarity, we assumed in the definition above, that the map $P$ as well as all its
+  For the sake of clarity, we assumed in the definition above, that the map $P$ as well as all its
   derivatives are differentiable at all points $\x$. If this is not the case
   definitions above can be done locally, which would introduce mostly technical difficulties.
 \end{opomba}
@@ -246,7 +250,7 @@ O_P$. The derivative of this map is of interest.
     P_e\oplus \D P_e:I_P\rightarrow O_P\oplus (O_P\otimes I^*).
   \end{equation}
 \end{definicija}
-\section{Polynomial aproximations and tensor algebra}
+\section{Polynomial approximations and tensor algebra}
 In order to apply the definition of derivative of a program to higher
 derivatives, we use the tensor algebra.
 Let $P:V\to U$ be a map on vector spaces. We define universal codomain to be the
@@ -685,7 +689,7 @@ which enables efficient implementation.
    \label{eq:Dzlrprk_splosno}
    e^\D P_{\vec{x}} =
    \begin{cases}
-     e^\D P_{n_11}\circ e^\D P_{(n_1-1)1}\circ\ldots\circ e^\D P_{11};&\quad \vec{x}\in\interior(\Omega_1)\\
+     e^\D P_{n_11}\circ e^\D P_{(n_1-1)1}\circ\ldots\circ e^\D P_{11}(\vec{x});&\quad \vec{x}\in\interior(\Omega_1)\\
      e^\D P_{n_22}\circ e^\D P_{(n_2-1)2}\circ\ldots\circ e^\D P_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
      \vdots&\quad\vdots\\
      e^\D P_{n_kk}\circ e^\D P_{(n_k-1)k}\circ\ldots\circ e^\D P_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
@@ -817,7 +821,7 @@ Branching of programs into domains $\eqref{eq:zlrprk_splosno}$ is done through c
 Cardinality of the set $\{\Omega_i\}$ equals $\lvert\{\Omega_i \}\rvert=2^k$, where $k$ is the number of conditionals contained within the program.
 \end{izrek}
 \begin{opomba}
-Iterators, that do not change exit conditions within from its' body, do not cause branching.
+Iterators, that do not change exit conditions within its' body, do not cause branching.
 \end{opomba}
 
 It follows from Theorem $\ref{izr:st.zlepkov}$, that the complexity of naive implementations of methods presented in Sections $\ref{sec:Vrsta}$ and $\ref{sec:FTP}$ are exponential (if we were to treat each domain $\Omega_i$ by itself). But, with correct application of Theorems developed in this paper, we may drastically reduce this down to linear. This is the subject of study in this section.
@@ -836,7 +840,7 @@ It follows from Theorem $\ref{izr:st.zlepkov}$, that the complexity of naive imp
     \node [block,right of=p1,node distance=5cm] (ep1) {$e^\D(P_1)$};
     \node [block,right of=ep1,node distance=5cm] (tep1) {$T_{F\X}\cdot e^\D(P_1)$};
     
-    \node [decision, below of=ep1,node distance=3cm] (v1) {Vejitev};
+    \node [decision, below of=ep1,node distance=3cm] (v1) {\small{Branching}};
     
     \node [block,below of=v1,node distance=2.75cm] (ep2) {$e^\D(P_2)$};
     \node [block,left of=ep2,node distance=3.5cm] (p2) {$P_2$};
@@ -913,7 +917,7 @@ A program $P\in\dP$ can be equivalently represented with at most $2n+1$ applicat
 	Source code of a program $P\in\dP$ can be represented by a directed graph, as shown in Figure $\ref{fig:diagram}$. Each branching causes a split in the execution tree, that after completion returns to the splitting point.
 	By Theorem $\ref{izr:kompo}$, each of these branches can be viewed as a program $p_i$, for which it holds $$e^\D(p_n\circ p_{n-1}\circ\cdots\circ p_1)=e^\D(p_n)\circ e^\D(p_{n-1})\circ\cdots\circ e^\D(p_1)$$ by Theorem $\ref{izr:kompo}$.
 	
-	Thus, the source code contains $2n$ differentiable branches, from its' first branching on, not counting the branch leading up to it, upon which the application of the operator $e^\D$ is need. Total of $2n+1$. By Theorem $\ref{izr:P_n}$, each of these branches is analytic.
+	Thus, the source code contains $2n$ differentiable branches, from its' first branching on, not counting the branch leading up to it, upon which the application of the operator $e^\D$ is needed. Total of $2n+1$. By Theorem $\ref{izr:P_n}$, each of these branches is analytic.
 \end{proof}
 
 Images of the operator $e^\D$ and $T_{F\X}$  are elements of the original space $\dP$, which may be composed. Thus, for $P=p_3\circ p_2\circ p_1$, the following makes sense
@@ -921,7 +925,7 @@ Images of the operator $e^\D$ and $T_{F\X}$  are elements of the original space 
 P=\Big(p_3\circ e^ \D(p_2)\circ T_{F\X}e^\D(p_1)\Big) \in \dP
 \end{equation}
 
-Of course the same holds true for all permutations of applications of operators $e^\D$, $T_{F\X}$ and $id$, as visible in Figure $\ref{fig:diagram}$.
+The same holds true for all permutations of applications of operators $e^\D$, $T_{F\X}$ and $id$, as visible in Figure $\ref{fig:diagram}$.
 
 \begin{opomba}
 Equality depends on the set $F$, specified by the manufacturer of the hardware.
@@ -939,7 +943,7 @@ Composition of images of the operator $e_n^\D(p_2)\circ e_n^\D(p_1)$ is computab
 
 Transformations $\eqref{eq:P_F}$ need to be computed only once. Complexity of the composition of images of transformations $T_{F\X}\cdot e^\D(p_2)\circ T_{F\X}\cdot e^\D(p_1)$ depends on complexities of $f_i\in F$.
 
-Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary algorithms $P\in\dP$, along with estimations and order of the error of the approximation. Simultaneously it enables transformations of the function basis of programs, and with it implementations, more inclined towards efficiency on a given hardware. After initial applications of operators and performed transformations the program may be used, as many times as we please, towards the purpose it was initially designed for. By doing so, we may manipulate its' complexity (for $k\le n$) and switch between different code formulations ($p$, $e^\D(p)$, $T_{F\X}\cdot e^\D(p)$), as better suited to the nature of the domains' subset, upon which the program operates at a given moment.
+Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary algorithms $P\in\dP$, along with estimations and order of the error of the approximation. Simultaneously it enables transformations of the function basis of programs, and with it implementations, more inclined towards efficiency on a given hardware. After initial applications of operators and performed transformations the program may be used, as many times as pleased, towards the purpose it was initially designed for. By doing so, we may manipulate its' complexity (for $k\le n$) and switch between different code formulations ($p$, $e^\D(p)$, $T_{F\X}\cdot e^\D(p)$), as better suited to the nature of the domains' subset, upon which the program operates at a given moment.
 
 \section{Analytic machines}
 Algorithms may be interpreted as a functional algebra over $\dP_0:V\to V$.
@@ -957,6 +961,55 @@ By Theorem $\ref{izr:P_n}$, we can express $\dP_n$, that is spanned by $\{\D^n\}
   \end{definicija}
   Anything that operates under these specifications is an analytic machine, with the ability to implement infinitely differentiable programming languages $\dP_\infty$.
   
+  \section{Analysis}
+  
+   The theory presented in this paper grants new insights through methods of analysis.  These methods are the object of study of this section.
+  
+  We will denote the fact, that some object $v$ has the property $X$, by $v\in X$. Suppose we have $v\notin X$, and desire a procedure that in some way modifies $v$ to have the property $X$. The desire is a procedure $P:v\notin X\to P(v)\in X$, that modifies $v$ in a minimal way. Let $S$ be some relation of similarity. We have
+  \begin{equation}
+  p\in P:v\notin X\to P(v)\in X\iff vSp(v)
+  \end{equation}
+  Usually such procedures are difficult to construct and may not even explicitly exist. An easier task is to construct a procedure $T$, whose output allows deduction of whether $v$ has the property $X$, or does not. We generalize such notions and develop methods of analyzing procedures $T$ that enable a construction of an algorithm
+  \begin{equation}\label{eq:algA}
+  A:T\to P
+  \end{equation}
+  
+  Let $R$ be an equivalence relation 
+  \begin{equation}\label{eq:equivRelation}
+  v_1Rv_2\iff T(v_1)ST(v_2)
+  \end{equation}
+  where $S$ is some relation of similarity (ex. $\lvert1- T(v_1)\rvert\le c\land\lvert1- T(v_2)\rvert\le c$) and $M$ be the set of interest. Than $T$ partitions $M$ into equivalence classes, as by $R$ $\eqref{eq:equivRelation}$. The above property $X$, may be viewed as one of these equivalence classes $X_i$.
+  
+  Let $T=T_n\circ T_{n-1}\circ\cdots\circ T_1$, for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $T_i$ containing a control structure). Here $T_i=\varepsilon_k\circ\ldots \varepsilon_1$, is a conceptual step in the procedure. Then, we can inquire about and measure the importance $K$ of an arbitrary $T_i$, to a partitioning into a specific equivalence class $X_j$. $\eqref{eq:equivRelation}$. Thus, we are able to extract $T_{X_j}$, the set of steps of importance, to such a partitioning. We treat $T_i\circ\cdots T_1$ as the input of the procedure $T^n_i=T_n\circ\cdots\circ T_{i+1}$.
+  
+  We present a simple algorithm towards such a goal, which can easily be enhanced with a more sophisticated choice of the measure of importance, as allowed by the theory. Here, the measure is simply the norm of the differential, as it measures the rate of change in the relation.
+  
+  \begin{opomba}
+  For generality of the method, we express the computation of a differential as $\D_{T_k}T^n_k$, knowing than in $\dP$, it would have been computed as $e^\D_1(T^n_k)\in V\oplus V\otimes V^*$, and projecting the result onto $V\otimes V^*$.
+  \end{opomba}
+  
+  
+\begin{algorithm}[H]
+\caption{Steps of importance to a partitioning}
+\label{alg:partitioning}
+\begin{algorithmic}[1]
+\Procedure{Steps of importance to a partitioning}{}
+\For{each $X_i$}
+\For{each $v\in X_i$}
+\For{each $T^n_k$}
+\State add norm $\D_{T_k}T^n_k$ to $N_{T_k}$
+\EndFor
+\EndFor
+\State threshold $T_t\in T_{X_i}\iff N_{T_t}\ge c$  
+\State insert $T_{X_i}$ in $I$
+\EndFor
+\State return $I$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method.
+
+As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and calculus of algorithms of this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired $j$. With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$. 
   \printbibliography
 \end{document}
 
