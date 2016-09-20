@@ -140,7 +140,7 @@ basis. Function $P_i:\VV\to F$ is a scalar function and is equal to $x_i\circ P$
     The variable $x_i$ is called \emph{input parameter} if
     \begin{equation}
       \label{eq:input}
-      \frac{\partial P_j}{\partial x_i}\not\equiv \delta_{ij}.\footnote{this statement also includes the case that the partial derivative does not exist at some point}
+      \frac{\partial P_j}{\partial x_i}\not\equiv \delta_{ij}.\footnote{this statement also includes the case that the partial derivative do not exist at some point}
     \end{equation}
 \item  The variable $x_i$ is called \emph{output value} if
     \begin{equation}
@@ -186,7 +186,7 @@ program $P$, since it ignores the free memory.
     \label{eq:frechet}
     \lim_{h\to 0}\frac{\|P(x+h)-P(x)-TP_x(h)\|}{\|h\|} = 0.
   \end{equation}
-  The map $TP_x$ is called the \emph{Fréchetov derivative} of the map $P$ at the
+  The map $TP_x$ is called the \emph{Fréchet derivative} of the map $P$ at the
   point $\x$.
 \end{definicija}
 For maps $\RR^n\to \RR^m$ Fréchet derivative can be expressed by multiplication
@@ -250,31 +250,88 @@ O_P$. The derivative of this map is of interest.
     P_e\oplus \D P_e:I_P\rightarrow O_P\oplus (O_P\otimes I^*).
   \end{equation}
 \end{definicija}
-\section{Polynomial approximations and tensor algebra}
+\section{Tensor algebra representation}
 In order to apply the definition of derivative of a program to higher
 derivatives, we use the tensor algebra.
-Let $P:V\to U$ be a map on vector spaces. We define universal codomain to be the
-spaces
+Let $P:V\to U$ be a map on vector spaces. Motivated by definition of higher
+derivatives, we define a sequence of spaces with
+recursive formula
 \begin{eqnarray}
   \label{eq:universal_space}
-  U_\infty &=& U\otimes\left(F\oplus V^*\oplus (V^*)^{\otimes 2}\oplus
-               \ldots \right)\\
- U_\infty &=& U\otimes T(V^*)
+  U_0 &=& U\\
+  U_k &=& U_{k-1}+\left(U_{k-1}\otimes V^*\right).
 \end{eqnarray}
-\section{Operational calculus in the Algebra of algorithms}
+Note that the sum is not direct, since some of the subspaces of $U_{k-1}$ and
+$U_{k-1}\otimes V^*$ are naturally isomorphic and will be identified.
+The formula can be illustrated as follows. 
+To implement the derivative of a map $P:V\to U$, the space for $U\oplus
+(U\otimes V^*)$ has to be allocated.
+Denote $U_k$ the space needed for $k$-th order derivative. The program for
+$k-th$ derivative would implement the map $V\to U_k$. For the derivative of this map
+the space $U_k+ (U_k\otimes V^*)$ would have to be allocated. This sum
+however would not be direct, since some of the subspaces of $U_k$ coincide with
+subspaces of $U_k\otimes V^*$.
 
-We begin with definitions of objects in the algebra of algorithms to be used in the construction of analytic programing languages.
+The space 
+\begin{equation}
+\label{eq:k-th-virtual-space}
+U_k = U\otimes \left(F\oplus V^* \oplus (V^*\otimes V^*)\oplus\ldots
+(V^*)^{\otimes k}\right) = U\otimes T_k(V^*)
+\end{equation}
+satisfies the recursive formula (\ref{eq:universal_space}). The space $T_k(V^*)$
+is a subspace of \emph{tensor algebra}, consisting of linear combinations of tensors of rank less
+or equal $k$. To show, that $U_k$ is indeed $U\otimes T_k(V^*)$, we use
+recursive formula
+\begin{multline*}
+  U_{k+1}=U\otimes(F\oplus V^*\oplus\ldots (V^*)^{\otimes (k+1)})=\\
+ U\oplus (U\otimes V^*)\oplus\ldots (U\oplus U\otimes(V^*)^{\otimes (k+1)})
+\end{multline*}
+on the other hand, using recursive formula
+\begin{multline}
+  U_k+(U_k\otimes V^*) = \left( U\oplus (U\otimes V^*)\oplus\ldots (U\otimes(V^*)^{\otimes k})\right) + \\
+  \left((U\otimes V^*) \oplus (U\otimes V^*\otimes V^*) \oplus\ldots (U\otimes(V^*)^{\otimes k}\otimes V^*)\right)
+\end{multline}
+However spaces $U\otimes(V^*{\otimes (j+1)})$ and $U\otimes (V^*)^{\otimes
+  j}\otimes V^*$ are naturally isomorphic and will be identified, leaving 
+\begin{equation}
+  U_k+(U_k\otimes V^*) = U\oplus (U\otimes V^*)\oplus\ldots (U\otimes(V^*)^{\otimes (k+1)})
+\end{equation}
+The spaces $U_k$ form an increasing sequence of subspaces (a flag) of the space $U\otimes
+T(v^*)$
+\begin{equation}
+  \label{eq:flag}
+  U_0<U_1<U_2<\ldots < U\otimes T(V^*).
+\end{equation}
+This enables us to define all the derivatives as maps with
+the same domain and codomain $V\to U\otimes T(V^*)$. Indeed for any map $P:V\to
+U$, one can define a map 
+$$V\xrightarrow{P}U\hookrightarrow U\otimes T(V^*)$$ and similarly  for all of its
+derivatives
+$$V\xrightarrow{\D^k P} U\otimes (V^*)^{\otimes k}\hookrightarrow U\otimes T(V^*).$$
+\section{Operational calculus on algorithms}
 
-To simplify expressions, we define the following function spaces
+The derivative defines an operato on the space of smooth maps $V\to U\otimes
+ T(V^*)$\footnote{the operator $\D$ may be defined partially for other maps as
+   well.}. We denote this operator $\D$. If we look at a map $P:V\to U$ as a map
+ to $U\otimes T(V^*)$, then the image of $P$ by operator $\D$ is the first
+ derivative, while the higher order derivatives are just powers of operator $\D$
+ applied to $P$. 
 
+Let us define the following function spaces.
  \begin{equation}\label{eq:F^n}
- 	\F^n:V\to V\otimes(V^*)^{n\otimes}
+ 	\F^n=\{f:V\to U\otimes(V^*)^{n\otimes}\}
  \end{equation}
  and
  \begin{equation}\label{eq:F_n}
- 	\F_n:V\to V\otimes T_n(V^*)
+ 	\F_n=\{f:V\to U\otimes T_n(V^*)\}
  \end{equation}
- 
+All of these function spaces are subspaces of $\F_\infty=\{f:V\to U\otimes
+T(V^*)\}$. The space $\F_n$ is direct sum of $\F^k$ for $k\le n$ and $\F_n<\F_m$ if $n<m$. We
+have a flag of function spaces
+\begin{equation}
+  \label{eq:flag_function_space}
+  \F_0<\F_1<\ldots<\F_n<\ldots
+\end{equation}
 Let $\D^k$ $\eqref{eq:partial}$ be defined as
 \begin{equation}\label{eq:dd}
 	\partial^k=\sum_{\forall_{i,\alpha}}\frac{\partial^k}{\partial
@@ -422,7 +479,7 @@ The set $\{\D^n\}$ implies nilpotency $k>n\implies\D^k=0$. The product between t
 
  \subsection{Power series expansion}\label{sec:Vrsta}
  
- We motivate the following with an example. Suppose an algorithm of high time complexity. As speed is of importance, an approximation would suffice. Using the described mechanics, we may linearize the program. We choose a $v_0\in\dP$ and linearize $P'=P(v_0)+\D P(v_0)\cdot(v-v_0)$. The latter has to be done only once.
+We motivate the following with an example. Suppose an algorithm of high time complexity. As speed is of importance, an approximation would suffice. Using the described mechanics, we may linearize the program. We choose a $v_0\in\dP$ and linearize $P'=P(v_0)+\D P(v_0)\cdot(v-v_0)$. The latter has to be done only once.
  
  Locally, the image of the linearization is a good approximation of the original program. To extend this radius, we would like to expand said program into a series. By Theorem $\ref{izr:linearnaNeodvisnost}$  there exists $\dP_n$, that is spanned by the set $\{\D^k\}$ over $\dP$ (which is itself a function space over $V$). Thus, the expression
  \begin{equation}
@@ -950,7 +1007,7 @@ Algorithms may be interpreted as a functional algebra over $\dP_0:V\to V$.
 By Theorem $\ref{izr:P_n}$, we can express $\dP_n$, that is spanned by $\{\D^n\}$ over $V$, through linear combinations of elements of $\dP_0\otimes T(V^*)$; isomorphism $\eqref{eq:P_algebra}$, generated by the tuple $(\dP_0,V)$, equipped with a tensor product. Thus the tuple  $(\dP_0,V)$ and the belonging algebra are sufficient conditions for the existence of an infinitely differentiable programing language $\dP_n$ $\eqref{def:P_n}$.
 
 \begin{definicija}
-   The tuple $M=\langle\dP, V\rangle$ is an analytic, infinitely  differentiable computational machine.
+The tuple $M=\langle\dP, V\rangle$ is an analytic, infinitely  differentiable computational machine.
    
     \begin{itemize}
     \item
@@ -959,9 +1016,9 @@ By Theorem $\ref{izr:P_n}$, we can express $\dP_n$, that is spanned by $\{\D^n\}
     $\dP$ is a monoid satisfying Definition $\ref{def:dP}$
     \end{itemize}
   \end{definicija}
-  Anything that operates under these specifications is an analytic machine, with the ability to implement infinitely differentiable programming languages $\dP_\infty$.
+Anything that operates under these specifications is an analytic machine, with the ability to implement infinitely differentiable programming languages $\dP_\infty$.
   
-  \section{Analysis}
+\section{Analysis}
   
    The theory presented in this paper grants new insights through methods of analysis.  These methods are the object of study of this section.
   
