@@ -366,24 +366,24 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
  \begin{definicija}\label{def:dP}
  	A differentiable programming language $\dP_0$ is any subspace of $\F_0$ satisfying the relation
  	\begin{equation}\label{eq:P}
- 	\dP_0<\F_0\iff\D\dP_0\in\dP_0\otimes T(V^*)
+ 	\dP_0<\F_0\iff\D\dP_0\subset\dP_0\otimes T(V^*)
  	\end{equation}
  \end{definicija}
 
 \begin{izrek}\label{izr:P}
 	Any programming language $\dP_0$ satisfying Definition $\ref{def:dP}$ is an infinitely differentiable programming language, satisfying the relation
 	\begin{equation}\label{eq:P_n}
-	 		\dP_0<\F_0\iff\D^k\dP_0\in\dP_0\otimes T(V^*)
+	 		\dP_0<\F_0\iff\D^k\dP_0\subset\dP_0\otimes T(V^*)
 	 	\end{equation}
 \end{izrek}
 \begin{proof} Induction hypothesis follows from Definition $\ref{def:dP}$
-	$$\dP_0<\F_0\iff\D\dP_0\in\dP_0\otimes T(V^*)$$
+	$$\dP_0<\F_0\iff\D\dP_0\subset\dP_0\otimes T(V^*)$$
 	Induction step is trivial
 	\begin{equation}\label{eq:inductionStep}
 	\forall_{p\in\dP_0}\Big(\D^{n+1}p^i_{j,k}=\D(\D^n p^i_j)_k\land(\D p)^i_j\in\dP_0\Big)
 	\end{equation}
 	$$\implies$$
-	$$\dP_0<\F_0\iff\D^k\dP_0\in\dP_0\otimes T(V^*)$$
+	$$\dP_0<\F_0\iff\D^k\dP_0\subset\dP_0\otimes T(V^*)$$
 \end{proof}
 
  \begin{izrek}\label{izr:dP}
