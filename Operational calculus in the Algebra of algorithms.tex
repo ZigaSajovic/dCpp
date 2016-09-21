@@ -364,26 +364,26 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
  \end{proof}
  
  \begin{definicija}\label{def:dP}
- 	A differentiable programming language $\dP$ is any subspace of $\F$ satisfying the relation
+ 	A differentiable programming language $\dP_0$ is any subspace of $\F_0$ satisfying the relation
  	\begin{equation}\label{eq:P}
- 		\\F=\dP\iff\D\F\in\F\otimes T(V^*)
+ 		\\F_0=\dP_0\iff\D\F_0\in\F_0\otimes T(V^*)
  	\end{equation}
  \end{definicija}
 
 \begin{izrek}\label{izr:P}
-	Any programming language $\dP$ satisfying Definition $\ref{def:dP}$ is an infinitely differentiable programming language, satisfying the relation
+	Any programming language $\dP_0$ satisfying Definition $\ref{def:dP}$ is an infinitely differentiable programming language, satisfying the relation
 	\begin{equation}\label{eq:P_n}
-	 		\\F=\dP\iff\D^k\F\in\F\otimes T(V^*)
+	 		\\F_0=\dP_0\iff\D^k\F_0\in\F_0\otimes T(V^*)
 	 	\end{equation}
 \end{izrek}
 \begin{proof} Induction hypothesis follows from Definition $\ref{def:dP}$
-	$$F=\dP\iff\D\F\in\F\otimes T(V^*)$$
+	$$F_0=\dP_0\iff\D\F_0\in\F_0\otimes T(V^*)$$
 	Induction step is trivial
 	\begin{equation}\label{eq:inductionStep}
-	\forall_{p\in\dP}\Big(\D^{n+1}p^i_{j,k}=\D(\D^n p^i_j)_k\land(\D p)^i_j\in\dP\Big)
+	\forall_{p\in\dP_0}\Big(\D^{n+1}p^i_{j,k}=\D(\D^n p^i_j)_k\land(\D p)^i_j\in\dP_0\Big)
 	\end{equation}
 	$$\implies$$
-	$$F=\dP\iff\D^k\F\in\F\otimes T(V^*)$$
+	$$F_0=\dP_0\iff\D^k\F_0\in\F_0\otimes T(V^*)$$
 \end{proof}
 
  \begin{izrek}\label{izr:dP}
@@ -445,7 +445,7 @@ Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP$.
  	
  	\begin{equation}
  	\label{eq:P_algebra}
- 	 	    \dP\infty\simeq \dP\otimes T(V^*) = \dP \otimes\left(\bigoplus_{k=0}^\infty (V^*)^{\otimes k} \right)
+ 	 	    \dP\infty\simeq \dP_0\otimes T(V^*) = \dP_0 \otimes\left(\bigoplus_{k=0}^\infty (V^*)^{\otimes k} \right)
  	\end{equation}
  \end{izrek}
  
