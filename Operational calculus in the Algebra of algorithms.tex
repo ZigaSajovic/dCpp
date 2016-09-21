@@ -85,9 +85,9 @@ basicstyle=\ttfamily
 \begin{document}
 \maketitle
 \begin{abstract}
-In this paper, we develop the theory of analytic programming languages, that implement infinitely-differentiable program spaces, and operators acting upon them.
+In this paper, we develop the theory of analytic programming languages, that implement infinitely-differentiable programming spaces, and operators acting upon them.
 
-A programming space is defined as a monoid in a function vector space of mappings of the virtual memory. Virtual memory is constructed through tensor algebra and endowed with its' own algebra of algorithms. Using this algebra, we construct differential operators, that span the space of infinitely-differentiable programs. We present a wholesome theory of operators, that enables analysis of programs and computations on the operator level, which favors general implementation. Through the theory, we derive new operators, that expand a program into an infinite tensor series in the algebra of algorithms. The theory is used to analyze iterators and other control structures in programming languages, and their dependencies on boundary conditions.
+A programming space is defined as an algebra monoid in a function vector space of mappings on the virtual memory. Virtual memory is constructed through tensor algebra and endowed with its' own algebra of algorithms. Using this algebra, we construct differential operators, that span the space of infinitely-differentiable programs. We present a wholesome theory of operators, that enables analysis of programs and computations on the operator level, which favors general implementation. Through the theory, we derive new operators, that expand a program into an infinite tensor series in the algebra of algorithms. The theory is used to analyze iterators and other control structures in programming languages, and their dependencies on boundary conditions.
 
 The developed facilitates functional transformations of programs in an arbitrary function basis (usually the one specified as optimal by the hardware manufacturer). Thus, the theory grants us a new approach to program analysis and the ability to choose programs' complexity, while knowing the order of the error of the approximation.
 \end{abstract}
@@ -458,10 +458,10 @@ Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP_0$.
         $$\dP_0\to\dP_n$$
         \end{opomba}
         
-\begin{izrek}\label{izr:reductionMap}
-There exist a reduction of order map $\Phi:\dP_n\to\dP_{n-1}$, satisfying the relation
-\begin{equation}\label{eq:reductionMap}
-\forall_{p\in\dP}\Big(\Phi(\D^kp)=\D\Phi(\D^{k-1}p)\Big)
+\begin{izrek}\label{izr:reductionMapSingle}
+There exists a reduction of order map $\phi:\dP^n\to\dP^{n-1}$, satisfying the relation
+\begin{equation}\label{eq:reductionMapSingle}
+\forall_{p\in\dP}\Big(\phi(\D^kp)=\D\phi(\D^{k-1}p)\Big)
 \end{equation}
 for each $k\ge 1$.
 \end{izrek}        
@@ -526,7 +526,7 @@ Through $\eqref{eq:specProg}$ we may construct a map from the space of programs,
  The expression represents a map from a program, to a polynomial. 
  
 \begin{izrek}\label{izr:e^d}
-	For a program $P\in\dP$ in $v^{\JJ_k}_{k}\in T(V)$ the expansion into a series is expressed as a contraction\\
+	For a program $P\in\dP$ and $v^{\JJ_k}_{k}\in T(V)$ the expansion into a series is expressed as a contraction\\
 	\begin{equation}\label{eq:tenzorVrsta}
 	P(V+hv) = \Big((e^{h\D})(P)(V)\Big)v^{\JJ_k}_{k}
 	\end{equation}
@@ -663,7 +663,16 @@ which enables efficient implementation.
    \begin{proof}
    Follows from $\eqref{eq:pToPol}$ and Theorem $\ref{izr:kompo}$.
    \end{proof}
- We readily employ Theorem $\ref{izr:komp_homo}$ in usage.
+ 
+ It is useful to be able to use the $k$-th derivative of a program $p\in\dP$ as a working part of a different differentiable program. As such, we must be able to treat the derivative itself as a differentiable program $p^{\prime k}\in\dP$. 
+ \begin{izrek}\label{izr:reductionMap}
+ There exists a reduction of order map $\Phi:\dP_n\to\dP_{n-k}$, satisfying the relation
+ \begin{equation}\label{eq:reductionMap}
+ \forall_{p\in\dP}\exists_{p^{\prime k}\in\dP}\Big(\Phi\circ proj_{\{\D^k,...,\D^n\}}\big(e^\D_n(p)\big)=e^\D_{n-k}(p^{\prime k})\Big)
+ \end{equation}
+ with each component $\D^jp$ satisfying the relation $\eqref{eq:reductionMapSingle}$ of Theorem $\ref{izr:reductionMapSingle}$.
+ \end{izrek}
+ Thus, we gained the ability of writing differentiable programs using derivatives of other programs as part of their calculations.
  
    \subsection{Functional transformation of programs}\label{sec:FTP}
    
@@ -1061,10 +1070,10 @@ Let $C\in\dP$ be a convex map, some measure of magnitude. Thus, we arrive at the
 E_j=C\circ T^\prime_j
 \end{equation}
 \begin{algorithm}[h]
-\caption{Appoint property}
+\caption{Appoint property $X_j$ to $v\in M$}
 \label{alg:appoint}
 \begin{algorithmic}[1]
-\Procedure{Appoint property $X_j$}{}
+\Procedure{Appoint property $X_j$ to $v\in M$}{}
 \State initialize path $\gamma$ with $v$
 \For{each step}
 \For{each $T_i\in T_{X_j}$}
@@ -1080,16 +1089,15 @@ E_j=C\circ T^\prime_j
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-
 The derivative with respect to $v$ is extracted by applying $e^{\D_{v}}_1$ and projecting the image onto $\D$,
 \begin{equation}
-\D_vE=proj_{\{\D\}}(e^{\D_v}_1E_j)
+\D_vE_j=proj_{\{\D\}}(e^{\D_v}_1E_j)
 \end{equation}
 as it needs not to be differentiable for this purpose.
 
 For simplicity, assume $step$ to represent one optimization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques readily available. 
 
-As shown by Algorithm $\ref{alg:appoint}$ we arrived at a path $\gamma$, whose end point is the transformed $v\in M$, now endowed with the property $X_j$. Thus, using the theory, with the procedure $T$ as an input variable in Algorithm $\ref{alg:appoint}$, we constructed algorithm $A: T\to P$ $\eqref{eq:algA}$. When $v\in M$ represents an object upon which we wish to enforce the property $X_j$, we may do so using the derived procedure $A(T)=P$
+As shown by Algorithm $\ref{alg:appoint}$, we arrived at a path $\gamma$, whose end point is the transformed $v\in M$, now endowed with the property $X_j$. Thus, using the theory, with the procedure $T$ as an input variable in Algorithm $\ref{alg:appoint}$, we constructed algorithm $A: T\to P$ $\eqref{eq:algA}$. When $v\in M$ represents an object upon which we wish to enforce the property $X_j$, we may do so using the derived procedure $A(T)=P$
 \begin{equation}\label{eq:procedureP}
 P:v\notin X_j\to v\in X_j
 \end{equation}
