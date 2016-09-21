@@ -364,26 +364,26 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
  \end{proof}
  
  \begin{definicija}\label{def:dP}
- 	A differentiable programming language $\dP$ is any subspace of $\F$ satisfying the relation
+ 	A differentiable programming language $\dP_0$ is any subspace of $\F_0$ satisfying the relation
  	\begin{equation}\label{eq:P}
- 		\\F=\dP\iff\D\F\in\F\otimes T(V^*)
+ 	\dP_0<\F_0\iff\D\dP_0\subset\dP_0\otimes T(V^*)
  	\end{equation}
  \end{definicija}
 
 \begin{izrek}\label{izr:P}
-	Any programming language $\dP$ satisfying Definition $\ref{def:dP}$ is an infinitely differentiable programming language, satisfying the relation
+	Any programming language $\dP_0$ satisfying Definition $\ref{def:dP}$ is an infinitely differentiable programming language, satisfying the relation
 	\begin{equation}\label{eq:P_n}
-	 		\\F=\dP\iff\D^k\F\in\F\otimes T(V^*)
+	 		\dP_0<\F_0\iff\D^k\dP_0\subset\dP_0\otimes T(V^*)
 	 	\end{equation}
 \end{izrek}
 \begin{proof} Induction hypothesis follows from Definition $\ref{def:dP}$
-	$$F=\dP\iff\D\F\in\F\otimes T(V^*)$$
+	$$\dP_0<\F_0\iff\D\dP_0\subset\dP_0\otimes T(V^*)$$
 	Induction step is trivial
 	\begin{equation}\label{eq:inductionStep}
-	\forall_{p\in\dP}\Big(\D^{n+1}p^i_{j,k}=\D(\D^n p^i_j)_k\land(\D p)^i_j\in\dP\Big)
+	\forall_{p\in\dP_0}\Big(\D^{n+1}p^i_{j,k}=\D(\D^n p^i_j)_k\land(\D p)^i_j\in\dP_0\Big)
 	\end{equation}
 	$$\implies$$
-	$$F=\dP\iff\D^k\F\in\F\otimes T(V^*)$$
+	$$\dP_0<\F_0\iff\D^k\dP_0\subset\dP_0\otimes T(V^*)$$
 \end{proof}
 
  \begin{izrek}\label{izr:dP}
@@ -393,7 +393,7 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
  \begin{proof}
  	 By $\eqref{eq:P_n}$ and the symmetric nature of the operator $\D$, for each $k$ there exists an isomorphism
  	 	\begin{equation}
- 	 		\dP\to\D^k\dP
+ 	 		\dP_0\to\D^k\dP
  	 	\end{equation}
  \end{proof}
 
@@ -445,7 +445,7 @@ Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP$.
  	
  	\begin{equation}
  	\label{eq:P_algebra}
- 	 	    \dP\infty\simeq \dP\otimes T(V^*) = \dP \otimes\left(\bigoplus_{k=0}^\infty (V^*)^{\otimes k} \right)
+ 	 	    \dP\infty\simeq \dP_0\otimes T(V^*) = \dP_0 \otimes\left(\bigoplus_{k=0}^\infty (V^*)^{\otimes k} \right)
  	\end{equation}
  \end{izrek}
  
@@ -454,7 +454,7 @@ Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP$.
   \begin{corollary}
   If there exists a construction of a first order programming language $\dP_1$, there exists a construction of a programming language of an arbitrary order $\dP_n$.
   \begin{equation}
-  \exists_{p_1}(p_1:\dP\to\dP_1)\iff\forall_n\exists_{p_n}(p_n:\dP\to\dP_n)
+  \exists_{p_1}(p_1:\dP_0\to\dP_1)\iff\forall_n\exists_{p_n}(p_n:\dP_0\to\dP_n)
   \end{equation}
   \end{corollary}
      
@@ -465,7 +465,7 @@ Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP$.
    	holds by Theorem $\ref{izr:P_n}$.
         \begin{opomba}
         Of course the same holds true for all generating maps of the type
-        $$\dP\to\dP_n$$
+        $$\dP_0\to\dP_n$$
         \end{opomba}
 
 Now we define a product on $\dP_n$. By Theorem $\ref{izr:P_n}$ it holds that
@@ -1068,7 +1068,7 @@ Anything that operates under these specifications is an analytic machine, with t
 \end{algorithm}
 Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method.
 
-As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and calculus of algorithms of this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired $j$. With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$. 
+As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and calculus of algorithms of this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired $j$. With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$.
   \printbibliography
 \end{document}
 
