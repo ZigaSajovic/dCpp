@@ -310,7 +310,7 @@ O_P$. The derivative of this map is of interest.
     P_e\oplus \D P_e:I_P\rightarrow O_P\oplus (O_P\otimes I^*).
   \end{equation}
 \end{definicija}
-\section{Operational calculus on algorithms}
+\section{Operational calculus and Algebra of algorithms}
 
 The derivative defines an operato on the space of smooth maps $V\to U\otimes
  T(V^*)$\footnote{the operator $\D$ may be defined partially for other maps as
@@ -580,7 +580,7 @@ which enables efficient implementation.
  \begin{equation}\label{eq:dComposite}
  \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f\Big)
  \end{equation}
- where $e^{\D_f}$ maps $\dP\to\dP_n$ enabling evaluation at a point. 
+ where $e^{\D_f}$ maps $\dP_0\to\dP_n$ enabling evaluation at a point. 
  \end{proof}       
  \begin{opomba}
  As such it may be convenient to apply $g(v)\in V$ to $f$ before hand, as $e^\D$ applied to a constant represents the identity map and grants us the derivative $\D^n$ at a point $v\in V$ instead of an expansion into a multitensor (onto which we would have otherwise applied $v\in V$, to achieve the same effect).
@@ -872,7 +872,7 @@ which enables efficient implementation.
         \end{equation}
         where evaluation at $v\in V$ performs the needed translation, as the image of the operator $\mathcal{A}_{n-1}$ is an element of the $V\otimes T(V^*)\simeq S(V^*)$.
 
-\subsection{Usage and conclusions} 
+\subsection{Transformations in practice} 
 
 Branching of programs into domains $\eqref{eq:zlrprk_splosno}$ is done through conditional statements. The number of domain $\Omega_i$ equals cardinality of the set $\{\Omega_i\}$. Each conditional causes a branching in programs' execution tree.
 
