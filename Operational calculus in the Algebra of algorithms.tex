@@ -80,14 +80,14 @@ basicstyle=\ttfamily
 \bibliography{biblio}
 
 
-\title{Operational calculus in the Algebra of algorithms}
+\title{Operational calculus and Algebra of algorithms}
 \author{Žiga Sajovic, Martin Vuk}
 \begin{document}
 \maketitle
 \begin{abstract}
-In this paper, we develop the theory of analytic machines, that implement infinitely-differentiable programs, and operators acting upon them.
+In this paper, we develop the theory of analytic programming languages, that implement infinitely-differentiable program spaces, and operators acting upon them.
 
-A programming language is defined as a monoid in a function vector space of mappings of the virtual memory. Virtual memory is constructed through tensor algebra and endowed with its' own algebra of algorithms. Using this algebra, we construct differential operators, that span the space of infinitely-differentiable programs. We present a wholesome theory of operators, that enables analysis of programs and computations on the operator level, which favors general implementation. Through the theory, we derive new operators, that expand a program into an infinite tensor series in the algebra of algorithms. The theory is used to analyze iterators and other control structures in programming languages, and their dependencies on boundary conditions.
+A programming space is defined as a monoid in a function vector space of mappings of the virtual memory. Virtual memory is constructed through tensor algebra and endowed with its' own algebra of algorithms. Using this algebra, we construct differential operators, that span the space of infinitely-differentiable programs. We present a wholesome theory of operators, that enables analysis of programs and computations on the operator level, which favors general implementation. Through the theory, we derive new operators, that expand a program into an infinite tensor series in the algebra of algorithms. The theory is used to analyze iterators and other control structures in programming languages, and their dependencies on boundary conditions.
 
 The developed facilitates functional transformations of programs in an arbitrary function basis (usually the one specified as optimal by the hardware manufacturer). Thus, the theory grants us a new approach to program analysis and the ability to choose programs' complexity, while knowing the order of the error of the approximation.
 \end{abstract}
@@ -351,18 +351,6 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
   The set $\{\partial^k\}$ represents linearly independent vectors over a field $K$.
  \end{izrek}
  
- \begin{proof} 
- $$\forall_i(c_i\in K)$$
-	  $$c_0+c_1\D+c_2\D^2+....+c_n\D^n=0$$
-	$$\D(c_0+c_1\D+c_2\D^2+....+c_n\D^n)=0$$
-	$$\implies$$
-	$$(\D)(c_0+c_1\D+c_2\D^2+....+c_n\D^n)(\F)=(c_0+c_1\D+c_2\D^2+....+c_n\D^n)(\F)$$
-	$$\implies$$
-	$$(\D)(\F^n)=\F^n$$
-	$$\F^{n+1}=\F^n\iff\forall_i(c_i=0)$$
-	
- \end{proof}
- 
  \begin{definicija}\label{def:dP}
  	A differentiable programming space $\dP_0$ is any subspace of $\F_0$ satisfying the relation
  	\begin{equation}\label{eq:P}
@@ -451,24 +439,32 @@ Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP_0$.
  \begin{proof} Follows directly from the proof of Theorems $\ref{izr:P}$ and $\ref{izr:dP}$ through argument $\eqref{eq:inductionStep}$.
   \end{proof}
   \begin{corollary}
-  If there exists a construction of a first order programming language $\dP_1$, there exists a construction of a programming language of an arbitrary order $\dP_n$.
+  If there exists a construction of a first order programming space $\dP_1$, there exists a construction of a programming space of an arbitrary order $\dP_n$.
   \begin{equation}
   \exists_{p_1}(p_1:\dP_0\to\dP_1)\iff\forall_n\exists_{p_n}(p_n:\dP_0\to\dP_n)
   \end{equation}
   \end{corollary}
       \begin{corollary}\label{rem:vTen}
-       Maps $V\otimes T(V^*)\to V\otimes T(V^*)$ are constructible through tensor algebra on $\dP_n$ and through it, compositions of programs in $\dP_n$. As such, it is assumed so heron.
+       Maps $V\otimes T(V^*)\to V\otimes T(V^*)$ are constructible through tensor algebra on $\dP_n$ and through it, compositions of programs in $\dP_n$. As such, it is heron assumed to be a monoid.
        \end{corollary}
        
     The following
      \begin{equation}
-     	\sumd_n\in\dP_0\otimes T(V^*)
+     	\sumd_n\in\dP_0\otimes T_n(V^*)
      \end{equation}
    	holds by Theorem $\ref{izr:P_n}$.
         \begin{opomba}
         Of course the same holds true for all generating maps of the type
         $$\dP_0\to\dP_n$$
         \end{opomba}
+        
+\begin{izrek}\label{izr:reductionMap}
+There exist a reduction of order map $\Phi:\dP_n\to\dP_{n-1}$, satisfying the relation
+\begin{equation}\label{eq:reductionMap}
+\forall_{p\in\dP}\Big(\Phi(\D^kp)=\D\Phi(\D^{k-1}p)\Big)
+\end{equation}
+for each $k\ge 1$.
+\end{izrek}        
 
 Now we define a product on $\dP_n$. By Theorem $\ref{izr:P_n}$ it holds that
 
@@ -481,21 +477,21 @@ The set $\{\D^n\}$ implies nilpotency $k>n\implies\D^k=0$. The product between t
 \end{equation}
 
 \begin{izrek}[Algebra of Algorithms]\label{izr:alg}
-An infinte-differentiable programming space $\dP_n$ is a function algebra, with the product defined by $\eqref{eq:P_prod}$.
+An infinitely-differentiable programming space $\dP_n$ is a function algebra, with the product defined by $\eqref{eq:P_prod}$.
 \end{izrek}
 
-\subsection{Analytic programming language}
+\subsection{Analytic programming languages}
 Algorithms may be interpreted as a functional algebra over $\dP_0:V\to V$.
 By Theorem $\ref{izr:P_n}$, we can express $\dP_n$, that is spanned by $\{\D^n\}$ over $V$, through linear combinations of elements of $\dP_0\otimes T(V^*)$; isomorphism $\eqref{eq:P_algebra}$, generated by the tuple $(\dP_0,V)$, equipped with tensor algebra. Thus the tuple  $(\dP_0,V)$ and the belonging algebra are sufficient conditions for the existence and construction of infinitely differentiable programing spaces $\dP_n$ $\eqref{def:P_n}$, which are function algebras by Theorem $\ref{izr:alg}$.
 
-\begin{definicija}
+\begin{definicija}[Analytic programming language]
 The tuple $M=\langle\dP, V\rangle$ equipped with tensor algebra, is an analytic, infinitely  differentiable programming language.
    
     \begin{itemize}
     \item
     $V$ is a virtual space, "infinite tape"
     \item
-    $\dP$ is a monoid satisfying Definition $\ref{def:dP}$
+    $\dP$ is an algebra monoid satisfying Definition $\ref{def:dP}$
     \end{itemize}
   \end{definicija}
 Anything that operates under these specifications is an analytic programming language, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$.
@@ -516,17 +512,16 @@ We motivate the following with an example. Suppose an algorithm of high time com
  \end{equation}
 As such, $e^{h\D}$ is a mapping between function spaces $\eqref{eq:F_n}$
  \begin{equation}
- 	e^{h\D}:\F\to\F_n
+ 	e^{h\D}:\dP\to\dP_n
  \end{equation}
  implying
-  
   \begin{equation}\label{eq:specProg}
-  	e^{h\D}:\F\times V\to V\otimes T(V^*)
+  	e^{h\D}:\dP\times V\to V\otimes T(V^*)
   \end{equation}
   
 Through $\eqref{eq:specProg}$ we may construct a map from the space of programs, to the space of polynomials. By $\eqref{eq:tenzor_algebra}$, $V\otimes T(V^*)$ is isomorphic to the commutative associative unitary algebra $S(V^{i*})$, which corresponds to polynomials with unknowns in $V^i$.
  \begin{equation}\label{eq:pToPol}
- 	(e^{h\D})(V): \F\to S(V^*)
+ 	(e^{h\D})(V): \dP\to S(V^*)
  \end{equation}
  The expression represents a map from a program, to a polynomial. 
  
@@ -1024,7 +1019,7 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
   
    The theory presented in this paper grants new insights through methods of analysis.  These methods are the object of study of this section.
   
-  We will denote the fact, that some object $v$ has the property $X$, by $v\in X$. Suppose we have $v\notin X$, and desire a procedure that in some way modifies $v$ to have the property $X$. The desire is a procedure $P:v\notin X\to P(v)\in X$, that modifies $v$ in a minimal way. Let $S$ be some relation of similarity. We have
+  We will denote the fact, that some object $v$ has the property $X$, by $v\in X$. Suppose we have $v\notin X$, and desire a procedure that in some way modifies $v$ to have the property $X$. The desire is a procedure $P:v\notin X\to P(v)\in X$, that modifies $v$ in a some way. Let $S$ be some relation of similarity. We have
   \begin{equation}
   p\in P:v\notin X\to P(v)\in X\iff vSp(v)
   \end{equation}
@@ -1068,7 +1063,13 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
 \end{algorithm}
 Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method.
 
-As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and calculus of algorithms of this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired $j$. With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$.
+As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and calculus of algorithms of this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired property $X_j$. With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$.
+
+We extract a differentiable derivative of $T$ by applying $e^\D_2$ and projecting onto $\{\D,\D^2\}$
+\begin{equation}
+T^\prime=\Phi\circ proj_{\{\D,\D^2\}}e^\D_2(T)
+\end{equation}
+as, its' derivative (second derivative of $T$) is needed for compositions $\eqref{eq:kompo}$ by Theorem $\ref{izr:kompo}$, where $\Phi$ is the reduction of order map $\eqref{eq:reductionMap}$ of Theorem $\ref{izr:reductionMap}$. As such, it holds $T^\prime\in\dP_2$.
   \printbibliography
 \end{document}
 
