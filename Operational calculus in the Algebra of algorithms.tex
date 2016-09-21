@@ -328,7 +328,7 @@ Let us define the following function spaces.
  	\F_n=\{f:V\to U\otimes T_n(V^*)\}
  \end{equation}
 All of these function spaces are subspaces of $\F_\infty=\{f:V\to U\otimes
-T(V^*)\}$. The space $\F_n$ is direct sum of $\F^k$ for $k\le n$ and $\F_n<\F_m$ if $n<m$. We
+T(V^*)\}$. The space $\F_n$ is direct a sum of $\F^k$ for $k\le n$ and $\F_n<\F_m$ if $n<m$. We
 have a flag of function spaces
 \begin{equation}
   \label{eq:flag_function_space}
@@ -437,7 +437,7 @@ There exists a simple recursive relation between $\sumd_k$ and $\sumd_{k+1}$
 We seek to generalize such notions.
 
 \begin{definicija}\label{def:P_n}
-Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP$.
+Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP_0$.
  \end{definicija}
  
  \begin{izrek}\label{izr:P_n}
@@ -474,10 +474,13 @@ Now we define a product on $\dP_n$. By Theorem $\ref{izr:P_n}$ it holds that
 	f,g\in\dP\implies\exists_{p\in\dP}\Big(\D^nf\D^mg=\D^{n+m}p\Big)
 \end{equation}
 The set $\{\D^n\}$ implies nilpotency $k>n\implies\D^k=0$. The product between two elements $\dP_n$ is implicitly defined with its' tensor algebra. 
-
 \begin{equation}\label{eq:P_prod}
 	\sum\limits_{i=0}^{n}\D^if\sum\limits_{j=0}^{n}\D^jg=\sum\limits_{k=0}^{n}\sum\limits_{i+j=k}\D^if\D^jg
 \end{equation}
+
+\begin{izrek}
+A differentible programming language $\dP_n$ is an algebra, with the product defined by $\eqref{eq:P_prod}$.
+\end{izrek}
 
  \subsection{Power series expansion}\label{sec:Vrsta}
  
