@@ -328,6 +328,19 @@ If a program $P:\VV\to \VV$ is automatically differentiable then it is also
 differentiable as a map $\VV\to\VV$. However only the derivative of program's
 effective map can be implemented as a program, since the memory space is limited to $\VV$. 
 
+Putting memory considerations aside, we propose an universal model of the memory
+space to be 
+$$\VV_\infty = \VV\otimes T(\VV^*) = \VV\oplus
+(\VV\otimes\VV^*)+\ldots.$$
+We extend each program $P:\VV\to
+\VV$ to the map on universal memory space by setting the first component to $P$,
+and all other components to zero. Each element of $\VV_\infty$ can be written
+uniquely as a sum $\vv_0+T_1+T_2+\ldots$, where $\vv_0\in\VV$ and 
+$T_i\in\VV\otimes (\VV^*)^{\otimes i}$ and the extended map acts on it as follows   
+\begin{equation}
+  \label{eq:extension}
+  P(\vv_0+T_1+T_2+\ldots)=P(\vv_0)+0+0+\ldots
+\end{equation}
 \section{Operational calculus and algebra of Algorithms}
 
 The derivative defines an operator on the space of smooth maps $V\to U\otimes
