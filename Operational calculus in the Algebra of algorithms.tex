@@ -238,6 +238,14 @@ derivative as a map $\D^{k-1}P: V\to U\otimes (V^*)^{\otimes k-1}$:
   derivatives are differentiable at all points $\x$. If this is not the case
   definitions above can be done locally, which would introduce mostly technical difficulties.
 \end{opomba}
+Let $\e_1,\ldots,\e_n$ be a basis of $U$ and $x_1,\ldots x_m$ the basis of
+$V^*$. Then $\D^k$ $\eqref{eq:partial}$ can be defined in terms of
+directional(partial) derivatives by the formula
+\begin{equation}\label{eq:dd}
+	\partial^k=\sum_{\forall_{i,\alpha}}\frac{\partial^k}{\partial
+	    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
+	  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k}.
+\end{equation}
 
 \section{Tensor algebra representation}
 In order to apply the definition of derivative of a program to higher
@@ -300,9 +308,10 @@ $$V\xrightarrow{\D^k P} U\otimes (V^*)^{\otimes k}\hookrightarrow U\otimes
 T(V^*).$$
 \subsection{Differentiable programs}
 To each program $P:\VV\to \VV$ one can attach the effective map $P_e:I_P\to
-O_P$. The derivative of this map is of interest. 
-\begin{definicija}[Differentiable programs]
-  A program $P:\VV\to \VV$ is differentiable if there exist an embedding
+O_P$. The derivative of this map is of interest, when we speak about
+differentiability of computer programs. 
+\begin{definicija}[Automatically differentiable programs]
+  A program $P:\VV\to \VV$ is \emph{automatically differentiable} if there exist an embedding
   $O_P\otimes I_P^*\hookrightarrow F_P$ of the space $O_P\otimes I_P^*$ into
   free space $F_P$, and a program $\D P:\VV\to \VV$, such that its effective
   map is the map
@@ -310,10 +319,18 @@ O_P$. The derivative of this map is of interest.
     \label{eq:program_derivative}
     P_e\oplus \D P_e:I_P\rightarrow O_P\oplus (O_P\otimes I^*).
   \end{equation}
+The vector computing machine $(\VV, \E)$ is \emph{automatically differentiable}
+if all of the elementary operations $\varepsilon\in\E$ are \emph{automatically
+  differentiable}.
 \end{definicija}
+
+If a program $P:\VV\to \VV$ is automatically differentiable then it is also
+differentiable as a map $\VV\to\VV$. However only the derivative of program's
+effective map can be implemented as a program, since the memory space is limited to $\VV$. 
+
 \section{Operational calculus and algebra of Algorithms}
 
-The derivative defines an operato on the space of smooth maps $V\to U\otimes
+The derivative defines an operator on the space of smooth maps $V\to U\otimes
  T(V^*)$\footnote{the operator $\D$ may be defined partially for other maps as
    well.}. We denote this operator $\D$. If we look at a map $P:V\to U$ as a map
  to $U\otimes T(V^*)$, then the image of $P$ by operator $\D$ is the first
@@ -330,16 +347,10 @@ Let us define the following function spaces.
  \end{equation}
 All of these function spaces are subspaces of $\F_\infty=\{f:V\to U\otimes
 T(V^*)\}$. The space $\F_n$ is direct a sum of $\F^k$ for $k\le n$ and $\F_n<\F_m$ if $n<m$. We
-have a flag of function spaces
+have an increasing sequence of function spaces
 \begin{equation}
   \label{eq:flag_function_space}
   \F_0<\F_1<\ldots<\F_n<\ldots
-\end{equation}
-Let $\D^k$ $\eqref{eq:partial}$ be defined as
-\begin{equation}\label{eq:dd}
-	\partial^k=\sum_{\forall_{i,\alpha}}\frac{\partial^k}{\partial
-	    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
-	  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}
 \end{equation}
 
 Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
