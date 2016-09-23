@@ -272,7 +272,7 @@ subspaces of $U_k\otimes V^*$.
 The space 
 \begin{equation}
 \label{eq:k-th-virtual-space}
-U_k = U\otimes \left(F\oplus V^* \oplus (V^*\otimes V^*)\oplus\ldots
+U_k = U\otimes \left(K\oplus V^* \oplus (V^*\otimes V^*)\oplus\ldots
 (V^*)^{\otimes k}\right) = U\otimes T_k(V^*)
 \end{equation}
 satisfies the recursive formula (\ref{eq:universal_space}). The space $T_k(V^*)$
@@ -280,7 +280,7 @@ is a subspace of \emph{tensor algebra}, consisting of linear combinations of ten
 or equal $k$. To show, that $U_k$ is indeed $U\otimes T_k(V^*)$, we use
 recursive formula
 \begin{multline*}
-  U_{k+1}=U\otimes(F\oplus V^*\oplus\ldots (V^*)^{\otimes (k+1)})=\\
+  U_{k+1}=U\otimes(K\oplus V^*\oplus\ldots (V^*)^{\otimes (k+1)})=\\
  U\oplus (U\otimes V^*)\oplus\ldots (U\oplus U\otimes(V^*)^{\otimes (k+1)})
 \end{multline*}
 on the other hand, using recursive formula
@@ -410,7 +410,7 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
  \end{proof}
 
 \begin{corollary}\label{cor:dpMonoid}
-The tuple $(\dP,\D)$ is a monoid.
+The space $\dP$ is closed under the powers of $\D$.
 \end{corollary}
 
 By Theorem $\ref{izr:dP}$ we may represent calculation of derivatives of the map $P:V\to U$, with only one mapping. We define the geometric series
@@ -449,11 +449,11 @@ There exists a simple recursive relation between $\sumd_k$ and $\sumd_{k+1}$
 We seek to generalize such notions.
 
 \begin{definicija}\label{def:P_n}
-Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP_0$.
+Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $K$.
  \end{definicija}
  
  \begin{izrek}\label{izr:P_n}
- 	Function space $\dP_n:V\to U\otimes T(V^*)$ is isomorphic to the tensor product of the function space $\dP_0:V\to V$ and tensor algebra $T(V^*)$ of the dual od the virtual space $V$.
+ 	Function space $\dP_n:V\to U\otimes T(V^*)$ is isomorphic to the tensor product of the function space $\dP_0:V\to U$ and tensor algebra $T(V^*)$ of the dual od the virtual space $V$.
  	
  	\begin{equation}
  	\label{eq:P_algebra}
@@ -537,7 +537,7 @@ We motivate the following with an example. Suppose an algorithm of high time com
  \end{equation}
 As such, $e^{h\D}$ is a mapping between function spaces $\eqref{eq:F_n}$
  \begin{equation}
- 	e^{h\D}:\dP\to\dP_n
+ 	e^{h\D}:\dP\to\dP_\infty
  \end{equation}
  implying
   \begin{equation}\label{eq:specProg}
@@ -621,7 +621,7 @@ which enables efficient implementation.
  \begin{equation}\label{eq:dComposite}
  \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f\Big)
  \end{equation}
- where $e^{\D_f}$ maps $\dP_0\to\dP_n$ enabling evaluation at a point. 
+ where $e^{\D_f}$ maps $\dP_0\to\dP_\infty$ enabling evaluation at a point. 
  \end{proof}       
  \begin{opomba}
  As such it may be convenient to apply $g(v)\in V$ to $f$ before hand, as $e^\D$ applied to a constant represents the identity map and grants us the derivative $\D^n$ at a point $v\in V$ instead of an expansion into a multitensor (onto which we would have otherwise applied $v\in V$, to achieve the same effect).
@@ -867,7 +867,6 @@ which enables efficient implementation.
    $$(1+\Shift+\Shift^2+\cdots+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+\cdots+\Shift^{n-1})$$
    $$\implies$$
    $$1-\Shift^n=(1-S)\mathcal{A}_{n-1}$$
-   $$\exists_n\Big((1-\Shift)=s_1\in\Shift\Big)\implies \exists_m\Big((1-\Shift)^{-1}=s_2\in \Shift\Big)$$
    $$\implies$$
    $$\mathcal{A}_{n-1}=(1-\Shift^n)(\frac{1}{1-\Shift})$$
    By Theorem $\ref{izr:e^d}$ we have
