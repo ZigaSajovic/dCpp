@@ -89,8 +89,17 @@ In this paper, we develop the theory of analytic programming languages, that imp
 
 A programming space is defined as an algebra monoid in a function vector space of mappings on the virtual memory. Virtual memory is constructed through tensor algebra and endowed with its' own algebra of algorithms. Using this algebra, we construct differential operators, that span the space of infinitely-differentiable programs. We present a wholesome theory of operators, that enables analysis of programs and computations on the operator level, which favors general implementation. Through the theory, we derive new operators, that expand a program into an infinite tensor series in the algebra of algorithms. The theory is used to analyze iterators and other control structures in programming languages, and their dependencies on boundary conditions. The developed facilitates functional transformations of programs in an arbitrary function basis. Through it, the theory grants us the ability to choose programs' complexity, while knowing the order of the error of the approximation.
 
-Thus the theory opens new doors in program analysis. We show the existence of a procedure testing an object for a property to be sufficient for constructing a procedure enforcing that property upon it.
+Thus the theory opens new doors in program analysis. A method of probing procedures, studying their internal structure and input archetypes is developed. We show the existence of a procedure testing an object for a property to be sufficient for constructing a procedure imposing that property upon it. 
 \end{abstract}
+
+\section{Introduction}
+Programming holds the power of algorithmic control flow and freedom of expression, whose abstinence severely limits descriptiveness of closed form methods of \textit{pen and paper} mathematics, thus firmly cementing programming as the language of modern problem solving. Yet, a vibrant tradition of mathematics has existed since the dawn of mind, that remains, with the exception of combinatorics, largely untapped by computer science. 
+
+Just as the discrete nature of physical reality is studied through analytic means, so can the nature of digital phenomena. Studying these procedures as objects undergoing change in some virtual space, has partially been attempted in some fields, such as Hamiltonian Monte Carlo methods of Bayesian predictors, that Girolami and Calderhead \cite{StatMC} studied as manifolds to great success, using unfortunately impractical methods of hard-coding derivatives of distributions. This of course stifles the freedom of algorithmic expression programming is embraced for.
+
+The way evaluation of algorithmic expressions differs from evaluation of symbolic expressions of standard analysis, lies at the very core of this dissonance. The disconnect was partially mitigated by methods of automatic differentiation. Yet under the lack of a proper formalism the model collapses when one tries to generalize to such notions as a differentiable program $p_1$ operating on derivatives of another program $p_2$, where only coding of $p_2$ is required within $p_1$ (as opposed to coding the derivative of $p_2$ itself), while retaining the desired freedom of expression. 
+Models allowing for nested transformations \cite{AD1}, still fail in providing algorithms with an algebra enabling study and formulation of programs through analytic equations. Thus, they remain nothing more than means to calculating derivatives, lacking the true power the rest of the vast field of analysis is endowed with.
+
 
 \section{Computer programs as maps}
 We will model computer programs as maps on a vector space. If
@@ -466,7 +475,7 @@ Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $K$.
   \begin{corollary}
   If there exists a construction of a first order programming space $\dP_1$, there exists a construction of a programming space of an arbitrary order $\dP_n$.
   \begin{equation}
-  \exists_{p_1}(p_1:\dP_0\to\dP_1)\iff\forall_n\exists_{p_n}(p_n:\dP_0\to\dP_n)
+  \exists_{\sumd}(\sumd:\dP_0\to\dP_1)\iff\forall_n\exists_{\sumd_n}(\sumd_n:\dP_0\to\dP_n)
   \end{equation}
   \end{corollary}
       \begin{corollary}\label{rem:vTen}
@@ -477,7 +486,7 @@ Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $K$.
      \begin{equation}
      	\sumd_n\in\dP_0\otimes T_n(V^*)
      \end{equation}
-   	holds by Theorem $\ref{izr:P_n}$.
+   	holds by Theorem $\ref{izr:P_n}$, allowing simple implementation as dictated by expression $\eqref{eq:potenca(1+d)}$.
         \begin{opomba}
         Of course the same holds true for all generating maps of the type
         $$\dP_0\to\dP_n$$
@@ -697,7 +706,7 @@ which enables efficient implementation.
  \end{equation}
  with each component $\D^jp$ satisfying the relation $\eqref{eq:reductionMapSingle}$ of Theorem $\ref{izr:reductionMapSingle}$.
  \end{izrek}
- Thus, we gained the ability of writing differentiable programs using derivatives of other programs as part of their calculations, stressed as crucial (but lacking in most models) by other authors \cite{AD1}.
+ Thus, we gained the ability of writing differentiable programs using differentiable derivatives of other programs as part of their calculations, stressed as crucial (but lacking in most models) by other authors \cite{AD1}.
  
    \subsection{Functional transformation of programs}\label{sec:FTP}
    
@@ -1079,7 +1088,7 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method.
+Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method. The perturbations reveal procedures internal structure and input-archetypes. 
 
 As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and calculus of algorithms of this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired property $X_j$. With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$.
 
@@ -1121,7 +1130,7 @@ as it needs not to be differentiable for this purpose.
 
 For simplicity, assume $step$ to represent one optimization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques readily available. 
 
-As shown by Algorithm $\ref{alg:appoint}$, we arrived at a path $\gamma$, whose end point is the transformed $v\in M$, now endowed with the property $X_j$. Thus, using the theory, with the procedure $T$ as an input variable in Algorithm $\ref{alg:appoint}$, we constructed algorithm $A: T\to P$ $\eqref{eq:algA}$. When $v\in M$ represents an object upon which we wish to enforce the property $X_j$, we may do so using the derived procedure $A(T)=P$
+As shown by Algorithm $\ref{alg:appoint}$, we arrived at a path $\gamma$, whose end point is the transformed $v\in M$, now endowed with the property $X_j$. Thus, using the theory, with the procedure $T$ as an input variable in Algorithm $\ref{alg:appoint}$, we constructed algorithm $A: T\to P$ $\eqref{eq:algA}$. When $v\in M$ represents an object upon which we wish to impose the property $X_j$, we may do so using the derived procedure $A(T)=P$
 \begin{equation}\label{eq:procedureP}
 P:v\notin X_j\to v\in X_j
 \end{equation}
