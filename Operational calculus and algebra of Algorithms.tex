@@ -89,8 +89,16 @@ In this paper, we develop the theory of analytic programming languages, that imp
 
 A programming space is defined as an algebra monoid in a function vector space of mappings on the virtual memory. Virtual memory is constructed through tensor algebra and endowed with its' own algebra of algorithms. Using this algebra, we construct differential operators, that span the space of infinitely-differentiable programs. We present a wholesome theory of operators, that enables analysis of programs and computations on the operator level, which favors general implementation. Through the theory, we derive new operators, that expand a program into an infinite tensor series in the algebra of algorithms. The theory is used to analyze iterators and other control structures in programming languages, and their dependencies on boundary conditions. The developed facilitates functional transformations of programs in an arbitrary function basis. Through it, the theory grants us the ability to choose programs' complexity, while knowing the order of the error of the approximation.
 
-Thus the theory opens new doors in program analysis. We show the existence of a procedure testing an object for a property to be sufficient for constructing a procedure enforcing that property upon it.
+Thus the theory opens new doors in program analysis. A method of probing procedures, studying their internal structure and input archetypes is developed. We show the existence of a procedure testing an object for a property to be sufficient for constructing a procedure imposing that property upon it. 
 \end{abstract}
+
+\section{Introduction}
+Programming holds the power of algorithmic control flow and freedom of expression, whose abstinence severely limits descriptiveness of closed form methods of \textit{pen and paper} mathematics, thus firmly cementing programming as the language of modern problem solving. Yet, a vibrant tradition of mathematics has existed since the dawn of mind, that remains, with the exception of combinatorics, largely untapped by computer science. 
+
+Just as the discrete nature of physical reality is studied through analytic means, so can the nature of digital phenomena. Studying these procedures as objects undergoing change in some virtual space, has partially been attempted in some fields, such as Hamiltonian Monte Carlo methods of Bayesian predictors, that Girolami and Calderhead \cite{StatMC} studied as manifolds to great success, using unfortunately impractical methods of hard-coding derivatives of distributions. This of course stifles the freedom of algorithmic expression programming is embraced for.
+
+The way evaluation of algorithmic expressions differs from evaluation of symbolic expressions of standard analysis, lies at the very core of this dissonance. The disconnect was partially mitigated by methods of automatic differentiation, utilized today in machine learning, engineering, simulations, etc. Yet under the lack of a proper formalism the model collapses when one tries to generalize to such notions as a differentiable program $p_1$ operating on (differentiable) derivatives of another program $p_2$ (where only coding of $p_2$ is required within $p_1$), while retaining the famed freedom of expression. 
+Models allowing for nested differentiation \cite{AD1}, still fail in providing algorithms with an algebra enabling study and formulation of programs through equations. Thus, they remain nothing more than means to calculating derivatives, void of any meaningful algebraic insight, lacking the true power the vast field of analysis is endowed with.
 
 \section{Computer programs as maps}
 We will model computer programs as maps on a vector space. If
@@ -272,7 +280,7 @@ subspaces of $U_k\otimes V^*$.
 The space 
 \begin{equation}
 \label{eq:k-th-virtual-space}
-U_k = U\otimes \left(F\oplus V^* \oplus (V^*\otimes V^*)\oplus\ldots
+U_k = U\otimes \left(K\oplus V^* \oplus (V^*\otimes V^*)\oplus\ldots
 (V^*)^{\otimes k}\right) = U\otimes T_k(V^*)
 \end{equation}
 satisfies the recursive formula (\ref{eq:universal_space}). The space $T_k(V^*)$
@@ -280,7 +288,7 @@ is a subspace of \emph{tensor algebra}, consisting of linear combinations of ten
 or equal $k$. To show, that $U_k$ is indeed $U\otimes T_k(V^*)$, we use
 recursive formula
 \begin{multline*}
-  U_{k+1}=U\otimes(F\oplus V^*\oplus\ldots (V^*)^{\otimes (k+1)})=\\
+  U_{k+1}=U\otimes(K\oplus V^*\oplus\ldots (V^*)^{\otimes (k+1)})=\\
  U\oplus (U\otimes V^*)\oplus\ldots (U\oplus U\otimes(V^*)^{\otimes (k+1)})
 \end{multline*}
 on the other hand, using recursive formula
@@ -410,7 +418,7 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
  \end{proof}
 
 \begin{corollary}\label{cor:dpMonoid}
-The tuple $(\dP,\D)$ is a monoid.
+The space $\dP$ is closed under the powers of $\D$.
 \end{corollary}
 
 By Theorem $\ref{izr:dP}$ we may represent calculation of derivatives of the map $P:V\to U$, with only one mapping. We define the geometric series
@@ -449,11 +457,11 @@ There exists a simple recursive relation between $\sumd_k$ and $\sumd_{k+1}$
 We seek to generalize such notions.
 
 \begin{definicija}\label{def:P_n}
-Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP_0$.
+Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $K$.
  \end{definicija}
  
  \begin{izrek}\label{izr:P_n}
- 	Function space $\dP_n:V\to U\otimes T(V^*)$ is isomorphic to the tensor product of the function space $\dP_0:V\to V$ and tensor algebra $T(V^*)$ of the dual od the virtual space $V$.
+ 	Function space $\dP_n:V\to U\otimes T(V^*)$ is isomorphic to the tensor product of the function space $\dP_0:V\to U$ and tensor algebra $T(V^*)$ of the dual od the virtual space $V$.
  	
  	\begin{equation}
  	\label{eq:P_algebra}
@@ -466,7 +474,7 @@ Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP_0$.
   \begin{corollary}
   If there exists a construction of a first order programming space $\dP_1$, there exists a construction of a programming space of an arbitrary order $\dP_n$.
   \begin{equation}
-  \exists_{p_1}(p_1:\dP_0\to\dP_1)\iff\forall_n\exists_{p_n}(p_n:\dP_0\to\dP_n)
+  \exists_{\sumd}(\sumd:\dP_0\to\dP_1)\iff\forall_n\exists_{\sumd_n}(\sumd_n:\dP_0\to\dP_n)
   \end{equation}
   \end{corollary}
       \begin{corollary}\label{rem:vTen}
@@ -477,7 +485,7 @@ Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $\dP_0$.
      \begin{equation}
      	\sumd_n\in\dP_0\otimes T_n(V^*)
      \end{equation}
-   	holds by Theorem $\ref{izr:P_n}$.
+   	holds by Theorem $\ref{izr:P_n}$, allowing simple implementation as dictated by expression $\eqref{eq:potenca(1+d)}$.
         \begin{opomba}
         Of course the same holds true for all generating maps of the type
         $$\dP_0\to\dP_n$$
@@ -537,7 +545,7 @@ We motivate the following with an example. Suppose an algorithm of high time com
  \end{equation}
 As such, $e^{h\D}$ is a mapping between function spaces $\eqref{eq:F_n}$
  \begin{equation}
- 	e^{h\D}:\dP\to\dP_n
+ 	e^{h\D}:\dP\to\dP_\infty
  \end{equation}
  implying
   \begin{equation}\label{eq:specProg}
@@ -621,7 +629,7 @@ which enables efficient implementation.
  \begin{equation}\label{eq:dComposite}
  \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f\Big)
  \end{equation}
- where $e^{\D_f}$ maps $\dP_0\to\dP_n$ enabling evaluation at a point. 
+ where $e^{\D_f}$ maps $\dP_0\to\dP_\infty$ enabling evaluation at a point. 
  \end{proof}       
  \begin{opomba}
  As such it may be convenient to apply $g(v)\in V$ to $f$ before hand, as $e^\D$ applied to a constant represents the identity map and grants us the derivative $\D^n$ at a point $v\in V$ instead of an expansion into a multitensor (onto which we would have otherwise applied $v\in V$, to achieve the same effect).
@@ -697,7 +705,7 @@ which enables efficient implementation.
  \end{equation}
  with each component $\D^jp$ satisfying the relation $\eqref{eq:reductionMapSingle}$ of Theorem $\ref{izr:reductionMapSingle}$.
  \end{izrek}
- Thus, we gained the ability of writing differentiable programs using derivatives of other programs as part of their calculations, stressed as crucial (but lacking in most models) by other authors \cite{AD1}.
+ Thus, we gained the ability of writing differentiable programs using differentiable derivatives of other programs as part of their calculations, stressed as crucial (but lacking in most models) by other authors \cite{AD1}.
  
    \subsection{Functional transformation of programs}\label{sec:FTP}
    
@@ -867,7 +875,6 @@ which enables efficient implementation.
    $$(1+\Shift+\Shift^2+\cdots+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+\cdots+\Shift^{n-1})$$
    $$\implies$$
    $$1-\Shift^n=(1-S)\mathcal{A}_{n-1}$$
-   $$\exists_n\Big((1-\Shift)=s_1\in\Shift\Big)\implies \exists_m\Big((1-\Shift)^{-1}=s_2\in \Shift\Big)$$
    $$\implies$$
    $$\mathcal{A}_{n-1}=(1-\Shift^n)(\frac{1}{1-\Shift})$$
    By Theorem $\ref{izr:e^d}$ we have
@@ -1080,7 +1087,7 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method.
+Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method. The perturbations reveal procedures internal structure and input-archetypes. 
 
 As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and calculus of algorithms of this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired property $X_j$. With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$.
 
@@ -1122,7 +1129,7 @@ as it needs not to be differentiable for this purpose.
 
 For simplicity, assume $step$ to represent one optimization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques readily available. 
 
-As shown by Algorithm $\ref{alg:appoint}$, we arrived at a path $\gamma$, whose end point is the transformed $v\in M$, now endowed with the property $X_j$. Thus, using the theory, with the procedure $T$ as an input variable in Algorithm $\ref{alg:appoint}$, we constructed algorithm $A: T\to P$ $\eqref{eq:algA}$. When $v\in M$ represents an object upon which we wish to enforce the property $X_j$, we may do so using the derived procedure $A(T)=P$
+As shown by Algorithm $\ref{alg:appoint}$, we arrived at a path $\gamma$, whose end point is the transformed $v\in M$, now endowed with the property $X_j$. Thus, using the theory, with the procedure $T$ as an input variable in Algorithm $\ref{alg:appoint}$, we constructed algorithm $A: T\to P$ $\eqref{eq:algA}$. When $v\in M$ represents an object upon which we wish to impose the property $X_j$, we may do so using the derived procedure $A(T)=P$
 \begin{equation}\label{eq:procedureP}
 P:v\notin X_j\to v\in X_j
 \end{equation}
