@@ -688,11 +688,18 @@ which enables efficient implementation.
  \end{opomba}
  The Theorem $\ref{izr:kompo}$ enables an invariant implementation of the operator of program composition in $\dP_n$, expressed as a tensor series through expressions $\eqref{eq:kompo}$ and $\eqref{eq:dComposite}$. 
  
- By fixing one mapping in $exp(\D_fe^{h\D_g}): \dP\times\dP\to\dP$, the operator $exp(\D_fe^{h\D_g})(g)$ performs a pullback of an arbitrary map through $g$. 
+ By fixing one mapping in 
+ 
+ \begin{equation}\label{eq:opGenKompo}
+exp(\D_fe^{h\D_g}): \dP\times\dP\to\dP,
+ \end{equation}
+ the operator $exp(\D_fe^{h\D_g})(g)$ performs a pullback of an arbitrary map through $g$. 
   \begin{equation}\label{eq:opKompo}
   exp(\D_fe^{h\D_g})(g): \dP\to\dP(g)
   \end{equation}
- When operating in space spanned by $\{1,\D\}$, the action of the operator is equivalent to forward mode automatic differentiation. Both forward and reverse mode are obtainable using the same operator $\eqref{eq:opKompo}$, by fixing the appropriate one of the two maps. Thus, through $\eqref{eq:kompo}$ and all its' descendants (exponents), the operator $(\ref{eq:opKompo})$ grants invariance to the point in execution of a program, which proves useful as invariants are at the center of proving algorithms' correctness. This is analogous to the principle of general covariance \cite{GeneralCovariance}[See section 7.1] in general relativity, the invariance of the form of physical laws under arbitrary differentiable coordinate transformations.
+ When projecting onto the space spanned by $\{1,\D\}$, the action of the operator $\eqref{eq:opKompo}$ is equivalent to forward mode automatic differentiation. Both forward and reverse mode are obtainable using the same operator $\eqref{eq:opGenKompo}$, by fixing the appropriate one of the two maps. This generalizes both concepts under a single operator in the theory.
+ 
+ Thus, through $\eqref{eq:kompo}$ and all its' descendants (exponents), the operator $(\ref{eq:opKompo})$ grants invariance to the point in execution of a program, which proves useful as invariants are at the center of proving algorithms' correctness. This is analogous to the principle of general covariance \cite{GeneralCovariance}[See section 7.1] in general relativity, the invariance of the form of physical laws under arbitrary differentiable coordinate transformations.
  
  With this we turn towards easing such calculations, towards completing them on the level of operators. The derivative $\frac{d}{dh}$ of $\eqref{eq:opKompo}$ is
  
