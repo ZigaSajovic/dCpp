@@ -554,26 +554,33 @@ We motivate the following with an example. Suppose an algorithm of high time com
  \begin{equation}
  	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{(h\D)^n}{n!}
  \end{equation}
- is well defined.
+ is well defined. In coordinates, the operator $e^{h\D}$ can be written as a
+ series over all multi-indices $\alpha$
  \begin{equation}\label{eq:e^d}
  	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{h^n}{n!}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
  		    x_{\alpha_1}\ldots \partial x_{\alpha_n}}\e_i\otimes
- 		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_n}
+ 		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_n}.
  \end{equation}
-As such, $e^{h\D}$ is a mapping between function spaces $\eqref{eq:F_n}$
+The operator $e^{h\D}$ is a mapping between function spaces $\eqref{eq:F_n}$
  \begin{equation}
- 	e^{h\D}:\dP\to\dP_\infty
+ 	e^{h\D}:\dP\to\dP_\infty.
  \end{equation}
- implying
+ It also defines a map
   \begin{equation}\label{eq:specProg}
-  	e^{h\D}:\dP\times V\to V\otimes T(V^*)
+  	e^{h\D}:\dP\times V\to U\otimes T(V^*),
   \end{equation}
-  
-Through $\eqref{eq:specProg}$ we may construct a map from the space of programs, to the space of polynomials. By $\eqref{eq:tenzor_algebra}$, $V\otimes T(V^*)$ is isomorphic to the commutative associative unitary algebra $S(V^{i*})$, which corresponds to polynomials with unknowns in $V^i$.
+by taking the image of the map $e^{h\D}(P)$ at a certain point $\vv\in V$.  
+Through $\eqref{eq:specProg}$ we may construct a map from the space of programs,
+to the space of polynomials. Note that the space of multivariate polynomials
+$V\to K$ is isomorphic to symmetric algebra $S(V^*)$, which is in turn a
+quotient of tensor algebra $T(V^*)$. To any element of
+ $U\otimes T(V^*)$ one can attach corresponding element of $U\otimes S(V^{i*})$
+ namely a polynomial map  $V\to U$.
  \begin{equation}\label{eq:pToPol}
- 	(e^{h\D})(V): \dP\to S(V^*)
+ 	e^{h\D}: \dP\times V\to U\otimes S(V^*)
  \end{equation}
- The expression represents a map from a program, to a polynomial. 
+ For any element $\vv\in V$, the expression $e^{h\D}(\vv,\cdot)$ is a map $\dP\to
+ U\otimes S(V^*)$, mapping a program to a polynomial. 
  
 \begin{izrek}\label{izr:e^d}
 	For a program $P\in\dP$ and $v^{\JJ_k}_{k}\in T(V)$ the expansion into a series is expressed as a contraction\\
