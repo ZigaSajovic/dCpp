@@ -579,21 +579,44 @@ quotient of tensor algebra $T(V^*)$. To any element of
  \begin{equation}\label{eq:pToPol}
  	e^{h\D}: \dP\times V\to U\otimes S(V^*)
  \end{equation}
- For any element $\vv\in V$, the expression $e^{h\D}(\vv,\cdot)$ is a map $\dP\to
- U\otimes S(V^*)$, mapping a program to a polynomial. 
+ For any element $\vv_0\in V$, the expression $e^{h\D}(\cdot,\vv_0)$ is a map $\dP\to
+ U\otimes S(V^*)$, mapping a program to a polynomial. We can express the
+ correspondence between multi-tensors in $U\otimes T(V^*)$ and polynomial maps
+ $V\to U$ given by multiple contractions for all possible indices. For a simple tensor $\uu\otimes
+ f_1\otimes\ldots\otimes f_n\in U\otimes(V^*)^{\otimes n}$ the contraction by
+ $\vv\in V$ is given by applying co-vector $f_n$ to $\vv$ 
+ \begin{equation}
+   \label{eq:contraction}
+ \uu\otimes f_1\otimes\ldots\otimes f_n\cdot \vv = f_n(\vv) \uu\otimes f_1\otimes\ldots f_{n-1}.
+ \end{equation}
+Applying contraction multiple times with the same vector $\vv$ one can assign to
+any simple tensor a monomial map 
+ \begin{equation}
+   \label{eq:tensor->poly}
+ \uu\otimes f_1\otimes\ldots\otimes f_n: \vv \mapsto f_n(\vv)\cdots f_1(\vv) \uu
+ \end{equation}
+
+and by linearity to any finite rank multi-tensor in $U\otimes T(V^*)$ a
+polynomial map.
  
 \begin{izrek}\label{izr:e^d}
-	For a program $P\in\dP$ and $v^{\JJ_k}_{k}\in T(V)$ the expansion into a series is expressed as a contraction\\
-	\begin{equation}\label{eq:tenzorVrsta}
-	P(V+hv) = \Big((e^{h\D})(P)(V)\Big)v^{\JJ_k}_{k}
-	\end{equation}
+	For a program $P\in\dP$  the expansion into a Taylor series
+  at the point $\vv_0\in V$ is expressed by multiple contractions 
+	\begin{multline}\label{eq:tenzorVrsta}
+	P(\vv_0+h\vv) = \Big((e^{h\D}P)(\vv_0)\Big)\cdot\vv
+  = \sum_{n=0}^\infty\frac{h^n}{n!}\D^nP(\vv_0)\cdot (\vv^{\otimes n})\\
+  = \sum_{n=0}^\infty \frac{h^n}{n!}\sum_{\forall_{i,\alpha}}\frac{\partial^nP_i}{\partial
+ 		    x_{\alpha_1}\ldots \partial x_{\alpha_n}}\e_i\cdot
+ 		  dx_{\alpha_1}(\vv)\cdot\ldots \cdot dx_{\alpha_n}(\vv).
+	\end{multline}
 \end{izrek}
  
  \begin{proof}
-It is true for all $n$ that $\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(LHS)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(RHS)}$\\
+We will show that $\frac{d^n}{dh^n}\text{(LHS)}|_{h=0}=\frac{d^n}{dh^n}\text{(RHS)}|_{h=0}$. Then $\text{LHS}$ and $\text{RHS}$ as functions
+of $h$ have coinciding Taylor series and are therefore equal.\\
  $\implies$
  
- $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n(P(V+hv))=\D^n P(V)(v^{\otimes n})$$
+ $$\frac{d^n}{dh^n}P(\vv_0+h\vv)|_{h=0}=\D^n P(\vv_0)(\vv)$$
  $\impliedby$
  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\Big((e^{h\D})(P)(V)\Big)(v^{\JJ_k}_{k})=\lim\limits_{\lVert h\rVert\to 0}\Big((\D^n e^{h\D})(P)(V)\Big)(v^{\JJ_k}_{k})$$
  $$\land$$
