@@ -125,7 +125,7 @@ dimensional vector\footnote{we assume the variables of interest to be of type \t
   simplicity. Theoretically any field can be used instead of $\RR$.}. 
 A set of all the possible states of the program's memory,
 can be modeled by a finite dimensional real vector space $\VV\equiv \RR^n$. We
-will call $\VV$ \emph{memory space of the program}. The effect of a computer
+will call $\VV$ the \emph{memory space of the program}. The effect of a computer
 program on its memory space $\VV$, can be described by a map
 \begin{equation}
   \label{eq:map}
@@ -134,8 +134,8 @@ program on its memory space $\VV$, can be described by a map
 We can compose two programs sequentially, to obtain another program, which
 results in map composition. The set of all such maps $\F=\VV^\VV$ is a
 \emph{monoid} for the operation of composition $\circ$. A programing language is
-a set of elementary operations that are sequentially applied. 
-\begin{definicija} A \emph{multivariate/Euclidean/Hilbert/vector?? computing machine} is a pair $(\VV,\E)$, such
+a set of elementary operations that are sequentially applied into programs. 
+\begin{definicija} A \emph{Euclidean computing machine} is a pair $(\VV,\E)$, such
   that $\VV$ is a finite dimensional vector space over a filed $F$ and
   $\E\subset \VV^\VV$ is a set of maps, called \emph{elementary operations}. A
   \emph{program} is any map $P:\VV\to \VV$, that can be written as a finite  composition
@@ -204,7 +204,7 @@ defined by the following commutative diagram
 does not depend of the choice of the element 
 $\vec{f}\in F_P=(I_P+O_P)^\perp$. The map $P_e$ describes the actual effect of the
 program $P$, since it ignores the free memory. 
-\section{Multivariate derivative}
+\section{Multivariate derivatives}
 \begin{definicija}[Derivative]
   Let $V,U$ be Banach spaces. The map $P:V\to U$ is differentiable at the point
   $x\in V$, if there exists a linear bounded operator $TP_x:V\to U$ such that
@@ -216,30 +216,30 @@ program $P$, since it ignores the free memory.
   point $\x$.
 \end{definicija}
 For maps $\RR^n\to \RR^m$ Fréchet derivative can be expressed by multiplication
-of vector $h$ by the Jacobi matrix $\D P$ of the  partial derivatives of the 
+of vector $h$ by the Jacobi matrix $\mathrm{J} P$ of the  partial derivatives of the 
 components of the map $P$
 \begin{equation*}
-  TP_x(h) = \D P(x)\cdot h.
+  TP_x(h) = \mathrm{J} P(x)\cdot h.
 \end{equation*}
 We assume for the remainder of this section that the map $P:V\to U$ is
 differentiable for all $\x\in V$. The derivative defines a map from $V$ to
 linear bounded maps from $V$ to $U$. We further assume $U$ and $V$ are finite
 dimensional. Then the space of linear maps from $V$ to $U$ is isomorphic to
 tensor product $U\otimes V^*$. For a simple tensor $\uu\otimes f\in U\otimes
-V^*$ one can define a linear map by the following
+V^*$ one can define a linear map by tensor contraction 
  \begin{equation}
    \label{eq:lin_tenzor}
-   \x \mapsto f(\x)\cdot \uu.
+   \uu\otimes f:\x \mapsto f(\x)\cdot \uu.
  \end{equation}
-This map, extended by linearity to the whole tensor product $U\otimes V^*$ is an
-isomorphism. The derivative defines a map
+The above formula can be extended by linearity to any tensor, making the isomorphism
+between tensor product $U\otimes V^*$ and the space of linear maps $V\to U$. The derivative defines a map
 \begin{eqnarray}
   \label{eq:odvod_preslikava}
   \D P&:& V\to U\otimes V^*\\
   \D P&:& \x \mapsto T_\x P.
 \end{eqnarray}
-As the derivative defines a map $\D P:V\to U\otimes V^*$, one can consider its
-differentiability. The derivative of the map $\D P$ is the \emph{second derivative}
+One can consider the differentiability of the map \eqref{eq:odvod_preslikava}.
+The derivative of the map $\D P$ is called the \emph{second derivative}
 of the map $P$ and is denoted by $\D^2P$. Second derivative is at each point a
 linear map  $V\to U\otimes V^*$, and can be therefore 
 represented by a tensor from $(U\otimes V^*)\otimes V^*$. Second derivative
@@ -264,14 +264,14 @@ derivative as a map $\D^{k-1}P: V\to U\otimes (V^*)^{\otimes k-1}$:
   definitions above can be done locally, which would introduce mostly technical difficulties.
 \end{opomba}
 Let $\e_1,\ldots,\e_n$ be a basis of $U$ and $x_1,\ldots x_m$ the basis of
-$V^*$. Then $\D^k$ $\eqref{eq:partial}$ can be defined in terms of
+$V^*$. Then $\D^kP$ $\eqref{eq:partial}$ can be defined in terms of
 directional(partial) derivatives by the formula
 \begin{equation}\label{eq:dd}
-	\partial^k=\sum_{\forall_{i,\alpha}}\frac{\partial^k}{\partial
+	\partial^kP=\sum_{\forall_{i,\alpha}}\frac{\partial^k P_i}{\partial
 	    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
 	  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k}.
 \end{equation}
-
+where $P_i=\mathrm{pr}_{\e_i}\circ P$ is the $i$-th component of the map $P$.
 \section{Tensor algebra representation}
 In order to apply the definition of derivative of a program to higher
 derivatives, we use the tensor algebra.
