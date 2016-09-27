@@ -127,7 +127,7 @@ dimensional vector\footnote{we assume the variables of interest to be of type \t
   simplicity. Theoretically any field can be used instead of $\RR$.}. 
 A set of all the possible states of the program's memory,
 can be modeled by a finite dimensional real vector space $\VV\equiv \RR^n$. We
-will call $\VV$ \emph{memory space of the program}. The effect of a computer
+will call $\VV$ the \emph{memory space of the program}. The effect of a computer
 program on its memory space $\VV$, can be described by a map
 \begin{equation}
   \label{eq:map}
@@ -136,8 +136,8 @@ program on its memory space $\VV$, can be described by a map
 We can compose two programs sequentially, to obtain another program, which
 results in map composition. The set of all such maps $\F=\VV^\VV$ is a
 \emph{monoid} for the operation of composition $\circ$. A programing language is
-a set of elementary operations that are sequentially applied. 
-\begin{definicija} A \emph{multivariate/Euclidean/Hilbert/vector?? computing machine} is a pair $(\VV,\E)$, such
+a set of elementary operations that are sequentially applied into programs. 
+\begin{definicija} A \emph{Euclidean computing machine} is a pair $(\VV,\E)$, such
   that $\VV$ is a finite dimensional vector space over a filed $F$ and
   $\E\subset \VV^\VV$ is a set of maps, called \emph{elementary operations}. A
   \emph{program} is any map $P:\VV\to \VV$, that can be written as a finite  composition
@@ -206,7 +206,7 @@ defined by the following commutative diagram
 does not depend of the choice of the element 
 $\vec{f}\in F_P=(I_P+O_P)^\perp$. The map $P_e$ describes the actual effect of the
 program $P$, since it ignores the free memory. 
-\section{Multivariate derivative}
+\section{Multivariate derivatives}
 \begin{definicija}[Derivative]
   Let $V,U$ be Banach spaces. The map $P:V\to U$ is differentiable at the point
   $x\in V$, if there exists a linear bounded operator $TP_x:V\to U$ such that
@@ -218,30 +218,30 @@ program $P$, since it ignores the free memory.
   point $\x$.
 \end{definicija}
 For maps $\RR^n\to \RR^m$ Fréchet derivative can be expressed by multiplication
-of vector $h$ by the Jacobi matrix $\D P$ of the  partial derivatives of the 
+of vector $h$ by the Jacobi matrix $\mathrm{J} P$ of the  partial derivatives of the 
 components of the map $P$
 \begin{equation*}
-  TP_x(h) = \D P(x)\cdot h.
+  TP_x(h) = \mathrm{J} P(x)\cdot h.
 \end{equation*}
 We assume for the remainder of this section that the map $P:V\to U$ is
 differentiable for all $\x\in V$. The derivative defines a map from $V$ to
 linear bounded maps from $V$ to $U$. We further assume $U$ and $V$ are finite
 dimensional. Then the space of linear maps from $V$ to $U$ is isomorphic to
 tensor product $U\otimes V^*$. For a simple tensor $\uu\otimes f\in U\otimes
-V^*$ one can define a linear map by the following
+V^*$ one can define a linear map by tensor contraction 
  \begin{equation}
    \label{eq:lin_tenzor}
-   \x \mapsto f(\x)\cdot \uu.
+   \uu\otimes f:\x \mapsto f(\x)\cdot \uu.
  \end{equation}
-This map, extended by linearity to the whole tensor product $U\otimes V^*$ is an
-isomorphism. The derivative defines a map
+The above formula can be extended by linearity to any tensor, making the isomorphism
+between tensor product $U\otimes V^*$ and the space of linear maps $V\to U$. The derivative defines a map
 \begin{eqnarray}
   \label{eq:odvod_preslikava}
   \D P&:& V\to U\otimes V^*\\
   \D P&:& \x \mapsto T_\x P.
 \end{eqnarray}
-As the derivative defines a map $\D P:V\to U\otimes V^*$, one can consider its
-differentiability. The derivative of the map $\D P$ is the \emph{second derivative}
+One can consider the differentiability of the map \eqref{eq:odvod_preslikava}.
+The derivative of the map $\D P$ is called the \emph{second derivative}
 of the map $P$ and is denoted by $\D^2P$. Second derivative is at each point a
 linear map  $V\to U\otimes V^*$, and can be therefore 
 represented by a tensor from $(U\otimes V^*)\otimes V^*$. Second derivative
@@ -266,19 +266,24 @@ derivative as a map $\D^{k-1}P: V\to U\otimes (V^*)^{\otimes k-1}$:
   definitions above can be done locally, which would introduce mostly technical difficulties.
 \end{opomba}
 Let $\e_1,\ldots,\e_n$ be a basis of $U$ and $x_1,\ldots x_m$ the basis of
-$V^*$. Then $\D^k$ $\eqref{eq:partial}$ can be defined in terms of
+$V^*$. Then $\D^kP$  can be defined in terms of
 directional(partial) derivatives by the formula
 \begin{equation}\label{eq:dd}
-	\partial^k=\sum_{\forall_{i,\alpha}}\frac{\partial^k}{\partial
+	\partial^kP=\sum_{\forall_{i,\alpha}}\frac{\partial^k P_i}{\partial
 	    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
 	  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k}.
 \end{equation}
+<<<<<<< HEAD
 
 \section{Tensor algebra representation}\label{sc:tensorAlg}
+=======
+where $P_i=\mathrm{pr}_{\e_i}\circ P$ is the $i$-th component of the map $P$.
+\section{Tensor algebra representation}
+>>>>>>> 5eef6db27f93d1c876fc92d71296200e46bc8a57
 In order to apply the definition of derivative of a program to higher
-derivatives, we use the tensor algebra.
-Let $P:V\to U$ be a map on vector spaces. Motivated by definition of higher
-derivatives, we define a sequence of spaces with
+derivatives, we make use of the tensor algebra.
+Let $P:V\to U$ be a map on vector spaces. Motivated by the definition of higher
+derivatives, we define a sequence of vector spaces with
 recursive formula
 \begin{eqnarray}
   \label{eq:universal_space}
@@ -287,39 +292,47 @@ recursive formula
 \end{eqnarray}
 Note that the sum is not direct, since some of the subspaces of $U_{k-1}$ and
 $U_{k-1}\otimes V^*$ are naturally isomorphic and will be identified.
+
 The formula can be illustrated as follows. 
-To implement the derivative of a map $P:V\to U$, the space for $U\oplus
-(U\otimes V^*)$ has to be allocated.
+To implement the derivative of a map $P:V\to U$, the space $U\otimes V^*$ has to
+be allocated along with original co-domain $U$.  The space $U\oplus
+(U\otimes V^*)$ has to be embedded into the memory space $\VV$.
 Denote $U_k$ the space needed for $k$-th order derivative. The program for
 $k-th$ derivative would implement the map $V\to U_k$. For the derivative of this map
 the space $U_k+ (U_k\otimes V^*)$ would have to be allocated. This sum
 however would not be direct, since some of the subspaces of $U_k$ coincide with
 subspaces of $U_k\otimes V^*$.
+\begin{trditev}
+  The space
+  \begin{equation}
+    \label{eq:k-th-virtual-space}
+    U_k = U\otimes \left(K\oplus V^* \oplus (V^*\otimes V^*)\oplus\ldots
+      (V^*)^{\otimes k}\right) = U\otimes T_k(V^*)
+  \end{equation}
+  satisfies the recursive formula (\ref{eq:universal_space}), where the space
+  $T_k(V^*)$ is a subspace of \emph{tensor algebra} $T(V^*)$, consisting of linear
+  combinations of tensors of rank less or equal $k$.
+\end{trditev}
 
-The space 
-\begin{equation}
-\label{eq:k-th-virtual-space}
-U_k = U\otimes \left(K\oplus V^* \oplus (V^*\otimes V^*)\oplus\ldots
-(V^*)^{\otimes k}\right) = U\otimes T_k(V^*)
-\end{equation}
-satisfies the recursive formula (\ref{eq:universal_space}). The space $T_k(V^*)$
-is a subspace of \emph{tensor algebra}, consisting of linear combinations of tensors of rank less
-or equal $k$. To show, that $U_k$ is indeed $U\otimes T_k(V^*)$, we use
-recursive formula
-\begin{multline*}
-  U_{k+1}=U\otimes(K\oplus V^*\oplus\ldots (V^*)^{\otimes (k+1)})=\\
- U\oplus (U\otimes V^*)\oplus\ldots (U\oplus U\otimes(V^*)^{\otimes (k+1)})
-\end{multline*}
-on the other hand, using recursive formula
-\begin{multline}
-  U_k+(U_k\otimes V^*) = \left( U\oplus (U\otimes V^*)\oplus\ldots (U\otimes(V^*)^{\otimes k})\right) + \\
-  \left((U\otimes V^*) \oplus (U\otimes V^*\otimes V^*) \oplus\ldots (U\otimes(V^*)^{\otimes k}\otimes V^*)\right)
-\end{multline}
-However spaces $U\otimes(V^*)^{\otimes (j+1)}$ and $U\otimes (V^*)^{\otimes
-  j}\otimes V^*$ are naturally isomorphic and will be identified, leaving 
-\begin{equation}
-  U_k+(U_k\otimes V^*) = U\oplus (U\otimes V^*)\oplus\ldots (U\otimes(V^*)^{\otimes (k+1)})
-\end{equation}
+\begin{proof}
+  We prove the claim by induction. The base of induction is trivial, for the
+  induction step we first find that:
+  \begin{multline*}
+    U\otimes T_k(V^*)=U\otimes(K\oplus V^*\oplus\ldots (V^*)^{\otimes (k+1)})=\\
+    U\oplus (U\otimes V^*)\oplus\ldots (U\oplus U\otimes(V^*)^{\otimes (k+1)})
+  \end{multline*}
+  on the other hand, using recursive formula
+  \begin{multline}
+    U_k+(U_k\otimes V^*) = \left( U\oplus (U\otimes V^*)\oplus\ldots (U\otimes(V^*)^{\otimes k})\right) + \\
+    \left((U\otimes V^*) \oplus (U\otimes V^*\otimes V^*) \oplus\ldots
+      (U\otimes(V^*)^{\otimes k}\otimes V^*)\right)
+  \end{multline}
+  However spaces $U\otimes(V^*)^{\otimes (j+1)}$ and $U\otimes (V^*)^{\otimes
+    j}\otimes V^*$ are naturally isomorphic and will be identified, leaving
+  \begin{equation}
+    U_k+(U_k\otimes V^*) = U\oplus (U\otimes V^*)\oplus\ldots (U\otimes(V^*)^{\otimes (k+1)})
+  \end{equation}
+\end{proof}
 The spaces $U_k$ form an increasing sequence of subspaces (a flag) of the space $U\otimes
 T(V^*)$
 \begin{equation}
@@ -334,19 +347,19 @@ derivatives
 $$V\xrightarrow{\D^k P} U\otimes (V^*)^{\otimes k}\hookrightarrow U\otimes
 T(V^*).$$
 \subsection{Differentiable programs}
-To each program $P:\VV\to \VV$ one can attach the effective map $P_e:I_P\to
+To each program $P:\VV\to \VV$ one can attach its effective map $P_e:I_P\to
 O_P$. The derivative of this map is of interest, when we speak about
 differentiability of computer programs. 
 \begin{definicija}[Automatically differentiable programs]
   A program $P:\VV\to \VV$ is \emph{automatically differentiable} if there exist an embedding
   $O_P\otimes I_P^*\hookrightarrow F_P$ of the space $O_P\otimes I_P^*$ into
-  free space $F_P$, and a program $\D P:\VV\to \VV$, such that its effective
+  the free space $F_P$, and a program $\D P:\VV\to \VV$, such that its effective
   map is the map
   \begin{equation}
     \label{eq:program_derivative}
     P_e\oplus \D P_e:I_P\rightarrow O_P\oplus (O_P\otimes I^*).
   \end{equation}
-The vector computing machine $(\VV, \E)$ is \emph{automatically differentiable}
+The Euclidian computing machine $(\VV, \E)$ is \emph{automatically differentiable}
 if all of the elementary operations $\varepsilon\in\E$ are \emph{automatically
   differentiable}.
 \end{definicija}
@@ -359,14 +372,18 @@ Putting memory considerations aside, we propose an universal model of the memory
 space to be 
 $$\VV_\infty = \VV\otimes T(\VV^*) = \VV\oplus
 (\VV\otimes\VV^*)+\ldots.$$
-We extend each program $P:\VV\to
-\VV$ to the map on universal memory space by setting the first component to $P$,
+We will call $\VV_\infty$ the \emph{universal virtual memory space} of a
+Euclidian computing machine. The term virtual memory is used as it is
+not possible to embed $\VV_\infty$ into memory space $\VV$, making it similar to
+virtual memory as a memory management technique.  
+
+We extend each program $P:\VV\to \VV$ to the map on universal memory space $\VV_\infty$ by setting the first component to $P$,
 and all other components to zero. Each element of $\VV_\infty$ can be written
 uniquely as a sum $\vv_0+T_1+T_2+\ldots$, where $\vv_0\in\VV$ and 
 $T_i\in\VV\otimes (\VV^*)^{\otimes i}$ and the extended map acts on it as follows   
 \begin{equation}
   \label{eq:extension}
-  P(\vv_0+T_1+T_2+\ldots)=P(\vv_0)+0+0+\ldots
+  P(\vv_0+T_1+T_2+\ldots)=P(\vv_0)+0+0+\ldots.
 \end{equation}
 \section{Operational calculus and algebra of Algorithms}\label{sec:operational}
 
