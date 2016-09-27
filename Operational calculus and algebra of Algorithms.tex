@@ -273,13 +273,48 @@ directional(partial) derivatives by the formula
 	    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
 	  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k}.
 \end{equation}
-<<<<<<< HEAD
 
-\section{Tensor algebra representation}\label{sc:tensorAlg}
-=======
-where $P_i=\mathrm{pr}_{\e_i}\circ P$ is the $i$-th component of the map $P$.
+\subsection{Differentiable programs}
+To each program $P:\VV\to \VV$ one can attach its effective map $P_e:I_P\to
+O_P$. The derivative of this map is of interest, when we speak about
+differentiability of computer programs. 
+\begin{definicija}[Automatically differentiable programs]
+  A program $P:\VV\to \VV$ is \emph{automatically differentiable} if there exist an embedding
+  $O_P\otimes I_P^*\hookrightarrow F_P$ of the space $O_P\otimes I_P^*$ into
+  the free space $F_P$, and a program $\D P:\VV\to \VV$, such that its effective
+  map is the map
+  \begin{equation}
+    \label{eq:program_derivative}
+    P_e\oplus \D P_e:I_P\rightarrow O_P\oplus (O_P\otimes I^*).
+  \end{equation}
+The Euclidean computing machine $(\VV, \E)$ is \emph{automatically differentiable}
+if all of the elementary operations $\varepsilon\in\E$ are \emph{automatically
+  differentiable}.
+\end{definicija}
+
+If a program $P:\VV\to \VV$ is automatically differentiable then it is also
+differentiable as a map $\VV\to\VV$. However only the derivative of program's
+effective map can be implemented as a program, since the memory space is limited to $\VV$. 
+
+Putting memory considerations aside, we propose an universal model of the memory
+space to be 
+$$\VV_\infty = \VV\otimes T(\VV^*) = \VV\oplus
+(\VV\otimes\VV^*)+\ldots.$$
+We will call $\VV_\infty$ the \emph{universal virtual memory space} of an
+Euclidean computing machine. The term virtual memory is used as it is
+only possible to embed certain subspaces of $\VV_\infty$ into memory space $\VV$, making it similar to
+virtual memory as a memory management technique.  
+
+We extend each program $P:\VV\to \VV$ to the map on universal memory space $\VV_\infty$ by setting the first component to $P$,
+and all other components to zero. Each element of $\VV_\infty$ can be written
+uniquely as a sum $\vv_0+T_1+T_2+\ldots$, where $\vv_0\in\VV$ and 
+$T_i\in\VV\otimes (\VV^*)^{\otimes i}$ and the extended map acts on it as follows   
+\begin{equation}
+  \label{eq:extension}
+  P(\vv_0+T_1+T_2+\ldots)=P(\vv_0)+0+0+\ldots.
+\end{equation}
+
 \section{Tensor algebra representation}
->>>>>>> 5eef6db27f93d1c876fc92d71296200e46bc8a57
 In order to apply the definition of derivative of a program to higher
 derivatives, we make use of the tensor algebra.
 Let $P:V\to U$ be a map on vector spaces. Motivated by the definition of higher
@@ -346,45 +381,7 @@ $$V\xrightarrow{P}U\hookrightarrow U\otimes T(V^*)$$ and similarly  for all of i
 derivatives
 $$V\xrightarrow{\D^k P} U\otimes (V^*)^{\otimes k}\hookrightarrow U\otimes
 T(V^*).$$
-\subsection{Differentiable programs}
-To each program $P:\VV\to \VV$ one can attach its effective map $P_e:I_P\to
-O_P$. The derivative of this map is of interest, when we speak about
-differentiability of computer programs. 
-\begin{definicija}[Automatically differentiable programs]
-  A program $P:\VV\to \VV$ is \emph{automatically differentiable} if there exist an embedding
-  $O_P\otimes I_P^*\hookrightarrow F_P$ of the space $O_P\otimes I_P^*$ into
-  the free space $F_P$, and a program $\D P:\VV\to \VV$, such that its effective
-  map is the map
-  \begin{equation}
-    \label{eq:program_derivative}
-    P_e\oplus \D P_e:I_P\rightarrow O_P\oplus (O_P\otimes I^*).
-  \end{equation}
-The Euclidean computing machine $(\VV, \E)$ is \emph{automatically differentiable}
-if all of the elementary operations $\varepsilon\in\E$ are \emph{automatically
-  differentiable}.
-\end{definicija}
 
-If a program $P:\VV\to \VV$ is automatically differentiable then it is also
-differentiable as a map $\VV\to\VV$. However only the derivative of program's
-effective map can be implemented as a program, since the memory space is limited to $\VV$. 
-
-Putting memory considerations aside, we propose an universal model of the memory
-space to be 
-$$\VV_\infty = \VV\otimes T(\VV^*) = \VV\oplus
-(\VV\otimes\VV^*)+\ldots.$$
-We will call $\VV_\infty$ the \emph{universal virtual memory space} of an
-Euclidean computing machine. The term virtual memory is used as it is
-only possible to embed certain subspaces of $\VV_\infty$ into memory space $\VV$, making it similar to
-virtual memory as a memory management technique.  
-
-We extend each program $P:\VV\to \VV$ to the map on universal memory space $\VV_\infty$ by setting the first component to $P$,
-and all other components to zero. Each element of $\VV_\infty$ can be written
-uniquely as a sum $\vv_0+T_1+T_2+\ldots$, where $\vv_0\in\VV$ and 
-$T_i\in\VV\otimes (\VV^*)^{\otimes i}$ and the extended map acts on it as follows   
-\begin{equation}
-  \label{eq:extension}
-  P(\vv_0+T_1+T_2+\ldots)=P(\vv_0)+0+0+\ldots.
-\end{equation}
 \section{Operational calculus and algebra of Algorithms}\label{sec:operational}
 
 The derivative defines an operator on the space of smooth maps $V\to U\otimes
@@ -569,7 +566,7 @@ Anything that operates under these specifications is an analytic programming lan
  
 We motivate the following with an example. Suppose an algorithm of high time complexity. As speed is of importance, an approximation would suffice. Using the described mechanics, we may linearize the program. We choose a $v_0\in\dP$ and linearize $P'=P(v_0)+\D P(v_0)\cdot(v-v_0)$. The latter has to be done only once.
  
- Locally, the image of the linearization is a good approximation of the original program. To extend this radius, we would like to expand said program into a series. By Theorem $\ref{izr:linearnaNeodvisnost}$  there exists $\dP_n$, that is spanned by the set $\{\D^k\}$ over $\dP$ (which is itself a function space over $V$). Thus, the expression
+ Locally, the image of the linearization is a good approximation of the original program. To extend this radius, we would like to expand said program into a series. By Claim $\ref{izr:linearnaNeodvisnost}$  there exists a space that is spanned by the set $\{\D^k\}$ over a field $K$. Thus, the expression
  \begin{equation}
  	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{(h\D)^n}{n!}
  \end{equation}
@@ -779,6 +776,10 @@ following  diagram commutes
   \dP_{n+1} 
   \arrow{r}{\phi_{n+1}}& \dP_{n}
 \end{tikzcd}
+\end{equation}
+satisfying
+\begin{equation}
+\forall_{P_1\in\dP_0}\exists_{P_2\in\dP_0}\Big(\Phi\circ\e^\D_n(P_1)=\e^\D_{n-1}(P_2)\Big)
 \end{equation}
 for each $n\ge 1$.
 \end{izrek}      
@@ -1168,11 +1169,11 @@ Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured 
 
 As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and calculus of algorithms of this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired property $X_j$. With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$.
 
-We extract a once differentiable derivative of $T^n_j$ by applying $e^{\D_{T_j}}_2$ and projecting the image onto $\{\D,\D^2\}$,
+We extract a once differentiable derivative of $T^n_j$ by
 \begin{equation}\label{eq:T'}
-T^\prime_j=\Phi\circ proj_{\{\D,\D^2\}}e^{\D_{T_j}}_2(T^n_j)
+T^\prime_j=\Phi\circ e^{\D_{T_j}}_2(T^n_j)
 \end{equation}
-as, its' derivative (second derivative of $T$) is needed for further compositions $\eqref{eq:kompo}$ by Theorem $\ref{izr:kompo}$, where $\Phi$ is the reduction of order map $\eqref{eq:reductionMap}$ of Theorem $\ref{izr:reductionMap}$. As such, it holds $T^\prime\in\dP_1$. We do so, for each $T_j\in T_{X_i}$ contained in $I$, where $X_i$ is the desired property.
+as, its' derivative (second derivative of $T$) is needed for further compositions $\eqref{eq:kompo}$ by Theorem $\ref{izr:kompo}$, where $\Phi$ is the reduction of order map $\eqref{eq:reductionMap}$ of Theorem $\ref{izr:reductionMap}$. As such, it holds $T^\prime_j\in\dP_1$. We do so, for each $T_j\in T_{X_i}$ contained in $I$, where $X_i$ is the desired property.
 
 Let $C\in\dP$ be a convex map, some measure of magnitude. Thus, we arrive at the expression to be maximized
 \begin{equation}
