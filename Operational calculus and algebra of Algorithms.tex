@@ -359,7 +359,7 @@ differentiability of computer programs.
     \label{eq:program_derivative}
     P_e\oplus \D P_e:I_P\rightarrow O_P\oplus (O_P\otimes I^*).
   \end{equation}
-The Euclidian computing machine $(\VV, \E)$ is \emph{automatically differentiable}
+The Euclidean computing machine $(\VV, \E)$ is \emph{automatically differentiable}
 if all of the elementary operations $\varepsilon\in\E$ are \emph{automatically
   differentiable}.
 \end{definicija}
@@ -372,9 +372,9 @@ Putting memory considerations aside, we propose an universal model of the memory
 space to be 
 $$\VV_\infty = \VV\otimes T(\VV^*) = \VV\oplus
 (\VV\otimes\VV^*)+\ldots.$$
-We will call $\VV_\infty$ the \emph{universal virtual memory space} of a
-Euclidian computing machine. The term virtual memory is used as it is
-not possible to embed $\VV_\infty$ into memory space $\VV$, making it similar to
+We will call $\VV_\infty$ the \emph{universal virtual memory space} of an
+Euclidean computing machine. The term virtual memory is used as it is
+only possible to embed certain subspaces of $\VV_\infty$ into memory space $\VV$, making it similar to
 virtual memory as a memory management technique.  
 
 We extend each program $P:\VV\to \VV$ to the map on universal memory space $\VV_\infty$ by setting the first component to $P$,
@@ -416,36 +416,41 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
  \D^k:\F^n\to\F^{n+k}
  \end{equation}
  
- \begin{izrek}\label{izr:linearnaNeodvisnost}
+ \begin{trditev}\label{izr:linearnaNeodvisnost}
   The set $\{\partial^k\}$ represents linearly independent vectors over a field $K$.
- \end{izrek}
+ \end{trditev}
  
  \begin{definicija}\label{def:dP}
- 	A differentiable programming space $\dP_0$ is any subspace of $\F_0$ satisfying the relation
+ 	A differentiable programming space $\dP_0$ is any subspace of $\F_0$ such that
  	\begin{equation}\label{eq:P}
- 	\dP_0<\F_0\iff\D\dP_0\subset\dP_0\otimes T(V^*)
+ 	\D\dP_0\subset\dP_0\otimes T(V^*)
  	\end{equation}
  \end{definicija}
 
 \begin{izrek}\label{izr:P}
-	Any programming language $\dP_0$ satisfying Definition $\ref{def:dP}$ is an infinitely differentiable programming space, satisfying the relation
+	Any programming language $\dP_0$ satisfying Definition $\ref{def:dP}$ is an
+  infinitely differentiable programming space, such that
 	\begin{equation}\label{eq:P_n}
-	 		\dP_0<\F_0\iff\D^k\dP_0\subset\dP_0\otimes T(V^*)
+	 		\D^k\dP_0\subset\dP_0\otimes T(V^*)
 	 	\end{equation}
+for any $k\in\mathbb{N}$.
 \end{izrek}
-\begin{proof} Induction hypothesis follows from Definition $\ref{def:dP}$
-	$$\dP_0<\F_0\iff\D\dP_0\subset\dP_0\otimes T(V^*)$$
-	Induction step is trivial
+\begin{proof} By definition \ref{def:dP}
+$$\D\dP_0\subset\dP_0\otimes T(V^*)$$
+	Induction step is trivial. For all 	$\forall_{P\in\dP_0}$,
+  $\D^k\dP_0\subset\dP_0\otimes T(V^*)$ and $0$, where
+  $\alpha$ is multiindeks denotind the component of $T(V^*)$ and $i$ is the
+  indeks denoting the component of $U$.
 	\begin{equation}\label{eq:inductionStep}
-	\forall_{p\in\dP_0}\Big(\D^{n+1}p^i_{j,k}=\D(\D^n p^i_j)_k\land(\D p)^i_j\in\dP_0\Big)
+\D^{n+1}P_{\alpha,k}^i=\D(\D^n P^i_\alpha)_k\land(\D^n P^i_\alpha)\in\dP_0\implies \D(\D^n P^i_\alpha)_k\in \dP_0\otimes T(V^*)
 	\end{equation}
 	$$\implies$$
-	$$\dP_0<\F_0\iff\D^k\dP_0\subset\dP_0\otimes T(V^*)$$
+	$$\D^{n+1}\dP_0\subset\dP_0\otimes T(V^*)$$
 \end{proof}
 
- \begin{izrek}\label{izr:dP}
+ \begin{corollary}\label{izr:dP}
 	A programming space $\dP=\{\dP:V\to U\otimes T(V^*)\}$, is closed under the differential operator $\D^k$.
- \end{izrek}
+ \end{corollary}
  \begin{proof}
  	 By $\eqref{eq:P_n}$ and the symmetric nature of the operator $\D$, for each $k$ there exists an isomorphism
  	 	\begin{equation}
@@ -453,9 +458,6 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
  	 	\end{equation}
  \end{proof}
 
-\begin{corollary}\label{cor:dpMonoid}
-The space $\dP$ is closed under the powers of $\D$.
-\end{corollary}
 
 By Theorem $\ref{izr:dP}$ we may represent calculation of derivatives of the map $P:V\to U$, with only one mapping. We define the geometric series
  
@@ -476,77 +478,75 @@ U\otimes T(V^*)$, composed of the map itself and all derivatives of order $n\le 
   \label{eq:multi_odvod}
   \sumd_kP(\x) = P(\x)+\D_\x P + \D^2_\x P + \ldots + \D^k_\x P.
 \end{equation}
-\begin{izrek}\label{izr:tauRek}
-  The operator $\sumd_k$ is recursively defined with the expression
-  \begin{equation}
-    \label{eq:potenca(1+d)}
-    \sumd_{k+1}=1+\D\sumd_{k}
-  \end{equation}
-and starting condition $\tau_0=1$.
-\end{izrek}
-There exists a simple recursive relation between $\sumd_k$ and $\sumd_{k+1}$
-\begin{equation}
-   \label{eq:rekurzija}
-   \sumd_{k+1} = 1 + \D +\D^2+\ldots \D^{k+1} = 1+\D(1+\D+\ldots +\D^{k}) = 1+\D\sumd_k.
-\end{equation} 
-
 We seek to generalize such notions.
 
 \begin{definicija}\label{def:P_n}
-Let $\dP_n$ be the subspace, spanned by $\{\partial^n\}$ over $K$.
+Let $\dP_n$ be the subspace, spanned by $\cup_{k\le n}\D^k \dP_0$ over $K$.
  \end{definicija}
  
  \begin{izrek}\label{izr:P_n}
- 	Function space $\dP_n:V\to U\otimes T(V^*)$ is isomorphic to the tensor product of the function space $\dP_0:V\to U$ and tensor algebra $T(V^*)$ of the dual od the virtual space $V$.
- 	
- 	\begin{equation}
- 	\label{eq:P_algebra}
- 	 	    \dP\infty\simeq \dP_0\otimes T(V^*) = \dP_0 \otimes\left(\bigoplus_{k=0}^\infty (V^*)^{\otimes k} \right)
- 	\end{equation}
+ 	Function space $\dP_n:V\to U\otimes T(V^*)$ is isomorphic to the tensor
+  product of the function space $\dP_0:V\to U$ and the subspace $T_n(V^*)$
+  tensor algebra of the dual od the virtual space $V$. 
  \end{izrek}
  
  \begin{proof} Follows directly from the proof of Theorems $\ref{izr:P}$ and $\ref{izr:dP}$ through argument $\eqref{eq:inductionStep}$.
   \end{proof}
+By taking the limit as $n\to \infty$, we set
+ 	
+ 	\begin{equation}
+ 	\label{eq:P_algebra}
+ 	 	    \dP\infty\simeq \dP_0\otimes T(V^*) = \dP_0 \otimes\left(\bigoplus_{k=0}^\infty (V^*)^{\otimes k} \right).
+ 	\end{equation}
+
   \begin{corollary}
-  If there exists a construction of a first order programming space $\dP_1$, there exists a construction of a programming space of an arbitrary order $\dP_n$.
+  If there exists a construction of a first order programming space $\dP_1$ by a
+  single map $\sumd_1$, such that $\dP_1=\sumd_1\dP_0$, there exists a
+  construction of a programming space of an arbitrary order $\dP_n$ by a map
+  $\sumd_n$, defined by the recursion formula.
   \begin{equation}
-  \exists_{\sumd}(\sumd:\dP_0\to\dP_1)\iff\forall_n\exists_{\sumd_n}(\sumd_n:\dP_0\to\dP_n)
+    \label{eq:potenca(1+d)}
+    \sumd_{k+1}=1+\D\sumd_{k}
   \end{equation}
+
   \end{corollary}
-      \begin{corollary}\label{rem:vTen}
-       Maps $V\otimes T(V^*)\to V\otimes T(V^*)$ are constructible through tensor algebra on $\dP_n$ and through it, compositions of programs in $\dP_n$. As such, it is heron assumed to be a monoid.
-       \end{corollary}
+  \begin{proof}
+    The recursive relation between $\sumd_k$ and $\sumd_{k+1}$ is
+    \begin{equation}
+      \label{eq:rekurzija}
+      \sumd_{k+1} = 1 + \D +\D^2+\ldots \D^{k+1} = 1+\D(1+\D+\ldots +\D^{k}) = 1+\D\sumd_k.
+    \end{equation} 
+
+  \end{proof}
        
     The following
      \begin{equation}
      	\sumd_n\in\dP_0\otimes T_n(V^*)
      \end{equation}
    	holds by Theorem $\ref{izr:P_n}$, allowing simple implementation as dictated by expression $\eqref{eq:potenca(1+d)}$.
-        \begin{opomba}
         Of course the same holds true for all generating maps of the type
-        $$\dP_0\to\dP_n$$
-        \end{opomba}
-        
-\begin{izrek}\label{izr:reductionMapSingle}
-There exists a reduction of order map $\phi:\dP^n\to\dP^{n-1}$, satisfying the relation
-\begin{equation}\label{eq:reductionMapSingle}
-\forall_{p\in\dP}\Big(\phi(\D^kp)=\D\phi(\D^{k-1}p)\Big)
-\end{equation}
-for each $k\ge 1$.
-\end{izrek}        
+        $$\dP_0\to\dP_n.$$
+       \begin{opomba}\label{rem:vTen}
+       Maps $V\otimes T(V^*)\to V\otimes T(V^*)$ are constructible through tensor algebra on $\dP_n$ and through it, compositions of programs in $\dP_n$.
+       \end{opomba}
+       
+ 
 
-Now we define a product on $\dP_n$. By Theorem $\ref{izr:P_n}$ it holds that
-
-\begin{equation}
-	f,g\in\dP\implies\exists_{p\in\dP}\Big(\D^nf\D^mg=\D^{n+m}p\Big)
-\end{equation}
-The set $\{\D^n\}$ implies nilpotency $k>n\implies\D^k=0$. The product between two elements of $\dP_n$ is implicitly defined with its' tensor algebra. 
-\begin{equation}\label{eq:P_prod}
-	\sum\limits_{i=0}^{n}\D^if\sum\limits_{j=0}^{n}\D^jg=\sum\limits_{k=0}^{n}\sum\limits_{i+j=k}\D^if\D^jg
-\end{equation}
-
+\begin{definicija}[Algebra product]
+ For any bilinear map $\cdot :V\times V\to U\otimes T(V^*)$ we can define a
+ bilinear product $\cdot$ on $U\otimes T(V^*)$ by the following rule on the simple
+ tensors:
+ \begin{eqnarray}
+   \label{eq:algebra_product}
+   (\vv\otimes f_1\otimes\ldots f_k) \cdot (\uu\otimes g_1\otimes\ldots) &=& 
+f_k(\uu)\vv\otimes f_1\otimes\ldots f_{k-1}\otimes g_1\otimes\ldots \\
+   \vv\cdot (\uu\otimes g_1\otimes\ldots g_l) &=&  (\vv\cdot \uu)\otimes
+    \nonumber                                              g_1\otimes\ldots g_l
+ \end{eqnarray}
+\end{definicija}
 \begin{izrek}[Algebra of Algorithms]\label{izr:alg}
-An infinitely-differentiable programming space $\dP_n$ is a function algebra, with the product defined by $\eqref{eq:P_prod}$.
+An infinitely-differentiable programming space $\dP_n$ is a function algebra,
+with the product defined by \eqref{eq:algebra_product} for any bilinear map $\cdot :V\times V\to U\otimes T(V^*)$.
 \end{izrek}
 
 \subsection{Analytic programming languages}
@@ -769,13 +769,19 @@ exp(\D_fe^{h\D_g}): \dP\times\dP\to\dP,
    \end{proof}
  
  It is useful to be able to use the $k$-th derivative of a program $p\in\dP$ as a working part of a different differentiable program. As such, we must be able to treat the derivative itself as a differentiable program $p^{\prime k}\in\dP$. 
- \begin{izrek}\label{izr:reductionMap}
- There exists a reduction of order map $\Phi:\dP_n\to\dP_{n-k}$, satisfying the relation
- \begin{equation}\label{eq:reductionMap}
- \forall_{p\in\dP}\exists_{p^{\prime k}\in\dP}\Big(\Phi\circ proj_{\{\D^k,...,\D^n\}}\big(e^\D_n(p)\big)=e^\D_{n-k}(p^{\prime k})\Big)
- \end{equation}
- with each component $\D^jp$ satisfying the relation $\eqref{eq:reductionMapSingle}$ of Theorem $\ref{izr:reductionMapSingle}$.
- \end{izrek}
+\begin{izrek}\label{izr:reductionMap}
+There exists a reduction of order map $\phi_n:\dP_n\to \dP_{n-1}$, such that the
+following  diagram commutes
+\begin{equation}\label{eq:reductionMap}
+\begin{tikzcd}
+  \dP_n \arrow{r}{\phi_n} \arrow{d}{\D} & 
+  \dP_{n-1} \arrow{d}{\D}\\
+  \dP_{n+1} 
+  \arrow{r}{\phi_{n+1}}& \dP_{n}
+\end{tikzcd}
+\end{equation}
+for each $n\ge 1$.
+\end{izrek}      
  Thus, we gained the ability of writing differentiable programs using differentiable derivatives of other programs as part of their calculations, stressed as crucial (but lacking in most models) by other authors \cite{AD1}.
  
    \subsection{Functional transformation of programs}\label{sec:FTP}
