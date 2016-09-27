@@ -346,13 +346,13 @@ differentiability of computer programs.
 \begin{definicija}[Automatically differentiable programs]
   A program $P:\VV\to \VV$ is \emph{automatically differentiable} if there exist an embedding
   $O_P\otimes I_P^*\hookrightarrow F_P$ of the space $O_P\otimes I_P^*$ into
-  free space $F_P$, and a program $\D P:\VV\to \VV$, such that its effective
+  the free space $F_P$, and a program $\D P:\VV\to \VV$, such that its effective
   map is the map
   \begin{equation}
     \label{eq:program_derivative}
     P_e\oplus \D P_e:I_P\rightarrow O_P\oplus (O_P\otimes I^*).
   \end{equation}
-The vector computing machine $(\VV, \E)$ is \emph{automatically differentiable}
+The Euclidian computing machine $(\VV, \E)$ is \emph{automatically differentiable}
 if all of the elementary operations $\varepsilon\in\E$ are \emph{automatically
   differentiable}.
 \end{definicija}
@@ -365,14 +365,18 @@ Putting memory considerations aside, we propose an universal model of the memory
 space to be 
 $$\VV_\infty = \VV\otimes T(\VV^*) = \VV\oplus
 (\VV\otimes\VV^*)+\ldots.$$
-We extend each program $P:\VV\to
-\VV$ to the map on universal memory space by setting the first component to $P$,
+We will call $\VV_\infty$ the \emph{universal virtual memory space} of a
+Euclidian computing machine. The term virtual memory is used as it is
+not possible to embed $\VV_\infty$ into memory space $\VV$, making it similar to
+virtual memory as a memory management technique.  
+
+We extend each program $P:\VV\to \VV$ to the map on universal memory space $\VV_\infty$ by setting the first component to $P$,
 and all other components to zero. Each element of $\VV_\infty$ can be written
 uniquely as a sum $\vv_0+T_1+T_2+\ldots$, where $\vv_0\in\VV$ and 
 $T_i\in\VV\otimes (\VV^*)^{\otimes i}$ and the extended map acts on it as follows   
 \begin{equation}
   \label{eq:extension}
-  P(\vv_0+T_1+T_2+\ldots)=P(\vv_0)+0+0+\ldots
+  P(\vv_0+T_1+T_2+\ldots)=P(\vv_0)+0+0+\ldots.
 \end{equation}
 \section{Operational calculus and algebra of Algorithms}
 
