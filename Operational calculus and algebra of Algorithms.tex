@@ -117,6 +117,8 @@ Just as the discrete nature of physical reality is studied through analytic mean
 The way evaluation of algorithmic expressions differs from evaluation of symbolic expressions of standard analysis, lies at the very core of this dissonance. The disconnect was partially mitigated by methods of automatic differentiation, utilized today in machine learning, engineering, simulations, etc. Yet under the lack of a proper formalism the model collapses when one tries to generalize to such notions as a differentiable program $p_1$ operating on (differentiable) derivatives of another program $p_2$ (where only coding of $p_2$ is required within $p_1$), while retaining the famed expressive freedom. 
 Models allowing for nested differentiation \cite{AD1}, still fail in providing algorithms with an algebra enabling study and formulation of programs through analytic equations. Thus, they remain nothing more than means to calculating derivatives, void of any meaningful algebraic insight, lacking the true power the vast field of analysis is endowed with.
 
+The aim of this paper is bridging this gap between programming and analysis. By expanding on existing models and generalizing, we show them to be specific views of the same great elephant. Employing tensor algebra, we construct a virtual memory whose internal structure reflects and carries evaluation of algorithmic expressions. In Section \ref{sec:operational} we provide an exact definition and construction of an analytic machine, capable of implementing infinitely-differentiable programming spaces and operators acting upon them. These programming spaces are shown to a subalgebra, giving rise to algebraic manipulations of programs and through it operators expanding a program into an infinite tensor series are derived. The operator of program composition is constructed, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order) under a single operator in the theory.
+
 \section{Computer programs as maps}
 We will model computer programs as maps on a vector space. If
 we only focus on the real valued variables (of type \texttt{float} or
@@ -271,8 +273,13 @@ directional(partial) derivatives by the formula
 	    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
 	  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k}.
 \end{equation}
+<<<<<<< HEAD
+
+\section{Tensor algebra representation}\label{sc:tensorAlg}
+=======
 where $P_i=\mathrm{pr}_{\e_i}\circ P$ is the $i$-th component of the map $P$.
 \section{Tensor algebra representation}
+>>>>>>> 5eef6db27f93d1c876fc92d71296200e46bc8a57
 In order to apply the definition of derivative of a program to higher
 derivatives, we make use of the tensor algebra.
 Let $P:V\to U$ be a map on vector spaces. Motivated by the definition of higher
@@ -378,7 +385,7 @@ $T_i\in\VV\otimes (\VV^*)^{\otimes i}$ and the extended map acts on it as follow
   \label{eq:extension}
   P(\vv_0+T_1+T_2+\ldots)=P(\vv_0)+0+0+\ldots.
 \end{equation}
-\section{Operational calculus and algebra of Algorithms}
+\section{Operational calculus and algebra of Algorithms}\label{sec:operational}
 
 The derivative defines an operator on the space of smooth maps $V\to U\otimes
  T(V^*)$\footnote{the operator $\D$ may be defined partially for other maps as
@@ -700,8 +707,7 @@ which enables efficient implementation.
  \end{opomba}
  The Theorem $\ref{izr:kompo}$ enables an invariant implementation of the operator of program composition in $\dP_n$, expressed as a tensor series through expressions $\eqref{eq:kompo}$ and $\eqref{eq:dComposite}$. 
  
- By fixing one mapping in 
- 
+ By fixing one mapping in  
  \begin{equation}\label{eq:opGenKompo}
 exp(\D_fe^{h\D_g}): \dP\times\dP\to\dP,
  \end{equation}
@@ -714,7 +720,6 @@ exp(\D_fe^{h\D_g}): \dP\times\dP\to\dP,
  Thus, through $\eqref{eq:kompo}$ and all its' descendants (exponents), the operator $(\ref{eq:opKompo})$ grants invariance to the point in execution of a program, which proves useful as invariants are at the center of proving algorithms' correctness. This is analogous to the principle of general covariance \cite{GeneralCovariance}[See section 7.1] in general relativity, the invariance of the form of physical laws under arbitrary differentiable coordinate transformations.
  
  With this we turn towards easing such calculations, towards completing them on the level of operators. The derivative $\frac{d}{dh}$ of $\eqref{eq:opKompo}$ is
- 
  \begin{equation}\label{eq:dexp}
  \frac{d}{dh}exp(\D_fe^{h\D_g})(g)=\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)
  \end{equation}
