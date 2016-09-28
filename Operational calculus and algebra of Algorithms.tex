@@ -104,7 +104,7 @@ procedure which takes a program that tests an object for a property and
 constructs a procedure that enforces that property upon any object. Through it we generalize state of the art methods for analyzing neural networks to general programs.
 We use the theory to analyze iterators and other control structures in programming
 languages, and their dependencies on boundary conditions. The theory enables
-approximation and transformations of programs to arbitrary function basis, allowing us to choose programs' complexity, 
+approximation and transformations of programs to arbitrary function basis', allowing us to choose programs' complexity, 
 while knowing the order of the error of the approximation.
 
 \end{abstract}
@@ -717,11 +717,11 @@ which enables efficient implementation.
  
  By fixing one mapping in  
  \begin{equation}\label{eq:opGenKompo}
-exp(\D_fe^{h\D_g}): \dP\times\dP\to\dP,
+exp(\D_fe^{h\D_g}): \dP\times\dP\to\dP_\infty,
  \end{equation}
  the operator $exp(\D_fe^{h\D_g})(g)$ performs a pullback of an arbitrary map through $g$. 
   \begin{equation}\label{eq:opKompo}
-  exp(\D_fe^{h\D_g})(g): \dP\to\dP(g)
+  exp(\D_fe^{h\D_g})(g): \dP\to\dP_\infty(g)
   \end{equation}
  When projecting onto the space spanned by $\{1,\D\}$, the action of the operator $\eqref{eq:opKompo}$ is equivalent to forward mode automatic differentiation. Both forward and reverse mode are obtainable using the same operator $\eqref{eq:opGenKompo}$, by fixing the appropriate one of the two maps. This generalizes both concepts under a single operator in the theory.
  
@@ -776,7 +776,7 @@ exp(\D_fe^{h\D_g}): \dP\times\dP\to\dP,
    Follows from $\eqref{eq:pToPol}$ and Theorem $\ref{izr:kompo}$.
    \end{proof}
  
- It is useful to be able to use the $k$-th derivative of a program $p\in\dP$ as a working part of a different differentiable program. As such, we must be able to treat the derivative itself as a differentiable program $p^{\prime k}\in\dP$. 
+ It is useful to be able to use the $k$-th derivative of a program $P\in\dP$ as part of a different differentiable program $P_1$. As such, we must be able to treat the derivative itself as a differentiable program $P^{\prime k}\in\dP$, while only coding the original program $P$. 
 \begin{izrek}\label{izr:reductionMap}
 There exists a reduction of order map $\phi_n:\dP_n\to \dP_{n-1}$, such that the
 following  diagram commutes
@@ -794,7 +794,7 @@ satisfying
 \end{equation}
 for each $n\ge 1$, where $e^\D_n$ is the projection of the operator onto the set $\{\D^n\}$.
 \end{izrek}      
- Thus, we gained the ability of writing differentiable programs using differentiable derivatives of other programs as part of their calculations, stressed as crucial (but lacking in most models) by other authors \cite{AD1}.
+ Thus, we gained the ability of writing a differentiable program $P_1$ acting on derivatives of another program $P_2$, stressed as crucial (but lacking in most models) by other authors \cite{AD1}. Usage of the reduction of order map is demonstrated in Section \ref{sec:Analysis}.
  
    \subsection{Functional transformation of programs}\label{sec:FTP}
    
@@ -1130,7 +1130,7 @@ Transformations $\eqref{eq:P_F}$ need to be computed only once. Complexity of th
 
 Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary algorithms $P\in\dP$, along with estimations and order of the error of the approximation. Simultaneously it enables transformations of the function basis of programs, and with it implementations, more inclined towards efficiency on a given hardware. After initial applications of operators and performed transformations the program may be used, as many times as pleased, towards the purpose it was initially designed for. By doing so, we may manipulate its' complexity (for $k\le n$) and switch between different code formulations ($p$, $e^\D(p)$, $T_{F\X}\cdot e^\D(p)$), as better suited to the nature of the domains' subset, upon which the program operates at a given moment.
   
-\section{Analysis}
+\section{Analysis}\label{sec:Analysis}
   
    The theory presented in this paper grants new insights through methods of analysis.  These methods are the object of study of this section.
   
