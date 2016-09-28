@@ -91,7 +91,7 @@ implements spaces of infinitely-differentiable programs and operators acting upo
 A programming space is a subalgeba of the function algebra of maps on the virtual
 memory. We can construct a differential operator on the programming spaces as we 
 model virtual memory as a tensor product of a vector space with tensor algebra
-of its dual. Virtual memory serves by its own as an algebra of polynomial
+of its dual. Virtual memory serves by its self as an algebra of polynomial
 programs, giving the approximation of the original program as a Taylor series at
 program's input values. 
 
@@ -101,10 +101,10 @@ also present several examples of how the theory can be used in computer science.
 
 The theory opens new doors in program analysis. We develop a general
 procedure which takes a program that tests an object for a property and
-constructs a procedure that enforces that property upon any object.
+constructs a procedure that enforces that property upon any object. Through it we generalize state of the art methods for analyzing neural networks to general programs.
 We use the theory to analyze iterators and other control structures in programming
 languages, and their dependencies on boundary conditions. The theory enables
-approximation of programs and enables us to choose programs' complexity, 
+approximation and transformations of programs to arbitrary function basis, allowing us to choose programs' complexity, 
 while knowing the order of the error of the approximation.
 
 \end{abstract}
@@ -790,7 +790,7 @@ following  diagram commutes
 \end{equation}
 satisfying
 \begin{equation}
-\forall_{P_1\in\dP_0}\exists_{P_2\in\dP_0}\Big(\Phi\circ\e^\D_n(P_1)=\e^\D_{n-1}(P_2)\Big)
+\forall_{P_1\in\dP_0}\exists_{P_2\in\dP_0}\Big(\phi\circ\e^\D_n(P_1)=\e^\D_{n-1}(P_2)\Big)
 \end{equation}
 for each $n\ge 1$, where $e^\D_n$ is the projection of the operator onto the set $\{\D^n\}$.
 \end{izrek}      
@@ -1182,9 +1182,9 @@ As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_
 
 We extract a once differentiable derivative of $T^n_j$ by
 \begin{equation}\label{eq:T'}
-T^\prime_j=\Phi\circ e^{\D_{T_j}}_2(T^n_j)
+T^\prime_j=\phi\circ e^{\D_{T_j}}_2(T^n_j)
 \end{equation}
-as, its' derivative (second derivative of $T$) is needed for further compositions $\eqref{eq:kompo}$ by Theorem $\ref{izr:kompo}$, where $\Phi$ is the reduction of order map $\eqref{eq:reductionMap}$ of Theorem $\ref{izr:reductionMap}$. As such, it holds $T^\prime_j\in\dP_1$. We do so, for each $T_j\in T_{X_i}$ contained in $I$, where $X_i$ is the desired property.
+as, its' derivative (second derivative of $T$) is needed for further compositions $\eqref{eq:kompo}$ by Theorem $\ref{izr:kompo}$, where $\phi$ is the reduction of order map $\eqref{eq:reductionMap}$ of Theorem $\ref{izr:reductionMap}$. As such, it holds $T^\prime_j\in\dP_1$. We do so, for each $T_j\in T_{X_i}$ contained in $I$, where $X_i$ is the desired property.
 
 Let $C\in\dP$ be a convex map, some measure of magnitude. Thus, we arrive at the expression to be maximized
 \begin{equation}
@@ -1198,7 +1198,7 @@ E_j=C\circ T^\prime_j
 \State initialize path $\gamma$ with $v$
 \For{each step}
 \For{each $T_i\in T_{X_j}$}
-\State extract $T^\prime=\Phi\circ proj_{\{\D,\D^2\}}e^{\D_{T_i}}_2(T^n_j)$ $\eqref{eq:T'}$
+\State extract $T^\prime=\phi\circ proj_{\{\D,\D^2\}}e^{\D_{T_i}}_2(T^n_j)$ $\eqref{eq:T'}$
 \State compute the energy $E=C\circ T^\prime$
 \State extract the derivative $\D_v E=proj_{\{\D\}}(e^{\D_v}_1(E))$
 \State add $\D_v E$ to $\mathcal{D}$
@@ -1230,6 +1230,10 @@ Path $\gamma$ is the path to change of least resistance.
 \end{izrek}
 
 Path to change of least resistance is the flow curve outputted by Algorithm $\ref{alg:appoint}$. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
+
+\section{Conclusions}
+
+
 
   \printbibliography
 \end{document}
