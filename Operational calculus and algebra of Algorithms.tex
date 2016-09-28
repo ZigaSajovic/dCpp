@@ -117,7 +117,7 @@ Just as the discrete nature of physical reality is studied through analytic mean
 The way evaluation of algorithmic expressions differs from evaluation of symbolic expressions of standard analysis, lies at the very core of this dissonance. The disconnect was partially mitigated by methods of automatic differentiation, utilized today in machine learning, engineering, simulations, etc. Yet under the lack of a proper formalism the model collapses when one tries to generalize to such notions as a differentiable program $p_1$ operating on (differentiable) derivatives of another program $p_2$ (where only coding of $p_2$ is required within $p_1$), while retaining the famed expressive freedom. 
 Models allowing for nested differentiation \cite{AD1}, still fail in providing algorithms with an algebra enabling study and formulation of programs through analytic equations. Thus, they remain nothing more than means to calculating derivatives, void of any meaningful algebraic insight, lacking the true power the vast field of analysis is endowed with.
 
-The aim of this paper is bridging the gap between programming and analysis. By generalizing on existing models, we show them to be specific views of the same great elephant. Employing tensor algebra, we construct a virtual memory whose internal structure reflects and carries evaluation of algorithmic expressions. In Section \ref{sec:operational} we provide an exact definition and construction of an analytic machine, capable of implementing infinitely-differentiable programming spaces and operators acting upon them. These programming spaces are shown to be a subalgebra, giving rise to algebraic manipulations of programs and through it operators expanding a program into an infinite tensor series are derived. The operator of program composition is constructed, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order) under a single operator in the theory. Through projections and embeddings in this space, the problem of nested differentiation is resolved, where a program $p_1$ acts on differentiable derivatives of $p_2$, requiring only coding of $p_2$ within $p_1$.
+The aim of this paper is bridging the gap between programming and analysis. By generalizing on existing models, we show them to be specific views of the same great elephant. Employing tensor algebra, we construct a virtual memory whose internal structure reflects and carries evaluation of algorithmic expressions. In Section \ref{sec:operational} we provide an exact definition and construction of an analytic machine, capable of implementing infinitely-differentiable programming spaces and operators acting upon them. These programming spaces are shown to be a subalgebra, giving rise to algebraic manipulations of programs and through it operators expanding a program into an infinite tensor series are derived. The operator of program composition is constructed, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order) under a single operator in the theory. Through projections and embeddings in this space, the problem of nested differentiation is resolved, where a program $p_1$ acts on differentiable derivatives of $p_2$, requiring only coding of $p_2$ within $p_1$. We analyze iterators and other control structures, examining their dependencies on exit conditions, offering a new perspective on studying the Halting problem along the way.
 
 \section{Computer programs as maps}
 We will model computer programs as maps on a vector space. If
@@ -268,7 +268,7 @@ derivative as a map $\D^{k-1}P: V\to U\otimes (V^*)^{\otimes k-1}$:
 Let $\e_1,\ldots,\e_n$ be a basis of $U$ and $x_1,\ldots x_m$ the basis of
 $V^*$. Then $\D^kP$  can be defined in terms of
 directional(partial) derivatives by the formula
-\begin{equation}\label{eq:dd}
+\begin{equation}\label{eq:d}
 	\partial^kP=\sum_{\forall_{i,\alpha}}\frac{\partial^k P_i}{\partial
 	    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
 	  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k}.
@@ -407,8 +407,13 @@ have an increasing sequence of function spaces
   \F_0<\F_1<\ldots<\F_n<\ldots
 \end{equation}
 
+We define the differential operator as
+\begin{equation}\label{eq:dd}
+	\partial^k=\sum_{\forall_{i,\alpha}}\frac{\partial^k}{\partial
+	    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
+	  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k}.
+\end{equation}
 Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
- 
  \begin{equation}\label{eq:toFn+k}
  \D^k:\F^n\to\F^{n+k}
  \end{equation}
@@ -781,7 +786,7 @@ satisfying
 \begin{equation}
 \forall_{P_1\in\dP_0}\exists_{P_2\in\dP_0}\Big(\Phi\circ\e^\D_n(P_1)=\e^\D_{n-1}(P_2)\Big)
 \end{equation}
-for each $n\ge 1$.
+for each $n\ge 1$, where $e^\D_n$ is the projection of the operator onto the set $\{\D^n\}$.
 \end{izrek}      
  Thus, we gained the ability of writing differentiable programs using differentiable derivatives of other programs as part of their calculations, stressed as crucial (but lacking in most models) by other authors \cite{AD1}.
  
@@ -908,9 +913,7 @@ for each $n\ge 1$.
   \end{equation}
   
   By differentiating $\eqref{eq:kh}$ at the fixed point, we get at the scalar $\lambda$.
-  $$\D h(p(a))\D p(a)=\lambda\D h(a)$$
-  $$\implies$$
-  $$\D p(a)=\lambda$$
+  $$\D h(p(a))\D p(a)=\lambda\D h(a)\implies\D p(a)=\lambda$$
   On the domain $h(\mathcal{I})$ the maps $p^n$ become multiplication with $\lambda^n=(\D p(a))^n$. Obviously $\lambda^n=e^{\nu n}\iff \nu=ln(\lambda)$.
   
   We define iterating velocity as
@@ -936,6 +939,8 @@ for each $n\ge 1$.
   For example, using methods of gradient descent, we use the velocity $\eqref{eq:hitrostIteracije}$, which gives the order and direction to the descent. Inductively, we could derive acceleration and higher order changes.
   
   Computation of the map $h$ and conditions for its' existence, for $p$ representable as a power series, was solved by Bridges \cite{BridgesShroeder}, derivation of which is omitted in this text, for the sake of brevity. By Theorem $\ref{izr:e^d}$, we may expand each program $p\in\dP$ by applying the operator $e^\D$ into a power series and employ said computation.
+  
+  Methods offer a different perspective on the halting problem, where it can be studied through convergence and fixed points.
   
   As a special case of iterator usage, we examine accumulators, for which we derive an explicit form, as a function of exit conditions. Let $\Shift^n$ denote the operator, that performs a linear shift of a program $p$ in the direction $v$.
    
@@ -1136,7 +1141,7 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
   \begin{equation}\label{eq:equivRelation}
   v_1Rv_2\iff T(v_1)ST(v_2)
   \end{equation}
-  where $S$ is some relation of similarity (ex. $\lvert1- T(v_1)\rvert\le c\land\lvert1- T(v_2)\rvert\le c$) and $M$ be the set of interest. Than $T$ partitions $M$ into equivalence classes, as by $R$ $\eqref{eq:equivRelation}$. The above property $X$, may be viewed as one of these equivalence classes $X_i$.
+  where $S$ is some relation of similarity (ex. $\lvert1- T(v_1)\rvert\le c\land\lvert1- T(v_2)\rvert\le c$) and $M$ be the set of interest. Than $T$ partitions $M$ into equivalence classes, as by $R$ $\eqref{eq:equivRelation}$. The above property $X$, may be viewed as one of these equivalence classes $X_i$. Note that in general the relation need not be an equivalence. 
   
   Let $T=T_n\circ T_{n-1}\circ\cdots\circ T_1$, for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $T_i$ containing a control structure). Here $T_i=\varepsilon_k\circ\ldots \varepsilon_1$, is a conceptual step in the procedure. Then, we can inquire about and measure the importance $K$ of an arbitrary $T_i$, to a partitioning into a specific equivalence class $X_j$. $\eqref{eq:equivRelation}$. Thus, we are able to extract $T_{X_j}$, the set of steps of importance, to such a partitioning. We treat $T_i\circ\cdots T_1$ as the input of the procedure $T^n_i=T_n\circ\cdots\circ T_{i+1}$.
   
@@ -1165,9 +1170,9 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method. The perturbations reveal procedures internal structure and input-archetypes. 
+Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method. The perturbations reveal internal structure of te procedure.
 
-As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and calculus of algorithms of this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired property $X_j$. With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$.
+As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and calculus of algorithms of this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired property $X_j$. Global maxima of the method can be viewed as archetypes of objects possessing a specific  property $X_j$. With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$.
 
 We extract a once differentiable derivative of $T^n_j$ by
 \begin{equation}\label{eq:T'}
