@@ -459,11 +459,6 @@ $$\D\dP_0\subset\dP_0\otimes T(V^*)$$
  	 		\dP_0\to\D^k\dP_0
  	 	\end{equation}
  \end{proof}
- 
- \begin{corollary}
- When all elements of $\dP_0$ are analytic, so are the elements of $\dP_n$.
- \end{corollary}
-
 
 By Theorem $\ref{izr:dP}$ we may represent calculation of derivatives of the map $P:V\to U$, with only one mapping. We define the geometric series
  
@@ -532,6 +527,10 @@ By taking the limit as $n\to \infty$, we see
    	holds by Theorem $\ref{izr:P_n}$, allowing simple implementation as dictated by expression $\eqref{eq:potenca(1+d)}$.
         Of course the same holds true for all generating maps of the type
         $$\dP_0\to\dP_n.$$
+ \begin{corollary}
+   When all elements of $\dP_0$ are analytic, so are the elements of $\dP_n$.
+   \end{corollary}        
+        
        \begin{opomba}\label{rem:vTen}
        Maps $V\otimes T(V^*)\to V\otimes T(V^*)$ are constructible through tensor algebra on $\dP_n$ and through it, compositions of programs in $\dP_n$.
        \end{opomba}
@@ -568,7 +567,7 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
     \item
     $\VV\otimes T(\VV^*)$ virtual memory space, serving as alphabet symbols
     \item
-    $\dP_0$ is an analytic programming space over $\VV$
+    $\dP_0$ is an analyticz programming space over $\VV$
     \end{itemize}
   \end{definicija}
 Anything that operates under these specifications is an analytic virtual machine, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$. When not all elements of $\dP_0$ are analytic, the above defines an infinitely-differentiable virtual machine.
