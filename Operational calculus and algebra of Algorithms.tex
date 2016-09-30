@@ -642,13 +642,14 @@ We will show that $\frac{d^n}{dh^n}\text{(LHS)}|_{h=0}=\frac{d^n}{dh^n}\text{(RH
 of $h$ have coinciding Taylor series and are therefore equal.\\
  $\implies$
  
- $$\frac{d^n}{dh^n}P(\vv_0+h\vv)|_{h=0}=\D^n P(\vv_0)(\vv)$$
+ $$\left. \frac{d^n}{dh^n}P(\vv_0+h\vv)\right|_{h=0}=\D^n P(\vv_0)(\vv)$$
  $\impliedby$
- $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\Big((e^{h\D})(P)(V)\Big)(v^{\JJ_k}_{k})=\lim\limits_{\lVert h\rVert\to 0}\Big((\D^n e^{h\D})(P)(V)\Big)(v^{\JJ_k}_{k})$$
+ $$\left. \frac{d^n}{dh^n}\left((e^{h\D})(P)(\vv_0)\right)(\vv)\right|_{h=0}=
+\left. \left((\D^n e^{h\D})(P)(\vv_0)\right)(\vv)\right|_{h=0}$$
  $$\land$$
- $$\lim\limits_{\lVert h\rVert\to 0}\D^ne^{h\D}=\lim\limits_{\lVert h\rVert\to 0}\sum\limits_{i=0}^{\infty}\frac{h^i\D^{i+n}}{i!}=\D^n$$
+ $$\left. \D^ne^{h\D}\right| _{h=0}=\left. \sum\limits_{i=0}^{\infty}\frac{h^i\D^{i+n}}{i!}\right|_{h=0}=\D^n$$
  $$\implies$$
- $$\Big(\D^n(P)(V)\Big)(v^{\otimes n})$$
+ $$\left(\D^n(P)(\vv_0)\right)(\vv^{\otimes n})$$
  \end{proof}
  
  The image of the contraction is an element of the original virtual space $V^i$. Independence of the operator $(\ref{eq:specProg})$ from a coordinate system, translates to independence in execution. Thus the expression $(\ref{eq:tenzorVrsta})$ is invariant to the point in execution of a program, a fact we explore later on.  
@@ -735,7 +736,7 @@ which enables efficient implementation.
  
  With this we turn towards easing such calculations, towards completing them on the level of operators. The derivative $\frac{d}{dh}$ of $\eqref{eq:opKompo}$ is
  \begin{equation}\label{eq:dexp}
- \frac{d}{dh}exp(\D_fe^{h\D_g})(g)=\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)
+ \frac{d}{dh}\exp(\D_fe^{h\D_g})(g)=\D_f(\D_gg)e^{h\D_g}\exp(\D_fe^{h\D_g})(g)
  \end{equation}
  
  We note an important distinction to the operator $e^{h\D_g}$, the derivative of which is
@@ -743,16 +744,16 @@ which enables efficient implementation.
 \frac{d}{dh}e^{h\D_g}=\D_ge^{h\D_g}
  \end{equation}
  We may now compute derivatives (of arbitrary order) of the pullback operator. As an example we compute the second derivative.
- $$(\frac{d}{dh})^2exp(\D_fe^{h\D_g})(g)=\frac{d}{dh}\Big(\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)\Big)$$
+ $$(\frac{d}{dh})^2\exp(\D_fe^{h\D_g})(g)=\frac{d}{dh}\left(\D_f(\D_gg)e^{h\D_g}\exp(\D_fe^{h\D_g})(g)\right)$$
  which is by equations $\eqref{eq:dexp}$ and $\eqref{eq:de}$
- $$(\D_g\D_f(\D_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_f(\D_gg)\D_f(\D_gg))e^{2h\D_g}exp(\D_fe^{h\D_g})(g)$$
+ $$(\D_g\D_f(\D_gg))e^{h\D_g}\exp(\D_fe^{h\D_g})(g)+(\D_f(\D_gg)\D_f(\D_gg))e^{2h\D_g}\exp(\D_fe^{h\D_g})(g)$$
  using algebra and correct applications
  \begin{equation}\label{eq:d^2comp}
- (\D_f(\D^2_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D^2_f(\D_gg)^2)e^{2h\D_g}exp(\D_fe^{h\D_g})(g)
+ (\D_f(\D^2_gg))e^{h\D_g}\exp(\D_fe^{h\D_g})(g)+(\D^2_f(\D_gg)^2)e^{2h\D_g}\exp(\D_fe^{h\D_g})(g)
  \end{equation}
  The operator is always shifted to the evaluating point $\eqref{eq:specProg}$ $v\in V$, thus, only the behavior in the limit as $h\to 0$ is of importance. Taking this limit in the expression $\eqref{eq:d^2comp}$ we obtain
  \begin{equation}
-	(\D_f(\D^2_gg)+\D^2_f(\D_gg)^2)exp(\D_f)
+	(\D_f(\D^2_gg)+\D^2_f(\D_gg)^2)\exp(\D_f)
  \end{equation}
  
  Thus, without imposing any additional rules, we computed the operator of the second derivative of composition with $g$, directly on the level of operators. The result of course matches the equation $\eqref{eq:dComposite}$ for $n=2$.
@@ -760,7 +761,7 @@ which enables efficient implementation.
  As it is evident from the example, calculations using operators are far simpler, than direct manipulations of functional series, as it was done in the proof of Theorem $\ref{izr:kompo}$. This of course enables a simpler implementation, that functions over arbitrary programming (function) spaces. In the space that is spanned by $\{\D^n\dP_0\}$ over $K$, derivatives of compositions may be expressed using only the product rule of Theorem $\ref{izr:prod}$, and $\eqref{eq:dexp}$ and $\eqref{eq:de}$, solely through the operators. Thus, explicit knowledge of rules for differentiating compositions is unnecessary, as it is contained in the structure of the operator $exp(\D_fe^{h\D_g})$ itself, which is differentiated using standard rules, as in the above example.
  
  \begin{equation}\label{eq:dkompo}
- \D^n(f\circ g)=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^nexp(\D_fe^{h\D_g})(g,f)
+ \D^n(f\circ g)=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\exp(\D_fe^{h\D_g})(g,f)
  \end{equation}
  
  \begin{opomba}
@@ -804,18 +805,27 @@ for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto 
  
    \subsection{Functional transformation of programs}\label{sec:FTP}
    
-   We motivate the following with an example. Lets suppose a hardware $H$, optimized for the set of functions $F=\{f_i:V\to V\}$. The set $F$ is specified by the manufacturer.
+   We motivate the following with an example. Lets suppose a hardware $H$,
+   optimized for the set of functions $F=\{f_i:V\to K\}$. The set $F$ is
+   specified by the manufacturer.  
    
    With technological advances, switching the hardware is common, which can lead to a decline in performance. Thus, we would like to employ transformations of a program $P\in\dP$ in basis $F$. It is common to settle for a suboptimal algorithm, that is efficient on hardware $H$. Sub-optimality of the algorithm depends on the set $F$, whether it spans $P$, or not. A classic example of a transformation, is the Fourier transform in the basis $\{\sin(nx), \cos(mx)\}$, that spans $\dP$ (which as stated is not true for an arbitrary set $F$).
    
-   Using the developed tools, the problem is solvable using linear algebra. Let $e^\D_n$ denote the projection of the operator $e^\D$, onto the first $n$ basis vectors $\{\D^i\}$. We can, by Theorem $\ref{izr:e^d}$, construct a map $\eqref{eq:pToPol}$ from the space of programs, to the space of polynomials, with unknowns in $V^k$, using the operator $e^\D$. let $\X$ denote the basis of the space of polynomials, $\X=\{\prod\limits_{\forall_j} v_i^j\}$, where $v_i$ span $V$. Than, we can interpret $e^\D_n(P\in\dP)$ as a vector of linear combinations of $\X$, which is assumed heron.
+   Using the developed tools, the problem is solvable using linear algebra. Let
+   $e^\D_n$ denote the projection of the operator $e^\D$, onto the first $n$
+   basis vectors $\{\D^i\}$. We can, by Theorem $\ref{izr:e^d}$, construct a map
+   $\eqref{eq:pToPol}$ from the space of programs, to the space of polynomials,
+   with unknowns in $V^k$, using the operator $e^\D$. Let $\X=\{p_i\}$ denote a basis of
+   the space of polynomials $V\to V$ \footnote{one choice would be the monomial basis,
+   consisnting of elemets $\e_i\otimes\prod\limits_{\alpha,\forall_j}
+   x_{\alpha_j}$, where $\e_i$ span $V$, $x_i$ span $V^*$ and $\alpha$
+   multiindex}. Than, we can interpret $e^\D_n(P\in\dP)$ as a vector of linear combinations of $\X$, which is assumed heron.
   
   Thus, we define the tensor of basis transformation $F\to\X$
   
   \begin{equation}\label{eq:matTransF}
-  T_{\X F}=\begin{pmatrix}
-  e_n^\D(f_1) & e_n^\D(f_2) & \cdots & e_n^\D(f_n)
-  \end{pmatrix}
+  T_{\X F}=
+  p_1\otimes e_n^\D(f_1)^* + p_2\otimes e_n^\D(f_2)^* + \ldots + p_n\otimes e_n^\D(f_n)^*
   \end{equation}
   
   \begin{opomba}
