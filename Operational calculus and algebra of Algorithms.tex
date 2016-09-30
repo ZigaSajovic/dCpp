@@ -422,10 +422,11 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
  \end{trditev}
  
  \begin{definicija}\label{def:dP}
- 	A differentiable programming space $\dP_0$ is any subspace of $\F_0$ such that
+ 	A \emph{differentiable programming space} $\dP_0$ is any subspace of $\F_0$ such that
  	\begin{equation}\label{eq:P}
  	\D\dP_0\subset\dP_0\otimes T(V^*)
  	\end{equation}
+ 	When all elements of $\dP_0$ are analytic, we denote $\dP_0$ as an \emph{analytic programming space}.
  \end{definicija}
 
 \begin{izrek}\label{izr:P}
@@ -458,6 +459,10 @@ $$\D\dP_0\subset\dP_0\otimes T(V^*)$$
  	 		\dP_0\to\D^k\dP_0
  	 	\end{equation}
  \end{proof}
+ 
+ \begin{corollary}
+ When all elements of $\dP_0$ are analytic, so are the elements of $\dP_n$.
+ \end{corollary}
 
 
 By Theorem $\ref{izr:dP}$ we may represent calculation of derivatives of the map $P:V\to U$, with only one mapping. We define the geometric series
@@ -563,10 +568,10 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
     \item
     $\VV\otimes T(\VV^*)$ virtual memory space, serving as alphabet symbols
     \item
-    $\dP_0$ is a differentiable programming space over $\VV$
+    $\dP_0$ is an analytic programming space over $\VV$
     \end{itemize}
   \end{definicija}
-Anything that operates under these specifications is an analytic virtual machine, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$. When all elements of $\dP_0$ are not analytic, the above defines an infinitely-differentiable virtual machine.
+Anything that operates under these specifications is an analytic virtual machine, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$. When not all elements of $\dP_0$ are analytic, the above defines an infinitely-differentiable virtual machine.
 
  \subsection{Power series expansion}\label{sec:Vrsta}
  
@@ -804,7 +809,7 @@ for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto 
    
    With technological advances, switching the hardware is common, which can lead to a decline in performance. Thus, we would like to employ transformations of a program $P\in\dP$ in basis $F$. It is common to settle for a suboptimal algorithm, that is efficient on hardware $H$. Sub-optimality of the algorithm depends on the set $F$, whether it spans $P$, or not. A classic example of a transformation, is the Fourier transform in the basis $\{\sin(nx), \cos(mx)\}$, that spans $\dP$ (which as stated is not true for an arbitrary set $F$).
    
-   By Theorem $\ref{izr:e^d}$, we may construct a map $\eqref{eq:pToPol}$ from the space of programs $\dP$, to the space of polynomials, using the operator $e^\D$. Using the developed tools, the problem is solvable using linear algebra. Let $e^\D_n$ denote the projection of the operator $e^\D$, onto the first $n$ basis vectors $\{\D^i\}$. We can, by Theorem $\ref{izr:e^d}$, construct a map $\eqref{eq:pToPol}$ from the space of programs, to the space of polynomials, with unknowns in $V^k$, using the operator $e^\D$. let $\X$ denote the basis of the space of polynomials, $\X=\{\prod\limits_{\forall_j} v_i^j\}$, where $v_i$ span $V$. Than, we can interpret $e^\D_n(P\in\dP)$ as a vector of linear combinations of $\X$, which is assumed heron.
+   Using the developed tools, the problem is solvable using linear algebra. Let $e^\D_n$ denote the projection of the operator $e^\D$, onto the first $n$ basis vectors $\{\D^i\}$. We can, by Theorem $\ref{izr:e^d}$, construct a map $\eqref{eq:pToPol}$ from the space of programs, to the space of polynomials, with unknowns in $V^k$, using the operator $e^\D$. let $\X$ denote the basis of the space of polynomials, $\X=\{\prod\limits_{\forall_j} v_i^j\}$, where $v_i$ span $V$. Than, we can interpret $e^\D_n(P\in\dP)$ as a vector of linear combinations of $\X$, which is assumed heron.
   
   Thus, we define the tensor of basis transformation $F\to\X$
   
