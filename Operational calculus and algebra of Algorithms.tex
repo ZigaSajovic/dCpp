@@ -86,7 +86,7 @@ basicstyle=\ttfamily
 \maketitle
 \begin{abstract}
 In this paper, we develop the theory of analytic virtual machines, that
-implemen infinitely-differentiable programming spaces and operators acting upon them.
+implement infinitely-differentiable programming spaces and operators acting upon them.
 
 A programming space is a subalgeba of the function algebra of maps on the virtual
 memory. We can construct a differential operator on the programming spaces as we 
@@ -143,7 +143,7 @@ We can compose two programs sequentially, to obtain another program, which
 results in map composition. The set of all such maps $\F=\VV^\VV$ is a
 \emph{monoid} for the operation of composition $\circ$. A programing language is
 a set of elementary operations that are sequentially applied into programs. 
-\begin{definicija}[Virtual machine] The tuple $\langle \VV,\dP\rangle$ is a virtual computing machine.
+\begin{definicija}[Euclidian virtual machine] The tuple $\langle \VV,\dP\rangle$ is a Euclidian virtual machine.
   \begin{itemize}
   \item
   $\VV$ is a finite dimensional vector space over a filed $K$ serving as alphabet symbols
@@ -563,10 +563,10 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
     \item
     $\VV\otimes T(\VV^*)$ virtual memory space, serving as alphabet symbols
     \item
-    $\dP_0$ is a differentiable programming space over $\VV$, such that all elements of $\dP_0$ are analytic
+    $\dP_0$ is a differentiable programming space over $\VV$
     \end{itemize}
   \end{definicija}
-Anything that operates under these specifications is an analytic virtual machine, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$.
+Anything that operates under these specifications is an analytic virtual machine, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$. When all elements of $\dP_0$ are not analytic, the above defines an infinitely-differentiable virtual machine.
 
  \subsection{Power series expansion}\label{sec:Vrsta}
  
@@ -804,27 +804,7 @@ for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto 
    
    With technological advances, switching the hardware is common, which can lead to a decline in performance. Thus, we would like to employ transformations of a program $P\in\dP$ in basis $F$. It is common to settle for a suboptimal algorithm, that is efficient on hardware $H$. Sub-optimality of the algorithm depends on the set $F$, whether it spans $P$, or not. A classic example of a transformation, is the Fourier transform in the basis $\{\sin(nx), \cos(mx)\}$, that spans $\dP$ (which as stated is not true for an arbitrary set $F$).
    
-   By Theorem $\ref{izr:e^d}$, we may construct a map $\eqref{eq:pToPol}$ from the space of programs $\dP$, to the space of polynomials, using the operator $e^\D$. Thus, the image of $e^\D(P\in\dP)$ is integrable (with a suitable choice of domain). Using this, we may define an inner product over $\dP$.
-   
-  \begin{izrek}
-  For $p_1,p_2\in\dP$ the inner product $\eta(p_1,p_2)$ is expressed as
-  \begin{equation}
-  	\eta(p_1,p_2)=\int_{\Omega}e^\D p_1(\vec{x})\cdot e^\D p_2(\vec{x})dx
-  \end{equation}
-  where $\cdot$ stands for the inner product on $V$, because $e^\D(p\in\dP):V\to V$.
-  \end{izrek}
-  
-  \begin{proof}
-  By Theorem $\ref{izr:prod}$, it holds that $e^\D(p_1\cdot p_2)=e^\D(p_1)\cdot e^\D(p_2)$. By linearity of the integral and a well defined inner product on $V$, the axioms of the inner product are satisfied.
-  \end{proof}
-  
-  Thus, if $F$ is orthonormal, or has been made such with one of the established methods, $P$ can be expressed in the basis $F$ as
-  
-  \begin{equation}
- 	P=\sum\limits_{\forall_{f_i\in F}}\frac{\eta(P,f_i)}{\eta(f_i,f_i)}f_i
-  \end{equation}
-  
-  Seeking to avoid integration, using the developed tools, the problem is solvable using linear algebra. Let $e^\D_n$ denote the projection of the operator $e^\D$, onto the first $n$ basis vectors $\{\D^i\}$. We can, by Theorem $\ref{izr:e^d}$, construct a map $\eqref{eq:pToPol}$ from the space of programs, to the space of polynomials, with unknowns in $V^k$, using the operator $e^\D$. let $\X$ denote the basis of the space of polynomials, $\X=\{\prod\limits_{\forall_j} v_i^j\}$, where $v_i$ span $V$. Than, we can interpret $e^\D_n(P\in\dP)$ as a vector of linear combinations of $\X$, which is assumed heron.
+   By Theorem $\ref{izr:e^d}$, we may construct a map $\eqref{eq:pToPol}$ from the space of programs $\dP$, to the space of polynomials, using the operator $e^\D$. Using the developed tools, the problem is solvable using linear algebra. Let $e^\D_n$ denote the projection of the operator $e^\D$, onto the first $n$ basis vectors $\{\D^i\}$. We can, by Theorem $\ref{izr:e^d}$, construct a map $\eqref{eq:pToPol}$ from the space of programs, to the space of polynomials, with unknowns in $V^k$, using the operator $e^\D$. let $\X$ denote the basis of the space of polynomials, $\X=\{\prod\limits_{\forall_j} v_i^j\}$, where $v_i$ span $V$. Than, we can interpret $e^\D_n(P\in\dP)$ as a vector of linear combinations of $\X$, which is assumed heron.
   
   Thus, we define the tensor of basis transformation $F\to\X$
   
