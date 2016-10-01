@@ -143,12 +143,12 @@ We can compose two programs sequentially, to obtain another program, which
 results in map composition. The set of all such maps $\F=\VV^\VV$ is a
 \emph{monoid} for the operation of composition $\circ$. A programing language is
 a space spanned by a set of elementary operations that are sequentially applied into programs. 
-\begin{definicija}[Euclidian virtual machine] The tuple $\langle \VV,\F\rangle$ is a Euclidian virtual machine.
+\begin{definicija}[Euclidian virtual machine] The tuple $\langle \VV,\F\rangle$ is an Euclidian virtual machine.
   \begin{itemize}
   \item
   $\VV$ is a finite dimensional vector space over a filed $K$ serving as alphabet symbols
   \item
-  $\F= \VV^\VV$ is the space of maps $P:\VV\to \VV$, called \emph{programming space} serving as states
+  $\F= \VV^\VV$ is the space of maps $P:\VV\to \VV$, called \emph{programming space}, serving as states
   \end{itemize}  
 \end{definicija}
 
@@ -1140,13 +1140,13 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
   A:T\to P
   \end{equation}
   
-  Let $R$ be an equivalence relation 
+  To achieve this, we first develop a way of probing the inner structure of a procedure and explore how it interacts with the elements of the domain. Let $R$ be an equivalence relation 
   \begin{equation}\label{eq:equivRelation}
   v_1Rv_2\iff T(v_1)ST(v_2)
   \end{equation}
   where $S$ is some relation of similarity (ex. $\lvert1- T(v_1)\rvert\le c\land\lvert1- T(v_2)\rvert\le c$) and $M$ be the set of interest. Than $T$ partitions $M$ into equivalence classes, as by $R$ $\eqref{eq:equivRelation}$. The above property $X$, may be viewed as one of these equivalence classes $X_i$. Note that in general the relation need not be an equivalence. 
   
-  Let $T=T_n\circ T_{n-1}\circ\cdots\circ T_1$, for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $T_i$ containing a control structure). Here $T_i=\varepsilon_k\circ\ldots \varepsilon_1$, is a conceptual step in the procedure. Then, we can inquire about and measure the importance $K$ of an arbitrary $T_i$, to a partitioning into a specific equivalence class $X_j$. $\eqref{eq:equivRelation}$. Thus, we are able to extract $T_{X_j}$, the set of steps of importance, to such a partitioning. We treat $T_i\circ\cdots T_1$ as the input of the procedure $T^n_i=T_n\circ\cdots\circ T_{i+1}$.
+   Let $T=T_n\circ T_{n-1}\circ\cdots\circ T_1$, for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $T_i$ containing a control structure). Here $T_i=\varepsilon_k\circ\ldots \varepsilon_1$, is a conceptual step in the procedure. Then, we can inquire about and measure the importance $K$ of an arbitrary $T_i$, to a partitioning into a specific equivalence class $X_j$. $\eqref{eq:equivRelation}$. Thus, we are able to extract $T_{X_j}$, the set of steps of importance, to such a partitioning. We treat $T_i\circ\cdots T_1$ as the input of the procedure $T^n_i=T_n\circ\cdots\circ T_{i+1}$.
   
   We present a simple algorithm towards such a goal, which can easily be enhanced with a more sophisticated choice of the measure of importance, as allowed by the theory. Here, the measure is simply the norm of the differential, as it measures the rate of change in the relation.
   
