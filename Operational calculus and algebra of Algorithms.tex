@@ -117,11 +117,11 @@ Just as the discrete nature of physical reality is studied through analytic mean
 The way evaluation of algorithmic expressions differs from evaluation of symbolic expressions of standard analysis, lies at the very core of this dissonance. The disconnect was partially mitigated by methods of automatic differentiation, utilized today in machine learning, engineering, simulations, etc. Yet under the lack of a proper formalism the model collapses when one tries to generalize to such notions as a differentiable program $p_1$ operating on (differentiable) derivatives of another program $p_2$ (where only coding of $p_2$ is required within $p_1$), while retaining the famed expressive freedom. 
 Models allowing for nested differentiation \cite{AD1}, still fail in providing algorithms with an algebra enabling study and formulation of programs through analytic equations. Thus, they remain nothing more than means to calculating derivatives, void of any meaningful algebraic insight, lacking the true power the vast field of analysis is endowed with.
 
-The aim of this paper is bridging the gap between programming and analysis. By generalizing on existing models, we show them to be specific views of the same great elephant. Employing tensor algebra, we construct a virtual memory whose internal structure reflects and carries evaluation of algorithmic expressions. In Section \ref{sec:operational} we provide an exact definition and construction of an analytic virtual machine, capable of implementing infinitely-differentiable programming spaces and operators acting upon them, supporting actions on more than one memory location at a time. These programming spaces are shown to be a subalgebra, giving rise to algebraic manipulations of programs and through it operators expanding a program into an infinite tensor series are derived. The operator of program composition is constructed, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order) under a single operator in the theory. Through projections and embeddings in this space, the problem of nested differentiation is resolved, where a program $p_1$ acts on differentiable derivatives of $p_2$, requiring only coding of $p_2$ within $p_1$. We analyze iterators and other control structures, examining their dependencies on exit conditions, offering a new perspective on studying the Halting problem along the way.
+The aim of this paper is bridging the gap between programming and analysis. By generalizing on existing models, we show them to be specific views of the same great elephant. Employing tensor algebra, we construct a virtual memory whose internal structure reflects and carries evaluation of algorithmic expressions. In Section \ref{sec:operational} we provide an exact definition and construction of an analytic virtual machine, capable of implementing infinitely-differentiable programming spaces and operators acting upon them, supporting actions on multiple memory locations at a time. These programming spaces are shown to be a subalgebra, giving rise to algebraic manipulations of programs and through it operators expanding a program into an infinite tensor series are derived. The operator of program composition is constructed, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order) under a single operator in the theory. Through projections and embeddings in this space, the problem of nested differentiation is resolved, where a program $p_1$ acts on differentiable derivatives of $p_2$, requiring only coding of $p_2$ within $p_1$. We analyze iterators and other control structures, examining their dependencies on exit conditions, offering a new perspective on studying the Halting problem along the way.
 
 Theory grants us the ability to choose programs' complexity through approximations inhabiting the virtual space. It being modeled by tensor algebra consisting of multi-linear maps is tailor made for efficient implementation by GPU parallelism \cite{TensorGPU}. Employing the developed algebra, we derive functional transformations of programs in an arbitrary function basis. As different hardware is optimized for running of different sets of functions, this proves useful with adapting code to fit specific hardware.
 We provide instructions on methods of usage and outline the process of how these transformations are to be interchangeably applied in practice.
-The paper offers new insights into programs, as we demonstrate how to probe their inner structure, revealing what actions properties of the domain most react to.
+The paper offers new insights into programs, as we demonstrate how to probe their inner structure, revealing what actions properties of the domain most react to. This enables us to extract archetypes from data, or alter it by imposing some property it lacks upon it.
 We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space.
 
 
@@ -142,13 +142,13 @@ program on its memory space $\VV$, can be described by a map
 We can compose two programs sequentially, to obtain another program, which
 results in map composition. The set of all such maps $\F=\VV^\VV$ is a
 \emph{monoid} for the operation of composition $\circ$. A programing language is
-a set of elementary operations that are sequentially applied into programs. 
-\begin{definicija}[Euclidian virtual machine] The tuple $\langle \VV,\dP\rangle$ is a Euclidian virtual machine.
+a space spanned by a set of elementary operations that are sequentially applied into programs. 
+\begin{definicija}[Euclidian virtual machine] The tuple $\langle \VV,\F\rangle$ is a Euclidian virtual machine.
   \begin{itemize}
   \item
   $\VV$ is a finite dimensional vector space over a filed $K$ serving as alphabet symbols
   \item
-  $\dP < \VV^\VV$ is a subspace of maps $P:\VV\to \VV$, called \emph{programming space} serving as states
+  $\F= \VV^\VV$ is the space of maps $P:\VV\to \VV$, called \emph{programming space} serving as states
   \end{itemize}  
 \end{definicija}
 
@@ -528,7 +528,7 @@ By taking the limit as $n\to \infty$, we see
         Of course the same holds true for all generating maps of the type
         $$\dP_0\to\dP_n.$$
  \begin{corollary}
-   When all elements of $\dP_0$ are analytic, so are the elements of $\dP_n$.
+   If all elements of $\dP_0$ are analytic, than so are the elements of $\dP_n$.
    \end{corollary}        
         
        \begin{opomba}\label{rem:vTen}
@@ -565,12 +565,13 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
     \item
     $\VV$ is a finite dimensional vector space
     \item
-    $\VV\otimes T(\VV^*)$ virtual memory space, serving as alphabet symbols
+    $\VV\otimes T(\VV^*)$ is the virtual memory space, serving as alphabet symbols
     \item
-    $\dP_0$ is an analyticz programming space over $\VV$
+    $\dP_0$ is an analytic programming space over $\VV$
     \end{itemize}
+    When $\dP_0$ is a differentiable programming space, this defines an infinitely-differentiable virtual machine.
   \end{definicija}
-Anything that operates under these specifications is an analytic virtual machine, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$. When not all elements of $\dP_0$ are analytic, the above defines an infinitely-differentiable virtual machine.
+Anything that operates under these specifications is an analytic virtual machine, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$. 
 
  \subsection{Power series expansion}\label{sec:Vrsta}
  
