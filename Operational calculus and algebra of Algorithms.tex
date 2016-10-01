@@ -101,7 +101,7 @@ also present several examples of how the theory can be used in computer science.
 
 The theory opens new doors in program analysis. We develop a general
 procedure which takes a program that tests an object for a property and
-constructs a procedure that enforces that property upon any object. Through it we generalize state of the art methods for analyzing neural networks to general programs.
+constructs a procedure that imposes that property upon any object. Through it we generalize state of the art methods for analyzing neural networks to general programs and expand upon them.
 We use the theory to analyze iterators and other control structures in programming
 languages, and their dependencies on boundary conditions. The theory enables
 approximation and transformations of programs to arbitrary function basis', allowing us to choose programs' complexity, 
@@ -1173,7 +1173,7 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method. The perturbations reveal internal structure of te procedure.
+Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method. It may be used to better understand procedures and interpret them. The set $I=\{T_{X_i}\}$ can reveal procedural steps, that may have previously been thought of as less important to the end result.
 
 As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and calculus of algorithms of this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired property $X_j$. Global maxima of the method can be viewed as archetypes of objects possessing a specific  property $X_j$. With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$.
 
