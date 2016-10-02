@@ -88,7 +88,7 @@ basicstyle=\ttfamily
 In this paper, we develop the theory of analytic virtual machines, that
 implement infinitely-differentiable programming spaces and operators acting upon them.
 
-A programming space is a subalgeba of the function algebra of maps on the virtual
+A programming space is a subalgebra of the function algebra of maps on the virtual
 memory. We can construct a differential operator on the programming spaces as we 
 model virtual memory as a tensor product of a vector space with tensor algebra
 of its dual. Virtual memory serves by itself as an algebra of polynomial
@@ -121,6 +121,7 @@ The aim of this paper is bridging the gap between programming and analysis. By g
 
 Theory grants us the ability to choose programs' complexity through approximations inhabiting the virtual space. It being modeled by tensor algebra consisting of multi-linear maps is tailor made for efficient implementation by GPU parallelism \cite{TensorGPU}. Employing the developed algebra, we derive functional transformations of programs in an arbitrary function basis. As different hardware is optimized for running of different sets of functions, this proves useful with adapting code to fit specific hardware.
 We provide instructions on methods of usage and outline the process of how these transformations are to be interchangeably applied in practice.
+
 The paper offers new insights into programs, as we demonstrate how to probe their inner structure, revealing what actions properties of the domain most react to. This enables us to extract archetypes from data, or alter it by imposing some property it lacks upon it.
 We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space.
 
@@ -141,7 +142,7 @@ program on its memory space $\VV$, can be described by a map
 \end{equation}
 We can compose two programs sequentially, to obtain another program, which
 results in map composition. The set of all such maps $\F=\VV^\VV$ is a
-\emph{monoid} for the operation of composition $\circ$. A programing language is
+\emph{monoid} for the operation of composition $\circ$. A programing space is
 a space spanned by a set of elementary operations that are sequentially applied into programs. 
 \begin{definicija}[Euclidian virtual machine] The tuple $\langle \VV,\F\rangle$ is an Euclidian virtual machine.
   \begin{itemize}
@@ -440,9 +441,9 @@ for any $k\in\mathbb{N}$.
 \begin{proof} By definition \ref{def:dP}
 $$\D\dP_0\subset\dP_0\otimes T(V^*)$$
 	Induction step is trivial. For all 	$\forall_{P\in\dP_0}$,
-  $\D^k\dP_0\subset\dP_0\otimes T(V^*)$ and $0$, where
-  $\alpha$ is multiindeks denotind the component of $T(V^*)$ and $i$ is the
-  indeks denoting the component of $U$.
+  $\D^n\dP_0\subset\dP_0\otimes T(V^*)$, where
+  $\alpha$ is multiindex denoted the component of $T(V^*)$ and $i$ is the
+  index denoting the component of $U$.
 	\begin{equation}\label{eq:inductionStep}
 \D^{n+1}P_{\alpha,k}^i=\D(\D^n P^i_\alpha)_k\land(\D^n P^i_\alpha)\in\dP_0\implies \D(\D^n P^i_\alpha)_k\in \dP_0\otimes T(V^*)
 	\end{equation}
@@ -999,14 +1000,14 @@ for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto 
 
 Branching of programs into domains $\eqref{eq:zlrprk_splosno}$ is done through conditional statements. The number of domain $\Omega_i$ equals cardinality of the set $\{\Omega_i\}$. Each conditional causes a branching in programs' execution tree.
 
-\begin{izrek}\label{izr:st.zlepkov}
+\begin{trditev}\label{izr:st.zlepkov}
 Cardinality of the set $\{\Omega_i\}$ equals $\lvert\{\Omega_i \}\rvert=2^k$, where $k$ is the number of conditionals contained within the program.
-\end{izrek}
+\end{trditev}
 \begin{opomba}
 Iterators, that do not change exit conditions within its' body, do not cause branching.
 \end{opomba}
 
-It follows from Theorem $\ref{izr:st.zlepkov}$, that the complexity of naive implementations of methods presented in Sections $\ref{sec:Vrsta}$ and $\ref{sec:FTP}$ are exponential (if we were to treat each domain $\Omega_i$ by itself). But, with correct application of Theorems developed in this paper, we may drastically reduce this down to linear. This is the subject of study in this section.
+It follows from Claim $\ref{izr:st.zlepkov}$, that the complexity of naive implementations of methods presented in Sections $\ref{sec:Vrsta}$ and $\ref{sec:FTP}$ are exponential (if we were to treat each domain $\Omega_i$ by itself). But, with correct application of Theorems developed in this paper, we may drastically reduce this down to linear. This is the subject of study in this section.
 \vspace{10px}
 
 \tikzstyle{decision} = [diamond, draw, fill=blue!20, 
@@ -1195,7 +1196,7 @@ E_j=C\circ T^\prime_j
 \State initialize path $\gamma$ with $v$
 \For{each step}
 \For{each $T_i\in T_{X_j}$}
-\State extract $T^\prime=\phi\circ proj_{\{\D,\D^2\}}e^{\D_{T_i}}_2(T^n_j)$ $\eqref{eq:T'}$
+\State extract $T^\prime=\phi\circ e^{\D_{T_i}}_2(T^n_j)$ $\eqref{eq:T'}$
 \State compute the energy $E=C\circ T^\prime$
 \State extract the derivative $\D_v E=proj_{\{\D\}}(e^{\D_v}_1(E))$
 \State add $\D_v E$ to $\mathcal{D}$
@@ -1222,15 +1223,19 @@ P:v\notin X_j\to v\in X_j
 
 The derived procedures $P$ $\eqref{eq:procedureP}$, are a generalization of special cases such as Google's Deep Dream project \cite{DeepDream}, where the program represents a neural network, with neurons with high activity filling the set of important conceptual steps $T_{X_j}$ and the resulting $v\in X_j$ is an altered image.
 
-\begin{izrek}[Path to change]
-Path $\gamma$ is the path to change of least resistance.
-\end{izrek}
+\begin{definicija}[Path to change]
+Output of Algorithm \ref{alg:appoint} is $\gamma$, the path to change.
+\end{definicija}
 
-Path to change of least resistance is the flow curve outputted by Algorithm $\ref{alg:appoint}$. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
+Path to change is the flow curve outputted by Algorithm $\ref{alg:appoint}$. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
 
 \section{Conclusions}
 
+Existence of a procedure is embedded in a virtual reality, forming a system of objects undergoing change in a virtual space. Just as the reality inhabited by us has been studied, revealing principles and laws, so can the virtual reality inhabited by procedures. Yet here lies a tougher task, as the laws of the system changing an object to a desired state are simultaneously constructed and observed. This reinforces the need for a language capable of not only capturing, but also constructing digital phenomena as actions on a virtual space, a feat demonstrated by the theory presented in this paper.
 
+%As each procedure is a system existing as an object in virtual space, computational capability becomes synonymous with shape \footnote{Training of a neural network is a homotopy in this space, as a high dimensional manifold converges to its optimal form.}.
+
+ 
 
   \printbibliography
 \end{document}
