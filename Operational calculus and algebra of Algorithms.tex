@@ -80,7 +80,7 @@ basicstyle=\ttfamily
 
 
 \title{Operational calculus and algebra of Algorithms}
-\author{Žiga Sajovic, Martin Vuk}
+\author{\v{Z}iga Sajovic, Martin Vuk}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -1129,7 +1129,9 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
   
 \section{Analysis}\label{sec:Analysis}
   
-   The theory presented in this paper grants new insights through methods of analysis.  These methods are the object of study of this section.
+   The theory presented in this paper grants new insights through methods of analysis. It reveals a procedure to be a system exerting change on objects inhabiting virtual space. These revelations are the object of study of this section.
+  
+  \subsection{Study of properties}
   
   We will denote the fact, that some object $v$ has the property $X$, by $v\in X$. Suppose we have $v\notin X$, and desire a procedure that in some way modifies $v$ to have the property $X$. The desire is a procedure $P:v\notin X\to P(v)\in X$, that modifies $v$ in a some way. Let $S$ be some relation of similarity. We have
   \begin{equation}
@@ -1196,12 +1198,12 @@ E_j=C\circ T^\prime_j
 \For{each step}
 \For{each $T_i\in T_{X_j}$}
 \State extract $T^\prime=\phi\circ e^{\D_{T_i}}_2(T^n_j)$ $\eqref{eq:T'}$
-\State compute the energy $E=C\circ T^\prime$
-\State extract the derivative $\D_v E=proj_{\{\D\}}(e^{\D_v}_1(E))$
+\State compute the energy $E_j=e^{\D_v}_1(C)\circ T^\prime_j$
+\State extract the derivative $\D_v E=proj_{\{\D\}}(E_j)$
 \State add $\D_v E$ to $\mathcal{D}$
 \State insert $v$ to $\gamma$
 \EndFor
-\State update v by $step(\mathcal{D},v)$
+\State update $v$ by $step(\mathcal{D},v)$
 \EndFor
 \State return $\gamma$
 \EndProcedure
@@ -1209,7 +1211,7 @@ E_j=C\circ T^\prime_j
 \end{algorithm}
 The derivative with respect to $v$ is extracted by applying $e^{\D_{v}}_1$ and projecting the image onto $\D$,
 \begin{equation}
-\D_vE_j=proj_{\{\D\}}(e^{\D_v}_1E_j)
+\D_vE_j=proj_{\{\D\}}(e^{\D_v}_1(C)\circ T^\prime_j)
 \end{equation}
 as it needs not to be differentiable for this purpose.
 
@@ -1228,7 +1230,59 @@ Output of Algorithm \ref{alg:appoint} is $\gamma$, the path to change.
 
 Path to change is the flow curve outputted by Algorithm $\ref{alg:appoint}$. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
 
-\clearpage
+\subsection{Computational capability as shape governing principles}
+
+As each procedure is revealed to be a system existing as an object in virtual space, its computational capability becomes synonymous with shape. For example, training of neural network is a homotopy in this space, as a high-dimensional manifold converges to its optimal computational form.
+The developed calculus allows as to sculpt and mold a procedures shape, and through the established connection, its computational capability. There is a strong connection between shape of the inhabiting space and physical principles it imposes upon objects traversing it.
+
+As procedures are systems entered by an object as an input and exited as an output upon undergoing change, the process of computation can be viewed as evolutions in phase space. Thus, our newfound ability to mold shape in virtual space enables us to impose principles on the system the procedure represents. Assume we have some a priori knowledge of how the process is to change the object, some previously known heuristic $H$ known from practice. That is equivalent to having knowledge on the path to change $\gamma$, as argued in the previous section. Heuristic $H$ might be some measure on the environment, or a direction, for objects at a particular location $L_i$ in the system. We express change the desired heuristic $H$ locally exerts, with a relation.
+Thus, $H$ represents a local principle we wish to impose into the system. We denote the fact the system obeys the principle $H$ by $P\in H$. The desire is an algorithm molding the system, modifying it in some way, as to impose the principle upon it.
+\begin{equation}\label{eq:impose}
+A:P\notin H\to P\in H
+\end{equation}
+
+Let
+\begin{equation}
+P=P_n\circ P_{n-1}\circ\cdots\circ P_1
+\end{equation}
+be the procedure representing the system and $P_i$ the conceptual step treated by heuristic $H_j$. $L_j$ are the concerning location. Again, we let $P^i_k=P_i\circ\cdots\circ P_k$. Directions are usually modeled by first derivatives, and attractions by second derivatives, so lets assume employment of both by the heuristic $H$. For simplicity, assume $step$ to represent one optimization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques readily available.
+
+As $step$ requires the derivative of $H$, which itself contains first and second derivatives of $P$, requires use of the operator $e^\D_3$, for the second derivative to be differentiable. Once differentiable first and second derivatives with respect to parameters $p$ are extracted by
+\begin{equation}
+P^{i\prime}_1=proj_{\{1,\D\}}\left(\phi\circ e^{\D_{p}}_3(P^i_1)\right)\in\dP_1
+\end{equation}
+\begin{equation}
+P^{i\prime\prime}_1=\phi^2\circ e^{\D_p}_3(P_i)\in\dP_1
+\end{equation}
+As both are once differentiable, so is the heuristic $H$ taking them as input.
+\begin{equation}
+H^\prime=e^{\D_p}_1(H)\circ(P^{i\prime}_1,P^{i\prime\prime}_1)\in\dP_1
+\end{equation}
+Its derivative is extracted by projecting $H^\prime$ onto $\{\D\}$, as it need not be further differentiable for the use in the $step$ function.
+
+\begin{algorithm}[h]
+\caption{Imposing a principle $H$}
+\label{alg:impose}
+\begin{algorithmic}[1]
+\Procedure{Imposing a principle $H$}{}
+\For{each step}
+\For{each $L_j\in L$}
+\State extract $P^{i\prime}_1=proj_{\{1,\D\}}\left(\phi\circ e^{\D_{p}}_3(P^i_1)\right)$
+\State extract $P^{i\prime\prime}_1=\phi^2\circ e^{\D_p}_3(P_i)$
+\State extract $H^\prime=e^{\D_p}_1(H)\circ(P^{i\prime}_1,P^{i\prime\prime}_1)$
+\State add $proj_{\{\D\}}(H^\prime_j)$ to $H^\prime$
+\EndFor
+\State update $p$ by $step(H,p)$
+\EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+As shown by Algorithm \ref{alg:impose}, we arrived at a procedure $P$, whose conceptual step $P_i$ maximizes action of the principle $H$ upon objects inhabiting it as a system. Using the theory, with the system $P$ as an input variable in Algorithm \ref{alg:impose}, we constructed the algorithm $A:P\notin H\to P\in H$ $\eqref{eq:impose}$.
+
+As we traverse a system looking for a solution, we learn about it in the process. Exploring the virtual space, we may establish connections with existing heuristics, or discover new ones and immediately alter the way the search is conducted. As demonstrated, we are capable of not only altering properties of object in the domain, but also altering the system itself. We employ this to impose principles into it, to best serve our quest for a solution.
+
+
 \section{Conclusions}
 
 Existence of a procedure is embedded in a virtual reality, forming a system of objects undergoing change in a virtual space. Just as the reality inhabited by us has been studied, revealing principles and laws, so can the virtual reality inhabited by procedures. Yet here lies a tougher task, as the laws of the system changing an object to a desired state are simultaneously observed and constructed. This reinforces the need for a language capable of not only capturing, but also constructing digital phenomena as actions on a virtual space, a feat demonstrated by the theory presented in this paper. 
