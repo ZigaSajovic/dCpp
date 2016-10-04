@@ -95,16 +95,14 @@ programs, giving the approximation of the original program as a Taylor series at
 program's input values. 
 
 We present a theory of operators on programming spaces, that enables analysis of programs
-and computations on the operator level, which favors general implementation. We
+and computations on the operator level, which favors general implementation. The theory enables
+approximation and transformations of programs to arbitrary function basis', allowing us to choose programs' complexity, 
+while knowing the order of the error of the approximation. We
 also present several examples of how the theory can be used in computer science.
 
 The theory opens new doors in program analysis. We develop a general
 procedure which takes a program that tests an object for a property and
 constructs a procedure that imposes that property upon any object. Through it we generalize state of the art methods for analyzing neural networks to general programs. Expanding upon them, we study computational dynamics as evolving shapes governing principles.
-We use the theory to analyze iterators and other control structures in programming
-languages, and their dependencies on boundary conditions. The theory enables
-approximation and transformations of programs to arbitrary function basis', allowing us to choose programs' complexity, 
-while knowing the order of the error of the approximation.
 
 \end{abstract}
 
@@ -116,7 +114,7 @@ Just as the discrete nature of physical reality is studied through analytic mean
 The way evaluation of algorithmic expressions differs from evaluation of symbolic expressions of standard analysis, lies at the very core of this dissonance. The disconnect was partially mitigated by methods of automatic differentiation, utilized today in machine learning, engineering, simulations, etc. Yet under the lack of a proper formalism the model collapses when one tries to generalize to such notions as a differentiable program $p_1$ operating on (differentiable) derivatives of another program $p_2$ (where only coding of $p_2$ is required within $p_1$), while retaining the famed expressive freedom. 
 Models allowing for nested differentiation \cite{AD1}, still fail in providing algorithms with an algebra enabling study and formulation of programs through analytic equations. Thus, they remain nothing more than means to calculating derivatives, void of any meaningful algebraic insight, lacking the true power the vast field of analysis is endowed with.
 
-The aim of this paper is bridging the gap between programming and analysis. By generalizing on existing models, we show them to be specific views of the same great elephant. Employing tensor algebra, we construct a virtual memory whose internal structure reflects and carries evaluation of algorithmic expressions. In Section \ref{sec:operational} we provide an exact definition and construction of an analytic virtual machine, capable of implementing infinitely-differentiable programming spaces and operators acting upon them, supporting actions on multiple memory locations at a time. These programming spaces are shown to be a subalgebra, giving rise to algebraic manipulations of programs and through it operators expanding a program into an infinite tensor series are derived. The operator of program composition is constructed, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order) under a single invariant operator in the theory. Through projections and embeddings in this space, the problem of nested differentiation is resolved, where a program $p_1$ acts on differentiable derivatives of $p_2$, requiring only coding of $p_2$ within $p_1$. We analyze iterators and other control structures, examining their dependencies on exit conditions, offering a new perspective on studying the Halting problem along the way.
+The aim of this paper is bridging the gap between programming and analysis. By generalizing on existing models, we show them to be specific views of the same great elephant. Employing tensor algebra, we construct a virtual memory whose internal structure reflects and carries evaluation of algorithmic expressions. In Section \ref{sec:operational} we provide an exact definition and construction of an analytic virtual machine, capable of implementing infinitely-differentiable programming spaces and operators acting upon them, supporting actions on multiple memory locations at a time. These programming spaces are shown to be a subalgebra, giving rise to algebraic manipulations of programs and through it operators expanding a program into an infinite tensor series are derived. The operator of program composition is constructed, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order) under a single invariant operator in the theory. Through projections and embeddings in this space, the problem of nested differentiation is resolved, where a program $p_1$ acts on differentiable derivatives of $p_2$, requiring only coding of $p_2$ within $p_1$.
 
 Theory grants us the ability to choose programs' complexity through approximations inhabiting the virtual space. It being modeled by tensor algebra consisting of multi-linear maps is tailor made for efficient implementation by GPU parallelism \cite{TensorGPU}. Employing the developed algebra, we derive functional transformations of programs in an arbitrary function basis. As different hardware is optimized for running of different sets of functions, this proves useful with adapting code to fit specific hardware.
 We provide instructions on methods of usage and outline the process of how these transformations are to be interchangeably applied in practice.
@@ -884,116 +882,6 @@ for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto 
    \end{cases}
  \end{equation}
  The problem is on the edge of domains $\partial\Omega_i$, where the program $P$ may not be differentiable. A problem which may be avoided, with methods of the coming sections.
- 
-  \subsection{Iterators}
-  
-  Iterator is a functional, composing a program $p\in\dP$ with itself. Its' one of the most common tools in use, in most programming languages. For ease of expression, we denote the $n$-th iterate of a program $p\in\dP:V\to V$, as $p^n$. Thus, it is possible to view the iterate as a compositional exponent.
-  
-  Lets examine a simple example and familiarize ourselves with the concept. The program $p\in\dP$ is linearized around the point $p(a)=0$. Than for $v\in V$ we have $P(v)=\D p(a)\cdot v$. Consequentially the $n$-th iterate is $P^n(v)=(\D p(a))^n\cdot v$. Assuming the matrix $\D p(a)$ can be diagonalized $\D p(a)=S\Lambda S^{-1}$, where $\Lambda$ is a diagonal matrix of eigen values and $S$ the matrix of corresponding eigen vectors. Thus the $n$-th iterate is $P^n(v)=S\Lambda^nS^{-1}\cdot v$.
-  
-  Such an expression for the $n$-th iterate is a function of $n$, the number of iterations, and is as such differentiable with respect to exit conditions of the iterate. With this, we gained the ability to measure the change of the iterator, as dependent on continuous exit conditions. We seek to generalize the notion to general eigen-mappings.
-  
-  Let $\mathcal{I}_p$ be the cyclic monoid generated by $p:V\to V$ under composition $\circ$
-  
-  \begin{equation}
-  \mathcal{I}_p=\{p^n:V\to V\iff p(a)=a\}
-  \end{equation}
-  
-  Now, we may inquire towards changes in programs' iterations, as dependent on exit conditions. The answer would enable analysis and optimization of the number of iterations of the program. 
-  
-  Let $h$ be the map defined with the eigen equation \cite{CompoOper}
-    
-  \begin{equation}\label{eq:kh}
-  h(p(x))=\lambda h(x)
-  \end{equation}
-   \begin{equation}
-   h(a)=0
-   \end{equation}
-  
-  We may conclude about the action of $h$ on $p$
-  \begin{equation}
-  h(p^n(x))=\lambda^nh(x)
-  \end{equation}
-  
-  By differentiating $\eqref{eq:kh}$ at the fixed point, we get at the constant $\lambda$.
-  $$\D h(p(a))\D p(a)=\lambda\D h(a)\implies\D p(a)=\lambda$$
-  On the domain $h(\mathcal{I})$ the maps $p^n$ become multiplication with $\lambda^n=(\D p(a))^n$. Obviously $\lambda^n=e^{\nu n}\iff \nu=ln(\lambda)$.
-  
-  We define iterating velocity as
-  \begin{equation}
-  v(p^n)=\D_np^n(x)
-  \end{equation}
-  Of course
-  \begin{equation}
-  v(p^n(a))=0
-  \end{equation}
-  which is deduced from the equation $\eqref{eq:kh}$ and coincides with intuition.
-  
-  With this we turn to computation of the iterating velocity
- 
-  $$\D_nh(p^n)=\D_n(e^{\nu n}h(x))$$
-  $$\implies$$
-  $$\D h(p^n(x))\D_np^n(x)=\nu e^{\nu n}h(x) \land e^{\nu n}h(x)=h(p^n(x))$$
-  $$\implies$$
-  \begin{equation}\label{eq:hitrostIteracije}
-  v=\nu(\D h)^{-1}h
-  \end{equation}
-  
-  For example, using methods of gradient descent, we use the velocity $\eqref{eq:hitrostIteracije}$, which gives the order and direction to the descent. Inductively, we could derive acceleration and higher order changes.
-  
-  Computation of the map $h$ and conditions for its' existence, for $p$ representable as a power series, was solved by Bridges \cite{BridgesShroeder}, derivation of which is omitted in this text, for the sake of brevity. By Theorem $\ref{izr:e^d}$, we may expand each program $p\in\dP$ by applying the operator $e^\D$ into a power series and employ said computation.
-  
-  Methods offer a different perspective on the halting problem, where it can be studied through convergence and fixed points.
-  
-  As a special case of iterator usage, we examine accumulators, for which we derive an explicit form, as a function of exit conditions. Let $\Shift^n$ denote the operator, that performs a linear shift of a program $p$ in the direction $v$.
-   
-   \begin{equation}
-   \Shift^n:\dP(v_0)\to \dP(v_0+nv)
-   \end{equation}
-    
-    Let $\Shift$ be the cyclic group, for a specific $v_0, v\in V$ under composition and expanded by the addition operation.
-    
-   $$\Shift=\{\Shift^n\}$$   
-   We define the $n$-th accumulator as 
-   $$\mathcal{A}_n=(1+\Shift+\Shift^2+\cdots+\Shift^n)$$ Thus the expression is
-   $$\sum\limits_{h=0}^{n}\dP(v_0+hv)=(1+\Shift+\Shift^2+\cdots+\Shift^n)(\dP)(v_0)$$
-   As before, we are interested in changes as dependent on exit conditions. With this in mind, we explore the accumulator $\mathcal{A}_n$
-   $$(1+\Shift+\Shift^2+\cdots+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+\cdots+\Shift^{n-1})$$
-   $$\implies$$
-   $$1-\Shift^n=(1-S)\mathcal{A}_{n-1}$$
-   $$\implies$$
-   $$\mathcal{A}_{n-1}=(1-\Shift^n)(\frac{1}{1-\Shift})$$
-   By Theorem $\ref{izr:e^d}$ we have
-   $$e^{h\D}\dP(v_0)(v)=\dP(v_0+hv)\implies \Shift^h=e^{h\D}$$
-   $$\implies$$
-   $$\mathcal{A}_{n-1}=(1-\Shift^n)(\D^{-1})(\frac{\D}{1-e^{\D}})$$
-   By Theorem $\ref{izr:linearnaNeodvisnost}$  there exists a space $\dP_n$, spanned by $\{\D^k\}$ over $V$. Thus the expression   
-     
-    \begin{equation}
-    	\frac{h\D}{1-e^{h\D}}=\sum\limits_{n=0}^{\infty}c_n\frac{(h\D)^n}{n!}
-    \end{equation}
-    is well defined. It turns out that $c_i=B_i$, with $B_i$ being the $i$-th Bernoulli number. The operator $(1-\Shift^n)$ represents evaluation at endpoints (exit conditions).
-    $$(1-\Shift^n)=\Bigg\vert_{v_0}^{nv}$$
-    Thus $\mathcal{A}_{n-1}$ is expressed as
-    $$\mathcal{A}_{n-1}=(\D^{-1})(\sum\limits_{i=0}^{\infty}c_i\frac{\D^i}{i!})\Bigg\vert_{v_0}^{nv}$$
-    $$\implies$$
-    \begin{equation}\label{eq:acumSum}
-    \mathcal{A}_{n-1}=c_0\D^{-1}+\sum\limits_{i=1}^{\infty}c_i\frac{\D^{i-1}}{i!}\Bigg\vert_{v_0}^{nv}
-    \end{equation}
-    Explicit knowledge of only one inverse is needed. The need which dissipates, when one is interested in changes. Thus the accumulator  $\mathcal{A}_{n-1}$ can be expressed as
-    \begin{equation}\label{eq:acumSumP}
-    	\mathcal{A}_{n-1}\dP(v_0)=c_0\D^{-1}\dP(t)+\sum\limits_{i=1}^{\infty}c_i\frac{\D^{i-1}\dP(t)}{i!}\Bigg\vert_{v_0}^{nv}
-    \end{equation}
-    The expression is a function of exit conditions, so changes of arbitrary order are computable without expressions $\eqref{eq:kh}$. When $p:V\to V$, $\eqref{eq:acumSumP}$ is equivalent to the Euler-Maclaurin integral formula \cite{EulerSumAbramowitzStegun}.  We have an operator $\mathcal{A}_n\in\dP_n$, and we can compute with it alone, like in the case of composition $\eqref{eq:dkompo}$.
-
-    $$\frac{d^k}{dn^k}\mathcal{A}_{n-1}=\frac{d^k}{dn^k}\Big((1-\Shift^n)(\frac{1}{1-e^\D})\Big)\land \Shift^n=e^{n\D}$$
-        $$\implies$$
-        $$\D^n e^{n\D}(\frac{1}{1-e^\D}) = \Shift^n(\frac{\D^n}{1-e^\D})$$
-        $$\implies$$
-        \begin{equation}
-        \frac{d^k}{dn^k}\mathcal{A}_{n-1}P\vert_{n=N}(v)=\Big(\sum\limits_{i=0}^{\infty}c_i\frac{\D^{N-1+i}\dP(Nv)}{i!}\Big)\Big(v\Big)
-        \end{equation}
-        where evaluation at $v\in V$ performs the needed translation, as the image of the operator $\mathcal{A}_{n-1}$ is an element of the $V\otimes T(V^*)\simeq S(V^*)$.
 
 \subsection{Transformations in practice} \label{sec:TransInPractice}
 
@@ -1245,7 +1133,7 @@ Let
 \begin{equation}
 P=P_n\circ P_{n-1}\circ\cdots\circ P_1
 \end{equation}
-be the procedure representing the system and $P_i$ the conceptual step treated by heuristic $H_j$. $L_j$ are the concerning location. Again, we let $P^i_k=P_i\circ\cdots\circ P_k$. Directions are usually modeled by first derivatives, and attractions by second derivatives, so lets assume employment of both by the heuristic $H$. For simplicity, assume $step$ to represent one optimization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques readily available.
+be the procedure representing the system for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $T_i$ containing a control structure), with $P_i=p_k\circ\cdots\circ p_1$ being the conceptual step treated by heuristic $H_j$. $L_j$ are the concerning location. Again, we let $P^i_k=P_i\circ\cdots\circ P_k$. Directions are usually modeled by first derivatives, and attractions by second derivatives, so lets assume employment of both by the heuristic $H$. For simplicity, assume $step$ to represent one optimization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques readily available.
 
 As $step$ requires the derivative of $H$, which itself contains first and second derivatives of $P$, requires use of the operator $e^\D_3$, for the second derivative to be differentiable. Once differentiable first and second derivatives with respect to parameters $p$ are extracted by
 \begin{equation}
