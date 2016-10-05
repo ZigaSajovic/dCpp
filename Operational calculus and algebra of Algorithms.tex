@@ -61,7 +61,7 @@ basicstyle=\ttfamily
 % operator odvoda
 \newcommand{\D}{\partial}
 %operator 1 + \D
-\newcommand{\Dplus}{\mathcal{D}}
+\newcommand{\DD}{\mathcal{D}}
 % operator 1+ \D + \D^2 + ...
 \newcommand{\sumd}{\tau}
 \newcommand{\Op}{\partial^{\bigoplus}}
@@ -88,8 +88,8 @@ In this paper, we develop the theory of analytic virtual machines, that
 implement infinitely-differentiable programming spaces and operators acting upon them.
 
 A programming space is a subalgebra of the function algebra of maps on the virtual
-memory. We can construct a differential operator on the programming spaces as we 
-model virtual memory as a tensor product of a vector space with tensor algebra
+memory. We can construct a differential operator on programming spaces as we 
+model virtual memory as a tensor product of a virtual space with tensor algebra
 of its dual. Virtual memory serves by itself as an algebra of polynomial
 programs, giving the approximation of the original program as a Taylor series at
 program's input values. 
@@ -100,9 +100,9 @@ approximation and transformations of programs to arbitrary function basis', allo
 while knowing the order of the error of the approximation. We
 also present several examples of how the theory can be used in computer science.
 
-The theory opens new doors in program analysis. We develop a general
+Theory opens new doors in program analysis. We develop a general
 procedure which takes a program that tests an object for a property and
-constructs a procedure that imposes that property upon any object. Through it we generalize state of the art methods for analyzing neural networks to general programs. Expanding upon them, we study computational dynamics as evolving shapes governing principles.
+constructs a procedure that imposes that property upon any object. Through it we generalize state of the art methods for analyzing neural networks to general programs. Expanding upon them, we study computational dynamics as shape and the principles it induces upon the system.
 
 \end{abstract}
 
@@ -120,8 +120,7 @@ Theory grants us the ability to choose programs' complexity through approximatio
 We provide instructions on methods of usage and outline the process of how these transformations are to be interchangeably applied in practice.
 
 The paper offers new insights into programs, as we demonstrate how to probe their inner structure, revealing what actions properties of the domain most react to. This enables us to extract archetypes from data, or alter it by imposing some property it lacks upon it.
-We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space. Exploring procedures as systems inducing change upon objects in this space, we study computational dynamics as evolving shapes governing principles, attaining valuable tools for general problem solving.
-
+We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space. Exploring procedures as systems inducing change upon objects in this space, we study computational dynamics as shape and the principles it induces upon the system and attain valuable tools for general problem solving.
 
 \section{Computer programs as maps}
 We will model computer programs as maps on a vector space. If
@@ -416,7 +415,7 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
  \end{equation}
  
  \begin{trditev}\label{izr:linearnaNeodvisnost}
-  The set $\{\partial^k;\quad 0\le k\le n\}$ represents linearly independent vectors over a field $K$, spanning the subspace $\mathcal{D}^n$.
+  The set $\DD^n=\{\partial^k;\quad 0\le k\le n\}$ represents linearly independent vectors over a field $K$.
  \end{trditev}
  
  \begin{definicija}\label{def:dP}
@@ -428,7 +427,7 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
  \end{definicija}
 
 \begin{izrek}\label{izr:P}
-	Any programming language $\dP_0$ satisfying Definition $\ref{def:dP}$ is an
+	Any differentiable programming space $\dP_0$ is an
   infinitely differentiable programming space, such that
 	\begin{equation}\label{eq:P_n}
 	 		\D^k\dP_0\subset\dP_0\otimes T(V^*)
@@ -480,7 +479,7 @@ U\otimes T(V^*)$, composed of the map itself and all derivatives of order $n\le 
 We seek to generalize such notions.
 
 \begin{definicija}\label{def:P_n}
-Let $\dP_n$ be the subspace, spanned by $\cup_{k\le n}\D^k \dP_0$ over $K$.
+Let $\dP_n$ be the subspace, spanned by $\DD^n\dP_0$ over $K$.
  \end{definicija}
  
  \begin{izrek}\label{izr:P_n}
@@ -520,7 +519,7 @@ By taking the limit as $n\to \infty$, we see
        
     The following
      \begin{equation}
-     	\sumd_n(P\in\dP_0)\in\dP_0\otimes T_n(V^*)
+     	\sumd_n\dP_n\subset\dP_0\otimes T_n(V^*)
      \end{equation}
    	holds by Theorem $\ref{izr:P_n}$, allowing simple implementation, as dictated by expression $\eqref{eq:potenca(1+d)}$. Following $\eqref{eq:potenca(1+d)}$ and the argument $\eqref{eq:inductionStep}$ of the proof of Theorem \ref{izr:P}, it is evident that only explicit knowledge of the operator $\sumd_1$ is required.
         Of course the same holds true for all generating maps of the type
@@ -554,7 +553,7 @@ with the product defined by \eqref{eq:algebra_product} for any bilinear map $\cd
 
 \subsection{Analytic virtual machine}
 Algorithms may be interpreted as a function algebra over $\dP_0:\VV\to \VV$.
-By Theorem $\ref{izr:P_n}$, we can express $\dP_n$, that is spanned by $\{\D^n\dP_0\}$ over $K$, through linear combinations of elements of $\dP_0\otimes T(V^*)$. To construct $\dP_n$, only the tuple $(\dP_0,\VV)$, equipped with tensor algebra is required. Thus the tuple  $(\dP_0,\VV)$ and the belonging algebra are sufficient conditions for the existence and construction of infinitely differentiable programing spaces $\dP_n$ $\eqref{def:P_n}$, which are function algebras by Theorem $\ref{izr:alg}$.
+By Theorem $\ref{izr:P_n}$, we can express $\dP_n$, that is spanned by $\sumd_n\dP_0$ over $K$, through linear combinations of elements of $\dP_0\otimes T(V^*)$. To construct $\dP_n$, only the tuple $(\dP_0,\VV)$, equipped with tensor algebra is required. Thus the tuple  $(\dP_0,\VV)$ and the belonging algebra are sufficient conditions for the existence and construction of infinitely differentiable programing spaces $\dP_n$ $\eqref{def:P_n}$, which are function algebras by Theorem $\ref{izr:alg}$.
 
 \begin{definicija}[Analytic virtual machine]
 The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiable virtual machine.
@@ -574,8 +573,9 @@ Anything that operates under these specifications is an analytic virtual machine
  \subsection{Power series expansion}\label{sec:Vrsta}
  
 We motivate the following with an example. Suppose an algorithm of high time complexity. As speed is of importance, an approximation would suffice. Using the described mechanics, we may linearize the program. We choose a $v_0\in\dP$ and linearize $P'=P(v_0)+\D P(v_0)\cdot(v-v_0)$. The latter has to be done only once.
+ Locally, the image of the linearization is a good approximation of the original program. To extend this radius, we would like to expand said program into a series. Furthermore, expansion into a series offers new insights into programs, that are studied in the following sections. 
  
- Locally, the image of the linearization is a good approximation of the original program. To extend this radius, we would like to expand said program into a series. By Claim $\ref{izr:linearnaNeodvisnost}$  there exists a space that is spanned by the set $\{\D^k\}$ over a field $K$. Thus, the expression
+ By Claim $\ref{izr:linearnaNeodvisnost}$  there exists a space that is spanned by the set $\{\D^k\}$ over a field $K$. Thus, the expression
  \begin{equation}
  	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{(h\D)^n}{n!}
  \end{equation}
@@ -655,7 +655,7 @@ of $h$ have coinciding Taylor series and are therefore equal.\\
  
  Theorem $\ref{izr:P_n}$ implies
      \begin{equation}
-     	e^{h\D}(P\in\dP)\in\dP_0\otimes T(V^*)
+     	e^{h\D}(\dP_0)\subset\dP_0\otimes T(V^*)
      \end{equation}      
 which enables efficient implementation.
  
@@ -800,7 +800,7 @@ satisfying
 \end{equation}
 for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto the set $\{\D^n\}$.
 \end{trditev}      
- Thus, we gained the ability of writing a differentiable program $P_1$ acting on derivatives of another program $P_2$, stressed as crucial (but lacking in most models) by other authors \cite{AD1}. Usage of the reduction of order map is demonstrated in Section \ref{sec:Analysis}.
+ Thus, we gained the ability of writing a differentiable program acting on derivatives of another program, stressed as crucial (but lacking in most models) by other authors \cite{AD1}. Usage of the reduction of order map is demonstrated in Section \ref{sec:Analysis}.
  
    \subsection{Functional transformation of programs}\label{sec:FTP}
    
@@ -881,14 +881,14 @@ for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto 
      e^\D P_{n_kk}\circ e^\D P_{(n_k-1)k}\circ\ldots\circ e^\D P_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
    \end{cases}
  \end{equation}
- The problem is on the edge of domains $\partial\Omega_i$, where the program $P$ may not be differentiable. A problem which may be avoided, with methods of the coming sections.
+ The problem is on the edge of domains $\partial\Omega_i$, where the program $P$ may not be differentiable. A problem which may be avoided with methods of the coming sections.
 
 \subsection{Transformations in practice} \label{sec:TransInPractice}
 
-Branching of programs into domains $\eqref{eq:zlrprk_splosno}$ is done through conditional statements. The number of domain $\Omega_i$ equals cardinality of the set $\{\Omega_i\}$. Each conditional causes a branching in programs' execution tree.
+Branching of programs into domains $\eqref{eq:zlrprk_splosno}$ is done through conditional statements. Each conditional causes a branching in programs' execution tree.
 
 \begin{trditev}\label{izr:st.zlepkov}
-Cardinality of the set $\{\Omega_i\}$ equals $\lvert\{\Omega_i \}\rvert=2^k$, where $k$ is the number of conditionals contained within the program.
+Cardinality of the set of domains $\Omega=\{\Omega_i\}$ equals $\lvert\{\Omega_i \}\rvert=2^k$, where $k$ is the number of conditionals contained within the program.
 \end{trditev}
 \begin{opomba}
 Iterators, that do not change exit conditions within its' body, do not cause branching.
@@ -998,18 +998,18 @@ P=\Big(p_3\circ e^ \D(p_2)\circ T_{F\X}e^\D(p_1)\Big) \in \dP
 The same holds true for all permutations of applications of operators $e^\D$, $T_{F\X}$ and $id$, as visible in Figure $\ref{fig:diagram}$.
 
 \begin{opomba}
-Equality depends on the set $F$, specified by the manufacturer of the hardware.
+In practice, we always use projections of the operator $e^\D$ to some finite subset $\DD^n$, resulting in $e^\D_n$. Therefore, we must take note that the following relation holds
+\begin{equation}
+e^\D_m(P_2)\circ e^\D_n(P_1)=e^\D_k(P_2\circ P_1)\iff 0\le k\le \min(m,n)
+\end{equation}
+when composing two images of the applied operator, projected to different subspaces.
 \end{opomba}
 
 The transformation tensor $T_{F\X}$ is needed to be computed only once and can then on be applied to any program running on said hardware. The same holds true for each branch $p_i$, which can, by Theorem $\ref{izr:komp_homo}$, be freely composed amongst each other.
 
-\begin{izrek}
-Composition of images of the operator $e_n^\D(p_2)\circ e_n^\D(p_1)$ is computable in $\mathcal{O}(nlog^k(n))$, with $k$ being the dimension of $V$ and $n$ the number of basis vectors $\{\D^n\}$ upon which we are projecting.
-\end{izrek}
-
-\begin{proof}
-	By $\eqref{eq:pToPol}$ images of the operator $e^\D$ are isomorphic to the symmetric algebra $S(V^*)$, composition of which is computable by FFT.
-\end{proof}
+\begin{trditev}
+Images of the operator $e^\D (P\in\dP_0)$ are elements of $U\otimes S(V^*)$ by $\eqref{eq:specProg}$, consisting of multi-linear maps. As such, their evaluation and composition ($e^\D(P_1)\circ e^\D(P_2)$) is tailor made for efficient implementation by methods of parallelism \cite{TensorGPU}, with computable complexities.
+\end{trditev}
 
 Transformations $\eqref{eq:P_F}$ need to be computed only once. Complexity of the composition of images of transformations $T_{F\X}\cdot e^\D(p_2)\circ T_{F\X}\cdot e^\D(p_1)$ depends on complexities of $f_i\in F$.
 
@@ -1021,7 +1021,7 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
   
   \subsection{Study of properties}
   
-  We will denote the fact, that some object $v$ has the property $X$, by $v\in X$. Suppose we have $v\notin X$, and desire a procedure that in some way modifies $v$ to have the property $X$. The desire is a procedure $P:v\notin X\to P(v)\in X$, that modifies $v$ in a some way. Let $S$ be some relation of similarity. We have
+  We will denote the fact, that some object $v$ has the property $X$, by $v\in X$. Suppose we have $v\notin X$, and desire a procedure that in some way modifies $v$ to have the property $X$. The desire is a procedure $P:v\notin X\to P(v)\in X$, that modifies $v$ in some way. Let $S$ be some relation of similarity. We have
   \begin{equation}
   p\in P:v\notin X\to P(v)\in X\iff vSp(v)
   \end{equation}
@@ -1030,20 +1030,23 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
   A:T\to P
   \end{equation}
   
-  To achieve this, we first develop a way of probing the inner structure of a procedure and explore how it interacts with the elements of the domain. Let $R$ be an equivalence relation 
+  To achieve this, we first develop a way of probing the inner structure of a procedure and explore procedure $T$ and how it interacts with the elements of the domain. We employ the developed operational calculus to this effect. Using it, we devise a way of extracting conceptual steps of importance $T_i$ to a partitioning $X_j$, from a procedure $T\in\dP_0$. The sets of conceptual steps of importance to a partitioning $X_j$ is denoted by $T_{X_j}$. After extraction of $T_{X_j}$, we use it for the construction of algorithm $A$ \eqref{eq:algA}.
+  
+  Let $R$ be an equivalence relation 
   \begin{equation}\label{eq:equivRelation}
   v_1Rv_2\iff T(v_1)ST(v_2)
   \end{equation}
-  where $S$ is some relation of similarity (ex. $\lvert1- T(v_1)\rvert\le c\land\lvert1- T(v_2)\rvert\le c$) and $M$ be the set of interest. Than $T$ partitions $M$ into equivalence classes, as by $R$ $\eqref{eq:equivRelation}$. The above property $X$, may be viewed as one of these equivalence classes $X_i$. Note that in general the relation need not be an equivalence. 
+  where $S$ is some relation of similarity (ex. $\lvert1- T(v_1)\rvert\le c\land\lvert1- T(v_2)\rvert\le c$) and $M$ be the set of interest. Than $T$ partitions $M$ into equivalence classes, as by $R$ $\eqref{eq:equivRelation}$. The above property $X$, may be viewed as one of these equivalence classes $X_i$. Note that in general the relation need not be an equivalence, as it is here so solely for ease of illustration. 
   
    Let $T=T_n\circ T_{n-1}\circ\cdots\circ T_1$, for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $T_i$ containing a control structure). Here $T_i=\varepsilon_k\circ\ldots \varepsilon_1$, is a conceptual step in the procedure. Then, we can inquire about and measure the importance $K$ of an arbitrary $T_i$, to a partitioning into a specific equivalence class $X_j$. $\eqref{eq:equivRelation}$. Thus, we are able to extract $T_{X_j}$, the set of steps of importance, to such a partitioning. We treat $T_i\circ\cdots T_1$ as the input of the procedure $T^n_i=T_n\circ\cdots\circ T_{i+1}$.
   
-  We present a simple algorithm towards such a goal, which can easily be enhanced with a more sophisticated choice of the measure of importance, as allowed by the theory. Here, the measure is simply the norm of the differential, as it measures the rate of change in the relation.
+  We present a simple algorithm towards such a goal, which can easily be enhanced with a more sophisticated choice of the measure of importance, as made available by the theory. For simplicity of the illustration, we use the norm of the differential as a measure, as it measures the rate of change in the relation. A measure easily replaced by a more sophisticated one, as allowed by the theory.
   
-  \begin{opomba}
-  For generality of the method, we express the computation of a differential as $\D_{T_k}T^n_k$, knowing than in $\dP$, it would have been computed as $e^{\D_{T_k}}_1(T^n_k)\in V\oplus V\otimes V^*$, and projecting the result onto $V\otimes V^*$.
-  \end{opomba}
-  
+  Extraction of the derivate of the sub-procedure $T^n_k$, with respect to the parameters of the conceptual step $T_k$, is accomplished by
+  \begin{equation}
+  \D_{T_k}T^n_k=proj_{\{\D\}}\left(e^{\D_{T_k}}_1(T^n_k)\right)
+  \end{equation}
+  applying the operator $e^{\D_{T_k}}_1$ onto the sub-procedure, resulting in $e^{\D_{T_k}}_1(T^n_k)\in\dP_1$ and projecting the result onto the subspace spanned by $\{\D\}$.
   
 \begin{algorithm}[h]
 \caption{Steps of importance to a partitioning}
@@ -1063,19 +1066,23 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-Thus we get $I=\{T_{X_i}\}$, where $T_{X_i}$ is the set of steps $T_j$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method. It may be used to better understand procedures and interpret them. The set $I=\{T_{X_i}\}$ can reveal procedural steps, that may have previously been thought of as less important to the end result.
+Thus we get $I=\{T_{X_j}\}$, where $T_{X_j}$ is the set of steps $T_i$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method. It may be used to better understand procedures and interpret them. The set $I=\{T_{X_j}\}$ can reveal procedural steps, that may have previously been thought of as less important to the end result.
 
-As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and calculus of algorithms of this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired property $X_j$. Global maxima of the method can be viewed as archetypes of objects possessing a specific  property $X_j$. With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$.
+With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$. As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and operational calculus presented in this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired property $X_j$. Global maxima of the method can be viewed as archetypes of objects in the domain possessing a specific  property $X_j$. 
+\begin{opomba}\label{rem:iPartitioning}
+We assume that the set $I$ induces some partitioning on the domain, where intersections need not be empty, thus containing some information about the domain, as it is common in practice and is assumed so heron.
+\end{opomba}
 
-We extract a once differentiable derivative of $T^n_j$ by
+
+We extract a once differentiable derivative of $T^n_j$ needed by
 \begin{equation}\label{eq:T'}
-T^\prime_j=\phi\circ e^{\D_{T_j}}_2(T^n_j)
+T^\prime_i=\phi\circ e^{\D_{T_i}}_2(T^n_i)\in\dP_1
 \end{equation}
-as, its' derivative (second derivative of $T$) is needed for further compositions $\eqref{eq:kompo}$ by Theorem $\ref{izr:kompo}$, where $\phi$ is the reduction of order map $\eqref{eq:reductionMap}$ of Theorem $\ref{izr:reductionMap}$. As such, it holds $T^\prime_j\in\dP_1$. We do so, for each $T_j\in T_{X_i}$ contained in $I$, where $X_i$ is the desired property.
+as, its' derivative (second derivative of $T$) is needed for further compositions $\eqref{eq:kompo}$ by Theorem $\ref{izr:kompo}$, where $\phi$ is the reduction of order map $\eqref{eq:reductionMap}$ of Theorem $\ref{izr:reductionMap}$. As such, it holds $T^\prime_i\in\dP_1$. We do so, for each $T_i\in T_{X_j}\subset I$, where $X_j$ is the desired property.
 
 Let $C\in\dP$ be a convex map, some measure of magnitude. Thus, we arrive at the expression to be maximized
 \begin{equation}
-E_j=C\circ T^\prime_j
+E_i=C\circ T^\prime_i
 \end{equation}
 \begin{algorithm}[h]
 \caption{Appoint property $X_j$ to $v\in M$}
@@ -1085,25 +1092,25 @@ E_j=C\circ T^\prime_j
 \State initialize path $\gamma$ with $v$
 \For{each step}
 \For{each $T_i\in T_{X_j}$}
-\State extract $T^\prime=\phi\circ e^{\D_{T_i}}_2(T^n_j)$ $\eqref{eq:T'}$
-\State compute the energy $E_j=e^{\D_v}_1(C)\circ T^\prime_j$
-\State extract the derivative $\D_v E=proj_{\{\D\}}(E_j)$
-\State add $\D_v E$ to $\mathcal{D}$
-\State insert $v$ to $\gamma$
+\State extract $T^\prime_i=\phi\circ e^{\D_{T_i}}_2(T^n_i)$ $\eqref{eq:T'}$
+\State compute the energy $E_i=e^{\D_v}_1(C)\circ T^\prime_i$
+\State extract the derivative $\D_v E_i=proj_{\{\D\}}(E_i)$
+\State add $\D_v E_i$ to $\D_v E$
 \EndFor
-\State update $v$ by $step(\mathcal{D},v)$
+\State update $v$ by $step(\D_v E,v)$
+\State insert $v$ to $\gamma$
 \EndFor
 \State return $\gamma$
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-The derivative with respect to $v$ is extracted by applying $e^{\D_{v}}_1$ and projecting the image onto $\D$,
+The derivative with respect to $v$ is extracted by applying $e^{\D_{v}}_1$ onto $C$ mapping into $\dP_1$, composing it with $T^\prime_i\in\dP_1$ and projecting the image onto the subspace spanned by $\{\D\}$,
 \begin{equation}
-\D_vE_j=proj_{\{\D\}}(e^{\D_v}_1(C)\circ T^\prime_j)
+\D_vE_i=proj_{\{\D\}}(e^{\D_v}_1(C)\circ T^\prime_i)
 \end{equation}
 as it needs not to be differentiable for this purpose.
 
-For simplicity, assume $step$ to represent one optimization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques readily available. 
+For simplicity, assume $step$ to represent one maximization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques, as made available by the theory. 
 
 As shown by Algorithm $\ref{alg:appoint}$, we arrived at a path $\gamma$, whose end point is the transformed $v\in M$, now endowed with the property $X_j$. Thus, using the theory, with the procedure $T$ as an input variable in Algorithm $\ref{alg:appoint}$, we constructed algorithm $A: T\to P$ $\eqref{eq:algA}$. When $v\in M$ represents an object upon which we wish to impose the property $X_j$, we may do so using the derived procedure $A(T)=P$
 \begin{equation}\label{eq:procedureP}
@@ -1120,20 +1127,21 @@ Path to change is the flow curve outputted by Algorithm $\ref{alg:appoint}$. Whe
 
 \subsection{Computational dynamics}
 
-As each procedure is revealed to be a system existing as an object in virtual space, its computational capability becomes synonymous with shape. For example, training of neural network is a homotopy in this space, as a high-dimensional manifold converges to its optimal computational form.
-The developed calculus allows as to sculpt and mold a procedures shape, and through the established connection, its computational capability. There is a strong connection between shape of the inhabiting space and physical principles it imposes upon objects traversing it.
+As each procedure is revealed to be a system existing as an object in virtual space, its computational capability becomes synonymous with shape. For example, training of neural network is a homotopy in this space, as it converges to its optimal computational form in a high-dimensional manifold.
+The developed operational calculus allows as to sculpt and mold a procedures shape, and through the established connection, its computational capability. There is a strong connection between shape of the inhabiting space and physical principles it imposes upon objects traversing it \cite{GeneralCovariance}.
 
-As procedures are systems entered by an object as an input and exited as an output upon undergoing change, the process of computation can be viewed as evolutions in phase space. Thus, our newfound ability to mold shape in virtual space enables us to impose principles on the system the procedure represents. Assume we have some a priori knowledge of how the process is to change the object, some previously known heuristic $H$ known from practice. That is equivalent to having knowledge on the path to change $\gamma$, as argued in the previous section. Heuristic $H$ might be some measure on the environment, or a direction, for objects at a particular location $L_i$ in the system. We express change the desired heuristic $H$ locally exerts, with a relation.
-Thus, $H$ represents a local principle we wish to impose into the system. We denote the fact the system obeys the principle $H$ by $P\in H$. The desire is an algorithm molding the system, modifying it in some way, as to impose the principle upon it.
+As procedures are systems entered by an object as an input and exited as an output upon undergoing change, the process of computation can be viewed as evolutions in phase space. Thus, our newfound ability to mold shape in virtual space enables us to impose principles into the system the procedure represents. Assume we have some a priori knowledge of how the process is to change the object, some previously known heuristic $H$ known from practice. That is equivalent to having knowledge on the path to change $\gamma$, as argued in the previous section. Heuristic $H$ might be some measure on the environment, or a direction, for objects at a particular location $L_i$ in the system. We express change the desired heuristic $H$ locally exerts with a relation.
+Thus, $H$ represents a local principle we wish to impose into the system. We denote the fact the system obeys the principle $H$ by $P\in H$. The desire is an algorithm molding the system, modifying it in some way, as to impose the principle into it.
 \begin{equation}\label{eq:impose}
 A:P\notin H\to P\in H
 \end{equation}
 
+To achieve this, we again probe the system represented by procedure $P\in\dP_0$. By knowing from practice, or otherwise, at which locations (inputs) of the system, the effects of heuristic $H_i$ should be present, we maximize its action in the neighborhood of $L_i$. This effectively means that objects at locations $L_i$ in the system are affected by the principle $H_i$.
 Let
 \begin{equation}
 P=P_n\circ P_{n-1}\circ\cdots\circ P_1
 \end{equation}
-be the procedure representing the system for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $T_i$ containing a control structure), with $P_i=p_k\circ\cdots\circ p_1$ being the conceptual step treated by heuristic $H_j$. $L_j$ are the concerning location. Again, we let $P^i_k=P_i\circ\cdots\circ P_k$. Directions are usually modeled by first derivatives, and attractions by second derivatives, so lets assume employment of both by the heuristic $H$. For simplicity, assume $step$ to represent one optimization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques readily available.
+be the procedure representing the system for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $P_i$ containing a control structure), with $P_i=p_k\circ\cdots\circ p_1$ being the conceptual step treated by heuristic $H_j$. $L_j$ are the concerning locations. Again, we let $P^i_k=P_i\circ\cdots\circ P_k$. Directions are usually modeled by first derivatives, and attractions by second derivatives, so lets assume employment of both by the heuristic $H$. For simplicity, assume $step$ to represent one optimization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques as made available by the theory.
 
 As $step$ requires the derivative of $H$, which itself contains first and second derivatives of $P$, requires use of the operator $e^\D_3$, for the second derivative to be differentiable. Once differentiable first and second derivatives with respect to parameters $p$ are extracted by
 \begin{equation}
