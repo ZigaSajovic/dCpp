@@ -901,16 +901,19 @@ to verify, that
 
  Problems with differentiability which might have occurred on the edge of domains $\partial\Omega_i$, were removed from the realm of possibilities by the way our theory has been constructed.
  
- \begin{trditev}
+ \begin{trditev}\label{izr:openDomains}
  Each domain $\Omega_i$ can be treated as an open set.
  \end{trditev}
  \begin{proof}
  Each execution of program \eqref{eq:zlrprk_splosno} is computed on the interior one of the domains $\Omega_i$. The same holds true for all coefficients in the tensor series  \eqref{eq:Dzlrprk_splosno}, as they are computed on the same point in the interior of the domain $\Omega_i$ (as opposed to numeric differentiation, where two points would be employed, which may each belong to the interior of a different domain). Therefore, all executions are computed on the interior of some domain $\Omega_i$, effectively making it an open set.
  \end{proof}
  
- \begin{corollary}
- The entire domain of the program $\Omega=\bigcup\limits_{\forall_i}\Omega_i$ is open, as the union of open sets is open.
- \end{corollary}
+ \begin{izrek}
+ Each program $P\in\dP$ containing control structures is differentiable on the entire domain $\Omega=\bigcup\limits_{\forall_i}\Omega_i$.
+ \end{izrek}
+ \begin{proof}
+  Each domain $\Omega_i$ is open by Claim \ref{izr:openDomains}. As the entire domain $\Omega=\bigcup\limits_{\forall_i}\Omega_i$ is a union of open sets, it is therefor open itself. Thus, all evaluations are computed in the interior of some open set, effectively removing boundaries, where problems might have otherwise occurred.
+ \end{proof}
 
 \subsection{Transformations in practice} \label{sec:TransInPractice}
 
