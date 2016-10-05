@@ -119,7 +119,7 @@ The aim of this paper is bridging the gap between programming and analysis. By g
 Theory grants us the ability to choose programs' complexity through approximations inhabiting the virtual space. It being modeled by tensor algebra consisting of multi-linear maps is tailor made for efficient implementation by GPU parallelism \cite{TensorGPU}. Employing the developed algebra, we derive functional transformations of programs in an arbitrary function basis. As different hardware is optimized for running of different sets of functions, this proves useful with adapting code to fit specific hardware.
 We provide instructions on methods of usage and outline the process of how these transformations are to be interchangeably applied in practice. 
 
-Theory fully integrates control structures, thus retaining algorithmic control flow and the expressive power it possesses. It offers new insights into programs, as we demonstrate how to probe their inner structure, revealing what actions properties of the domain most react to. This enables us to extract archetypes from data, or alter it by imposing some property it lacks upon it.
+Analytic virtual machines fully integrate control structures, thus retaining algorithmic control flow and the expressive power it possesses. The theory offers new insights into programs, as we demonstrate how to probe their inner structure, revealing what actions properties of the domain most react to. This enables us to extract archetypes from data, or alter it by imposing some property it lacks upon it.
 We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space. Exploring procedures as systems inducing change upon objects in this space, we study computational dynamics as shape and the principles it induces upon the system, and attain valuable tools for general problem solving.
 
 \section{Computer programs as maps}
@@ -805,7 +805,7 @@ satisfying
 \end{equation}
 for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto the set $\{\D^n\}$.
 \end{trditev}      
- Thus, we gained the ability of writing a differentiable program acting on derivatives of another program, stressed as crucial (but lacking in most models) by other authors \cite{AD1}. Usage of the reduction of order map is demonstrated in Section \ref{sec:Analysis}.
+ Thus, we gained the ability of writing a differentiable program acting on derivatives of another program, stressed as crucial (but lacking in most models) by other authors \cite{AD1}. Usage of the reduction of order map and other constructs of this Section are demonstrated in Section \ref{sec:Analysis}, as we analyze procedures as systems inducing change upon objects in virtual space.
  
    \subsection{Functional transformation of programs}\label{sec:FTP}
    
@@ -1089,7 +1089,7 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
   \begin{equation}
   \D_{T_k}T^n_k=proj_{\{\D\}}\left(e^{\D_{T_k}}_1(T^n_k)\right)
   \end{equation}
-  applying the operator $e^{\D_{T_k}}_1$ onto the sub-procedure, resulting in $e^{\D_{T_k}}_1(T^n_k)\in\dP_1$ and projecting the result onto the subspace spanned by $\{\D\}$.
+  applying the operator $e^{\D_{T_k}}_1$ onto the sub-procedure, resulting in $e^{\D_{T_k}}_1(T^n_k)\in\dP_1$ and projecting the result onto the subspace spanned by $\{\D\}$ over $\mathbb{Z}_2$, as to eliminate coefficients, leaving only the derivative.
   
 \begin{algorithm}[h]
 \caption{Steps of importance to a partitioning}
@@ -1147,7 +1147,7 @@ E_i=C\circ T^\prime_i
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-The derivative with respect to $v$ is extracted by applying $e^{\D_{v}}_1$ onto $C$ mapping into $\dP_1$, composing it with $T^\prime_i\in\dP_1$ and projecting the image onto the subspace spanned by $\{\D\}$,
+The derivative with respect to $v$ is extracted by applying $e^{\D_{v}}_1$ onto $C$ mapping into $\dP_1$, composing it with $T^\prime_i\in\dP_1$ and projecting the image onto the subspace spanned by $\{\D\}$ over $\mathbb{Z}_2$, as to eliminate coefficients, leaving only the derivative,
 \begin{equation}
 \D_vE_i=proj_{\{\D\}}(e^{\D_v}_1(C)\circ T^\prime_i)
 \end{equation}
@@ -1193,11 +1193,11 @@ P^{i\prime}_1=proj_{\{1,\D\}}\left(\phi\circ e^{\D_{p}}_3(P^i_1)\right)\in\dP_1
 \begin{equation}
 P^{i\prime\prime}_1=\phi^2\circ e^{\D_p}_3(P_i)\in\dP_1
 \end{equation}
-As both are once differentiable, so is the heuristic $H$ taking them as input.
+Here we project over the subspace spanned by $\{1,\D\}$ over $K$, as coefficients are required. As both are once differentiable, so is the heuristic $H$ taking them as input.
 \begin{equation}
 H^\prime=e^{\D_p}_1(H)\circ(P^{i\prime}_1,P^{i\prime\prime}_1)\in\dP_1
 \end{equation}
-Its derivative is extracted by projecting $H^\prime$ onto $\{\D\}$, as it need not be further differentiable for the use in the $step$ function.
+Its derivative is extracted by projecting $H^\prime$ onto $\{\D\}$ over $\mathbb{Z}_2$, as to eliminate coefficients, leaving only the derivative, as it need not be further differentiable for the use in the $step$ function.
 
 \begin{algorithm}[h]
 \caption{Imposing a principle $H$}
