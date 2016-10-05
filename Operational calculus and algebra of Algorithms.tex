@@ -890,7 +890,7 @@ to verify, that
  The operator $e^\D$ (at some point) of a program $P$, is of course dependent on initial parameters $\vec{x}$, and can also be expressed as a spline, inside domains $\Omega_i$
  \begin{equation}
    \label{eq:Dzlrprk_splosno}
-   e^\D P_{\vec{x}} =
+   e^\D P({\vec{x}}) =
    \begin{cases}
      e^\D P_{n_11}\circ e^\D P_{(n_1-1)1}\circ\ldots\circ e^\D P_{11}(\vec{x});&\quad \vec{x}\in\interior(\Omega_1)\\
      e^\D P_{n_22}\circ e^\D P_{(n_2-1)2}\circ\ldots\circ e^\D P_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
@@ -898,7 +898,15 @@ to verify, that
      e^\D P_{n_kk}\circ e^\D P_{(n_k-1)k}\circ\ldots\circ e^\D P_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
    \end{cases}
  \end{equation}
- The problem is on the edge of domains $\partial\Omega_i$, where the program $P$ may not be differentiable. A problem which may be avoided with methods of the coming sections.
+
+ Problems with differentiability which might have occurred on the edge of domains $\partial\Omega_i$, are removed from the realm of possibilities by the way our theory has been constructed.
+ 
+ \begin{trditev}
+ Each domain $\Omega_i$ can be treated as an open set.
+ \end{trditev}
+ \begin{proof}
+ Each execution of program \eqref{eq:zlrprk_splosno} is computed on the interior one of the domains $\Omega_i$. The same holds true for all coefficients in the tensor series  \eqref{eq:Dzlrprk_splosno}, as they are computed on the same point in the interior of the domain $\Omega_i$ (as opposed to numeric differentiation, where two points would be employed, which may each belong the interior of a different domain). Therefore, all computations are computed on the interior of some domain $\Omega_i$, effectively making it an open set.
+ \end{proof}
 
 \subsection{Transformations in practice} \label{sec:TransInPractice}
 
@@ -1042,7 +1050,7 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
   \begin{equation}
   p\in P:v\notin X\to P(v)\in X\iff vSp(v)
   \end{equation}
-  Usually such procedures are difficult to construct and may not even explicitly exist. An easier task is to construct a procedure $T$, whose output allows deduction of whether $v$ has the property $X$, or does not. We generalize such notions and develop methods of analyzing procedures $T$ that enable a construction of an algorithm
+  Usually such procedures are difficult to construct and may not even explicitly exist. An easier task is to construct a procedure $T\in\dP_0$, whose output allows deduction of whether $v$ has the property $X$, or does not. We generalize such notions and develop methods of analyzing procedures $T\in\dP_0$ that enable a construction of an algorithm
   \begin{equation}\label{eq:algA}
   A:T\to P
   \end{equation}
@@ -1087,7 +1095,7 @@ Thus we get $I=\{T_{X_j}\}$, where $T_{X_j}$ is the set of steps $T_i$ measured 
 
 With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$. As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and operational calculus presented in this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired property $X_j$. Global maxima of the method can be viewed as archetypes of objects in the domain possessing a specific  property $X_j$. 
 \begin{opomba}\label{rem:iPartitioning}
-We assume that the set $I$ induces some partitioning on the domain, where intersections need not be empty, thus containing some information about the domain, as it is common in practice and is assumed so heron.
+We assume that the set $I$ induces some partitioning on the domain, where intersections need not be empty, thus containing some information about the domain, as it is common in practice and assumed so heron.
 \end{opomba}
 
 
