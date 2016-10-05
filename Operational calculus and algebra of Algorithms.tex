@@ -852,7 +852,24 @@ for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto 
   If $F$ does not span $\dP$, or we used the projection of the operator $e^\D_{n<N}$, the expression $P_F$ still represents the best possible approximation of the original program, on components $\{\D^n\}$, in basis $F$.
   
   It makes sense to, before computing the tensor $\eqref{eq:matTrans}$, to expand the set $F$, by mutual (nested) compositions, and gain mappings, that can not be expressed as linear combinations (but are still optimized for hardware $H$), and so increasing the power of the method.
-  
+\subsection{The special case of functions $\VV\to K$}
+We describe a special case when $\dP_0=\VV\otimes\tilde{\dP}_0$, where
+$\tilde{\dP}_{-1}<K^\VV$ is a subspace of the space of functions $\VV\to K$. This is
+useful, if the set of functions $F$ only contains functions $\VV\to K$. It is
+very common, that basic operations in a programming language change one single
+real valued variable at a time. In that case, the value of changed variable is
+described by the function $\tilde{f}:\VV\to K$, while the location, where the
+value is saved is given by a standard basis vector $\e_i$. The map $f:\VV\to \VV$
+is then given as a tensor product $f=\e_i\otimes \tilde{f}$. We can start our
+construction of programming spaces by defining differentiable programing space
+of functions $\VV\to K$ instead of maps $\VV\to \VV$ as in definition
+\ref{def:dP}. Analog to the  the theorems \ref{izr:P}, \ref{izr:P_n} it is easy
+to verify, that 
+\begin{equation}
+  \label{eq:tilda_dP}
+  \D^k\tilde{\dP_0}\subset\tilde{\dP_0}\otimes T_k(\VV^*).
+\end{equation}
+
  \subsection{Control structures}
  
  Until now, we restricted ourselves to operations, that change the memories' content. Along side assignment statements, we know control statements (ex. statements \texttt{if},
