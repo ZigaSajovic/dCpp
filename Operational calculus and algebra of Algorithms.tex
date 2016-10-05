@@ -876,7 +876,7 @@ to verify, that
   \texttt{for}, \texttt{while}, ...). Control statements don't directly influence values of variables, but change the execution tree of the program. This of course affects the derivative. But, for a certain set of input variables, the execution of the program will always be the same. This is why we interpret control structures as a definition of a spline.
   
  Each control structure divides the space of parameters into different domains, in which the execution of the program is always the same. The entire program divides the space of all possible parameters to a finite set of domains $\{\Omega_i;\quad i=1,\ldots
-  k\}$, where the programs' execution is always the same. As such, a program may in general be defined as a spline. For $\vec{x}\in\RR^n$
+  k\}$, where the programs' execution is always the same. As such, a program may in general be defined as a spline. For $\vec{x}\in\VV$
  \begin{equation}
    \label{eq:zlrprk_splosno}
    P(\vec{x}) =
@@ -899,14 +899,18 @@ to verify, that
    \end{cases}
  \end{equation}
 
- Problems with differentiability which might have occurred on the edge of domains $\partial\Omega_i$, are removed from the realm of possibilities by the way our theory has been constructed.
+ Problems with differentiability which might have occurred on the edge of domains $\partial\Omega_i$, were removed from the realm of possibilities by the way our theory has been constructed.
  
  \begin{trditev}
  Each domain $\Omega_i$ can be treated as an open set.
  \end{trditev}
  \begin{proof}
- Each execution of program \eqref{eq:zlrprk_splosno} is computed on the interior one of the domains $\Omega_i$. The same holds true for all coefficients in the tensor series  \eqref{eq:Dzlrprk_splosno}, as they are computed on the same point in the interior of the domain $\Omega_i$ (as opposed to numeric differentiation, where two points would be employed, which may each belong the interior of a different domain). Therefore, all computations are computed on the interior of some domain $\Omega_i$, effectively making it an open set.
+ Each execution of program \eqref{eq:zlrprk_splosno} is computed on the interior one of the domains $\Omega_i$. The same holds true for all coefficients in the tensor series  \eqref{eq:Dzlrprk_splosno}, as they are computed on the same point in the interior of the domain $\Omega_i$ (as opposed to numeric differentiation, where two points would be employed, which may each belong to the interior of a different domain). Therefore, all executions are computed on the interior of some domain $\Omega_i$, effectively making it an open set.
  \end{proof}
+ 
+ \begin{corollary}
+ The entire domain of the program $\Omega=\bigcup\limits_{\forall_i}\Omega_i$ is open, as the union of open sets is open.
+ \end{corollary}
 
 \subsection{Transformations in practice} \label{sec:TransInPractice}
 
@@ -919,7 +923,7 @@ Cardinality of the set of domains $\Omega=\{\Omega_i\}$ equals $\lvert\{\Omega_i
 Iterators, that do not change exit conditions within its' body, do not cause branching.
 \end{opomba}
 
-It follows from Claim $\ref{izr:st.zlepkov}$, that the complexity of naive implementations of methods presented in Sections $\ref{sec:Vrsta}$ and $\ref{sec:FTP}$ are exponential (if we were to treat each domain $\Omega_i$ by itself). But, with correct application of Theorems developed in this paper, we may drastically reduce this down to linear. This is the subject of study in this section.
+It follows from Claim $\ref{izr:st.zlepkov}$, that the complexity of naive implementations of methods presented in Sections $\ref{sec:Vrsta}$ and $\ref{sec:FTP}$ to splines are exponential in the number of branching points (if we were to treat each domain $\Omega_i$ by itself). But, with correct application of Theorems developed in this paper, we may drastically reduce this down to linear. This is the subject of study in this section.
 \vspace{10px}
 
 \tikzstyle{decision} = [diamond, draw, fill=blue!20, 
