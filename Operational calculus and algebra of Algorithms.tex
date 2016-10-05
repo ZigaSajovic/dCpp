@@ -100,7 +100,7 @@ approximation and transformations of programs to arbitrary function basis', allo
 while knowing the order of the error of the approximation. We
 also present several examples of how the theory can be used in computer science.
 
-Theory opens new doors in program analysis. We develop a general
+Theory opens new doors in program analysis, while fully retaining algorithmic control flow. We develop a general
 procedure which takes a program that tests an object for a property and
 constructs a procedure that imposes that property upon any object. Through it we generalize state of the art methods for analyzing neural networks to general programs. Expanding upon them, we study computational dynamics as shape and the principles it induces upon the system.
 
@@ -117,10 +117,10 @@ Models allowing for nested differentiation \cite{AD1}, still fail in providing a
 The aim of this paper is bridging the gap between programming and analysis. By generalizing on existing models, we show them to be specific views of the same great elephant. Employing tensor algebra, we construct a virtual memory whose internal structure reflects and carries evaluation of algorithmic expressions. In Section \ref{sec:operational} we provide an exact definition and construction of an analytic virtual machine, capable of implementing infinitely-differentiable programming spaces and operators acting upon them, supporting actions on multiple memory locations at a time. These programming spaces are shown to be a subalgebra, giving rise to algebraic manipulations of programs and through it operators expanding a program into an infinite tensor series are derived. The operator of program composition is constructed, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order) under a single invariant operator in the theory. Through projections and embeddings in this space, the problem of nested differentiation is resolved, where a program $p_1$ acts on differentiable derivatives of $p_2$, requiring only coding of $p_2$ within $p_1$.
 
 Theory grants us the ability to choose programs' complexity through approximations inhabiting the virtual space. It being modeled by tensor algebra consisting of multi-linear maps is tailor made for efficient implementation by GPU parallelism \cite{TensorGPU}. Employing the developed algebra, we derive functional transformations of programs in an arbitrary function basis. As different hardware is optimized for running of different sets of functions, this proves useful with adapting code to fit specific hardware.
-We provide instructions on methods of usage and outline the process of how these transformations are to be interchangeably applied in practice.
+We provide instructions on methods of usage and outline the process of how these transformations are to be interchangeably applied in practice. 
 
-The paper offers new insights into programs, as we demonstrate how to probe their inner structure, revealing what actions properties of the domain most react to. This enables us to extract archetypes from data, or alter it by imposing some property it lacks upon it.
-We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space. Exploring procedures as systems inducing change upon objects in this space, we study computational dynamics as shape and the principles it induces upon the system and attain valuable tools for general problem solving.
+Theory fully integrates control structures, thus retaining algorithmic control flow and the expressive power it possesses. It offers new insights into programs, as we demonstrate how to probe their inner structure, revealing what actions properties of the domain most react to. This enables us to extract archetypes from data, or alter it by imposing some property it lacks upon it.
+We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space. Exploring procedures as systems inducing change upon objects in this space, we study computational dynamics as shape and the principles it induces upon the system, and attain valuable tools for general problem solving.
 
 \section{Computer programs as maps}
 We will model computer programs as maps on a vector space. If
@@ -553,7 +553,12 @@ with the product defined by \eqref{eq:algebra_product} for any bilinear map $\cd
 
 \subsection{Analytic virtual machine}
 Algorithms may be interpreted as a function algebra over $\dP_0:\VV\to \VV$.
-By Theorem $\ref{izr:P_n}$, we can express $\dP_n$, that is spanned by $\sumd_n\dP_0$ over $K$, through linear combinations of elements of $\dP_0\otimes T(V^*)$. To construct $\dP_n$, only the tuple $(\dP_0,\VV)$, equipped with tensor algebra is required. Thus the tuple  $(\dP_0,\VV)$ and the belonging algebra are sufficient conditions for the existence and construction of infinitely differentiable programing spaces $\dP_n$ $\eqref{def:P_n}$, which are function algebras by Theorem $\ref{izr:alg}$.
+By Theorem $\ref{izr:P_n}$, we can express $\dP_n$, that is spanned by $\DD^n\dP_0$ over $K$, through linear combinations of elements of $\dP_0\otimes T(V^*)$. To construct $\dP_n$, only the tuple $(\VV,\dP_0)$, equipped with tensor algebra is required.
+\begin{trditev}
+The tuple  $(\VV,\dP_0)$ and the belonging algebra are sufficient conditions for the existence and construction of infinitely differentiable programing spaces $\dP_\infty$ $\eqref{def:P_n}$, which are function algebras by Theorem $\ref{izr:alg}$.
+\end{trditev}
+
+We propose an abstract computational model, a virtual machine capable of constructing and implementing the derived theory. Such a machine provides a framework for analytic study of algorithmic procedures through algebraic means.
 
 \begin{definicija}[Analytic virtual machine]
 The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiable virtual machine.
@@ -568,12 +573,12 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
     \end{itemize}
     When $\dP_0$ is a differentiable programming space, this defines an infinitely-differentiable virtual machine.
   \end{definicija}
-Anything that operates under these specifications is an analytic virtual machine, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$. 
+Anything that operates under these specifications is an analytic virtual machine, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$. Algebraic manipulations it enables are employed throughout the paper, revealing analytic insights in Section \ref{sec:Analysis}.  All analytic virtual machines fully integrate usage of control structures, as it is demonstrated and proven in Section \ref{sec:control}, thus retaining algorithmic control flow and the expressive power it possesses. 
 
  \subsection{Power series expansion}\label{sec:Vrsta}
  
-We motivate the following with an example. Suppose an algorithm of high time complexity. As speed is of importance, an approximation would suffice. Using the described mechanics, we may linearize the program. We choose a $v_0\in\dP$ and linearize $P'=P(v_0)+\D P(v_0)\cdot(v-v_0)$. The latter has to be done only once.
- Locally, the image of the linearization is a good approximation of the original program. To extend this radius, we would like to expand said program into a series. Furthermore, expansion into a series offers new insights into programs, that are studied in the following sections. 
+ Expansion into a series offers valuable insights into programs through methods of analysis, as explored in Section \ref{sec:Analysis}. But before tackling analysis, we motivate the following with an immediate example. Suppose an algorithm of high time complexity. As speed is of importance, an approximation would suffice. Using the described mechanics, we may linearize the program. We choose a $v_0\in\dP$ and linearize $P'=P(v_0)+\D P(v_0)\cdot(v-v_0)$. The latter has to be done only once.
+ Locally, the image of the linearization is a good approximation of the original program. To extend this radius, we would like to expand said program into a series.
  
  By Claim $\ref{izr:linearnaNeodvisnost}$  there exists a space that is spanned by the set $\{\D^k\}$ over a field $K$. Thus, the expression
  \begin{equation}
@@ -870,7 +875,7 @@ to verify, that
   \D^k\tilde{\dP_0}\subset\tilde{\dP_0}\otimes T_k(\VV^*).
 \end{equation}
 
- \subsection{Control structures}
+ \subsection{Control structures}\label{sec:control}
  
  Until now, we restricted ourselves to operations, that change the memories' content. Along side assignment statements, we know control statements (ex. statements \texttt{if},
   \texttt{for}, \texttt{while}, ...). Control statements don't directly influence values of variables, but change the execution tree of the program. This of course affects the derivative. But, for a certain set of input variables, the execution of the program will always be the same. This is why we interpret control structures as a definition of a spline.
