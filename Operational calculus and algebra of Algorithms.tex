@@ -74,6 +74,7 @@ basicstyle=\ttfamily
 \newtheorem{izrek}{Theorem}[section]
 \newtheorem{opomba}{Remark}[section]
 \newtheorem{corollary}{Corollary}[section]
+\newtheorem{proposition}{Proposition}[section]
 
 \usepackage[sorting=none,backend=bibtex]{biblatex}
 \bibliography{biblio}
@@ -1060,66 +1061,94 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
   
 \section{Analysis}\label{sec:Analysis}
   
-   The theory presented in this paper grants new insights through methods of analysis. It reveals a procedure to be a system exerting change on objects inhabiting virtual space. These revelations are the object of study of this section.
+   The theory presented in this paper grants new insights through methods of analysis. It reveals a procedure to be a system exerting change on objects inhabiting virtual space. These revelations are the object of study of this section, as we demonstrate how to intertwine algorithmic control flow, operational calculus and algebra, towards a common goal.  
   
   \subsection{Study of properties}
   
-  We will denote the fact, that some object $v$ has the property $X$, by $v\in X$. Suppose we have $v\notin X$, and desire a procedure that in some way modifies $v$ to have the property $X$. The desire is a procedure $P:v\notin X\to P(v)\in X$, that modifies $v$ in some way. Let $S$ be some relation of similarity. We have
+  We will denote the fact, that some object $v$ has the property $X$, by $v\in X$. Suppose we have $v\notin X$, and desire a procedure $P\in\dP_0$, that in some way modifies $v$ to have the property $X$. The desire is a procedure $P:v\notin X\to P(v)\in X$, that modifies $v$ in some way. Let $S$ be some relation of similarity. We have
+  \begin{equation}\label{eq:procP}
+  P\in \dP_0:v\notin X\to P(v)\in X\iff vSp(v)
+  \end{equation}
+  Usually such procedures are difficult to construct and may not even explicitly exist. An easier task is to construct a procedure $T\in\dP_0$, whose output allows deduction of whether $v$ has the property $X$, or has not. 
+  
+   \begin{proposition}\label{prop:partitionongProperty}
+   Let $R$ be an equivalence relation 
+     \begin{equation}\label{eq:equivRelation}
+     v_1Rv_2\iff T(v_1)ST(v_2)
+     \end{equation}
+     where $S$ is some relation of similarity (ex. $\lvert1- T(v_1)\rvert\le c\land\lvert1- T(v_2)\rvert\le c$) and $\Omega$ be the domain of interest.
+   Than a procedure $T\in\dP_0$ partitions the domain $\Omega$ into equivalence classes, as by $R$ $\eqref{eq:equivRelation}$. The possession of a property $X$, may be viewed as belonging to one of these partitions $X_j$.
+   \end{proposition}
+   \begin{opomba}
+   Note that in general the relation need not be an equivalence, as it is here so solely for ease of illustration. 
+   \end{opomba}
+   
+   Let $T=T_n\circ T_{n-1}\circ\cdots\circ T_1$, for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $T_i$ containing a control structure, as shown in Section \ref{sec:control}). Here $T_i=\varepsilon_k\circ\ldots \varepsilon_1$, is a conceptual step in the procedure.
+   
+   \begin{trditev}\label{clm:algA}
+   With an appropriate choice of the relation $R$, there exist an algorithm
+   \begin{equation}\label{eq:algA}
+     A:T\in\dP\to P\in\dP
+     \end{equation}
+     transforming a procedure $T$ of Proposition \ref{prop:partitionongProperty} testing for a property $X_j$, to a procedure $P\in \dP_0:v\notin X_j\to P(v)\in X_j$ \eqref{eq:procP} imposing that property onto any object in the domain $\Omega$.
+   \end{trditev}
+   
+   We employ the developed operational calculus in such endeavors, as we probe procedures' inner structure and explore how it interacts with elements of the domain. 
+   
+   \begin{proposition}\label{prop:setOfImpConSteps}
+   Let $M_i$ some measure of activity in the conceptual step $T_i$, for a given element of the domain $v\in \Omega$ taken as the input of $T$. We denote the set of important conceptual steps to a partitioning $X_j$ by
+   \begin{equation}
+   T_i\in T_{X_j}\iff M_i\circ T^i_0:v\in X_j\to K\ge c 
+   \end{equation}
+   with their union denoted by
+   \begin{equation}
+   I=\bigcup\limits_{\forall_j}T_{X_j}
+   \end{equation}
+   \end{proposition}
+  
+  We present a simple algorithm constructing the set $I$, where the measure of activity $M$ is simply the norm of the appropriate derivative, as it measures the rate of change in the relation. A measure easily replaced by a more sophisticated one, as allowed by the theory.
+  
+  Extraction of the derivate of the procedure $T$, with respect to the parameters of the conceptual step $T_i$, is accomplished by
   \begin{equation}
-  p\in P:v\notin X\to P(v)\in X\iff vSp(v)
+  \D_{T_i}T=proj_{\{\D\}}\left(e^{\D_{T_i}}_1(T)\right)
   \end{equation}
-  Usually such procedures are difficult to construct and may not even explicitly exist. An easier task is to construct a procedure $T\in\dP_0$, whose output allows deduction of whether $v$ has the property $X$, or does not. We generalize such notions and develop methods of analyzing procedures $T\in\dP_0$ that enable a construction of an algorithm
-  \begin{equation}\label{eq:algA}
-  A:T\to P
-  \end{equation}
-  
-  To achieve this, we first develop a way of probing the inner structure of a procedure and explore procedure $T$ and how it interacts with the elements of the domain. We employ the developed operational calculus to this effect. Using it, we devise a way of extracting conceptual steps of importance $T_i$ to a partitioning $X_j$, from a procedure $T\in\dP_0$. The sets of conceptual steps of importance to a partitioning $X_j$ is denoted by $T_{X_j}$. After extraction of $T_{X_j}$, we use it for the construction of algorithm $A$ \eqref{eq:algA}.
-  
-  Let $R$ be an equivalence relation 
-  \begin{equation}\label{eq:equivRelation}
-  v_1Rv_2\iff T(v_1)ST(v_2)
-  \end{equation}
-  where $S$ is some relation of similarity (ex. $\lvert1- T(v_1)\rvert\le c\land\lvert1- T(v_2)\rvert\le c$) and $M$ be the set of interest. Than $T$ partitions $M$ into equivalence classes, as by $R$ $\eqref{eq:equivRelation}$. The above property $X$, may be viewed as one of these equivalence classes $X_i$. Note that in general the relation need not be an equivalence, as it is here so solely for ease of illustration. 
-  
-   Let $T=T_n\circ T_{n-1}\circ\cdots\circ T_1$, for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $T_i$ containing a control structure). Here $T_i=\varepsilon_k\circ\ldots \varepsilon_1$, is a conceptual step in the procedure. Then, we can inquire about and measure the importance $K$ of an arbitrary $T_i$, to a partitioning into a specific equivalence class $X_j$. $\eqref{eq:equivRelation}$. Thus, we are able to extract $T_{X_j}$, the set of steps of importance, to such a partitioning. We treat $T_i\circ\cdots T_1$ as the input of the procedure $T^n_i=T_n\circ\cdots\circ T_{i+1}$.
-  
-  We present a simple algorithm towards such a goal, which can easily be enhanced with a more sophisticated choice of the measure of importance, as made available by the theory. For simplicity of the illustration, we use the norm of the differential as a measure, as it measures the rate of change in the relation. A measure easily replaced by a more sophisticated one, as allowed by the theory.
-  
-  Extraction of the derivate of the sub-procedure $T^n_k$, with respect to the parameters of the conceptual step $T_k$, is accomplished by
-  \begin{equation}
-  \D_{T_k}T^n_k=proj_{\{\D\}}\left(e^{\D_{T_k}}_1(T^n_k)\right)
-  \end{equation}
-  applying the operator $e^{\D_{T_k}}_1$ onto the sub-procedure, resulting in $e^{\D_{T_k}}_1(T^n_k)\in\dP_1$ and projecting the result onto the subspace spanned by $\{\D\}$ over $\mathbb{Z}_2$, as to eliminate coefficients, leaving only the derivative.
+  applying the operator $e^{\D_{T_i}}_1$ onto the procedure, resulting in $e^{\D_{T_i}}_1(T)\in\dP_1$ and projecting the result onto the subspace spanned by $\{\D\}$ over $\mathbb{Z}_2$, as to eliminate coefficients, leaving only the derivative.
   
 \begin{algorithm}[h]
 \caption{Steps of importance to a partitioning}
 \label{alg:partitioning}
 \begin{algorithmic}[1]
 \Procedure{Steps of importance to a partitioning}{}
-\For{each $X_i$}
-\For{each $v\in X_i$}
-\For{each $T^n_k$}
-\State add norm $\D_{T_k}T^n_k$ to $N_{T_k}$
+\For{each $X_j$}
+\For{each $v\in X_ij$}
+\For{each $T_i$}
+\State extract $\D_{T_i}T=proj_{\{\D\}}(e^{\D_{T_i}}_1(T))$
+\State add measure $\D_{T_i}T$ to $M_{T_i}$
 \EndFor
 \EndFor
-\State threshold $T_t\in T_{X_i}\iff N_{T_t}\ge c$  
-\State insert $T_{X_i}$ in $I$
+\State threshold $T_k\in T_{X_i}\iff M_{T_k}\ge c$  
+\State insert $T_{X_j}$ in $I$
 \EndFor
 \State return $I$
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-Thus we get $I=\{T_{X_j}\}$, where $T_{X_j}$ is the set of steps $T_i$ measured as important by Algorithm $\ref{alg:partitioning}$. Each set $T_{X_j}$ contains conceptual steps, portions of the source code, whose action on the input contributes most in a partitioning to the equivalence class $X_j$. As such, the set $I$ shows to be useful in studying properties of the set $M$, as it reveals to what action, a property of an element $v\in M$ reacts to, as we probe it using the method. It may be used to better understand procedures and interpret them. The set $I=\{T_{X_j}\}$ can reveal procedural steps, that may have previously been thought of as less important to the end result.
 
-With this we turn towards constructing algorithm $A$ $\eqref{eq:algA}$. As shown by Algorithm $\ref{alg:partitioning}$, we arrived at sub-procedures $T_i$, to which properties $X_j$ react to most strongly. Thus, using the algebra and operational calculus presented in this paper, we can construct a procedure that changes an arbitrary $v\in M$, in such a way that maximizes the action of $T_i\in T_{X_j}$, for the desired property $X_j$. Global maxima of the method can be viewed as archetypes of objects in the domain possessing a specific  property $X_j$. 
-\begin{opomba}\label{rem:iPartitioning}
+\begin{trditev}
+The set $I$ returned by Algorithm \ref{alg:partitioning} is the set of important conceptual steps to a partitioning of Proposition \ref{prop:setOfImpConSteps}. It may be used to study properties of the domain $\Omega$, as it reveals which conceptual steps react most strongly to a possession of a property $X_j$ (by some measure of activity $M_i$). Beyond properties, the set $I$ may reveal procedural steps, that may have previously been thought of as less important to the end result.
+\end{trditev}
+
+\begin{opomba}\label{rmrk:assumtionOnSet}
 We assume that the set $I$ induces some partitioning on the domain, where intersections need not be empty, thus containing some information about the domain, as it is common in practice and assumed so heron.
 \end{opomba}
 
+\begin{proposition}
+We can construct the algorithm $A:T\in\dP\to P\in\dP$ of Claim \ref{clm:algA} by maximizing the action of the elements of $T_{X_j}$ of Proposition \ref{prop:setOfImpConSteps} on $v\notin X_j$, as by the measure of activity $M_i$. Global maxima of the method can be interpreted as archetypes of objects in the domain possessing a specific  property $X_j$.
+\end{proposition}
 
-We extract a once differentiable derivative of $T^n_j$ needed by
+We extract a once differentiable derivative of $T_i$ needed by
 \begin{equation}\label{eq:T'}
-T^\prime_i=\phi\circ e^{\D_{T_i}}_2(T^n_i)\in\dP_1
+T^\prime_i=\phi\circ e^{\D_{T_i}}_2(T)\in\dP_1
 \end{equation}
 as, its' derivative (second derivative of $T$) is needed for further compositions $\eqref{eq:kompo}$ by Theorem $\ref{izr:kompo}$, where $\phi$ is the reduction of order map $\eqref{eq:reductionMap}$ of Theorem $\ref{izr:reductionMap}$. As such, it holds $T^\prime_i\in\dP_1$. We do so, for each $T_i\in T_{X_j}\subset I$, where $X_j$ is the desired property.
 
@@ -1135,7 +1164,7 @@ E_i=C\circ T^\prime_i
 \State initialize path $\gamma$ with $v$
 \For{each step}
 \For{each $T_i\in T_{X_j}$}
-\State extract $T^\prime_i=\phi\circ e^{\D_{T_i}}_2(T^n_i)$ $\eqref{eq:T'}$
+\State extract $T^\prime_i=\phi\circ e^{\D_{T_i}}_2(T)$ $\eqref{eq:T'}$
 \State compute the energy $E_i=e^{\D_v}_1(C)\circ T^\prime_i$
 \State extract the derivative $\D_v E_i=proj_{\{\D\}}(E_i)$
 \State add $\D_v E_i$ to $\D_v E$
@@ -1155,18 +1184,23 @@ as it needs not to be differentiable for this purpose.
 
 For simplicity, assume $step$ to represent one maximization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques, as made available by the theory. 
 
-As shown by Algorithm $\ref{alg:appoint}$, we arrived at a path $\gamma$, whose end point is the transformed $v\in M$, now endowed with the property $X_j$. Thus, using the theory, with the procedure $T$ as an input variable in Algorithm $\ref{alg:appoint}$, we constructed algorithm $A: T\to P$ $\eqref{eq:algA}$. When $v\in M$ represents an object upon which we wish to impose the property $X_j$, we may do so using the derived procedure $A(T)=P$
+\begin{trditev}\label{clm:algorithmA}
+Algorithm \ref{alg:appoint}, taking a procedure $T$ of Proposition \ref{prop:partitionongProperty} as a variable, is the algorithm $A$ of Claim \ref{clm:algA}. It constructs a procedure imposing the desired property $X_j$ upon an object of the domain $\Omega$.
+
 \begin{equation}\label{eq:procedureP}
-P:v\notin X_j\to v\in X_j
+A(T)=P:v\notin X_j\to v\in X_j
 \end{equation}
+\end{trditev}
 
-The derived procedures $P$ $\eqref{eq:procedureP}$, are a generalization of special cases such as Google's Deep Dream project \cite{DeepDream}, where the program represents a neural network, with neurons with high activity filling the set of important conceptual steps $T_{X_j}$ and the resulting $v\in X_j$ is an altered image.
+\begin{corollary}
+The derived procedures $P$, are a generalization of special cases such as Google's Deep Dream project \cite{DeepDream}, where the program represents a neural network, with neurons with high activity filling the set of important conceptual steps $T_{X_j}$ and the resulting $v\in X_j$ is an altered image.
+\end{corollary}
 
-\begin{definicija}[Path to change]
-Output of Algorithm \ref{alg:appoint} is $\gamma$, the path to change.
-\end{definicija}
+\begin{opomba}
+By Claim \ref{clm:algorithmA}, existence of a procedure testing an object for validity is sufficient for constructing a procedure transforming a non-valid object to a valid one, under the assumption of Remark \ref{rmrk:assumtionOnSet}.
+\end{opomba}
 
-Path to change is the flow curve outputted by Algorithm $\ref{alg:appoint}$. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
+Output of Algorithm \ref{alg:appoint} is $\gamma$, the path to change. Path to change is the flow curve outputted by Algorithm $\ref{alg:appoint}$. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
 
 \subsection{Computational dynamics}
 
