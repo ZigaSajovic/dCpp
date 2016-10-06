@@ -915,13 +915,13 @@ to verify, that
  \end{proof}
  
  \begin{izrek}\label{izr:diferentiableOnDomain}
- Each program $P\in\dP$ containing control structures is differentiable on the entire domain $\Omega=\bigcup\limits_{\forall_i}\Omega_i$.
+ Any program $P\in\dP$ containing control structures is differentiable on the entire domain $\Omega=\bigcup\limits_{\forall_i}\Omega_i$.
  \end{izrek}
  \begin{proof}
   Each domain $\Omega_i$ is open by Claim \ref{izr:openDomains}. As the entire domain $\Omega=\bigcup\limits_{\forall_i}\Omega_i$ is a union of open sets, it is therefor open itself. Thus, all evaluations are computed in the interior of some open set, effectively removing boundaries, where problems might have otherwise occurred.
  \end{proof}
  \begin{corollary}
- Each program $P\in\dP$ containing control structures is infinitely-differentiable on the entire domain $\Omega=\bigcup\limits_{\forall_i}\Omega_i$.
+ Any program $P\in\dP$ containing control structures is infinitely-differentiable on the entire domain $\Omega=\bigcup\limits_{\forall_i}\Omega_i$.
  \end{corollary}
 \begin{proof}
 Follows directly from Theorem \ref{izr:diferentiableOnDomain}, by the proof of Theorem $\ref{izr:P}$ and Corollary $\ref{izr:dP}$ through argument $\eqref{eq:inductionStep}$.
