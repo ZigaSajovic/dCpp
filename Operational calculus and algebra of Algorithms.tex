@@ -6,7 +6,7 @@
 \usepackage{amsthm}
 \usepackage{caption}
 \usepackage{bbm}
-\usepackage[utf8]{inputenc}
+%\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{inconsolata}
 
@@ -909,12 +909,18 @@ to verify, that
 
 
  \begin{izrek}\label{izr:diferentiableOnDomain}
- Each program $P\in\dP$ containing control structures is infinitely-differentiable on the domain $\Omega=\bigcup\limits_{\forall_i}\interior\Omega_i$.
+ Each program $P\in\dP$ containing control structures is differentiable on the domain $\Omega=\bigcup\limits_{\forall_i}\interior(\Omega_i)$.
  \end{izrek}
  \begin{proof}
-  Each domain $\Omega_i$ is open by Claim \ref{izr:openDomains}. As the entire domain $\Omega=\bigcup\limits_{\forall_i}\Omega_i$ is a union of open sets, it is therefor open itself. Thus, all evaluations are computed in the interior of some open set, effectively removing boundaries, where problems might have otherwise occurred.
-
-Follows directly from Theorem \ref{izr:diferentiableOnDomain}, by the proof of Theorem $\ref{izr:P}$ and Corollary $\ref{izr:dP}$ through argument $\eqref{eq:inductionStep}$.
+  Interiror of each domain $\Omega_i$ is open. As the entire domain $\Omega=\bigcup\limits_{\forall_i}\interior(\Omega_i)$ is a union of open sets, it is therefor open itself. Thus, all evaluations are computed in the interior of some open set, effectively removing boundaries, where problems might have otherwise occurred.
+ \end{proof}
+ 
+ \begin{corollary}
+\label{izr:infDiferentiableOnDomain}
+  Each program $P\in\dP$ containing control structures is infinitely-differentiable on the domain $\Omega=\bigcup\limits_{\forall_i}\interior(\Omega_i)$.
+ \end{corollary}
+ \begin{proof}
+ Follows directly from Theorem \ref{izr:diferentiableOnDomain}, by the proof of Theorem $\ref{izr:P}$ and Corollary $\ref{izr:dP}$ through argument $\eqref{eq:inductionStep}$.
  \end{proof}
 
 \subsection{Transformations in practice} \label{sec:TransInPractice}
@@ -1064,140 +1070,131 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
   \end{equation}
   Usually such procedures are difficult to construct and may not even explicitly
   exist. An easier task is to construct a procedure $T\in\dP_0$, whose output
-  allows deduction of whether $v$ has the property $X$ or not. Let $S$ be a
-  property of the image of $T$ such that 
+  allows deduction of whether $v$ has the property $X$ or not. 
   
-     \begin{equation}\label{eq:equivRelation}
-     v\in X\iff T(v)\in S
-     \end{equation}
-For example $S(v)$ might be $|1-T(v)| < c$.
-Using the map $T$ together with the property $S$ one can determine wheather an
-element $v$ has the property $X$.     
-   
-   
    We propose an algorithm
    \begin{equation}\label{eq:algA}
      A:T\in\dP\to P\in\dP
      \end{equation}
      transforming a procedure $T$ testing for a property $X_j$, to a procedure
-     $P\in \dP_0:v\notin X_j\to P(v)\in X_j$ \eqref{eq:procP} imposing that
+     $P\in \dP_0:v\notin X_j\to P(v)\in X_j$ \eqref{eq:procP}, imposing that
      property onto any object in the domain $\Omega\subset \VV$.
    
    We employ the developed operational calculus in such endeavors, as we probe
    procedures' inner structure and explore how it interacts with the elements of
    the domain.
  
-\subsubsection{Conceptual steps of importance}
+\subsubsection{Activity profile and property measure}
     
 To be able to determine which conceptual steps are the most important for the
-result of the testing procedure $T$, we have to somehow measure the ``activity''
-at each step. For the measure of activity $M$ we can simply take the norm of the
-appropriate derivative, as it measures the rate of change. This measure can be
-easily replaced by a more sophisticated one.
-   Let split the procedure $T$ into conceptual steps $T_i$:
-$$T=T_n\circ T_{n-1}\circ\cdots\circ T_1.\footnote{for simplicity we assume
-  there are no control structures in $T$, but we could just as easily take $T$
-  to be a spline as in \eqref{eq:zlrprk_splosno} in Section
-  \ref{sec:control}}$$ Each  $T_i$ might be a complex program itself.
+result of the testing procedure $T$, we have to somehow measure the activity
+at that step. A simple example of the measure of activity $\mathcal{A}$ could simply be the norm of the
+appropriate derivative, as it measures the rate of change. A measure easily replaceable by a more sophisticated one, as allowed by the theory.
+
+   Let 
+   $$T=T_n\circ T_{n-1}\circ\cdots\circ T_1$$
+   for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $T_i$ containing a control structure, as shown in Section \ref{sec:control}). Here $T_i=\varepsilon_k\circ\ldots \varepsilon_1$, is a conceptual step in the procedure.
   
    
-   Let $M_i$ some measure of activity in the conceptual step $T_i$, for a given element of the domain $v\in \Omega$ taken as the input of $T$. We denote the set of important conceptual steps to a partitioning $X_j$ by
+   \begin{definicija}[Activity profile]
+   The function $\mathcal{A}_i:\Omega\to[0,1]$ is called a \emph{measure of activity} in the conceptual step $T_i$, where 
+   $$\mathcal{A}_i\circ e^{\D_{T_i}}T(v)$$ 
+   is the \emph{activity level} of $T_i$, for a given element of the domain $v\in \Omega$ taken as the input of $T$, with only the variable parameters of the sub-procedure $T_i$ are considered as such.
+   
+   The vector $$\mathcal{A}=(\mathcal{A}_1,\mathcal{A}_2,\dots,\mathcal{A}_n):\Omega\to[0,1]^n$$ represents the activity profile of the procedure $T$. 
+   \end{definicija}
+   
+   
+   \begin{definicija}[Property measure]
+    A function 
+    $$M_X\in\dP_0:[0,1]^n\to[0,1]$$  
+    is called the property measure, measuring the amount of property $X$ in an object $v\in\Omega$, if there exists  $c\in(0,1)$ such that 
+    $$v\in X\iff M_x\circ\mathcal{A}(v)\ge c.$$
+    \end{definicija}
+   
+   \begin{algorithm}[ht!]
+   \caption{Construct property measure}
+   \label{alg:propertyMeasure}
+   \begin{algorithmic}[1]
+   \Procedure{Construct property measure}{}
+   \For{each $v_k\in \Omega$}
+   \For{each $T_i$}
+   \State extract $a^i_k=\mathcal{A}_i\circ e^{\D_{T_i}}T(v_k)$
+	\EndFor
+	\EndFor
+	\State initialize set $I$
+   \For{each $X_j$}
+   \State generate property measure $M_{X_j}$ from $a^i_k$
+   \State add $M_{X_j}$ to $I$
+   \EndFor
+   \State return $I$
+   \EndProcedure
+   \end{algorithmic}
+   \end{algorithm}
+   
+   Once the activity profiles and property measures are generated, starting with an element, without the property $X_j$, we can use any established optimization technique, to optimize and increase the measure $M_{X_j}$. When the increase of the measure $M_{X_j}$ is sufficient, this results in an new object possessing the property $X_j$.
+   
+   \begin{algorithm}[hb!]
+   \caption{Appoint property $X_j$ to $v\in \Omega$}
+   \label{alg:appoint}
+   \begin{algorithmic}[1]
+   \Procedure{Appoint property $X_j$ to $v\in \Omega$}{}
+   \State initialize path $\gamma$ with $v$
+   \For{each step}
+   \For{each $T_i\in T_{X_j}$}
+   \State extract $T^\prime_i=\phi\circ e^{\D_{v}}_2(T_i\circ\cdots\circ T_1)\in\dP_1$
+   \State compute the energy $E_i=e^{\D_v}_1(M_{X_j})\circ T^\prime_i\in\dP_1$
+   \State extract the derivative $\D_v E_i=proj_{\{\D\}}(E_i)$
+   \State add $\D_v E_i$ to $\D_v E$
+   \EndFor
+   \State update $v$ by $step(\D_v E,v)$
+   \State insert $v$ to $\gamma$
+   \EndFor
+   \State return $\gamma$
+   \EndProcedure
+   \end{algorithmic}
+   \end{algorithm}
+   
+    The flow curve outputted by Algorithm $\ref{alg:appoint}$ is $\gamma$, the path to change. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
+   
+   \begin{izrek}\label{izr:algA}
+        With an appropriate choice of the activity profile $\mathcal{A}$, there exist an algorithm
+        \begin{equation}\label{eq:algA}
+          A:T\in\dP\to P\in\dP
+          \end{equation}
+          transforming a procedure $T\in\dP$, testing for a property $X_j$, to a procedure $P$, such that it increases the property measure of any object in the domain. 
+        \end{izrek}
+        \begin{corollary}
+           By Theorem \ref{izr:algA}, existence of a procedure testing an object for validity is sufficient for constructing a procedure transforming a non-valid object to a valid one
+           $$P\in \dP_0:v\notin X_j\to P(v)\in X_j$$
+           under the assumption that the increase of the property measure is sufficient.
+           \end{corollary}
+   
+   \subsubsection{Example}
+   
+   The derived procedures $P$, are a broad generalization of special cases such as Google's Deep Dream project \cite{DeepDream}, where the program represents a neural network, with the resulting $v\in X_j$ being an altered image.
+   
+   We take the measure of activity to be the norm of the derivative with respect to the variable parameters in sub-procedure $T_i$.
+   $$\left\Vert\D_{T_i}T\right\Vert=\left\Vert proj_{\{\D\}}\left(e^{\D_{T_i}}_1(T)\right)\right\Vert$$
+   Than for each property $X_j$ we select the set of sub-procedures 
+   $$T_{X_j}=\{T_i\in T_{X_j}\iff \left\Vert\D_{T_i}T\right\Vert\ge c\}$$
+   that have the highest measure of activity at the elements of $X_j$. The property measure for the property $X_j$ is than simply the sum of squares of norms of the derivatives of selected sub-procedures $T^i_1=T_i\circ\cdots\circ T_1$. This completes Algorithm \ref{alg:propertyMeasure}. 
+   
+   Using the theory, $n$-differentiable derivatives $T^{n\prime}_i\in\dP_n$ with respect to the input $v\in\Omega$ are computed by
+   
    \begin{equation}
-   T_i\in T_{X_j}\iff M_i\circ T^i_0:v\in X_j\to K\ge c 
+   T^{n\prime}_i=\phi\circ e^{\D_v}_{n+1}(T^i_1)\in\dP_n
    \end{equation}
-   with their union denoted by
+   where $\phi$ is the reduction of order map of Theorem \ref{izr:reductionMap}.
+   Thus, using $\left\Vert\cdot\right\Vert\in\dP_1$ as the norm map, the property measure is
+   
    \begin{equation}
-   I=\bigcup\limits_{\forall_j}T_{X_j}
+   M_{X_j}=\sum\limits_{T_i\in T_{X_j}} \left\Vert T^\prime_i\right\Vert^2\in\dP_1
    \end{equation}
-
-Extraction of the derivate of the procedure $T$, with respect to the parameters of the conceptual step $T_i$, is accomplished by
-  \begin{equation}
-  \D_{T_i}T=proj_{\{\D\}}\left(e^{\D_{T_i}}_1(T)\right)
-  \end{equation}
-  applying the operator $e^{\D_{T_i}}_1$ onto the procedure, resulting in $e^{\D_{T_i}}_1(T)\in\dP_1$ and projecting the result onto the subspace spanned by $\{\D\}$ over $\mathbb{Z}_2$, as to eliminate coefficients, leaving only the derivative.
-  
-\begin{algorithm}[h]
-\caption{Steps of importance to a partitioning}
-\label{alg:partitioning}
-\begin{algorithmic}[1]
-\Procedure{Steps of importance to a partitioning}{}
-\For{each $X_j$}
-\For{each $v\in X_ij$}
-\For{each $T_i$}
-\State extract $\D_{T_i}T=proj_{\{\D\}}(e^{\D_{T_i}}_1(T))$
-\State add measure $\D_{T_i}T$ to $M_{T_i}$
-\EndFor
-\EndFor
-\State threshold $T_k\in T_{X_i}\iff M_{T_k}\ge c$  
-\State insert $T_{X_j}$ in $I$
-\EndFor
-\State return $I$
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-
-The set $I$ returned by Algorithm \ref{alg:partitioning} is the set of important conceptual steps to a partitioning of Proposition \ref{prop:setOfImpConSteps}. It may be used to study properties of the domain $\Omega$, as it reveals which conceptual steps react most strongly to a possession of a property $X_j$ (by some measure of activity $M_i$). Beyond properties, the set $I$ may reveal procedural steps, that may have previously been thought of as less important to the end result.
-
-\begin{opomba}\label{rmrk:assumtionOnSet}
-We assume that the set $I$ induces some partitioning on the domain, where intersections need not be empty, thus containing some information about the domain, as it is common in practice and assumed so heron.
-\end{opomba}
-
-We can construct the algorithm $A:T\in\dP\to P\in\dP$ of Claim \ref{clm:algA} by maximizing the action of the elements of $T_{X_j}$ of Proposition \ref{prop:setOfImpConSteps} on $v\notin X_j$, as by the measure of activity $M_i$. Global maxima of the method can be interpreted as archetypes of objects in the domain possessing a specific  property $X_j$.
-
-We extract a once differentiable derivative of $T_i$ needed by
-\begin{equation}\label{eq:T'}
-T^\prime_i=\phi\circ e^{\D_{T_i}}_2(T)\in\dP_1
-\end{equation}
-as, its' derivative (second derivative of $T$) is needed for further compositions $\eqref{eq:kompo}$ by Theorem $\ref{izr:kompo}$, where $\phi$ is the reduction of order map $\eqref{eq:reductionMap}$ of Theorem $\ref{izr:reductionMap}$. As such, it holds $T^\prime_i\in\dP_1$. We do so, for each $T_i\in T_{X_j}\subset I$, where $X_j$ is the desired property.
-
-Let $C\in\dP$ be a convex map, some measure of magnitude. Thus, we arrive at the expression to be maximized
-\begin{equation}
-E_i=C\circ T^\prime_i
-\end{equation}
-\begin{algorithm}[h]
-\caption{Appoint property $X_j$ to $v\in M$}
-\label{alg:appoint}
-\begin{algorithmic}[1]
-\Procedure{Appoint property $X_j$ to $v\in M$}{}
-\State initialize path $\gamma$ with $v$
-\For{each step}
-\For{each $T_i\in T_{X_j}$}
-\State extract $T^\prime_i=\phi\circ e^{\D_{T_i}}_2(T)$ $\eqref{eq:T'}$
-\State compute the energy $E_i=e^{\D_v}_1(C)\circ T^\prime_i$
-\State extract the derivative $\D_v E_i=proj_{\{\D\}}(E_i)$
-\State add $\D_v E_i$ to $\D_v E$
-\EndFor
-\State update $v$ by $step(\D_v E,v)$
-\State insert $v$ to $\gamma$
-\EndFor
-\State return $\gamma$
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-The derivative with respect to $v$ is extracted by applying $e^{\D_{v}}_1$ onto $C$ mapping into $\dP_1$, composing it with $T^\prime_i\in\dP_1$ and projecting the image onto the subspace spanned by $\{\D\}$ over $\mathbb{Z}_2$, as to eliminate coefficients, leaving only the derivative,
-\begin{equation}
-\D_vE_i=proj_{\{\D\}}(e^{\D_v}_1(C)\circ T^\prime_i)
-\end{equation}
-as it needs not to be differentiable for this purpose.
-
-For simplicity, assume $step$ to represent one maximization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques, as made available by the theory. 
-
-Algorithm \ref{alg:appoint}, taking a procedure $T$ of Proposition \ref{prop:partitionongProperty} as a variable, is the algorithm $A$ of Claim \ref{clm:algA}. It constructs a procedure imposing the desired property $X_j$ upon an object of the domain $\Omega$.
-
-\begin{equation}\label{eq:procedureP}
-A(T)=P:v\notin X_j\to v\in X_j
-\end{equation}
-
-
-The algorithm $A$ is a broad generalization of special cases such as Google's
-Deep Dream project \cite{DeepDream}, where the program $T$ represents a neural network, with neurons with high activity filling the set of important conceptual steps $T_{X_j}$ and the resulting $v\in X_j$ is an altered image.
-
-\begin{opomba}
-By Claim \ref{clm:algorithmA}, existence of a procedure testing an object for validity is sufficient for constructing a procedure transforming a non-valid object to a valid one, under the assumption of Remark \ref{rmrk:assumtionOnSet}.
-\end{opomba}
-
-Output of Algorithm \ref{alg:appoint} is $\gamma$, the path to change. Path to change is the flow curve outputted by Algorithm $\ref{alg:appoint}$. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
-
+   assuming it only needs to be once differentiable. Optimization of the property measure completes Algorithm \ref{alg:appoint}.
+   
+   When $T\in\dP_0$ represents a neural network, $T_i$ stands for a specific layer in the network, with neurons being its variable parameters, than the procedure achieves what Google's Deep Dream Project \cite{DeepDream} does. However our procedure may be applied to any program $T\in\dP_0$. As neural networks are just programs contained in the programming space $\dP$, our view gazes over a larger landscape of programs it can be utilized on.
+   
 \subsection{Computational dynamics}
 
 As each procedure is revealed to be a system existing as an object in virtual space, its computational capability becomes synonymous with shape. For example, training of neural network is a homotopy in this space, as it converges to its optimal computational form in a high-dimensional manifold.
