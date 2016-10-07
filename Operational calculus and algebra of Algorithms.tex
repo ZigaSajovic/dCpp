@@ -1084,21 +1084,22 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
    procedures' inner structure and explore how it interacts with the elements of
    the domain.
  
-\subsubsection{Activity profile of procedures}
+\subsubsection{Activity profile and property measure}
     
 To be able to determine which conceptual steps are the most important for the
-result of the testing procedure $T$, we have to somehow measure the ``activity''
-at that step. For the measure of activity $\mathcal{A}$ we can simply take the norm of the
-appropriate derivative, as it measures the rate of change. This measure can be
-easily replaced by a more sophisticated one.
+result of the testing procedure $T$, we have to somehow measure the activity
+at that step. A simple example of the measure of activity $\mathcal{A}$ could simply be the norm of the
+appropriate derivative, as it measures the rate of change. A measure easily replaceable by a more sophisticated one, as allowed by the theory.
 
-   Let $T=T_n\circ T_{n-1}\circ\cdots\circ T_1$, for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $T_i$ containing a control structure, as shown in Section \ref{sec:control}). Here $T_i=\varepsilon_k\circ\ldots \varepsilon_1$, is a conceptual step in the procedure.
+   Let 
+   $$T=T_n\circ T_{n-1}\circ\cdots\circ T_1$$
+   for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $T_i$ containing a control structure, as shown in Section \ref{sec:control}). Here $T_i=\varepsilon_k\circ\ldots \varepsilon_1$, is a conceptual step in the procedure.
   
    
    \begin{definicija}[Activity profile]
    The function $\mathcal{A}_i:\Omega\to[0,1]$ is called a \emph{measure of activity} in the conceptual step $T_i$, where 
-   $$\mathcal{A}_i\circ T_i\circ T_{i-1}\circ\dots T_1(v)$$ 
-   is the \emph{activity level} of $T_i$, for a given element of the domain $v\in \Omega$ taken as the input of $T$.
+   $$\mathcal{A}_i\circ e^{\D_{T_i}}T(v)$$ 
+   is the \emph{activity level} of $T_i$, for a given element of the domain $v\in \Omega$ taken as the input of $T$, with only the variable parameters of the sub-procedure $T_i$ are considered as such.
    
    The vector $$\mathcal{A}=(\mathcal{A}_1,\mathcal{A}_2,\dots,\mathcal{A}_n):\Omega\to[0,1]^n$$ represents the activity profile of the procedure $T$. 
    \end{definicija}
@@ -1111,14 +1112,14 @@ easily replaced by a more sophisticated one.
     $$v\in X\iff M_x\circ\mathcal{A}(v)\ge c.$$
     \end{definicija}
    
-   \begin{algorithm}[ht]
+   \begin{algorithm}[ht!]
    \caption{Construct property measure}
    \label{alg:propertyMeasure}
    \begin{algorithmic}[1]
    \Procedure{Construct property measure}{}
    \For{each $v_k\in \Omega$}
    \For{each $T_i$}
-   \State extract $a^i_k=\mathcal{A}_i\circ T_i\circ T_{i-1}\circ\dots T_1(v_k)$
+   \State extract $a^i_k=\mathcal{A}_i\circ e^{\D_{T_i}}T(v_k)$
 	\EndFor
 	\EndFor
 	\State initialize set $I$
@@ -1131,7 +1132,7 @@ easily replaced by a more sophisticated one.
    \end{algorithmic}
    \end{algorithm}
    
-   Once the activity profiles and property measures are generated, starting with an element, without the property $X_j$, we can use any optimization techniques, to optimize and increase the measure $M_{X_j}$. When the increase of the measure $M_{X_j}$ is sufficient, this results in an new object possessing the property $X_j$.
+   Once the activity profiles and property measures are generated, starting with an element, without the property $X_j$, we can use any established optimization technique, to optimize and increase the measure $M_{X_j}$. When the increase of the measure $M_{X_j}$ is sufficient, this results in an new object possessing the property $X_j$.
    
    \begin{algorithm}[hb!]
    \caption{Appoint property $X_j$ to $v\in \Omega$}
@@ -1141,8 +1142,8 @@ easily replaced by a more sophisticated one.
    \State initialize path $\gamma$ with $v$
    \For{each step}
    \For{each $T_i\in T_{X_j}$}
-   \State extract $T^\prime_i=\phi\circ e^{\D_{T_i}}_2(T)$ $\eqref{eq:T'}$
-   \State compute the energy $E_i=e^{\D_v}_1(M_{X_j})\circ T^\prime_i$
+   \State extract $T^\prime_i=\phi\circ e^{\D_{v}}_2(T_i\circ\cdots\circ T_1)\in\dP_1$
+   \State compute the energy $E_i=e^{\D_v}_1(M_{X_j})\circ T^\prime_i\in\dP_1$
    \State extract the derivative $\D_v E_i=proj_{\{\D\}}(E_i)$
    \State add $\D_v E_i$ to $\D_v E$
    \EndFor
@@ -1154,8 +1155,7 @@ easily replaced by a more sophisticated one.
    \end{algorithmic}
    \end{algorithm}
    
-   Output of Algorithm \ref{alg:appoint} is $\gamma$, the path to change. Path to change is the flow curve outputted by Algorithm $\ref{alg:appoint}$. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
-   \clearpage
+    The flow curve outputted by Algorithm $\ref{alg:appoint}$ is $\gamma$, the path to change. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
    
    \begin{izrek}\label{izr:algA}
         With an appropriate choice of the activity profile $\mathcal{A}$, there exist an algorithm
@@ -1172,20 +1172,28 @@ easily replaced by a more sophisticated one.
    
    \subsubsection{Example}
    
-   The derived procedures $P$, are a generalization of special cases such as Google's Deep Dream project \cite{DeepDream}, where the program represents a neural network, with neurons with high activity filling the set of important conceptual steps $T_{X_j}$ and the resulting $v\in X_j$ is an altered image.
+   The derived procedures $P$, are a broad generalization of special cases such as Google's Deep Dream project \cite{DeepDream}, where the program represents a neural network, with the resulting $v\in X_j$ being an altered image.
    
-   If we take the measure of activity to be the norm of the derivative 
-   $$\left\Vert\D_vT^i_1\right\Vert=\left\Vert proj_{\{\D\}}\left(e^\D_1(T^i_1)\right)\right\Vert$$
-   
+   We take the measure of activity to be the norm of the derivative with respect to the variable parameters in sub-procedure $T_i$.
+   $$\left\Vert\D_{T_i}T\right\Vert=\left\Vert proj_{\{\D\}}\left(e^{\D_{T_i}}_1(T)\right)\right\Vert$$
    Than for each property $X_j$ we select the set of sub-procedures 
-   $$T_{X_j}=\{T_i\in T_{X_j}\iff \left\Vert\D_vT^i_1\right\Vert\ge c\}$$
-   that have the highest measure of activity at the elements of $X_j$. The property measure for the property $X_j$ is than simply the sum of squares of norms of the derivatives, of selected sub-procedures
+   $$T_{X_j}=\{T_i\in T_{X_j}\iff \left\Vert\D_{T_i}T\right\Vert\ge c\}$$
+   that have the highest measure of activity at the elements of $X_j$. The property measure for the property $X_j$ is than simply the sum of squares of norms of the derivatives of selected sub-procedures $T^i_1=T_i\circ\cdots\circ T_1$. This completes Algorithm \ref{alg:propertyMeasure}. 
+   
+   Using the theory, $n$-differentiable derivatives $T^{n\prime}_i\in\dP_n$ with respect to the input $v\in\Omega$ are computed by
    
    \begin{equation}
-   M_{X_j}=\sum\limits_{T_i\in T_{X_j}} \left\Vert\D_vT^i_1\right\Vert^2.
+   T^{n\prime}_i=\phi\circ e^{\D_v}_{n+1}(T^i_1)\in\dP_n
    \end{equation}
+   where $\phi$ is the reduction of order map of Theorem \ref{izr:reductionMap}.
+   Thus, using $\left\Vert\cdot\right\Vert\in\dP_1$ as the norm map, the property measure is
    
-   If $T\in\dP_0$ represents a neural network, where $T_i$ stands for a specific neuron in the system, than the procedure given by Algorithms 1, 2, is equivalent to Google's Deep Dream Project. However our procedure may be applied to any procedure $T\in\dP_0$, no only neurl networks. Our view is broader, as neural networks are just programs contained in the programming space $\dP_0$.
+   \begin{equation}
+   M_{X_j}=\sum\limits_{T_i\in T_{X_j}} \left\Vert T^\prime_i\right\Vert^2\in\dP_1
+   \end{equation}
+   assuming it only needs to be once differentiable. Optimization of the property measure completes Algorithm \ref{alg:appoint}.
+   
+   When $T\in\dP_0$ represents a neural network, $T_i$ stands for a specific layer in the network, with neurons being its variable parameters, than the procedure achieves what Google's Deep Dream Project \cite{DeepDream} does. However our procedure may be applied to any program $T\in\dP_0$. As neural networks are just programs contained in the programming space $\dP$, our view gazes over a larger landscape of programs it can be utilized on.
    
 \subsection{Computational dynamics}
 
