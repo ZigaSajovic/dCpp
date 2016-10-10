@@ -572,7 +572,8 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
     \item
     $\dP_0$ is an analytic programming space over $\VV$
     \end{itemize}
-    When $\dP_0$ is a differentiable programming space, this defines an infinitely-differentiable virtual machine.
+    When $\dP_0$ is a differentiable programming space, this defines an
+    infinitely differentiable virtual machine.
   \end{definicija}
 Anything that operates under these specifications is an analytic virtual machine, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$. Algebraic manipulations it enables are employed throughout the paper, revealing analytic insights in Section \ref{sec:Analysis}.  All analytic virtual machines fully integrate usage of control structures, as it is demonstrated and proven in Section \ref{sec:control}, thus retaining algorithmic control flow and the expressive power it possesses. 
 
@@ -810,11 +811,17 @@ for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto 
  
    \subsection{Functional transformation of programs}\label{sec:FTP}
    
-   We motivate the following with an example. Lets suppose a hardware $H$,
-   optimized for the set of functions $F=\{f_i:V\to V\}$. The set $F$ is
-   specified by the manufacturer.  
+   Let's suppose a hardware $H$, optimized for the set of functions
+   $F=\{f_i:V\to V\}$. The set $F$ is specified by the manufacturer.  
    
-   With technological advances, switching the hardware is common, which can lead to a decline in performance. Thus, we would like to employ transformations of a program $P\in\dP$ in basis $F$. It is common to settle for a suboptimal algorithm, that is efficient on hardware $H$. Sub-optimality of the algorithm depends on the set $F$, whether it spans $P$, or not. A classic example of a transformation, is the Fourier transform in the basis $\{\sin(nx), \cos(mx)\}$, that spans $\dP$ (which as stated is not true for an arbitrary set $F$).
+   With technological advances, switching the hardware is common, which can lead
+   to a decline in performance.  Thus, we would like to employ transformations
+   of a program $P\in\dP$ in basis $F$. It is common to settle for a suboptimal
+   algorithm, that is efficient on hardware $H$. Sub-optimality of the algorithm
+   depends on the set $F$, whether it spans $P$, or not. A classic example of a
+   transformation, is the Fourier transform in the basis $\{\sin(nx),
+   \cos(mx)\}$, that spans $\dP$ (which as stated is not true for an arbitrary
+   set $F$).
    
    Using the developed tools, the problem is solvable using linear algebra. Let
    $e^\D_n$ denote the projection of the operator $e^\D$, onto the first $n$
@@ -833,11 +840,7 @@ for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto 
   p_1\otimes e_n^\D(f_1)^* + p_2\otimes e_n^\D(f_2)^* + \ldots + p_n\otimes e_n^\D(f_n)^*
   \end{equation}
   
-  \begin{opomba}
-  The tensor $\eqref{eq:matTransF}$ is a matrix, if the concerning mappings are $V^m\to V$, and tensor of rank $3$, if the concerning mappings are $V^m\to V^k$. Which can be interpreted as a sequence of matrices, one for each component of the image.
-  \end{opomba}
-  
-  Thus, the tensor of basis transformation $\X\to F$ is
+  and the tensor of basis transformation $\X\to F$ is
   
   \begin{equation}\label{eq:matTrans}
   T_{F\X}=T_{\X F}^{-1}
@@ -859,23 +862,44 @@ for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto 
   
   It makes sense to, before computing the tensor $\eqref{eq:matTrans}$, to expand the set $F$, by mutual (nested) compositions, and gain mappings, that can not be expressed as linear combinations (but are still optimized for hardware $H$), and so increasing the power of the method.
 \subsection{The special case of functions $\VV\to K$}
-We describe a special case when $\dP_0=\VV\otimes\tilde{\dP}_0$, where
-$\tilde{\dP}_{-1}<K^\VV$ is a subspace of the space of functions $\VV\to K$. This is
+We describe a special case when $\dP_0=\VV\otimes\dP_{-1}$, where
+$\dP_{-1}<K^\VV$ is a subspace of the space of functions $\VV\to K$. This is
 useful, if the set of functions $F$ only contains functions $\VV\to K$. It is
 very common, that basic operations in a programming language change one single
 real valued variable at a time. In that case, the value of changed variable is
 described by the function $\tilde{f}:\VV\to K$, while the location, where the
 value is saved is given by a standard basis vector $\e_i$. The map $f:\VV\to \VV$
-is then given as a tensor product $f=\e_i\otimes \tilde{f}$. We can start our
-construction of programming spaces by defining differentiable programing space
-of functions $\VV\to K$ instead of maps $\VV\to \VV$ as in definition
-\ref{def:dP}. Analog to the  the theorems \ref{izr:P}, \ref{izr:P_n} it is easy
-to verify, that 
+is then given as a tensor product $f=\e_i\otimes \tilde{f}$. We can start the
+construction of the differentiable programming spaces by defining differentiable
+programming space of functions $\VV\to K$ instead of maps $\VV\to \VV$ as in
+definition \ref{def:dP}.  Analog to the the theorems \ref{izr:P}, \ref{izr:P_n}
+it is easy to verify, that
+
 \begin{equation}
   \label{eq:tilda_dP}
-  \D^k\tilde{\dP_0}\subset\tilde{\dP_0}\otimes T_k(\VV^*).
+  \D^k\dP_{-1} < \dP_{-1}\otimes T_k(\VV^*).
 \end{equation}
 
+Since tensoring with elements of $\VV$ commutes with differentiation operator $\D$
+\begin{equation}
+  \label{eq:dP0_dP-1}
+  \D^k\dP_0 < \VV\otimes \D^k\dP_{-1}
+\end{equation}
+and analytic virtual machine can be defined in terms of functions $\dP_{-1}$,
+enabling more efficient implementation of the operators $\D$ and $e^\D$. The
+functional transformation becomes much more efficient, since the set of
+functions $F$ can be generated by the functions of the form  $f=\e_i\otimes
+\tilde{f_j}$, where $F_{-1}=\{\tilde{f}_j:\VV\to K \}$ and the basis $\X$ of the space of polynomial
+maps, can be also written as $\e_l\otimes p_k$, with $\X_{-1}=\{p_k\}$ being the basis
+of polynomial functions $\VV\to K$. Then  the transformation matrix $T_{\X F}$
+is block diagonal, with the same block along the diagonal
+\begin{equation}
+  \label{eq:block}
+  T_{\X_{-1}F_{-1}} = \sum\limits_{k,j} p_k\otimes e^{\D}_n(f_j).
+\end{equation}
+
+Note however, that this model can not take into account basic operations that
+change several memory locations at once. 
  \subsection{Control structures}\label{sec:control}
  
  Until now, we restricted ourselves to operations, that change the memories' content. Along side assignment statements, we know control statements (ex. statements \texttt{if},
