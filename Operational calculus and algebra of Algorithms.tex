@@ -103,9 +103,11 @@ also present several examples of how the theory can be used in computer science.
 
 Theory opens new doors in program analysis, while fully retaining algorithmic control flow. We develop a general
 procedure which takes a program that tests an object for a property and
-constructs a procedure that imposes that property upon any object. Through it we generalize state of the art methods for analyzing neural networks to general programs. Expanding upon them, we study computational dynamics as shape and the principles it induces upon the system.
+constructs a procedure that imposes that property upon any object. Through it we generalize state of the art methods for analyzing neural networks to general programs. Expanding upon them, we study computational dynamics as fields and the principles they induce upon the system.
 
 \end{abstract}
+
+\tableofcontents
 
 \section{Introduction}
 Programming holds the power of algorithmic control flow and freedom of expression, whose abstinence severely limits descriptiveness of closed form methods of \textit{pen and paper} mathematics, thus firmly cementing programming as the language of modern problem solving. Yet, a vibrant tradition of mathematics has existed since the dawn of mind, that remains, with the exception of combinatorics, largely untapped by computer science. 
@@ -121,7 +123,7 @@ Theory grants us the ability to choose programs' complexity through approximatio
 We provide instructions on methods of usage and outline the process of how these transformations are to be interchangeably applied in practice. 
 
 Analytic virtual machines fully integrate control structures, thus retaining algorithmic control flow and the expressive power it possesses. The theory offers new insights into programs, as we demonstrate how to probe their inner structure, revealing what actions properties of the domain most react to. This enables us to extract archetypes from data, or alter it by imposing some property it lacks upon it.
-We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space. Exploring procedures as systems inducing change upon objects in this space, we study computational dynamics as shape and the principles it induces upon the system, and attain valuable tools for general problem solving.
+We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space. Exploring procedures as systems inducing change upon objects in this space, we study computational dynamics as fields and the principles it induces upon the system, and attain valuable tools for general problem solving.
 
 \section{Computer programs as maps}
 We will model computer programs as maps on a vector space. If
@@ -803,7 +805,7 @@ following  diagram commutes
 \end{equation}
 satisfying
 \begin{equation}
-\forall_{P_1\in\dP_0}\exists_{P_2\in\dP_0}\Big(\phi\circ e^\D_n(P_1)=e^\D_{n-1}(P_2)\Big)
+\forall_{P_1\in\dP_0}\exists_{P_2\in\dP_0}\Big(\phi^k\circ e^\D_n(P_1)=e^\D_{n-k}(P_2)\Big)
 \end{equation}
 for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto the set $\{\D^n\}$.
 \end{trditev}      
@@ -898,8 +900,8 @@ of polynomial functions $\VV\to K$. Then the matrix $T_{\X F}$ is block diagonal
   T_{\X_{-1}F_{-1}} = \sum\limits_{k,j} p_k\otimes e^{\D}_n(\tilde{f_j}).
 \end{equation}
 \end{izrek}
-Note however, that this model can not take into account basic operations that
-change several memory locations at once. Also note that the main goal of this
+Note however, that this special case can not model basic operations that
+change several memory locations at once, while the general model presented in this paper can. Also note that the main goal of this
 work is to develop methods for analysis of computer programs, making the programming
 spaces of maps $\VV\to \VV$ much more appropriate than the programming spaces of
 functions.
@@ -1074,13 +1076,112 @@ when composing two images of the applied operator, projected to different subspa
 
 The transformation tensor $T_{F\X}$ is needed to be computed only once and can then on be applied to any program running on said hardware. The same holds true for each branch $p_i$, which can, by Theorem $\ref{izr:komp_homo}$, be freely composed amongst each other.
 
-\begin{trditev}
+\begin{trditev}\label{clm:paralel}
 Images of the operator $e^\D (P\in\dP_0)$ are elements of $U\otimes T(V^*)$ by $\eqref{eq:specProg}$, consisting of multi-linear maps. As such, their evaluation and composition ($e^\D(P_1)\circ e^\D(P_2)$) is tailor made for efficient implementation by methods of parallelism \cite{TensorGPU}, with computable complexities.
 \end{trditev}
 
 Transformations $\eqref{eq:P_F}$ need to be computed only once. Complexity of the composition of images of transformations $T_{F\X}\cdot e^\D(p_2)\circ T_{F\X}\cdot e^\D(p_1)$ depends on complexities of $f_i\in F$.
 
 Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary algorithms $P\in\dP$, along with estimations and order of the error of the approximation. Simultaneously it enables transformations of the function basis of programs, and with it implementations, more inclined towards efficiency on a given hardware. After initial applications of operators and performed transformations the program may be used, as many times as pleased, towards the purpose it was initially designed for. By doing so, we may manipulate its' complexity (for $k\le n$) and switch between different code formulations ($p$, $e^\D(p)$, $T_{F\X}\cdot e^\D(p)$), as better suited to the nature of the domains' subset, upon which the program operates at a given moment.
+
+\section{Generalized tensor networks}
+
+Let $W\in \VV\otimes T_n(\VV^*)$, than we define the application of $v\in \VV$ by
+\begin{equation}
+W(v)=\sum\limits_{i=0}^n(w_i\in \VV\otimes \VV^{*\otimes i})(v^{\otimes i})\in \VV
+\end{equation}
+
+\begin{definicija}
+A general tensor network is defined by the equation
+\begin{equation}
+L_{i+1}=\Phi_i\circ W_i(L_i)
+\end{equation}
+for each layer, where we have
+\begin{itemize}
+\item
+$L_i\in \VV$ is the input
+\item
+$L_{i+1}\in \VV$ is the output
+\item
+$W_i\in \bigoplus\limits_{\forall_i}\VV\otimes \VV^{*\otimes i}$ are the weights (and the bias)
+\item
+$\Phi_i\in\dP_0$ is the activation function
+\end{itemize}
+Anything that operates under these specifications is a general tensor network.
+\end{definicija}
+
+\begin{trditev}
+The common neural network defined by the equation
+$$L_{i+1}=\Phi_i(b_i+W_i(L_i))$$
+is a tensor network with $W=b_i+W_i\in \VV\oplus \VV\otimes \VV^*$.
+\end{trditev}
+
+This offers a broad generalization of a concept of a neural network, with a rich theory of operational calculus developed in this paper at its disposal for the study of such objects.
+
+\subsection{Programs as general tensor networks}
+
+Let $P=P_n\circ\cdots\circ P_1\in\dP_0$ be the procedure of interest, with $P_i\in\dP_0$ being the source code between two branching points, like shown in Figure \ref{fig:diagram} of Section \ref{sec:TransInPractice}.
+By Theorem \ref{izr:e^d} we have
+\begin{equation}
+P(v_0+v\in \VV)=e^\D P\vert_{v_0}(v\in \VV)
+\end{equation}
+and through Corollary \ref{izr:komp_homo}
+\begin{equation}\label{eq:eDkompo}
+P(v_0+v\in \VV)=e^\D P_n\vert_{v_0}\circ\cdots \circ e^\D P_1\vert_{v_0}(v\in \VV)
+\end{equation}
+which is the transformation heron denoted by $e^\D P$.
+
+\begin{trditev}
+The image of the application of the operator $e^\D$ to a program $P\in\dP_0$ as in \eqref{eq:eDkompo}, is a general tensor network, with the activation function $\Phi_i$ being the identity map, at each layer.
+\end{trditev}
+
+\subsubsection{Transformations to general tensor networks}
+
+The transformed program equals the original program by Theorem \ref{izr:e^d} and Corollary \ref{izr:komp_homo}. But in practice, we are always working with a finite virtual memory $\VV\otimes T_n(\VV^*)$ and the equality becomes an approximation. Thus we treat the transformation of the original program, as the initialization of the weights (and the bias) of a general tensor network to be trained.  
+
+\begin{izrek}\label{izr:transToTensorNet}
+Let $\Phi=\{\Phi_k;\quad 1\le k\le n\}$ be the set of activation functions. Than the transformation
+\begin{equation}
+\tilde{P}:\VV\to\VV
+\end{equation}
+\begin{eqnarray}
+\tilde{P}=\Phi_n\circ e^\D_NP_n\vert_{v_0}\circ\cdots\circ\Phi_1\circ e^\D_NP_1\vert_{v_0}
+\end{eqnarray}
+is the transformation of a program to a general tensor network, with $e^\D P_i$ applied at a specific point $v_0\in V$.
+\end{izrek}
+\begin{proof}
+$$e^\D_n P_i\vert_{v_0}=W_i\in V\otimes T_n(V^*)\implies\tilde{P}=\Phi_n\circ W_n\circ\cdots\circ\Phi_1\circ W_i$$
+$$\land$$
+$$L_{i+1}=\Phi_i\circ W_i\circ\cdots\circ\Phi_1\circ W_1\implies L_{i+1}=\Phi_i\circ W_i(L_i)$$
+$$\implies$$
+$$\tilde{P}=L_{n+1}$$
+\end{proof}
+
+\begin{corollary}
+Using the operator $e^ \D_1$ in the transformation of Theorem \ref{izr:transToTensorNet}, we arrive at a transformation from a program to a common neural network.
+\end{corollary}
+
+When the original program is a sub-optimal algorithm, providing an approximate solution, as it is more often than not in practice, the derived tensor network may provide better results than the original program after training. The original program serves as a great initialization point of the general tensor network.
+
+\begin{opomba}
+All coefficients $W_i\in V\otimes T(V^*)$ are multi-linear maps allowing efficient implementation through GPU parallelism as by Claim \ref{clm:paralel}. Thus, general tensor networks may employ it, just as the common neural networks they generalize do.
+\end{opomba}
+
+Methods presented in the previous Section \ref{sec:TransInPractice} apply to general tensor networks. Thus, they may freely be composed with and included in other (differentiable) programs, transformations and tensor networks.
+
+\subsection{Training of tensor networks}
+
+All transformed programs $\tilde{P}:\VV\to\VV$ are elements of a differentiable programming space $\dP_0$. As such, the operational calculus derived in this paper, and the operators it offers, can freely be applied to them.
+
+By Corollary \ref{izr:komp_homo} we have
+\begin{equation}\label{eq:tenNetKthDer}
+e^\D_n(L_{i+1})=e^\D_n(\Phi_i)\circ e^\D_n(W_i\circ L_i)
+\end{equation}
+Thus the $n$-differentiable $k$-th derivatives can be extracted by
+\begin{equation}
+^{n}L_{i+1}^{k\prime}=\phi^k\circ e^\D_{n+k}(L_{i+1})
+\end{equation}
+through expression \eqref{eq:tenNetKthDer}. Derivatives of specific order are extracted through projections on components of $P_n$, and can be used in any of the well established training methods in the industry. All methods of program analysis presented in the next Section can also be applied to tensor networks, as we study them.
   
 \section{Analysis}\label{sec:Analysis}
   
@@ -1207,10 +1308,10 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
    $$T_{X_j}=\{T_i\in T_{X_j}\iff \left\Vert\D_{T_i}T\right\Vert\ge c\}$$
    that have the highest measure of activity at the elements of $X_j$. The property measure for the property $X_j$ is than simply the sum of squares of norms of the derivatives of selected sub-procedures $T^i_1=T_i\circ\cdots\circ T_1$. This completes Algorithm \ref{alg:propertyMeasure}. 
    
-   Using the theory, $n$-differentiable derivatives $T^{n\prime}_i\in\dP_n$ with respect to the input $v\in\Omega$ are computed by
+   Using the theory, $n$-differentiable $k$-th derivatives $^{n}T^{k\prime}_i\in\dP_n$ with respect to the input $v\in\Omega$ are computed by
    
    \begin{equation}
-   T^{n\prime}_i=\phi\circ e^{\D_v}_{n+1}(T^i_1)\in\dP_n
+   ^{n}T^{k\prime}_i=\phi^k\circ e^{\D_v}_{n+k}(T^i_1)\in\dP_n
    \end{equation}
    where $\phi$ is the reduction of order map of Theorem \ref{izr:reductionMap}.
    Thus, using $\left\Vert\cdot\right\Vert\in\dP_1$ as the norm map, the property measure is
@@ -1227,6 +1328,8 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
 As each procedure is revealed to be a system existing as an object in virtual space, its computational capability becomes synonymous with shape. For example, trained neural network can be viewed as an element of a high dimensional manifold in this space and training is just a path in this manifold.
 There is a strong connection between shape of the inhabiting space and physical principles it imposes upon objects traversing it \cite{GeneralCovariance}. On the other hand, each procedure is a system entered by an object as an input and exited as an output upon undergoing change. The process of computation can be viewed as evolutions in phase space.
 With the developed theory, we are able to impose more general principles the procedures have to adhere to. Moreover we can use our newfound ability to mold procedures according to imposed principles.
+
+\subsubsection{Heuristics as principles}
  
  Assume we have some a priori knowledge of how the process is to change the object, some previously known heuristic $H$ known from practice. That is equivalent to having knowledge on the path to change $\gamma$, as argued in the previous section. Heuristic $H$ might be some measure on the environment, or a direction, for objects at a particular location $L_i$ in the system. We express change the heuristic $H$ locally exerts with an equation describing the desired behavior of the procedure. 
 Thus, $H$ represents a local principle we wish to impose into the system. We denote the fact the system obeys the principle $H$ by $P\in H$. Our aim is an algorithm molding the system, modifying it in some way to impose the principle into it.
@@ -1239,42 +1342,35 @@ Let
 \begin{equation}
 P=P_n\circ P_{n-1}\circ\cdots\circ P_1
 \end{equation}
-be the procedure representing the system for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $P_i$ containing a control structure), with $P_i=p_k\circ\cdots\circ p_1$ being the conceptual step treated by heuristic $H_j$. $L_j$ are the concerning locations. Again, we let $P^i_k=P_i\circ\cdots\circ P_k$. Directions are usually modeled by first derivatives, and attractions by second derivatives, so lets assume employment of both by the heuristic $H$. For simplicity, assume $step$ to represent one optimization step, using a first derivative in its' execution. A method easily enhanced by any of more sophisticated optimization techniques as made available by the theory.
-
-As $step$ requires the derivative of $H$, which itself contains first and second derivatives of $P$, requires use of the operator $e^\D_3$, for the second derivative to be differentiable. Once differentiable first and second derivatives with respect to parameters $p$ are extracted by
+be the procedure representing the system for simplicity, but it could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$ (by a specific $P_i$ containing a control structure), with $P_i=p_k\circ\cdots\circ p_1$ being the conceptual step treated by heuristic $H_j$. $L_j$ are the concerning locations. Again, we let $P^i_k=P_i\circ\cdots\circ P_k$. Directions are usually modeled by first derivatives, and attractions by second derivatives, so lets assume employment of both by the heuristic $H$. 
+As $H$ needs to be once differentiable, which itself contains first and second derivatives of $P$, means we employ the operator $e^\D_3$ (for the second derivative to be differentiable). Once differentiable first and second derivatives with respect to parameters $p$ are extracted by
 \begin{equation}
 P^{i\prime}_1=proj_{\{1,\D\}}\left(\phi\circ e^{\D_{p}}_3(P^i_1)\right)\in\dP_1
 \end{equation}
 \begin{equation}
 P^{i\prime\prime}_1=\phi^2\circ e^{\D_p}_3(P_i)\in\dP_1
 \end{equation}
-Here we project over the subspace spanned by $\{1,\D\}$ over $K$, as coefficients are required. As both are once differentiable, so is the heuristic $H$ taking them as input.
+where $\phi$ is the reduction of order map of Theorem $\ref{izr:reductionMap}$. Here we project over the subspace spanned by $\{1,\D\}$ over $K$, as coefficients are required. As both are once differentiable, so is the heuristic $H$ taking them as input.
 \begin{equation}
 H^\prime=e^{\D_p}_1(H)\circ(P^{i\prime}_1,P^{i\prime\prime}_1)\in\dP_1
 \end{equation}
-Its derivative is extracted by projecting $H^\prime$ onto $\{\D\}$, to eliminate coefficients in the series $e^\D$, leaving only the derivative, as it need not be further differentiable for the use in the $step$ function.
 
-\begin{algorithm}[h]
-\caption{Imposing a principle $H$}
-\label{alg:impose}
-\begin{algorithmic}[1]
-\Procedure{Imposing a principle $H$}{}
-\For{each step}
-\For{each $L_j\in L$}
-\State extract $P^{i\prime}_1=proj_{\{1,\D\}}\left(\phi\circ e^{\D_{p}}_3(P^i_1)\right)\in\dP_1$
-\State extract $P^{i\prime\prime}_1=\phi^2\circ e^{\D_p}_3(P_i)\in\dP_1$
-\State extract $H^\prime=e^{\D_p}_1(H)\circ(P^{i\prime}_1,P^{i\prime\prime}_1)$
-\State add $proj_{\{\D\}}(H^\prime_j)$ to $H^\prime$
-\EndFor
-\State update $p$ by $step(H,p)$
-\EndFor
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-
-As shown by Algorithm \ref{alg:impose}, we arrived at a procedure $P$, whose conceptual step $P_i$ maximizes action of the principle $H$ upon objects inhabiting it as a system. Using the theory, with the system $P$ as an input variable in Algorithm \ref{alg:impose}, we constructed the algorithm $A:P\notin H\to P\in H$ $\eqref{eq:impose}$.
+By an algorithm similar to Algorithms \ref{alg:appoint}, we can drive a procedure $P$, whose conceptual step $P_i$ maximizes action of the principle $H$ upon objects inhabiting it as a system. 
 
 As we traverse a system looking for a solution, we learn about it in the process. Exploring the virtual space, we may establish connections with existing heuristics, or discover new ones and immediately alter the way the search is conducted. As demonstrated, we are capable of not only altering properties of object in the domain, but also altering the system itself. We employ this to impose principles into it to best serve our quest for a solution, effectively rendering the problem more inclined towards being solved.
+
+%we can categorize procedures/problems, by heuristics they obey, by some measure of heuristic
+%$we could categorize problems, by heuristics the procedures solving them adhere to.
+
+
+%neural networks easier to train and least likely to overfit
+
+
+%we can optimize program as a series, not only hyperparameters4 
+%here parameters, coeficients of tensors in the series, components, become parameters we optimize
+%adding activation functions between compositions, and than optimize ^ ^ 
+
+
 
 
 \section{Conclusions}
@@ -1285,6 +1381,8 @@ Like Feynman \cite{Feynman} and Heaviside \cite{Operational} for physics before 
 This language condenses complex notions into simple expressions, enabling formulation of meaningful algebraic equations to be solved. Doing so, we derived functional transformations of programs in arbitrary function basis', a useful tool when adapting code to the specifics of a given hardware, among others.
 All such formulations are invariant not only to the choice of a programming space, but also to the point in execution of a program, introducing the principle of general covariance \cite{GeneralCovariance} to programming. Offerings of this principle were exploited, as we designed methods on how transformations are to be interchangeably applied in practice. These methods allow for seamless transitions between transformed forms and original code throughout the program. We showed how runtime complexity of the transformed form is computed, gaining the ability to choose the programs complexity, as we tailor the employed form to the specifics of the domains' subset being operated on at a given moment. Thus, the designing process retained and expanded on the freedom of algorithmic expression programming is embraced for.
 
+%Theory leaves the door open for importing many techniques 
+%trivially carried over from functional analysis
 
   \printbibliography
 \end{document}
