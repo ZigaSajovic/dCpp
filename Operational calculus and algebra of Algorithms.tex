@@ -77,6 +77,21 @@ basicstyle=\ttfamily
 \usepackage[sorting=none,backend=bibtex]{biblatex}
 \bibliography{biblio}
 
+\usepackage[hidelinks]{hyperref}
+
+\let\originaleqref\eqref % or \let\originaleqref\ref to drop parens
+\makeatletter
+\renewcommand{\eqref}[1]{%
+  \begingroup%
+  \let\ref\@refstar%
+  \hyperref[#1]{%
+    equation%
+    ~\originaleqref{#1}%
+  }%
+  \endgroup
+}
+
+
 
 \title{Operational calculus and algebra of Algorithms}
 \author{\v{Z}iga Sajovic, Martin Vuk}
