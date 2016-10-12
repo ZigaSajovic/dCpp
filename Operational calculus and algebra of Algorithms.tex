@@ -93,7 +93,7 @@ basicstyle=\ttfamily
 
 
 
-\title{Operational calculus and algebra of Algorithms}
+\title{Operational calculus on programming spaces}
 \author{\v{Z}iga Sajovic, Martin Vuk}
 \begin{document}
 \maketitle
@@ -565,7 +565,7 @@ f_k(\uu)\vv\otimes f_1\otimes\ldots f_{k-1}\otimes g_1\otimes\ldots \\
     \nonumber                                              g_1\otimes\ldots g_l
  \end{eqnarray}
 \end{definicija}
-\begin{izrek}[Algebra of Algorithms]\label{izr:alg}
+\begin{izrek}[Programming algebra]\label{izr:alg}
 An infinitely-differentiable programming space $\dP_n$ is a function algebra,
 with the product defined by \eqref{eq:algebra_product} for any bilinear map $\cdot :V\times V\to U\otimes T(V^*)$.
 \end{izrek}
@@ -595,7 +595,7 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
   \end{definicija}
 Anything that operates under these specifications is an analytic virtual machine, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$. Algebraic manipulations it enables are employed throughout the paper, revealing analytic insights in Section \ref{sec:Analysis}.  All analytic virtual machines fully integrate usage of control structures, as it is demonstrated and proven in Section \ref{sec:control}, thus retaining algorithmic control flow and the expressive power it possesses. 
 
- \subsection{Power series expansion}\label{sec:Vrsta}
+ \subsection{Tensor series expansion}\label{sec:Vrsta}
  
  Expansion into a series offers valuable insights into programs through methods of analysis, as explored in Section \ref{sec:Analysis}. But before tackling analysis, we motivate the following with an immediate example. Suppose an algorithm of high time complexity. As speed is of importance, an approximation would suffice. Using the described mechanics, we may linearize the program. We choose a $v_0\in\dP$ and linearize $P'=P(v_0)+\D P(v_0)\cdot(v-v_0)$. The latter has to be done only once.
  Locally, the image of the linearization is a good approximation of the original program. To extend this radius, we would like to expand said program into a series.
@@ -650,7 +650,7 @@ and by linearity to any finite rank multi-tensor in $U\otimes T(V^*)$ a
 polynomial map.
  
 \begin{izrek}\label{izr:e^d}
-	For a program $P\in\dP$  the expansion into a Taylor series
+	For a program $P\in\dP$  the expansion into an infinite tensor series
   at the point $\vv_0\in V$ is expressed by multiple contractions 
 	\begin{multline}\label{eq:tenzorVrsta}
 	P(\vv_0+h\vv) = \Big((e^{h\D}P)(\vv_0)\Big)\cdot\vv
@@ -1195,11 +1195,11 @@ All transformed programs $\tilde{P}:\VV\to\VV$ are elements of a differentiable 
 
 By Corollary \ref{izr:komp_homo} we have
 \begin{equation}\label{eq:tenNetKthDer}
-e^\D_n(L_{i+1})=e^\D_n(\Phi_i)\circ e^\D_n(W_i\circ L_i)
+e^\D_n(L_{i+1})=e^\D_n(\Phi_i)\circ e^\D_n(W_i\circ L_i)\in\dP_n
 \end{equation}
 Thus the $n$-differentiable $k$-th derivatives can be extracted by
 \begin{equation}
-^{n}L_{i+1}^{k\prime}=\phi^k\circ e^\D_{n+k}(L_{i+1})
+^{n}L_{i+1}^{k\prime}=\phi^k\circ e^\D_{n+k}(L_{i+1})\in\dP_n
 \end{equation}
 through expression \eqref{eq:tenNetKthDer}, were $\phi$ is the reduction of order map of Theorem \ref{izr:reductionMap}. Derivatives of specific order are extracted through projections on components of $P_n$, and can be used in any of the well established training methods in the industry. 
 
@@ -1391,11 +1391,11 @@ Existence of a procedure is embedded in a virtual reality, forming a system of o
 
 Like Feynman \cite{Feynman} and Heaviside \cite{HeavisideOperational} for physics before us, we developed operational calculus on programming spaces, allowing analytic conclusions through algebraic means, easing implementation. We derived the operator of program composition, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order), under a single operator in the theory. Both the use of algebra and calculus were demonstrated upon the operator, as calculations and manipulations were performed on the operator level, before the operator is applied to a particular program.
 This language condenses complex notions into simple expressions, enabling formulation of meaningful algebraic equations to be solved. Doing so, we derived functional transformations of programs in arbitrary function basis', a useful tool when adapting code to the specifics of a given hardware, among others.
-All such formulations are invariant not only to the choice of a programming space, but also to the point in execution of a program, introducing the principle of general covariance \cite{GeneralCovariance} to programming. Offerings of this principle were exploited, as we designed methods on how transformations are to be interchangeably applied in practice. These methods allow for seamless transitions between transformed forms and original code throughout the program. We showed how runtime complexity of the transformed form is computed, gaining the ability to choose the programs complexity, as we tailor the employed form to the specifics of the domains' subset being operated on at a given moment. Thus, the designing process retained and expanded on the freedom of algorithmic expression programming is embraced for.
+All such formulations are invariant not only to the choice of a programming space, but also to the point in execution of a program, introducing the principle of general covariance \cite{GeneralCovariance} to programming. Offerings of this principle were exploited, as we designed methods on how transformations are to be interchangeably applied in practice. These methods allow for seamless transitions between transformed forms and original code throughout the program.
 
-%Theory leaves the door open for importing many techniques 
-%trivially carried over from functional analysis
-
+We generalized neural networks by constructing general tensor networks and showed them to be differentiable and trainable using operators constructed in Section \ref{sec:operational}. We derived transformations of arbitrary programs to general tensor networks and provided a new way of initializing networks. This may prove useful in future development of the field, as neural networks currently give best results to many problems. To this aim, we developed tools for analyzing procedures and probe their inner structure.
+State of the art methods for analyzing neural networks were generalized to general programs in the theory.
+We demonstrated how the developed operational calculus is employed to such a cause, with countless methods from analysis available to be trivially transfered to the subject, as by the imagination and inventiveness of the employer of the theory.
   \printbibliography
 \end{document}
 
