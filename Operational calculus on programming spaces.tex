@@ -400,7 +400,7 @@ derivatives
 $$V\xrightarrow{\D^k P} U\otimes (V^*)^{\otimes k}\hookrightarrow U\otimes
 T(V^*).$$
 
-\section{Operational calculus and algebra of Algorithms}\label{sec:operational}
+\section{{Operational calculus and algebra of Algorithms}}\label{sec:operational}
 
 The derivative defines an operator on the space of smooth maps $V\to U\otimes
  T(V^*)$\footnote{the operator $\D$ may be defined partially for other maps as
@@ -812,14 +812,14 @@ which enables efficient implementation.
  
  It is useful to be able to use the $k$-th derivative of a program $P\in\dP$ as part of a different differentiable program $P_1$. As such, we must be able to treat the derivative itself as a differentiable program $P^{\prime k}\in\dP$, while only coding the original program $P$. 
 \begin{trditev}\label{izr:reductionMap}
-There exists a reduction of order map $\phi_n:\dP_n\to \dP_{n-1}$, such that the
+There exists a reduction of order map $\phi:\dP_n\to \dP_{n-1}$, such that the
 following  diagram commutes
 \begin{equation}\label{eq:reductionMap}
 \begin{tikzcd}
-  \dP_n \arrow{r}{\phi^n} \arrow{d}{\D} & 
+  \dP_n \arrow{r}{\phi} \arrow{d}{\D} & 
   \dP_{n-1} \arrow{d}{\D}\\
   \dP_{n+1} 
-  \arrow{r}{\phi^{n+1}}& \dP_{n}
+  \arrow{r}{\phi}& \dP_{n}
 \end{tikzcd}
 \end{equation}
 satisfying
@@ -882,7 +882,7 @@ for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto 
   If $F$ does not span $\dP$, or we used the projection of the operator $e^\D_{n<N}$, the expression $P_F$ still represents the best possible approximation of the original program, on components $\{\D^n\}$, in basis $F$.
   
   It makes sense to, before computing the tensor $\eqref{eq:matTrans}$, to expand the set $F$, by mutual (nested) compositions, and gain mappings, that can not be expressed as linear combinations (but are still optimized for hardware $H$), and so increasing the power of the method.
-\subsection{The special case of functions $\VV\to K$}
+\subsection{Special case of functions $\VV\to K$}
 We describe a special case when $\dP_0=\VV\otimes\dP_{-1}$, where
 $\dP_{-1}<K^\VV$ is a subspace of the space of functions $\VV\to K$. This is
 useful, if the set of functions $F$ only contains functions $\VV\to K$. It is
@@ -1103,7 +1103,7 @@ Transformations $\eqref{eq:P_F}$ need to be computed only once. Complexity of th
 
 Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary algorithms $P\in\dP$, along with estimations and order of the error of the approximation. Simultaneously it enables transformations of the function basis of programs, and with it implementations, more inclined towards efficiency on a given hardware. After initial applications of operators and performed transformations the program may be used, as many times as pleased, towards the purpose it was initially designed for. By doing so, we may manipulate its' complexity (for $k\le n$) and switch between different code formulations ($p$, $e^\D(p)$, $T_{F\X}\cdot e^\D(p)$), as better suited to the nature of the domains' subset, upon which the program operates at a given moment.
 
-\section{Generalized tensor networks}
+\section{Generalized tensor networks}\label{sec:generalTensorNet}
 
 Let $W\in \VV\otimes T_n(\VV^*)$, than we define the application of $v\in \VV$ by
 \begin{equation}
@@ -1115,7 +1115,7 @@ A general tensor network is defined by the equation
 \begin{equation}
 L_{i+1}=\Phi_i\circ W_i(L_i)
 \end{equation}
-for each layer, where we have
+for each layer, where
 \begin{itemize}
 \item
 $L_i\in \VV$ is the input
@@ -1137,16 +1137,20 @@ is a tensor network with $W=b_i+W_i\in \VV\oplus \VV\otimes \VV^*$.
 
 This offers a broad generalization of a concept of a neural network, with a rich theory of operational calculus developed in this paper at its disposal for the study of such objects.
 
+\begin{trditev}
+A general tensor network can be represented and implemented by a deeper common neural network. This equivalence means, that a general tensor network with less layers can provide the same results as a deeper common neural network, while mitigating the vanishing gradient problem that occurs in training due to the depth of the network coupled with machine precision.
+\end{trditev}
+
 \subsection{Programs as general tensor networks}
 
-Let $P=P_n\circ\cdots\circ P_1\in\dP_0$ be the procedure of interest, with $P_i\in\dP_0$ being the source code between two branching points, like shown in Figure \ref{fig:diagram} of Section \ref{sec:TransInPractice}.
+Let $P=P_n\circ\cdots\circ P_0\in\dP_0$ be the procedure of interest, with $P_i\in\dP_0$ being the source code between two branching points, like shown in Figure \ref{fig:diagram} of Section \ref{sec:TransInPractice}.
 By Theorem \ref{izr:e^d} we have
 \begin{equation}
 P(v_0+v\in \VV)=e^\D P\vert_{v_0}(v\in \VV)
 \end{equation}
 and through Corollary \ref{izr:komp_homo}
 \begin{equation}\label{eq:eDkompo}
-P(v_0+v\in \VV)=e^\D P_n\vert_{v_0}\circ\cdots \circ e^\D P_1\vert_{v_0}(v\in \VV)
+P(v_0+v\in \VV)=e^\D P_n\vert_{v_n}\circ\cdots \circ e^\D P_0\vert_{v_0}(v\in \VV)
 \end{equation}
 which is the transformation heron denoted by $e^\D P$.
 
@@ -1164,12 +1168,12 @@ Let $\Phi=\{\Phi_k\in\dP_0:\VV\to\VV;\quad 1\le k\le n\}$ be the set of activati
 \tilde{P}:\VV\to\VV
 \end{equation}
 \begin{eqnarray}
-\tilde{P}=\Phi_n\circ e^\D_NP_n\vert_{v_0}\circ\cdots\circ\Phi_1\circ e^\D_NP_1\vert_{v_0}
+\tilde{P}=\Phi_n\circ e^\D_NP_n\vert_{v_n}\circ\cdots\circ\Phi_1\circ e^\D_NP_0\vert_{v_0}
 \end{eqnarray}
-is the transformation of a program to a general tensor network, with $e^\D P_i$ being applied at a specific point $v_0\in V$.
+is the transformation of a program to a general tensor network, with $e^\D P_i$ being applied at a specific point $v_{i+1}=P_{i}(v_{i})\in \VV$.
 \end{izrek}
 \begin{proof}
-$$e^\D_n P_i\vert_{v_0}=W_i\in V\otimes T_n(V^*)\implies\tilde{P}=\Phi_n\circ W_n\circ\cdots\circ\Phi_1\circ W_i$$
+$$e^\D_n P_i\vert_{v_i}=W_i\in V\otimes T_n(V^*)\implies\tilde{P}=\Phi_n\circ W_n\circ\cdots\circ\Phi_1\circ W_i$$
 $$\land$$
 $$L_{i+1}=\Phi_i\circ W_i\circ\cdots\circ\Phi_1\circ W_1\implies L_{i+1}=\Phi_i\circ W_i(L_i)$$
 $$\implies$$
@@ -1187,7 +1191,7 @@ Generalizations of recurrent neural networks \cite{RecurrentNet} and highway neu
 This may prove useful in future developments of the field, as currently neural networks give best results in many fields. When the original program is a sub-optimal algorithm, providing an approximate solution, as it is more often than not in practice, the derived tensor network may provide better results than the original program after training. The original program serves as a great initialization point of the general tensor network, which may be viewed as a family of algorithms to be optimized. 
 
 \begin{opomba}
-All coefficients $W_i\in V\otimes T(V^*)$ are multi-linear maps allowing efficient implementation through GPU parallelism as by Claim \ref{clm:paralel}. Thus, general tensor networks may employ it, just as the common neural networks they generalize do.
+All coefficients $W_i\in \VV\otimes T(\VV^*)$ are multi-linear maps allowing efficient implementation through GPU parallelism as by Claim \ref{clm:paralel}. Thus, general tensor networks may employ it, just as the common neural networks they generalize do.
 \end{opomba}
 
 Methods presented in the previous Section \ref{sec:TransInPractice} apply to general tensor networks. Thus, they may freely be composed with and included in other (differentiable) programs, transformations and tensor networks.
@@ -1256,7 +1260,7 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
    \begin{definicija}[Activity profile]
    The function $\mathcal{A}_i:\Omega\to[0,1]$ is called a \emph{measure of activity} in the conceptual step $T_i$, where 
    $$\mathcal{A}_i\circ e^{\D_{T_i}}T(v)$$ 
-   is the \emph{activity level} of $T_i$, for a given element of the domain $v\in \Omega$ taken as the input of $T$, with only the variable parameters of the sub-procedure $T_i$ are considered as such.
+   is the \emph{activity level} of $T_i$, for a given element of the domain $v\in \Omega$ taken as the input of $T$, with only the variable parameters of the sub-procedure $T_i$ being considered as such.
    
    The vector $$\mathcal{A}=(\mathcal{A}_1,\mathcal{A}_2,\dots,\mathcal{A}_n):\Omega\to[0,1]^n$$ represents the activity profile of the procedure $T$. 
    \end{definicija}
@@ -1391,15 +1395,15 @@ By interpreting heuristics as principles, we can improve any part of the program
 
 \section{Conclusions}
 
-Existence of a program is embedded in a virtual reality, forming a system of objects undergoing change in a virtual space. Just as the reality inhabited by us is being studied by science, revealing principles and laws, so can the virtual reality inhabited by programs. Yet here lies a tougher task, as the laws of the system are simultaneously observed and constructed \footnote{universe is bug-free and our programs are not}. This reinforces the need for a language capable of not only capturing, but also constructing digital phenomena, a feat demonstrated by the theory presented in this paper. 
+Existence of a program is embedded in a virtual reality, forming a system of objects undergoing change in a virtual space. Just as the reality inhabited by us is being studied by science, revealing principles and laws, so can the virtual reality inhabited by programs. Yet here lies a tougher task, as the laws of the system are simultaneously observed and constructed \footnote{the universe is bug-free while our programs are not}. This reinforces the need for a language capable of not only capturing, but also constructing digital phenomena, a feat demonstrated by the theory presented in this paper. 
 
 Like Feynman \cite{Feynman} and Heaviside \cite{HeavisideOperational} for physics before us, we developed operational calculus on programming spaces, allowing analytic conclusions through algebraic means, easing implementation. We derived the operator of program composition, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order), under a single operator in the theory. Both the use of algebra and calculus were demonstrated upon the operator, as calculations and manipulations were performed on the operator level, before the operator is applied to a particular program.
 This language condenses complex notions into simple expressions, enabling formulation of meaningful algebraic equations to be solved. Doing so, we derived functional transformations of programs in arbitrary function basis', a useful tool when adapting code to the specifics of a given hardware, among other.
 All such formulations are invariant not only to the choice of a programming space, but also to the point in execution of a program, introducing the principle of general covariance \cite{GeneralCovariance} to programming. Offerings of this principle were exploited, as we designed methods on how transformations are to be interchangeably applied in practice in Section \ref{sec:TransInPractice}. These methods allow for seamless transitions between transformed forms and original code throughout the program. All analytic machines attain and expand on the expressive freedom of algorithmic control flow, as they fully integrate control structures.
 
-We generalized neural networks by constructing general tensor networks and showed them to be differentiable and trainable using operators constructed in Section \ref{sec:operational}. We derived transformations of arbitrary programs to general tensor networks and provided a new way of initializing networks. This may prove useful in future development of the field, as neural networks currently give best results to many problems. To this aim, we developed tools for analyzing procedures and probe their inner structure.
+In Section\ref{sec:generalTensorNet}, we generalized neural networks by constructing general tensor networks and showed them to be differentiable and trainable using operators constructed in Section \ref{sec:operational}. We derived transformations of arbitrary programs to general tensor networks and provided a new way of initializing networks. This may prove useful in future development of the field, as neural networks currently give best results to many problems. To this aim, we developed tools for analyzing procedures and probe their inner structure.
 State of the art methods for analyzing neural networks were generalized to general programs in the theory.
-We demonstrated how the developed operational calculus is employed in practice towards such a cause, with countless methods from analysis available to be trivially transfered to the subject, limited by the imagination and inventiveness of the employer of the theory.
+We demonstrated how the developed operational calculus is employed in practice towards such a cause, with countless methods from analysis available to be trivially transfered to the subject, limited only by the imagination and inventiveness of the employer of the theory.
   \printbibliography
 \end{document}
 
