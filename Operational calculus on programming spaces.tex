@@ -94,8 +94,8 @@ basicstyle=\ttfamily
 }
 
 
-\title{Operational calculus on programming spaces}
-\author{\v{Z}iga Sajovic, Martin Vuk}
+\title{Operational calculus on programming spaces and generalized tensor networks}
+\author{Žiga Sajovic, Martin Vuk}
 
 \begin{document}
 \maketitle
@@ -400,7 +400,7 @@ derivatives
 $$V\xrightarrow{\D^k P} U\otimes (V^*)^{\otimes k}\hookrightarrow U\otimes
 T(V^*).$$
 
-\section{{Operational calculus and algebra of Algorithms}}\label{sec:operational}
+\section{Operational calculus on programming spaces}\label{sec:operational}
 
 The derivative defines an operator on the space of smooth maps $V\to U\otimes
  T(V^*)$\footnote{the operator $\D$ may be defined partially for other maps as
@@ -600,7 +600,17 @@ Anything that operates under these specifications is an analytic virtual machine
 
 \subsubsection{Implementation}
 
+An illustrative example of the implementation of the theory can be found on github. Implementation closely follows theorems and derivations of this paper, intended as an educational guide.
 
+Virtual memory $\VV$ is constructed and expanded to $\VV\otimes T(\VV^*)$, serving by itself as an algebra of programs. We provide a construction of an analytic programming space
+\begin{equation}
+\CC\subset \dP_0:\VV\to\VV
+\end{equation}
+and expand it to
+\begin{equation}
+\DD^n\CC\subset\dP_n:\VV\to\VV\otimes T(\VV^*)
+\end{equation}
+using the developed operational calculus. A paper explaining the process of implementation accompanies the source-code. 
 
  \subsection{Tensor series expansion}\label{sec:Vrsta}
  
@@ -1298,7 +1308,7 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
     $$v\in X\iff M_x\circ\mathcal{A}(v)\ge c.$$
     \end{definicija}
    
-   \begin{algorithm}[ht!]
+   \begin{algorithm}[H]
    \caption{Construct property measure}
    \label{alg:propertyMeasure}
    \begin{algorithmic}[1]
@@ -1320,7 +1330,8 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
    
    Once the activity profiles and property measures are generated, starting with an element, without the property $X_j$, we can use any established optimization technique, to optimize and increase the measure $M_{X_j}$. When the increase of the measure $M_{X_j}$ is sufficient, this results in an new object possessing the property $X_j$.
    
-   \begin{algorithm}[hb!]
+   
+   \begin{algorithm}[H]
    \caption{Appoint property $X_j$ to $v\in \Omega$}
    \label{alg:appoint}
    \begin{algorithmic}[1]
@@ -1341,8 +1352,9 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
    \end{algorithmic}
    \end{algorithm}
    
-    The flow curve outputted by Algorithm $\ref{alg:appoint}$ is $\gamma$, the path of change. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
+   The flow curve outputted by Algorithm $\ref{alg:appoint}$ is $\gamma$, the path of change. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
    
+
    \begin{izrek}\label{izr:algA}
         With an appropriate choice of the activity profile $\mathcal{A}$, there exist an algorithm
         \begin{equation}\label{eq:algA}
