@@ -716,6 +716,10 @@ which enables efficient implementation.
   by Leibnitz rule for higher derivatives of bilinear maps \eqref{eq:Leibnitz1} equals \eqref{eq:Leibnitz2}.
  \end{proof}
  
+ \subsubsection{Operator of program composition}
+ 
+ In this section we generalize both forward and reverse mode of automatic differentiation (of arbitrary order) under a single invariant operator in the theory. We demonstrate how calculations can be performed on the operator level, easing general implementation. This condenses complex notions to simple expressions, allowing meaningful manipulations before being applied to a particular programming space.
+ 
  \begin{izrek}\label{izr:kompo}
  Composition of maps $\dP$ is expressed as
  \begin{equation}\label{eq:kompo}
@@ -813,6 +817,8 @@ which enables efficient implementation.
    Follows from $\eqref{eq:pToPol}$ and Theorem $\ref{izr:kompo}$.
    \end{proof}
  
+ \subsubsection{Nesting}
+ 
  It is useful to be able to use the $k$-th derivative of a program $P\in\dP$ as part of a different differentiable program $P_1$. As such, we must be able to treat the derivative itself as a differentiable program $P^{\prime k}\in\dP$, while only coding the original program $P$. 
 \begin{trditev}\label{izr:reductionMap}
 There exists a reduction of order map $\phi:\dP_n\to \dP_{n-1}$, such that the
@@ -830,7 +836,13 @@ satisfying
 \forall_{P_1\in\dP_0}\exists_{P_2\in\dP_0}\Big(\phi^k\circ e^\D_n(P_1)=e^\D_{n-k}(P_2)\Big)
 \end{equation}
 for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto the set $\{\D^n\}$.
-\end{trditev}      
+\end{trditev}  
+\begin{corollary}
+By Theorem \ref{izr:reductionMap}, $n$-differentiable $k$-th derivatives of a program $P\in\dP_0$ can be extracted by
+\begin{equation}
+^{n}P^{k\prime}=\phi^k\circ e^\D_{n+k}(P)\in\dP_n
+\end{equation}
+\end{corollary}    
  Thus, we gained the ability of writing a differentiable program acting on derivatives of another program, stressed as crucial (but lacking in most models) by other authors \cite{AD1}. Usage of the reduction of order map and other constructs of this Section are demonstrated in Section \ref{sec:Analysis}, as we analyze procedures as systems inducing change upon objects in virtual space.
  
    \subsection{Functional transformation of programs}\label{sec:FTP}
