@@ -601,6 +601,7 @@ Anything that operates under these specifications is an analytic virtual machine
 \subsubsection{Implementation}
 
 
+
  \subsection{Tensor series expansion}\label{sec:Vrsta}
  
  Expansion into a series offers valuable insights into programs through methods of analysis, as explored in the coming sections. But before tackling analysis, we motivate the following with an immediate example. Suppose an algorithm of high time complexity. As speed is of importance, an approximation would suffice. Using the described mechanics, we may linearize the program. We choose a $v_0\in\dP$ and linearize $P'=P(v_0)+\D P(v_0)\cdot(v-v_0)$. The latter has to be done only once.
@@ -718,7 +719,7 @@ which enables efficient implementation.
  
  \subsubsection{Operator of program composition}
  
- In this section we generalize both forward and reverse mode of automatic differentiation (of arbitrary order) under a single invariant operator in the theory. We demonstrate how calculations can be performed on the operator level, easing general implementation. This condenses complex notions to simple expressions, allowing meaningful manipulations before being applied to a particular programming space.
+ In this section we generalize both forward and reverse mode of automatic differentiation (of arbitrary order) under a single invariant operator in the theory. We demonstrate how calculations can be performed on the operator level, easing general implementation. This condenses complex notions to simple expressions allowing meaningful manipulations before being applied to a particular programming space.
  
  \begin{izrek}\label{izr:kompo}
  Composition of maps $\dP$ is expressed as
@@ -1234,6 +1235,10 @@ through expression \eqref{eq:tenNetKthDer}, were $\phi$ is the reduction of orde
 Using the operator $\exp(\D_fe^{h\D_g})$ of Theorem \ref{izr:kompo}, both forward and reverse mode automatic differentiation (of arbitrary order) can be implemented on general tensor networks.
 \end{trditev}
 
+\begin{opomba}
+The operational calculus developed in this paper can be applied to the training process $T\in\dP_0$ of a general tensor network itself, as it is but an element of a differentiable programming space. Thus, the training parameters can be studied, analyzed and trained, as to be adapted to the particulars of the problem being solved.
+\end{opomba}
+
 All methods of program analysis presented in the next Section \ref{sec:Analysis} can also be applied to tensor networks, as we study them.
   
 \section{Analysis}\label{sec:Analysis}
@@ -1425,9 +1430,9 @@ Like Feynman \cite{Feynman} and Heaviside \cite{HeavisideOperational} for physic
 This language condenses complex notions into simple expressions, enabling formulation of meaningful algebraic equations to be solved. Doing so, we derived functional transformations of programs in arbitrary function basis', a useful tool when adapting code to the specifics of a given hardware, among other.
 All such formulations are invariant not only to the choice of a programming space, but also to the point in execution of a program, introducing the principle of general covariance \cite{GeneralCovariance} to programming. Offerings of this principle were exploited, as we designed methods on how transformations are to be interchangeably applied in practice in Section \ref{sec:TransInPractice}. These methods allow for seamless transitions between transformed forms and original code throughout the program. All analytic machines attain and expand on the expressive freedom of algorithmic control flow, as they fully integrate control structures.
 
-In Section\ref{sec:generalTensorNet}, we generalized neural networks by constructing general tensor networks and showed them to be differentiable and trainable using operators constructed in Section \ref{sec:operational}. We derived transformations of arbitrary programs to general tensor networks and provided a new way of initializing networks. This may prove useful in future development of the field, as neural networks currently give best results to many problems. To this aim, we developed tools for analyzing procedures and probe their inner structure.
+In Section \ref{sec:generalTensorNet}, we generalized neural networks by constructing general tensor networks and showed them to be differentiable and trainable using operators constructed in Section \ref{sec:operational}. We derived transformations of arbitrary programs to general tensor networks and provided a new way of initializing networks. This may prove useful in future developments of the field, as neural networks currently give best results to many problems. To this aim, we developed tools for analyzing procedures and probe their inner structure.
 State of the art methods for analyzing neural networks were generalized to general programs in the theory.
-We demonstrated how the developed operational calculus is employed in practice towards such a cause, with countless methods from analysis available to be trivially transfered to the subject, limited only by the imagination and inventiveness of the employer of the theory.
+We demonstrated how the developed operational calculus is employed in practice towards such a cause, and how through it countless methods from analysis can be trivially transfered to the subject, limited only by the imagination and inventiveness of the employer of the theory.
   \printbibliography
 \end{document}
 
