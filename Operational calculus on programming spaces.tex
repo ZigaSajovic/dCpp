@@ -93,6 +93,18 @@ basicstyle=\ttfamily
   \endgroup
 }
 
+\usepackage{epigraph}
+
+% \epigraphsize{\small}% Default
+\setlength\epigraphwidth{8cm}
+\setlength\epigraphrule{0pt}
+
+\usepackage{etoolbox}
+
+\makeatletter
+\patchcmd{\epigraph}{\@epitext{#1}}{\itshape\@epitext{#1}}{}{}
+\makeatother
+
 
 \title{Operational calculus on programming spaces and generalized tensor networks}
 \author{Žiga Sajovic, Martin Vuk}
@@ -123,6 +135,10 @@ We use it to generalize state of the art methods for analyzing neural networks t
 
 \end{abstract}
 
+\epigraph{Mathematics is the art of giving the same name to different things.}{--- \textup{Henri Poincaré}}
+
+
+\clearpage
 \tableofcontents
 
 \section{Introduction}
@@ -1330,6 +1346,7 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
    
    Once the activity profiles and property measures are generated, starting with an element, without the property $X_j$, we can use any established optimization technique, to optimize and increase the measure $M_{X_j}$. When the increase of the measure $M_{X_j}$ is sufficient, this results in an new object possessing the property $X_j$.
    
+    The flow curve outputted by Algorithm $\ref{alg:appoint}$ is $\gamma$, the path of change. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
    
    \begin{algorithm}[H]
    \caption{Appoint property $X_j$ to $v\in \Omega$}
@@ -1351,8 +1368,6 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
    \EndProcedure
    \end{algorithmic}
    \end{algorithm}
-   
-   The flow curve outputted by Algorithm $\ref{alg:appoint}$ is $\gamma$, the path of change. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
    
 
    \begin{izrek}\label{izr:algA}
