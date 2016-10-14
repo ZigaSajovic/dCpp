@@ -149,15 +149,15 @@ Just as the discrete nature of physical reality is studied through analytic mean
 The way evaluation of algorithmic expressions differs from evaluation of symbolic expressions of standard analysis, lies at the very core of this dissonance. The disconnect was partially mitigated by methods of automatic differentiation, utilized today in machine learning, engineering, simulations, etc. Yet under the lack of a proper formalism the model collapses when one tries to generalize to such notions as a differentiable program $p_1$ operating on (differentiable) derivatives of another program $p_2$ (where only coding of $p_2$ is required within $p_1$), while retaining the famed expressive freedom. 
 Models allowing for nested differentiation \cite{AD1}, still fail in providing algorithms with an algebra enabling study and formulation of programs through analytic equations. Thus, they remain nothing more than means to calculating derivatives, void of any meaningful algebraic insight, lacking the true power the vast field of analysis is endowed with.
 
-The aim of this paper is bridging the gap between programming and analysis. By generalizing on existing models, we show them to be specific views of the same great elephant. Employing tensor algebra, we construct a virtual memory whose internal structure reflects and carries evaluation of algorithmic expressions. In Section \ref{sec:operational} we provide an exact definition and construction of an analytic virtual machine, capable of implementing infinitely-differentiable programming spaces and operators acting upon them, supporting actions on multiple memory locations at a time. These programming spaces are shown to be a subalgebra, giving rise to algebraic manipulations of programs and through it operators expanding a program into an infinite tensor series are derived. The operator of program composition is constructed, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order) under a single invariant operator in the theory. Through projections and embeddings in this space, the problem of nested differentiation is resolved, where a program $p_1$ acts on differentiable derivatives of $p_2$, requiring only coding of $p_2$ within $p_1$.
+The aim of this paper is bridging the gap between programming and analysis. By generalizing on existing models, we show them to be specific views of the same great elephant. Employing tensor algebra, we construct a virtual memory whose internal structure reflects and carries evaluation of algorithmic expressions. In Section \ref{sec:operational} we provide an exact definition and construction of an analytic virtual machine, capable of implementing infinitely-differentiable programming spaces and operators acting upon them, supporting actions on multiple memory locations at a time. These programming spaces are shown to be a subalgebra, giving rise to symbolic manipulations of programs, while attaining construction by algorithmic control flow. Through it operators expanding a program into an infinite tensor series are derived. The operator of program composition is constructed, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order) under a single invariant operator in the theory. Through projections and embeddings in this space, the problem of nested differentiation is resolved, where a program $p_1$ acts on differentiable derivatives of $p_2$, requiring only coding of $p_2$ within $p_1$.
 
 Theory grants us the ability to choose programs' complexity through approximations inhabiting the virtual space. It being modeled by tensor algebra consisting of multi-linear maps is tailor made for efficient implementation by GPU parallelism \cite{TensorGPU}. Employing the developed algebra, we derive functional transformations of programs in an arbitrary function basis. 
 As different hardware is optimized for running of different sets of functions, this proves useful with adapting code to fit specific hardware.
 We provide instructions on methods of usage and outline the process of how these transformations are to be interchangeably applied in practice. 
 
 Analytic virtual machines fully integrate control structures, thus retaining algorithmic control flow and the expressive power it possesses. 
-We generalize neural networks by constructing general tensor networks and derive transformations of programs to general tensor networks. These tensor networks are trainable and adhere to the operational calculus presented in this paper, providing a new way of network initialization.
-The theory offers new insights into programs, as we demonstrate how to probe their inner structure, revealing what actions properties of the domain most react to. This enables us to alter data by imposing some property it lacks upon it.
+We generalize neural networks by constructing general tensor networks and derive transformations of programs to general tensor networks. These tensor networks are trainable and adhere to the operational calculus presented in this paper, providing a new way of network initialization and analysis.
+Theory offers new insights into programs, as we demonstrate how to probe their inner structure, revealing what actions properties of the domain most react to. This enables us to alter data by imposing some property it lacks upon it.
 We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space. Exploring procedures as systems inducing change upon objects in this space, we study dynamics of computation as fields and the principles they induce upon the system, and attain valuable tools for general problem solving.
 
 \section{Computer programs as maps}
@@ -616,7 +616,7 @@ Anything that operates under these specifications is an analytic virtual machine
 
 \subsubsection{Implementation}
 
-An illustrative example of the implementation of the theory can be found on github. Implementation closely follows theorems and derivations of this paper, intended as an educational guide.
+An illustrative example of the implementation of the theory is available on github \cite{dC++}. Implementation closely follows theorems and derivations of this paper, intended as an educational guide.
 
 Virtual memory $\VV$ is constructed and expanded to $\VV\otimes T(\VV^*)$, serving by itself as an algebra of programs. We provide a construction of an analytic programming space
 \begin{equation}
@@ -844,7 +844,7 @@ which enables efficient implementation.
    Follows from $\eqref{eq:pToPol}$ and Theorem $\ref{izr:kompo}$.
    \end{proof}
  
- \subsubsection{Nesting}
+ \subsubsection{Order reduction for nested applications}
  
  It is useful to be able to use the $k$-th derivative of a program $P\in\dP$ as part of a different differentiable program $P_1$. As such, we must be able to treat the derivative itself as a differentiable program $P^{\prime k}\in\dP$, while only coding the original program $P$. 
 \begin{trditev}\label{izr:reductionMap}
@@ -1460,6 +1460,7 @@ All such formulations are invariant not only to the choice of a programming spac
 In Section \ref{sec:generalTensorNet}, we generalized neural networks by constructing general tensor networks and showed them to be differentiable and trainable using operators constructed in Section \ref{sec:operational}. We derived transformations of arbitrary programs to general tensor networks and provided a new way of initializing networks. This may prove useful in future developments of the field, as neural networks currently give best results to many problems. To this aim, we developed tools for analyzing procedures and probe their inner structure.
 State of the art methods for analyzing neural networks were generalized to general programs in the theory.
 We demonstrated how the developed operational calculus is employed in practice towards such a cause, and how through it countless methods from analysis can be trivially transfered to the subject, limited only by the imagination and inventiveness of the employer of the theory.
+  \clearpage
   \printbibliography
 \end{document}
 
