@@ -150,16 +150,16 @@ Just as the discrete nature of physical reality is studied through analytic mean
 The way evaluation of algorithmic expressions differs from evaluation of symbolic expressions of standard analysis, lies at the very core of this dissonance. The disconnect was partially mitigated by methods of automatic differentiation, utilized today in machine learning, engineering, simulations, etc. Yet under the lack of a proper formalism the model collapses when one tries to generalize to such notions as a differentiable program $p_1$ operating on (differentiable) derivatives of another program $p_2$ (where only coding of $p_2$ is required within $p_1$), while retaining the famed expressive freedom. 
 Models allowing for nested differentiation \cite{AD1}, still fail in providing algorithms with an algebra enabling study and formulation of programs through analytic equations. Thus, they remain nothing more than means to calculating derivatives, void of any meaningful algebraic insight, lacking the true power the vast field of analysis is endowed with.
 
-The aim of this paper is bridging the gap between programming and analysis. By generalizing on existing models, we show them to be specific views of the same great elephant. Employing tensor algebra, we construct a virtual memory whose internal structure reflects and carries evaluation of algorithmic expressions. In Section \ref{sec:operational} we provide an exact definition and construction of an analytic virtual machine, capable of implementing infinitely-differentiable programming spaces and operators acting upon them, supporting actions on multiple memory locations at a time. These programming spaces are shown to be a subalgebra, giving rise to symbolic manipulations of programs, while attaining construction by algorithmic control flow. Through it operators expanding a program into an infinite tensor series are derived. The operator of program composition is constructed, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order) under a single invariant operator in the theory. Through projections and embeddings in this space, the problem of nested differentiation is resolved, where a program $p_1$ acts on differentiable derivatives of $p_2$, requiring only coding of $p_2$ within $p_1$.
+The aim of this paper is bridging the gap between programming and analysis. By generalizing on existing models, we show them to be specific views of the same great elephant. Employing tensor algebra, we construct a virtual memory whose internal structure reflects and carries evaluation of algorithmic expressions. In Section \ref{sec:operational} we provide an exact definition and construction of an analytic virtual machine, capable of implementing infinitely-differentiable programming spaces and operators acting upon them, supporting actions on multiple memory locations at a time. These programming spaces are shown to be a subalgebra, giving rise to symbolic manipulations of programs, while attaining construction by algorithmic control flow. Through it operators expanding a program into an infinite tensor series are derived in Section \ref{sec:Vrsta}. The operator of program composition is constructed in Section \ref{sec:compsition}, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order) under a single invariant operator in the theory. Through projections and embeddings in this space, the problem of nested differentiation is resolved in Section \ref{sec:orderReduction}, where a program $p_1$ acts on differentiable derivatives of $p_2$, requiring only coding of $p_2$ within $p_1$.
 
-Theory grants us the ability to choose programs' complexity through approximations inhabiting the virtual space. It being modeled by tensor algebra consisting of multi-linear maps is tailor made for efficient implementation by GPU parallelism \cite{TensorGPU}. Employing the developed algebra, we derive functional transformations of programs in an arbitrary function basis. 
+Theory grants us the ability to choose programs' complexity through approximations inhabiting the virtual space. It being modeled by tensor algebra consisting of multi-linear maps is tailor made for efficient implementation by GPU parallelism \cite{TensorGPU}. In Section \ref{sec:FTP}, employing the developed algebra, we derive functional transformations of programs in an arbitrary function basis. 
 As different hardware is optimized for running of different sets of functions, this proves useful with adapting code to fit specific hardware.
-We provide instructions on methods of usage and outline the process of how these transformations are to be interchangeably applied in practice. 
+We provide instructions on methods of usage in Section \ref{sec:TransInPractice} and outline the process of how these transformations are to be interchangeably applied in practice. 
 
-Analytic virtual machines fully integrate control structures, thus retaining algorithmic control flow and the expressive power it possesses. 
-We generalize neural networks by constructing general tensor networks and derive transformations of programs to general tensor networks. These tensor networks are trainable and adhere to the operational calculus presented in this paper, providing a new way of network initialization and analysis.
-Theory offers new insights into programs, as we demonstrate how to probe their inner structure, revealing what actions properties of the domain most react to. This enables us to alter data by imposing some property it lacks upon it.
-We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space. Exploring procedures as systems inducing change upon objects in this space, we study dynamics of computation as fields and the principles they induce upon the system, and attain valuable tools for general problem solving.
+Analytic virtual machines fully integrate control structures as shown in Section \ref{sec:control}, thus retaining algorithmic control flow and the expressive power it possesses. 
+We generalize neural networks by constructing general tensor networks in Section \ref{sec:generalTensorNet}. In Section \ref{sec:transToNet} we derive transformations of arbitrary programs to general tensor networks, providing a new way of network initialization. These tensor networks are trainable and adhere to the operational calculus presented in this paper as demonstrated in Section \ref{sec:trainNet}, enabling analytic study through the theory.
+Theory offers new insights into programs, as we demonstrate how to probe their inner structure in Section \ref{sec:Analysis}, revealing what actions properties of the domain most react to in Section \ref{sec:studyProperties}. This enables us to alter data by imposing some property it lacks upon it.
+We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs in Section \ref{sec:propertyMeasure} and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space. Exploring procedures as systems inducing change upon objects in this space, we study dynamics of computation as fields and the principles they induce upon the system, attaining valuable tools for general problem solving in Section \ref{sec:dynamComp}.
 
 \section{Computer programs as maps}
 We will model computer programs as maps on a vector space. If
@@ -560,10 +560,10 @@ By taking the limit as $n\to \infty$, we see
      \begin{equation}
      	\sumd_n\dP_n\subset\dP_0\otimes T_n(V^*)
      \end{equation}
-   	holds by Theorem $\ref{izr:P_n}$, allowing simple implementation, as dictated by expression $\eqref{eq:potenca(1+d)}$. Following $\eqref{eq:potenca(1+d)}$ and the argument $\eqref{eq:inductionStep}$ of the proof of Theorem \ref{izr:P}, it is evident that only explicit knowledge of the operator $\sumd_1$ is required.
+   	holds by Theorem $\ref{izr:P_n}$, allowing simple implementation, as dictated by $\eqref{eq:potenca(1+d)}$. Following $\eqref{eq:potenca(1+d)}$ and the argument $\eqref{eq:inductionStep}$ of the proof of Theorem \ref{izr:P}, it is evident that only explicit knowledge of the operator $\sumd_1$ is required.
         Of course the same holds true for all generating maps of the type
         $$\dP_0\to\dP_n.$$
- \begin{corollary}
+ \begin{corollary}\label{cor:analytic}
    If all elements of $\dP_0$ are analytic, than so are the elements of $\dP_n$.
    \end{corollary}        
         
@@ -752,7 +752,7 @@ which enables efficient implementation.
   by Leibnitz rule for higher derivatives of bilinear maps \eqref{eq:Leibnitz1} equals \eqref{eq:Leibnitz2}.
  \end{proof}
  
- \subsubsection{Operator of program composition}
+ \subsubsection{Operator of program composition}\label{sec:compsition}
  
  In this section we generalize both forward and reverse mode of automatic differentiation (of arbitrary order) under a single invariant operator in the theory. We demonstrate how calculations can be performed on the operator level, easing general implementation. This condenses complex notions to simple expressions allowing meaningful manipulations before being applied to a particular programming space.
  
@@ -790,7 +790,7 @@ which enables efficient implementation.
    \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g(v))}{l!}\Big)^k\frac{n!}{k!}\Big(f(g(v))\Big)
    \end{equation}
  \end{proof}       
- The Theorem $\ref{izr:kompo}$ enables an invariant implementation of the operator of program composition in $\dP_n$, expressed as a tensor series through expressions $\eqref{eq:kompo}$ and $\eqref{eq:dComposite}$. 
+ The Theorem $\ref{izr:kompo}$ enables an invariant implementation of the operator of program composition in $\dP_n$, expressed as a tensor series through $\eqref{eq:kompo}$ and $\eqref{eq:dComposite}$. 
  
  By fixing one mapping in  
  \begin{equation}\label{eq:opGenKompo}
@@ -800,7 +800,9 @@ which enables efficient implementation.
   \begin{equation}\label{eq:opKompo}
   \exp(\D_fe^{h\D_g})(g): \dP\to\dP_\infty(g)
   \end{equation}
- When projecting onto the space spanned by $\{1,\D\}$, the action of the operator $\eqref{eq:opKompo}$ is equivalent to forward mode automatic differentiation. Both forward and reverse mode are obtainable using the same operator $\eqref{eq:opGenKompo}$, by fixing the appropriate one of the two maps. This generalizes both concepts under a single operator in the theory. The expression \eqref{eq:kompo} can be generalized for the notion of a pullback, to arbitrary operators.
+ \begin{trditev}
+ When projecting onto the space spanned by $\{1,\D\}$, the action of the operator $\exp(\D_fe^{h\D_g})(g)$ of $\eqref{eq:opKompo}$ is equivalent to forward mode automatic differentiation. Both forward and reverse mode are obtainable using the same operator of $\eqref{eq:opGenKompo}$, by fixing the appropriate one of the two maps. This generalizes both concepts under a single operator in the theory. The \eqref{eq:kompo} can be generalized for the notion of a pullback, to arbitrary operators.
+ \end{trditev}
  
  Thus, through $\eqref{eq:kompo}$ and all its' descendants (exponents), the operator $(\ref{eq:opKompo})$ grants invariance to the point in execution of a program, which proves useful as invariants are at the center of proving algorithms' correctness. This is analogous to the principle of general covariance \cite{GeneralCovariance}[See section 7.1] in general relativity, the invariance of the form of physical laws under arbitrary differentiable coordinate transformations. This principle and what it offers to programming is explored in Section \ref{sec:TransInPractice}.
  
@@ -856,12 +858,12 @@ which enables efficient implementation.
    \begin{opomba}
    With explicit evaluations in Corollary \ref{izr:komp_homo}
    \begin{equation}
-   e^{h\D}\vert_{v_0}(p_n\circ\cdots\circ p_1)=e^{h\D}\vert_{v_n}(p_n)\circ\cdots\circ e^{h\D}\vert_{v_0}(p_0)
+   e^{h\D}\vert_{v_0}(p_n\circ\cdots\circ p_0)=e^{h\D}\vert_{v_n}(p_n)\circ\cdots\circ e^{h\D}\vert_{v_0}(p_0)
    \end{equation}
-   the wise chose of evaluation points is $v_{i}=p_{i-1}(v_{i-1})\in \VV$.
+   the wise choice of evaluation points is $v_{i}=p_{i-1}(v_{i-1})\in \VV$.
    \end{opomba}
  
- \subsubsection{Order reduction for nested applications}
+ \subsubsection{Order reduction for nested applications}\label{sec:orderReduction}
  
  It is useful to be able to use the $k$-th derivative of a program $P\in\dP$ as part of a different differentiable program $P_1$. As such, we must be able to treat the derivative itself as a differentiable program $P^{\prime k}\in\dP$, while only coding the original program $P$. 
 \begin{izrek}\label{izr:reductionMap}
@@ -871,8 +873,8 @@ following  diagram commutes
 \begin{tikzcd}
   \dP_n \arrow{r}{\phi} \arrow{d}{\D} & 
   \dP_{n-1} \arrow{d}{\D}\\
-  \dP_{n+1} 
-  \arrow{r}{\phi}& \dP_{n}
+  \dP_{n+1} \arrow{r}{\phi} & 
+  \dP_{n}
 \end{tikzcd}
 \end{equation}
 satisfying
@@ -1137,7 +1139,7 @@ A program $P\in\dP$ can be equivalently represented with at most $2n+1$ applicat
 	Source code of a program $P\in\dP$ can be represented by a directed graph, as shown in Figure $\ref{fig:diagram}$. Each branching causes a split in the execution tree, that after completion returns to the splitting point.
 	By Theorem $\ref{izr:kompo}$, each of these branches can be viewed as a program $p_i$, for which it holds $$e^\D(p_n\circ p_{n-1}\circ\cdots\circ p_1)=e^\D(p_n)\circ e^\D(p_{n-1})\circ\cdots\circ e^\D(p_1)$$ by Theorem $\ref{izr:kompo}$.
 	
-	Thus, the source code contains $2n$ differentiable branches, from its' first branching on, not counting the branch leading up to it, upon which the application of the operator $e^\D$ is needed. Total of $2n+1$. By Theorem $\ref{izr:P_n}$, each of these branches is analytic.
+	Thus, the source code contains $2n$ differentiable branches, from its' first branching on, not counting the branch leading up to it, upon which the application of the operator $e^\D$ is needed. Total of $2n+1$. By Corollary $\ref{cor:analytic}$, each of these branches is analytic.
 \end{proof}
 
 Images of the operator $e^\D$ and $T_{F\X}$  are elements of the original space $\dP$, which may be composed. Thus, for $P=p_3\circ p_2\circ p_1$, the following makes sense
@@ -1226,7 +1228,7 @@ which is the transformation heron denoted by $e^\D P$.
 The image of the application of the operator $e^\D$ to a program $P\in\dP_0$ as in \eqref{eq:eDkompo}, is a general tensor network, with the activation function $\Phi_i$ being the identity map, at each layer.
 \end{trditev}
 
-\subsubsection{Transformations of programs to general tensor networks}
+\subsubsection{Transformations of programs to general tensor networks}\label{sec:transToNet}
 
 The transformed program equals the original program by Theorem \ref{izr:e^d} and Corollary \ref{izr:komp_homo}. But in practice, we are always working with a finite virtual memory $\VV\otimes T_n(\VV^*)$ and the equality becomes an approximation. Thus we treat the transformation of the original program, as the initialization of the weights (and the bias) of a general tensor network to be trained.  
 
@@ -1258,7 +1260,7 @@ This may prove useful in future developments of the field, as currently neural n
 All coefficients $W_i\in \VV\otimes T(\VV^*)$ are multi-linear maps allowing efficient implementation through GPU parallelism as by Claim \ref{clm:paralel}. Thus, general tensor networks may employ it, just as the common neural networks they generalize do.
 \end{opomba}
 
-Methods presented in the previous Section \ref{sec:TransInPractice} apply to general tensor networks. Thus, they may freely be composed with and included in other (differentiable) programs, transformations and tensor networks.
+Methods of practical use presented in the previous Section \ref{sec:TransInPractice} apply to general tensor networks. Thus, they may freely be composed with and included in other (differentiable) programs, transformations and tensor networks.
 
 \subsection{Training of general tensor networks}\label{sec:trainNet}
 
@@ -1288,7 +1290,7 @@ All methods of program analysis presented in the next Section \ref{sec:Analysis}
   
    The theory presented in this paper grants new insights through methods of analysis. It reveals a procedure to be a system exerting change on objects inhabiting virtual space. These revelations are the object of study of this section, as we demonstrate how to intertwine algorithmic control flow, operational calculus and algebra, towards a common goal.  
   
-  \subsection{Study of properties}
+  \subsection{Study of properties}\label{sec:studyProperties}
   
   We will denote the fact, that some object $v$ has the property $X$, by $v\in
   X$. Suppose we have $v\notin X$, and desire a procedure $P\in\dP_0$, that in
@@ -1313,7 +1315,7 @@ All methods of program analysis presented in the next Section \ref{sec:Analysis}
    procedures' inner structure and explore how it interacts with the elements of
    the domain.
  
-\subsubsection{Activity profiles and property measures}
+\subsubsection{Activity profiles and property measures}\label{sec:propertyMeasure}
     
 To be able to determine which conceptual steps are the most important for the
 result of the testing procedure $T$, we have to somehow measure the activity
@@ -1429,7 +1431,7 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
    
    When $T\in\dP_0$ represents a neural network, $T_i$ stands for a specific layer in the network, with neurons being its variable parameters, than the procedure achieves what Google's Deep Dream Project \cite{DeepDream} does. However our procedure may be applied to any program $T\in\dP_0$. As neural networks are just programs contained in the programming space $\dP$, our view gazes over a broader landscape of programs it can be utilized on.
    
-\subsection{Dynamics of computation}
+\subsection{Dynamics of computation}\label{sec:dynamComp}
 
 As each procedure is revealed to be a system existing as an object in virtual space, its computational capability becomes synonymous with shape. For example, trained neural network can be viewed as an element of a high dimensional manifold in this space and training is just a path in this manifold.
 In physics there is a strong connection between shape of the inhabiting space and physical principles it imposes upon objects traversing it \cite{GeneralCovariance}. Similarly, each procedure is a system entered by an object as an input and exited as an output upon undergoing change. The process of computation can be viewed as evolutions in phase space.
