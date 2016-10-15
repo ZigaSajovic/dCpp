@@ -708,6 +708,14 @@ of $h$ have coinciding Taylor series and are therefore equal.\\
  $$\implies$$
  $$\left(\D^n(P)(\vv_0)\right)(\vv^{\otimes n})$$
  \end{proof}
+ \begin{corollary}
+ The operator $e^{h\D}:\dP\times V\to U\otimes T(V^*)$ evaluated at $h=1$ is a broad generalization of the shift operator \cite{OpCalc}, as the algebra it exists in offers more than a mere shift, as will become apparent in the coming sections.
+ For a specific $v_0\in\VV$ it is heron denoted by
+ \begin{equation}
+ e^\D\vert_{v_0}:\dP\to U\otimes T(V^*)
+ \end{equation}
+ When the choice of $v_0\in\VV$ is arbitrary, we omit it from expressions for simplicity.
+ \end{corollary}
  
  The image of the contraction is an element of the original virtual space $V^i$. Independence of the operator $(\ref{eq:specProg})$ from a coordinate system, translates to independence in execution. Thus the expression $(\ref{eq:tenzorVrsta})$ is invariant to the point in execution of a program, a fact we explore later on.  
  
@@ -872,7 +880,7 @@ By Theorem \ref{izr:reductionMap}, $n$-differentiable $k$-th derivatives of a pr
 \end{corollary}    
  Thus, we gained the ability of writing a differentiable program acting on derivatives of another program, stressed as crucial (but lacking in most models) by other authors \cite{AD1}. Usage of the reduction of order map and other constructs of this Section are demonstrated in Section \ref{sec:Analysis}, as we analyze procedures as systems inducing change upon objects in virtual space.
  
-   \subsection{Functional transformation of programs}\label{sec:FTP}
+   \subsection{Functional transformations of programs}\label{sec:FTP}
    
    Let's suppose a hardware $H$, optimized for the set of functions
    $F=\{f_i:V\to V\}$. The set $F$ is specified by the manufacturer.  
