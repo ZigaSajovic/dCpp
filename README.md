@@ -1,4 +1,4 @@
-#Operational calculus and algebra of Algorithms
+#Operational calculus on programming spaces and generalized tensor networks
 
 ###Abstract
 
