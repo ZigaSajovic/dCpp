@@ -10,6 +10,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{inconsolata}
 
+
 \newcommand{\RR}{\mathbb{R}}
 \newcommand{\Shift}{\mathcal{S}}
 \newcommand{\II}{\mathbb{I}}
@@ -53,6 +54,7 @@
 \newtheorem{opomba}{Remark}[section]
 \newtheorem{corollary}{Corollary}[section]
 \newtheorem{proposition}{Proposition}[section]
+
 
 \title{$\DD^n\CC$}
 \author{Žiga Sajovic}
@@ -280,5 +282,21 @@ var operator/(double n, const var& v);
 var operator^(double n, const var& v);
 \end{lstlisting} 
 
+\section{Analytic virtual machine}
+
+\begin{definicija}[Analytic virtual machine]
+The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiable virtual machine.
+   
+    \begin{itemize}
+    \item
+    $\VV$ is a finite dimensional vector space
+    \item
+    $\VV\otimes T(\VV^*)$ is the virtual memory space, serving as alphabet symbols
+    \item
+    $\dP_0$ is an analytic programming space over $\VV$
+    \end{itemize}
+    When $\dP_0$ is a differentiable programming space, this defines an
+    infinitely differentiable virtual machine.
+  \end{definicija}
 
 \end{document}
