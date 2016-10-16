@@ -145,7 +145,7 @@ As different hardware is optimized for running of different sets of functions, t
 We provide instructions on methods of usage in Section \ref{sec:TransInPractice} and outline the process of how these transformations are to be interchangeably applied in practice. 
 
 Analytic virtual machines fully integrate control structures as shown in Section \ref{sec:control}, thus retaining algorithmic control flow and the expressive power it possesses. 
-We generalize neural networks by constructing general tensor networks in Section \ref{sec:generalTensorNet}. In Section \ref{sec:transToNet} we derive transformations of arbitrary programs to general tensor networks, providing a new way of network initialization. These tensor networks are trainable and adhere to the operational calculus presented in this paper as demonstrated in Section \ref{sec:trainNet}, enabling analytic study through the theory.
+We generalize neural networks by constructing general tensor networks in Section \ref{sec:generalTensorNet} and reveal their connection with programs in Section \ref{sec:progAsNet}. In Section \ref{sec:transToNet} we derive transformations of arbitrary programs to general tensor networks, providing a new way of network initialization. These tensor networks are trainable and adhere to the operational calculus presented in this paper as demonstrate in Section \ref{sec:trainNet}, enabling analytic study through the theory.
 Theory offers new insights into programs, as we demonstrate how to probe their inner structure in Section \ref{sec:Analysis}, revealing what actions properties of the domain most react to in Section \ref{sec:studyProperties}. This enables us to alter data by imposing some property it lacks upon it.
 We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs in Section \ref{sec:propertyMeasure} and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space. Exploring procedures as systems inducing change upon objects in this space, we study dynamics of computation as fields and the principles they induce upon the system, attaining valuable tools for general problem solving in Section \ref{sec:dynamComp}.
 
@@ -1201,7 +1201,7 @@ A general tensor network can be represented and implemented by a deeper common n
 
 By Claim \ref{trd:netEquivalence}, existing architectures like Theano \cite{Theano}, TensorFlow \cite{TensorFlow} and others could be easily adapted to handle general tensor networks.
 
-\subsection{Programs as general tensor networks}
+\subsection{Programs as general tensor networks}\label{sec:progAsNet}
 
 Let $P=P_n\circ\cdots\circ P_0\in\dP_0$ be the procedure of interest, with $P_i\in\dP_0$ being the source code between two branching points, like shown in Figure \ref{fig:diagram} of Section \ref{sec:TransInPractice}.
 By Theorem \ref{izr:e^d} we have
