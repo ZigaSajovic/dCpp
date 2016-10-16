@@ -2,11 +2,27 @@
 
 ###Abstract
 
-In this paper, we develop the theory of analytic programming languages, that implement infinitely-differentiable programming spaces, and operators acting upon them.
+In this paper, we develop the theory of analytic virtual machines, that
+implement analytic programming spaces and operators acting upon them.
 
-A programming space is defined as an algebra monoid in a function vector space of mappings on the virtual memory. Virtual memory is constructed through tensor algebra and endowed with its' own algebra of algorithms. Using this algebra, we construct differential operators, that span the space of infinitely-differentiable programs. We present a wholesome theory of operators, that enables analysis of programs and computations on the operator level, which favors general implementation. Through the theory, we derive new operators, that expand a program into an infinite tensor series in the algebra of algorithms. The theory is used to analyze iterators and other control structures in programming languages, and their dependencies on boundary conditions. The developed facilitates functional transformations of programs in an arbitrary function basis. Through it, the theory grants us the ability to choose programs' complexity, while knowing the order of the error of the approximation.
+A programming space is a subspace of the function space of maps on the virtual
+memory. We can construct a differential operator on programming spaces as we 
+extend the virtual memory to a tensor product of a virtual space with tensor algebra
+of its dual. Extended virtual memory serves by itself as an algebra of programs, giving the expansion of the original program as an infinite tensor series at
+program's input values. 
 
-Thus the theory opens new doors in program analysis. We show the existence of a procedure testing an object for a property to be sufficient for constructing a procedure enforcing that property upon it.
+We present a theory of operators on programming spaces, that enables analysis of programs
+and computations on the operator level, which favors general implementation. The theory enables
+approximation and transformations of programs to a different function basis', allowing us to choose programs' complexity, 
+while knowing the order of the error of the approximation. We
+also present several examples of how the theory can be used in computer science.
 
-Paper is a good explanaton of the library
-https://github.com/ZigaSajovic/dCpp
+We generalize neural networks by constructing general tensor networks and derive transformations of programs to these trainable networks.
+Theory opens new doors in program analysis, while fully retaining algorithmic control flow. We develop a general
+procedure which takes a program that tests an object for a property and
+constructs a program that imposes that property upon any object. 
+We use it to generalize state of the art methods for analyzing neural networks to general programs and tensor networks. Expanding upon them, we study dynamics of computation through principles they induce into the system.
+
+###Implementation
+
+An illustrative example of the implementation of the theory is available at [/ZigaSajovic/dCpp](https://github.com/ZigaSajovic/dCpp). Implementation closely follows theorems and derivations of this paper, intended as an educational guide. 
