@@ -1130,12 +1130,14 @@ A program $P\in\dP$ can be equivalently represented with at most $2n+1$ applicat
 	Thus, the source code contains $2n$ differentiable branches, from its' first branching on, not counting the branch leading up to it, upon which the application of the operator $e^\D$ is needed. Total of $2n+1$. By Corollary $\ref{cor:analytic}$, each of these branches is analytic.
 \end{proof}
 
+\begin{trditev}\label{trd:composeOperators}
 Images of the operator $e^\D$ and $T_{F\X}$  are elements of the original space $\dP$, which may be composed. Thus, for $P=p_3\circ p_2\circ p_1$, the following makes sense
 \begin{equation}
 P=\Big(p_3\circ e^ \D(p_2)\circ T_{F\X}e^\D(p_1)\Big) \in \dP
 \end{equation}
 
 The same holds true for all permutations of applications of operators $e^\D$, $T_{F\X}$ and $id$, as visible in Figure $\ref{fig:diagram}$.
+\end{trditev}
 
 \begin{opomba}
 In practice, we always use projections of the operator $e^\D$ to some finite subset $\DD^n$, resulting in $e^\D_n$. Therefore, we must take note that the following relation holds
@@ -1250,7 +1252,7 @@ This may prove useful in future developments of the field, as currently neural n
 All coefficients $W_i\in \VV\otimes T(\VV^*)$ are multi-linear maps allowing efficient implementation through GPU parallelism as by Claim \ref{clm:paralel}. Thus, general tensor networks may employ it, just as the common neural networks they generalize do.
 \end{opomba}
 
-Methods of practical use presented in the previous Section \ref{sec:TransInPractice} apply to general tensor networks. Thus, they may freely be composed with and included in other (differentiable) programs, transformations and tensor networks.
+Methods of practical use presented in the previous Section \ref{sec:TransInPractice} apply to general tensor networks. Thus by Claim \ref{trd:composeOperators}, they may freely be composed with and included in other (differentiable) programs, transformations and tensor networks.
 
 \subsection{Training of general tensor networks}\label{sec:trainNet}
 
