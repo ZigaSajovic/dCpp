@@ -801,7 +801,7 @@ which enables efficient implementation.
   \exp(\D_fe^{h\D_g})(g): \dP\to\dP_\infty(g)
   \end{equation}
  \begin{trditev}\label{trd:reverseForward}
- When projecting onto the space spanned by $\{1,\D\}$, the action of the operator $\exp(\D_fe^{h\D_g})(g)$ of $\eqref{eq:opKompo}$ is equivalent to forward mode automatic differentiation. Both forward and reverse mode are obtainable using the same operator of $\eqref{eq:opGenKompo}$, by fixing the appropriate one of the two maps. This generalizes both concepts under a single operator in the theory. The \eqref{eq:kompo} can be generalized for the notion of a pullback, to arbitrary operators.
+ When projecting onto the space spanned by $\{1,\D\}$, the action of the operator $\exp(\D_fe^{h\D_g})(g)$ of $\eqref{eq:opKompo}$ is equivalent to forward mode automatic differentiation. Both forward and reverse mode are obtainable using the same operator $\exp(\D_fe^{h\D_g})$ of $\eqref{eq:opGenKompo}$, by fixing the appropriate one of the two maps. This generalizes both concepts under a single operator in the theory. The \eqref{eq:kompo} can be generalized for the notion of a pullback, to arbitrary operators.
  \end{trditev}
  
  Thus, through $\eqref{eq:kompo}$ and all its' descendants (exponents), the operator $(\ref{eq:opKompo})$ grants invariance to the point in execution of a program, which proves useful as invariants are at the center of proving algorithms' correctness. This is analogous to the principle of general covariance \cite{GeneralCovariance}[See section 7.1] in general relativity, the invariance of the form of physical laws under arbitrary differentiable coordinate transformations. This principle and what it offers to programming is explored in Section \ref{sec:TransInPractice}.
@@ -1272,7 +1272,7 @@ By Corollary \ref{izr:komp_homo} we have
 \begin{equation}\label{eq:tenNetKthDer}
 e^\D_n(L_{i+1})=e^\D_n(\Phi_i)\circ e^\D_n(W_i\circ L_i)\in\dP_n
 \end{equation}
-Thus the $n$-differentiable $k$-th derivatives can be extracted by
+Thus by Corollary \ref{cor:extraxtDerivatives}, the $n$-differentiable $k$-th derivatives can be extracted by
 \begin{equation}
 ^{n}L_{i+1}^{k\prime}=\phi^k\circ e^\D_{n+k}(L_{i+1})\in\dP_n
 \end{equation}
