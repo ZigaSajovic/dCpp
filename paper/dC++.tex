@@ -78,7 +78,7 @@ We provide a construction of operators
 \DD^n=\{\D^k;\quad 0\le k\le n\}
 \end{equation}
 allowing for implementation of the operator
-\begin{equation}
+\begin{equation}\label{eq:sumd}
 \sumd^n=1+\D+\D^2+\cdots+\D^n
 \end{equation}
 increasing the order of a differentiable programming space
@@ -87,5 +87,39 @@ increasing the order of a differentiable programming space
 \end{equation}
 
 All required theorems and proofs are provided by the paper \emph{Operational calculus on programming spaces and generalized tensor networks}.
+
+\section{Virtual memory $\VV_n$}
+
+We model an element of the virtual memory $v\in\VV_n$ 
+\begin{eqnarray}
+\VV_{n}=\VV_{n-1}\oplus(V_{n-1}\otimes\VV^*) \\
+\VV_{n}=\VV\oplus\VV\otimes\VV^*\oplus\cdots\oplus\VV\otimes\VV^{*n\otimes}\\ \label{eq:V_n}
+\VV_n=\VV\otimes T(\VV^*)
+\end{eqnarray}
+with the class $var$.
+
+\begin{lstlisting}
+template<class V>
+class var
+{
+    public:
+    	int order;
+        V id;
+        std::map<&var,var>* dTau;
+
+        var();
+        var(const var& other);
+        ~var();
+        var(double n);
+        void init();
+        /*
+        *declerations of algebraic operations
+        */
+};
+\end{lstlisting}
+
+The expanded virtual memory $\VV_n$ is the tensor product of the virtual memory $\VV$ with the tensor algebra of its dual. The address \emph{\&var} stands for the component of $v\in\VV_{n-1}$ the tensor product with the component of $v^*\in\VV^*$ was computed on to generate $v\in\VV_n$ in equation \eqref{eq:V_n}. This depth is contained in the \emph{int order}.
+
+Tensor products of the virtual memory $\VV$ with its dual are modeled using maps, denoted by \emph{dTau}. Naming reflects how the algebra will be constructed, mimicking the operator $\sumd^n$ \eqref{eq:sumd}.
 
 \end{document}
