@@ -79,11 +79,11 @@ We provide a construction of operators
 \end{equation}
 allowing for implementation of the operator
 \begin{equation}\label{eq:sumd}
-\sumd^n=1+\D+\D^2+\cdots+\D^n
+\sumd_n=1+\D+\D^2+\cdots+\D^n
 \end{equation}
 increasing the order of a differentiable programming space
 \begin{equation}
-\sumd^n:\dP_k\to\dP_{n+k}
+\sumd_n:\dP_k\to\dP_{n+k}
 \end{equation}
 
 All required theorems and proofs are provided by the paper \emph{Operational calculus on programming spaces and generalized tensor networks}.
@@ -120,6 +120,163 @@ class var
 
 The expanded virtual memory $\VV_n$ is the tensor product of the virtual memory $\VV$ with the tensor algebra of its dual. The address \emph{\&var} stands for the component of $v\in\VV_{n-1}$ the tensor product with the component of $v^*\in\VV^*$ was computed on to generate $v\in\VV_n$ in equation \eqref{eq:V_n}. This depth is contained in the \emph{int order}.
 
-Tensor products of the virtual memory $\VV$ with its dual are modeled using maps, denoted by \emph{dTau}. Naming reflects how the algebra will be constructed, mimicking the operator $\sumd^n$ \eqref{eq:sumd}.
+Tensor products of the virtual memory $\VV$ with its dual are modeled using maps, denoted by \emph{dTau}. Naming reflects how the algebra will be constructed, mimicking the operator $\sumd_nn$ \eqref{eq:sumd}.
+
+\subsection{Algebra over a field}
+
+ Algebra over a field is a vector space equipped with a bilinear product. Thus, an algebra is an algebraic structure, which consists of a set, together with operations of multiplication, addition, and scalar multiplication by elements of the underlying field.
+ 
+ Algebra is constructed by mimicking a direct sum of operators $\sumd_n$ \eqref{eq:sumd} mapping $\dP_0\oplus\dP_0\to\dP_n$. This is reflected in the structure of the class $var$  modeling the elements of the virtual space $v\in\VV_n$. Compositions are modeled by mimicking the projection of the operator $\exp(\D_fe^{h\D_g})$, generalizing both forward and reverse mode automatic differentiation, to the unitary ball and applying it to the resulting direct sum.
+ 
+\begin{izrek}
+An instance of the class $var$ is an element of the virtual memory $\VV_n$.
+ \begin{equation}
+ var\in\VV_n
+ \end{equation}
+\end{izrek}
+\begin{proof}
+\begin{equation}
+ id\in \VV\land  dTau\in \VV_{n-1}
+ \end{equation}
+ $$\land$$
+ \begin{equation}
+ var=id\oplus dTau\implies var\in\VV_n
+ \end{equation}
+
+
+\end{proof}
+
+\subsubsection{Vector space over a field $K$}
+ 
+To firstly construct a vector space $\VV_n$ over a field $K$, we implement scalar multiplication and addition. 
+
+We begin with scalar multiplication.
+
+\begin{lstlisting}
+template<class K>
+var var::operator*(K n)const{
+		var out;
+        out.id=this->id*n;
+        for_each_copy(...,mul_make_pair<pair<&var,var> >, n);
+        return out;
+}
+
+template<class K>
+var var::operator/(K n)const {...};
+\end{lstlisting}
+Scalar multiplication and its convenient inverse employ the function \emph{for\_each\_copy}, applying the provided operation 
+\begin{lstlisting}
+template<class V, class K>
+V mul_make_pair(V v, K n) {
+  return std::make_pair(v.first, v.second * n);
+}
+\end{lstlisting}
+to each one of the components of $this$ and storing the result in $out.dTau$.
+
+Vector addition by component is implemented by 
+\begin{lstlisting}
+var var::operator+(const var& v)const{
+		var out;
+        out.id=this->id+v.id;
+        merge_apply(..., sum_pairs<pair<int, double> >);
+            return out;
+}
+\end{lstlisting}
+Vector addition by component employs the function \emph{merge\_apply}, applying the provided function \emph{sum\_pairs}
+\begin{lstlisting}
+template<class V>
+T sum_pairs(V v1, V v2) {
+  return std::make_pair(v1.first, v1.second + v2.second);
+}
+\end{lstlisting}
+to corresponding components, storing the result in $out.dTau$, in $\mathcal{O}(n\log(n))$.
+
+\begin{izrek}
+Class $var$ models a vector space over a field $K$.
+\end{izrek}
+\begin{proof}
+By implementations of addition by components and multiplication with a scalar $K$, the axioms of the vector space are satisfied.
+\end{proof}
+
+\subsubsection{Algebra over a field $K$}
+
+With the vector space constructed, we turn towards constructing the algebra. To construct an algebra over a field $K$, we equip the vector space $\VV_n$ with a bilinear product by components.
+
+\begin{lstlisting}
+var var::operator*(const var& v)const{
+		var out;
+        out.id=this->real*v.id;
+        if(max(v.order,this->order)>0){
+        	map<int,double> tmp1;
+        	map<int,double> tmp2;
+        	for_each_copy(...,mul_make_pair<pair<&var,var> >, 
+        		v.reduceOrder());
+        	for_each_copy(...,mul_make_pair<pair<&var,var> >, 
+        		this->reduceOrder());
+        	merge_apply(..., sum_pairs<pair<&var,var> >);
+        }
+        return out;
+}
+\end{lstlisting}
+The employed functions have been explained at previously usage. The \emph{reduce.Order} function makes a shallow copy of $this$, while reducing the order of the returned copy. This bilinear product contains Leibniz rule within its structure.
+
+\begin{izrek}
+Class $var$ models an algebra over a field $K$.
+\end{izrek}
+\begin{proof}
+By the implementation of a bilinear product by components the axioms of an algebra over a field are satisfied.
+\end{proof}
+
+For ease of expression we implement exponentiation,
+
+\begin{lstlisting}
+var var::operator^(double n) const{
+		var out;
+        out.id=std::pow(this->real,n);
+        if(this->order>0){
+        	for_each_copy(...,powTimes<pair<&var,var> >, 
+        		this->reduceOrder(),n);
+        }
+        return out;
+}
+\end{lstlisting}
+employing the function \emph{for\_each\_copy}, applying the provided operation 
+\begin{lstlisting}
+template<class T, class V, class K>
+T powTimes(T v1, V v2, K n) {
+  return std::make_pair(v1.first, n*(v2^(n-1))*v1.second);
+}
+\end{lstlisting}
+to each component.
+
+The above is sufficient to implement the following decelerations.
+\begin{lstlisting}
+var operator*(double n)const;
+var operator+(double n)const;
+var operator-(double n)const;
+var operator/(double n)const;
+var operator*(const var& v)const;
+var operator/(const var& v)const;
+var operator+(const var& v)const;
+var operator-(const var& v)const;
+var operator^(double n) const;
+var operator-()const;
+var& operator=(const var& v);
+var& operator=(double n);
+var& operator+=(const var& v);
+var& operator-=(const var& v);
+var& operator*=(const var& v);
+var& operator/=(const var& v);
+var& operator*=(double n);
+var& operator/=(double n);
+var& operator+=(double n);
+var& operator-=(double n);
+var operator*(double n, const var& v);
+var operator+(double n, const var& v);
+var operator-(double n, const var& v);
+var operator/(double n, const var& v);
+var operator^(double n, const var& v);
+\end{lstlisting} 
+
 
 \end{document}
