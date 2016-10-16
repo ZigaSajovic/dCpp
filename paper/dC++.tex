@@ -332,11 +332,11 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
         {
             public:
                 tau();
-                tau(K mapping, var primitive);
+                tau(K mapping, var dTau);
                 ~tau();
                 var operator()(const var&v);
             private:
-                tau primitive;
+                tau dTau;
                 K mapping;
         };
         \end{lstlisting}
@@ -346,7 +346,7 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
             var out;
             out.id=mapping(v.id);
             for_each_copy(...,mul_make_pair<std::pair<&var,var> >, 
-            	primitive(v));
+            	dTau(v));
             return out;
         }
         \end{lstlisting}
@@ -382,6 +382,25 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
               \DD^n\CC<\dP_n\iff\DD^n\CC\subset\CC\otimes T(\VV^*)
               \end{equation}
 
-Any library implementing functions acting on variables of type $double$ or $float$, could be trivially included into $\CC<\dP_0$, simply by replacing all variables with the class $var$. Moreover, any implementations using the implemented algebra, are contained in $\dP_0$.
+\begin{trditev}
+Any library implementing functions acting on variables of type $double$ or $float$, could be trivially included into $\CC<\dP_0$, simply by replacing all variables with the class $var$. Moreover, any implementations using the implemented algebra in its construction of functions, are contained in $\dP_0$.
+\end{trditev}
+
+\subsubsection{Example}
+  
+As an illustrative example, we provide a simple implementation of a differentiable programming space through the use of the operator $\sumd_n$. Assume the existence of functions
+\begin{equation}
+\sin\_double:double\to double
+\end{equation}
+\begin{equation}
+\cos\_double:double\to double
+\end{equation} 
+\begin{equation}
+e\_double:double\to double
+\end{equation}  
+\begin{equation}
+\ln\_double:double\to double
+\end{equation} 
+filling the set spanning $\CC$.
   
 \end{document}
