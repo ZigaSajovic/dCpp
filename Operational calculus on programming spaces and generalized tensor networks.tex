@@ -407,23 +407,23 @@ T(V^*).$$
 
 \section{Operational calculus on programming spaces}\label{sec:operational}
 
-The derivative defines an operator on the space of smooth maps $V\to U\otimes
- T(V^*)$\footnote{the operator $\D$ may be defined partially for other maps as
-   well.}. We denote this operator $\D$. If we look at a map $P:V\to U$ as a map
+The derivative defines an operator on the space of smooth maps $\VV\to \VV\otimes
+ T(\VV^*)$\footnote{the operator $\D$ may be defined partially for other maps as
+   well.}. We denote this operator $\D$. If we look at a map $P:\VV\to \VV$ as a map
  to $U\otimes T(V^*)$, then the image of $P$ by operator $\D$ is the first
  derivative, while the higher order derivatives are just powers of operator $\D$
  applied to $P$. 
 
 Let us define the following function spaces.
  \begin{equation}\label{eq:F^n}
- 	\F^n=\{f:V\to U\otimes(V^*)^{n\otimes}\}
+ 	\F^n=\{f:\VV\to \VV\otimes(\VV^*)^{n\otimes}\}
  \end{equation}
  and
  \begin{equation}\label{eq:F_n}
- 	\F_n=\{f:V\to U\otimes T_n(V^*)\}
+ 	\F_n=\{f:\VV\to \VV\otimes T_n(\VV^*)\}
  \end{equation}
-All of these function spaces are subspaces of $\F_\infty=\{f:V\to U\otimes
-T(V^*)\}$. The space $\F_n$ is direct a sum of $\F^k$ for $k\le n$ and $\F_n<\F_m$ if $n<m$. We
+All of these function spaces are subspaces of $\F_\infty=\{f:\VV\to \VV\otimes
+T(\VV^*)\}$. The space $\F_n$ is direct a sum of $\F^k$ for $k\le n$ and $\F_n<\F_m$ if $n<m$. We
 have an increasing sequence of function spaces
 \begin{equation}
   \label{eq:flag_function_space}
@@ -448,7 +448,7 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
  \begin{definicija}\label{def:dP}
  	A \emph{differentiable programming space} $\dP_0$ is any subspace of $\F_0$ such that
  	\begin{equation}\label{eq:P}
- 	\D\dP_0\subset\dP_0\otimes T(V^*)
+ 	\D\dP_0\subset\dP_0\otimes T(\VV^*)
  	\end{equation}
  	When all elements of $\dP_0$ are analytic, we denote $\dP_0$ as an \emph{analytic programming space}.
  \end{definicija}
@@ -457,25 +457,25 @@ Thus $\D^k$ is a mapping between function spaces $\eqref{eq:F^n}$
 	Any differentiable programming space $\dP_0$ is an
   infinitely differentiable programming space, such that
 	\begin{equation}\label{eq:P_n}
-	 		\D^k\dP_0\subset\dP_0\otimes T(V^*)
+	 		\D^k\dP_0\subset\dP_0\otimes T(\VV^*)
 	 	\end{equation}
 for any $k\in\mathbb{N}$.
 \end{izrek}
 \begin{proof} By definition \ref{def:dP}
-$$\D\dP_0\subset\dP_0\otimes T(V^*)$$
+$$\D\dP_0\subset\dP_0\otimes T(\VV^*)$$
 	Induction step is trivial. For all 	$\forall_{P\in\dP_0}$,
-  $\D^n\dP_0\subset\dP_0\otimes T(V^*)$, where
-  $\alpha$ is multiindex denoted the component of $T(V^*)$ and $i$ is the
-  index denoting the component of $U$.
+  $\D^n\dP_0\subset\dP_0\otimes T(\VV^*)$, where
+  $\alpha$ is multiindex denoted the component of $T(\VV^*)$ and $i$ is the
+  index denoting the component of $\VV$.
 	\begin{equation}\label{eq:inductionStep}
-\D^{n+1}P_{\alpha,k}^i=\D(\D^n P^i_\alpha)_k\land(\D^n P^i_\alpha)\in\dP_0\implies \D(\D^n P^i_\alpha)_k\in \dP_0\otimes T(V^*)
+\D^{n+1}P_{\alpha,k}^i=\D(\D^n P^i_\alpha)_k\land(\D^n P^i_\alpha)\in\dP_0\implies \D(\D^n P^i_\alpha)_k\in \dP_0\otimes T(\VV^*)
 	\end{equation}
 	$$\implies$$
-	$$\D^{n+1}\dP_0\subset\dP_0\otimes T(V^*)$$
+	$$\D^{n+1}\dP_0\subset\dP_0\otimes T(\VV^*)$$
 \end{proof}
 
  \begin{corollary}\label{izr:dP}
-	A programming space $\dP=\{\dP:V\to U\otimes T(V^*)\}$, is closed under the differential operator $\D^k$.
+	A programming space $\dP=\{\dP:\VV\to \VV\otimes T(\VV^*)\}$, is closed under the differential operator $\D^k$.
  \end{corollary}
  \begin{proof}
  	 By $\eqref{eq:P_n}$ and the symmetric nature of the operator $\D$, for each $k$ there exists an isomorphism
@@ -484,7 +484,7 @@ $$\D\dP_0\subset\dP_0\otimes T(V^*)$$
  	 	\end{equation}
  \end{proof}
 
-By Corollary $\ref{izr:dP}$ we may represent calculation of derivatives of the map $P:V\to U$, with only one mapping. We define the geometric series
+By Corollary $\ref{izr:dP}$ we may represent calculation of derivatives of the map $P:\VV\to \VV$, with only one mapping. We define the geometric series
  
  \begin{equation}\label{eq:DD}
   	\sumd_n = 1+\D +\D^2 +\ldots + \D^n 
@@ -494,11 +494,11 @@ By Corollary $\ref{izr:dP}$ we may represent calculation of derivatives of the m
   \begin{equation}
   	\sumd_n=\sum\limits_{n=0}^{n}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
   		    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
-  		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}
+  		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in \VV_{j\in\JJ}
   \end{equation}
   
-  By Theorem $\ref{izr:linearnaNeodvisnost}$ the operator $\sumd_n$ is unique and prescribes the map $P: V\to U$ with a map $\sumd_k:V\to
-U\otimes T(V^*)$, composed of the map itself and all derivatives of order $n\le k$. The image $\sumd_kP(\x)$ is a multitensor of order $k$, which is a direct sum of the maps value and all derivatives of order $n\le k$, all evaluated at the point $\x$:
+  By Theorem $\ref{izr:linearnaNeodvisnost}$ the operator $\sumd_n$ is unique and prescribes the map $P: \VV\to \VV$ with a map $\sumd_k:\VV\to
+\VV\otimes T(\VV^*)$, composed of the map itself and all derivatives of order $n\le k$. The image $\sumd_kP(\x)$ is a multitensor of order $k$, which is a direct sum of the maps value and all derivatives of order $n\le k$, all evaluated at the point $\x$:
 \begin{equation}
   \label{eq:multi_odvod}
   \sumd_kP(\x) = P(\x)+\D_\x P + \D^2_\x P + \ldots + \D^k_\x P.
@@ -510,9 +510,9 @@ Let $\dP_n$ be the subspace, spanned by $\DD^n\dP_0$ over $K$.
  \end{definicija}
  
  \begin{izrek}\label{izr:P_n}
- 	Function space $\dP_n:V\to U\otimes T(V^*)$ can be embedded into the tensor
-  product of the function space $\dP_0:V\to U$ and the subspace $T_n(V^*)$
-  tensor algebra of the dual od the virtual space $V$. 
+ 	Function space $\dP_n:\VV\to \VV\otimes T(\VV^*)$ can be embedded into the tensor
+  product of the function space $\dP_0:\VV\to \VV$ and the subspace $T_n(\VV^*)$
+  tensor algebra of the dual od the virtual space $\VV$. 
  \end{izrek}
  
  \begin{proof} Follows directly from the proof of Theorem $\ref{izr:P}$ and Corollary $\ref{izr:dP}$ through argument $\eqref{eq:inductionStep}$.
@@ -521,7 +521,7 @@ By taking the limit as $n\to \infty$, we see
  	
  	\begin{equation}
  	\label{eq:P_algebra}
- 	 	    \dP_\infty < \dP_0\otimes T(V^*) = \dP_0 \otimes\left(\bigoplus_{k=0}^\infty (V^*)^{\otimes k} \right).
+ 	 	    \dP_\infty < \dP_0\otimes T(\VV^*) = \dP_0 \otimes\left(\bigoplus_{k=0}^\infty (\VV^*)^{\otimes k} \right).
  	\end{equation}
 
   \begin{corollary}
@@ -546,7 +546,7 @@ By taking the limit as $n\to \infty$, we see
        
     The following
      \begin{equation}
-     	\sumd_n\dP_n\subset\dP_0\otimes T_n(V^*)
+     	\sumd_n\dP_n\subset\dP_0\otimes T_n(\VV^*)
      \end{equation}
    	holds by Theorem $\ref{izr:P_n}$, allowing simple implementation, as dictated by $\eqref{eq:potenca(1+d)}$. Following $\eqref{eq:potenca(1+d)}$ and the argument $\eqref{eq:inductionStep}$ of the proof of Theorem \ref{izr:P}, it is evident that only explicit knowledge of the operator $\sumd_1$ is required.
         Of course the same holds true for all generating maps of the type
@@ -556,14 +556,14 @@ By taking the limit as $n\to \infty$, we see
    \end{corollary}        
         
        \begin{opomba}\label{rem:vTen}
-       Maps $V\otimes T(V^*)\to V\otimes T(V^*)$ are constructible through tensor algebra on $\dP_n$ and through it, compositions of programs in $\dP_n$.
+       Maps $\VV\otimes T(\VV^*)\to \VV\otimes T(\VV^*)$ are constructible through tensor algebra on $\dP_n$ and through it, compositions of programs in $\dP_n$.
        \end{opomba}
        
  
 
 \begin{definicija}[Algebra product]
- For any bilinear map $\cdot :V\times V\to U\otimes T(V^*)$ we can define a
- bilinear product $\cdot$ on $U\otimes T(V^*)$ by the following rule on the simple
+ For any bilinear map $\cdot :\VV\times \VV\to \VV\otimes T(\VV^*)$ we can define a
+ bilinear product $\cdot$ on $\VV\otimes T(\VV^*)$ by the following rule on the simple
  tensors:
  \begin{eqnarray}
    \label{eq:algebra_product}
@@ -575,7 +575,7 @@ f_k(\uu)\vv\otimes f_1\otimes\ldots f_{k-1}\otimes g_1\otimes\ldots \\
 \end{definicija}
 \begin{izrek}[Programming algebra]\label{izr:alg}
 An infinitely-differentiable programming space $\dP_n$ is a function algebra,
-with the product defined by \eqref{eq:algebra_product} for any bilinear map $\cdot :V\times V\to U\otimes T(V^*)$.
+with the product defined by \eqref{eq:algebra_product} for any bilinear map $\cdot :\VV\times \VV\to \VV\otimes T(\VV^*)$.
 \end{izrek}
 
 \subsection{Analytic virtual machine}
@@ -639,24 +639,24 @@ The operator $e^{h\D}$ is a mapping between function spaces $\eqref{eq:F_n}$
  \end{equation}
  It also defines a map
   \begin{equation}\label{eq:specProg}
-  	e^{h\D}:\dP\times V\to U\otimes T(V^*),
+  	e^{h\D}:\dP\times \VV\to \VV\otimes T(\VV^*),
   \end{equation}
-by taking the image of the map $e^{h\D}(P)$ at a certain point $\vv\in V$.  
+by taking the image of the map $e^{h\D}(P)$ at a certain point $\vv\in \VV$.  
 Through $\eqref{eq:specProg}$ we may construct a map from the space of programs,
 to the space of polynomials. Note that the space of multivariate polynomials
-$V\to K$ is isomorphic to symmetric algebra $S(V^*)$, which is in turn a
-quotient of tensor algebra $T(V^*)$. To any element of
- $U\otimes T(V^*)$ one can attach corresponding element of $U\otimes S(V^{i*})$
- namely a polynomial map  $V\to U$.
+$\VV\to K$ is isomorphic to symmetric algebra $S(\VV^*)$, which is in turn a
+quotient of tensor algebra $T(\VV^*)$. To any element of
+ $\VV\otimes T(\VV^*)$ one can attach corresponding element of $\VV\otimes S(\VV^{i*})$
+ namely a polynomial map  $\VV\to \VV$.
  \begin{equation}\label{eq:pToPol}
- 	e^{h\D}: \dP\times V\to U\otimes S(V^*)
+ 	e^{h\D}: \dP\times \VV\to \VV\otimes S(\VV^*)
  \end{equation}
- For any element $\vv_0\in V$, the expression $e^{h\D}(\cdot,\vv_0)$ is a map $\dP\to
- U\otimes S(V^*)$, mapping a program to a polynomial. We can express the
- correspondence between multi-tensors in $U\otimes T(V^*)$ and polynomial maps
- $V\to U$ given by multiple contractions for all possible indices. For a simple tensor $\uu\otimes
- f_1\otimes\ldots\otimes f_n\in U\otimes(V^*)^{\otimes n}$ the contraction by
- $\vv\in V$ is given by applying co-vector $f_n$ to $\vv$ 
+ For any element $\vv_0\in \VV$, the expression $e^{h\D}(\cdot,\vv_0)$ is a map $\dP\to
+ \VV\otimes S(\VV^*)$, mapping a program to a polynomial. We can express the
+ correspondence between multi-tensors in $\VV\otimes T(\VV^*)$ and polynomial maps
+ $\VV\to \VV$ given by multiple contractions for all possible indices. For a simple tensor $\uu\otimes
+ f_1\otimes\ldots\otimes f_n\in \VV\otimes(\VV^*)^{\otimes n}$ the contraction by
+ $\vv\in \VV$ is given by applying co-vector $f_n$ to $\vv$ 
  \begin{equation}
    \label{eq:contraction}
  \uu\otimes f_1\otimes\ldots\otimes f_n\cdot \vv = f_n(\vv) \uu\otimes f_1\otimes\ldots f_{n-1}.
@@ -668,12 +668,12 @@ any simple tensor a monomial map
  \uu\otimes f_1\otimes\ldots\otimes f_n: \vv \mapsto f_n(\vv)\cdots f_1(\vv) \uu
  \end{equation}
 
-and by linearity to any finite rank multi-tensor in $U\otimes T(V^*)$ a
+and by linearity to any finite rank multi-tensor in $\VV\otimes T(\VV^*)$ a
 polynomial map.
  
 \begin{izrek}\label{izr:e^d}
 	For a program $P\in\dP$  the expansion into an infinite tensor series
-  at the point $\vv_0\in V$ is expressed by multiple contractions 
+  at the point $\vv_0\in \VV$ is expressed by multiple contractions 
 	\begin{multline}\label{eq:tenzorVrsta}
 	P(\vv_0+h\vv) = \Big((e^{h\D}P)(\vv_0)\Big)\cdot\vv
   = \sum_{n=0}^\infty\frac{h^n}{n!}\D^nP(\vv_0)\cdot (\vv^{\otimes n})\\
@@ -698,19 +698,19 @@ of $h$ have coinciding Taylor series and are therefore equal.\\
  $$\left(\D^n(P)(\vv_0)\right)(\vv^{\otimes n})$$
  \end{proof}
  \begin{corollary}
- The operator $e^{h\D}:\dP\times V\to U\otimes T(V^*)$ evaluated at $h=1$ is a broad generalization of the shift operator \cite{OpCalc}, as the theory it exists in offers more than a mere shift, as will become apparent in the coming sections.
+ The operator $e^{h\D}:\dP\times \VV\to \VV\otimes T(\VV^*)$ evaluated at $h=1$ is a broad generalization of the shift operator \cite{OpCalc}, as the theory it exists in offers more than a mere shift, as will become apparent in the coming sections.
  For a specific $v_0\in\VV$ it is heron denoted by
  \begin{equation}
- e^\D\vert_{v_0}:\dP\to U\otimes T(V^*)
+ e^\D\vert_{v_0}:\dP\to \VV\otimes T(\VV^*)
  \end{equation}
  When the choice of $v_0\in\VV$ is arbitrary, we omit it from expressions for simplicity.
  \end{corollary}
  
- The image of the contraction is an element of the original virtual space $V^i$. Independence of the operator $(\ref{eq:specProg})$ from a coordinate system, translates to independence in execution. Thus the expression $(\ref{eq:tenzorVrsta})$ is invariant to the point in execution of a program, a fact we explore later on.  
+ The image of the contraction is an element of the original virtual space $\VV^i$. Independence of the operator $(\ref{eq:specProg})$ from a coordinate system, translates to independence in execution. Thus the expression $(\ref{eq:tenzorVrsta})$ is invariant to the point in execution of a program, a fact we explore later on.  
  
  Theorem $\ref{izr:P_n}$ implies
      \begin{equation}
-     	e^{h\D}(\dP_0)\subset\dP_0\otimes T(V^*)
+     	e^{h\D}(\dP_0)\subset\dP_0\otimes T(\VV^*)
      \end{equation}      
 which enables efficient implementation.
  
@@ -772,7 +772,7 @@ which enables efficient implementation.
  \begin{equation}\label{eq:dComposite}
  \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f\Big)
  \end{equation}
- taking into consideration the fact that $e^{\D_f}(f)$ evaluated at a point $v\in V$ is the same as evaluating $f$ at $v$, the expression \eqref{eq:dComposite} equals \eqref{eq:kompproof1} by Faà di Bruno's formula.
+ taking into consideration the fact that $e^{\D_f}(f)$ evaluated at a point $v\in \VV$ is the same as evaluating $f$ at $v$, the expression \eqref{eq:dComposite} equals \eqref{eq:kompproof1} by Faà di Bruno's formula.
    $$\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g(v))}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f(g(v))\Big)$$
    $$\implies$$
    \begin{equation}\label{eq:dCompositePoint}
@@ -812,7 +812,7 @@ which enables efficient implementation.
  \begin{equation}\label{eq:d^2comp}
  \left(\D_f(\D^2_gg)\right)e^{h\D_g}\exp(\D_fe^{h\D_g})(g)+(\D^2_f(\D_gg)^2)e^{2h\D_g}\exp(\D_fe^{h\D_g})(g)
  \end{equation}
- The operator is always shifted to the evaluating point $\eqref{eq:specProg}$ $v\in V$, thus, only the behavior in the limit as $h\to 0$ is of importance. Taking this limit in the expression $\eqref{eq:d^2comp}$ we obtain
+ The operator is always shifted to the evaluating point $\eqref{eq:specProg}$ $v\in \VV$, thus, only the behavior in the limit as $h\to 0$ is of importance. Taking this limit in the expression $\eqref{eq:d^2comp}$ we obtain
  \begin{equation}
 	\left(\D_f(\D^2_gg)+\D^2_f(\D_gg)^2\right)\exp(\D_f)
  \end{equation}
@@ -883,7 +883,7 @@ By Theorem \ref{izr:reductionMap}, $n$-differentiable $k$-th derivatives of a pr
    \subsection{Functional transformations of programs}\label{sec:FTP}
    
    Let's suppose a hardware $H$, optimized for the set of functions
-   $F=\{f_i:V\to V\}$. The set $F$ is specified by the manufacturer.  
+   $F=\{f_i:\VV\to \VV\}$. The set $F$ is specified by the manufacturer.  
    
    With technological advances, switching the hardware is common, which can lead
    to a decline in performance.  Thus, we would like to employ transformations
@@ -898,10 +898,10 @@ By Theorem \ref{izr:reductionMap}, $n$-differentiable $k$-th derivatives of a pr
    $e^\D_n$ denote the projection of the operator $e^\D$, onto the first $n$
    basis vectors $\{\D^i\}$. We can, by Theorem $\ref{izr:e^d}$, construct a map
    $\eqref{eq:pToPol}$ from the space of programs, to the space of polynomials,
-   with unknowns in $V^k$, using the operator $e^\D$. Let $\X=\{p_i\}$ denote a basis of
-   the space of polynomials $V\to V$ \footnote{one choice would be the monomial basis,
+   with unknowns in $\VV^k$, using the operator $e^\D$. Let $\X=\{p_i\}$ denote a basis of
+   the space of polynomials $\VV\to \VV$ \footnote{one choice would be the monomial basis,
    consisnting of elemets $\e_i\otimes\prod\limits_{\alpha,\forall_j}
-   x_{\alpha_j}$, where $\e_i$ span $V$, $x_i$ span $V^*$ and $\alpha$
+   x_{\alpha_j}$, where $\e_i$ span $\VV$, $x_i$ span $\VV^*$ and $\alpha$
    multiindex}. Than, we can interpret $e^\D_n(P\in\dP)$ as a vector of linear combinations of $\X$, which is assumed heron.
   
   Thus, we define the tensor of basis transformation $F\to\X$
@@ -1151,7 +1151,7 @@ when composing two images of the applied operator, projected to different subspa
 The transformation tensor $T_{F\X}$ is needed to be computed only once and can then on be applied to any program running on said hardware. The same holds true for each branch $p_i$, which can, by Theorem $\ref{izr:komp_homo}$, be freely composed amongst each other.
 
 \begin{trditev}\label{clm:paralel}
-Images of the operator $e^\D (P\in\dP_0)$ are elements of $U\otimes T(V^*)$ by $\eqref{eq:specProg}$, consisting of multi-linear maps. As such, their evaluation and composition ($e^\D(P_1)\circ e^\D(P_2)$) is tailor made for efficient implementation by methods of parallelism \cite{TensorGPU}, with computable complexities.
+Images of the operator $e^\D (P\in\dP_0)$ are elements of $\VV\otimes T(\VV^*)$ by $\eqref{eq:specProg}$, consisting of multi-linear maps. As such, their evaluation and composition ($e^\D(P_1)\circ e^\D(P_2)$) is tailor made for efficient implementation by methods of parallelism \cite{TensorGPU}, with computable complexities.
 \end{trditev}
 
 Transformations by $\eqref{eq:P_F}$ need to be computed only once. Complexity of the composition of images of transformations $T_{F\X}\cdot e^\D(p_2)\circ T_{F\X}\cdot e^\D(p_1)$ depends on complexities of $f_i\in F$.
