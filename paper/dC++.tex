@@ -298,5 +298,57 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
     When $\dP_0$ is a differentiable programming space, this defines an
     infinitely differentiable virtual machine.
   \end{definicija}
-
+  
+  \subsection{Operators}
+        
+        The operator 
+        \begin{equation}\label{eq:DD}
+          	\sumd_n = 1+\D +\D^2 +\ldots + \D^n 
+          \end{equation}
+        is used to implement $\DD^n\CC\subset\dP_n$, employing the recursive relation
+        \begin{equation}
+              \label{eq:rekurzija}
+              \sumd_{k+1} = 1+\D\sumd_k.
+            \end{equation}
+        \begin{equation}
+        \sumd_{k+1}\CC = \CC+\D\sumd_k\CC
+        \end{equation}
+        
+        The \emph{double id} stands for the identity operator $1$ in the expression and the \emph{map<\&var, var> dTau} for the operator $\D\sumd_k$.
+        
+        Compositions of these operators is achieved by mimicking the generalized pullback operator
+        \begin{equation}\label{eq:opKompo}
+          \exp(\D_fe^{h\D_g})(g): \dP\to\dP_\infty(g)
+          \end{equation}
+          projected onto the unit sphere.
+          
+          \begin{opomba}
+          Implementation in this paper is intended to be simply understood and is written as such. But, with the existing algebra and operational calculus, one could easily implement the operator $\exp(\D_fe^{h\D_g})(g)$ by any of the efficient techniques available, as it is given by a generating function.
+          \end{opomba}
+        
+        \begin{lstlisting}
+        template<class K>
+        class tau
+        {
+            public:
+                tau();
+                tau(K mapping, var primitive);
+                ~tau();
+                var operator()(const var&v);
+            private:
+                tau primitive;
+                K mapping;
+        };
+        \end{lstlisting}
+        
+        \begin{lstlisting}
+        var tau::operator()(const var&v){
+            var out;
+            out.id=mapping(v.id);
+            for_each_copy(...,mul_make_pair<std::pair<&var,var> >, 
+            	primitive(v));
+            return out;
+        }
+        \end{lstlisting}
+  
 \end{document}
