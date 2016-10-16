@@ -1418,7 +1418,7 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
    $$T_{X_j}=\{T_i\in T_{X_j}\iff \left\Vert\D_{T_i}T\right\Vert\ge c\}$$
    that have the highest measure of activity at the elements of $X_j$. The property measure for the property $X_j$ is than simply the sum of squares of norms of the derivatives of selected sub-procedures $T^i_1=T_i\circ\cdots\circ T_1$. This completes Algorithm \ref{alg:propertyMeasure}. 
    
-   Using the theory, $n$-differentiable $k$-th derivatives $^{n}T^{k\prime}_i\in\dP_n$ with respect to the input $v\in\Omega$ are computed by
+   By Corollary \ref{cor:extraxtDerivatives}, $n$-differentiable $k$-th derivatives $^{n}T^{k\prime}_i\in\dP_n$ with respect to the input $v\in\Omega$ are computed by
    
    \begin{equation}
    ^{n}T^{k\prime}_i=\phi^k\circ e^{\D_v}_{n+k}(T^i_1)\in\dP_n
@@ -1454,7 +1454,7 @@ Let
 P=P_n\circ P_{n-1}\circ\cdots\circ P_1
 \end{equation}
 be the procedure representing the system \footnote{the program could just as easily be a spline as in $\eqref{eq:zlrprk_splosno}$, by a specific $P_i$ containing a control structure}, with $P_i=p_k\circ\cdots\circ p_1$ being the conceptual step treated by heuristic $H$. Again, we let $P^i_k=P_i\circ\cdots\circ P_k$. Directions are usually modeled by first derivatives, and attractions by second derivatives, so lets assume the heuristic $H$ employs both. 
-Assuming $H$ needs to be once differentiable, with itself containing first and second derivatives of $P$, we need to employ the operator $e^\D_3$. Once differentiable first and second derivatives with respect to parameters $p$ are extracted by
+Assuming $H$ needs to be once differentiable, with itself containing first and second derivatives of $P$, we need to employ the operator $e^\D_3$. Using Corollary \ref{cor:extraxtDerivatives}, once differentiable first and second derivatives with respect to parameters $p$ are extracted by
 \begin{equation}
 P^{i\prime}_1=\proj_{\{1,\D\}}\left(\phi\circ e^{\D_{p}}_3(P^i_1)\right)\in\dP_1
 \end{equation}
