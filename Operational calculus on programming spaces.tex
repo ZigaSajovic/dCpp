@@ -710,7 +710,7 @@ of $h$ have coinciding Taylor series and are therefore equal.\\
  $$\left(\D^n(P)(\vv_0)\right)(\vv^{\otimes n})$$
  \end{proof}
  \begin{corollary}
- The operator $e^{h\D}:\dP\times V\to U\otimes T(V^*)$ evaluated at $h=1$ is a broad generalization of the shift operator \cite{OpCalc}, as the algebra it exists in offers more than a mere shift, as will become apparent in the coming sections.
+ The operator $e^{h\D}:\dP\times V\to U\otimes T(V^*)$ evaluated at $h=1$ is a broad generalization of the shift operator \cite{OpCalc}, as the theory it exists in offers more than a mere shift, as will become apparent in the coming sections.
  For a specific $v_0\in\VV$ it is heron denoted by
  \begin{equation}
  e^\D\vert_{v_0}:\dP\to U\otimes T(V^*)
@@ -800,7 +800,7 @@ which enables efficient implementation.
   \begin{equation}\label{eq:opKompo}
   \exp(\D_fe^{h\D_g})(g): \dP\to\dP_\infty(g)
   \end{equation}
- \begin{trditev}
+ \begin{trditev}\label{trd:reverseForward}
  When projecting onto the space spanned by $\{1,\D\}$, the action of the operator $\exp(\D_fe^{h\D_g})(g)$ of $\eqref{eq:opKompo}$ is equivalent to forward mode automatic differentiation. Both forward and reverse mode are obtainable using the same operator of $\eqref{eq:opGenKompo}$, by fixing the appropriate one of the two maps. This generalizes both concepts under a single operator in the theory. The \eqref{eq:kompo} can be generalized for the notion of a pullback, to arbitrary operators.
  \end{trditev}
  
@@ -883,7 +883,7 @@ satisfying
 \end{equation}
 for each $n\ge 1$, where $e^\D_n$ is the projection of the operator $e^\D$ onto the set $\{\D^n\}$.
 \end{izrek}  
-\begin{corollary}
+\begin{corollary}\label{cor:extraxtDerivatives}
 By Theorem \ref{izr:reductionMap}, $n$-differentiable $k$-th derivatives of a program $P\in\dP_0$ can be extracted by
 \begin{equation}
 ^{n}P^{k\prime}=\phi^k\circ e^\D_{n+k}(P)\in\dP_n
@@ -1163,7 +1163,7 @@ The transformation tensor $T_{F\X}$ is needed to be computed only once and can t
 Images of the operator $e^\D (P\in\dP_0)$ are elements of $U\otimes T(V^*)$ by $\eqref{eq:specProg}$, consisting of multi-linear maps. As such, their evaluation and composition ($e^\D(P_1)\circ e^\D(P_2)$) is tailor made for efficient implementation by methods of parallelism \cite{TensorGPU}, with computable complexities.
 \end{trditev}
 
-Transformations $\eqref{eq:P_F}$ need to be computed only once. Complexity of the composition of images of transformations $T_{F\X}\cdot e^\D(p_2)\circ T_{F\X}\cdot e^\D(p_1)$ depends on complexities of $f_i\in F$.
+Transformations by $\eqref{eq:P_F}$ need to be computed only once. Complexity of the composition of images of transformations $T_{F\X}\cdot e^\D(p_2)\circ T_{F\X}\cdot e^\D(p_1)$ depends on complexities of $f_i\in F$.
 
 Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary algorithms $P\in\dP$, along with estimations and order of the error of the approximation. Simultaneously it enables transformations of the function basis of programs, and with it implementations, more inclined towards efficiency on a given hardware. After initial applications of operators and performed transformations the program may be used, as many times as pleased, towards the purpose it was initially designed for. By doing so, we may manipulate its' complexity (for $k\le n$) and switch between different code formulations ($p$, $e^\D(p)$, $T_{F\X}\cdot e^\D(p)$), as better suited to the nature of the domains' subset, upon which the program operates at a given moment.
 
@@ -1276,10 +1276,10 @@ Thus the $n$-differentiable $k$-th derivatives can be extracted by
 \begin{equation}
 ^{n}L_{i+1}^{k\prime}=\phi^k\circ e^\D_{n+k}(L_{i+1})\in\dP_n
 \end{equation}
-through expression \eqref{eq:tenNetKthDer}, were $\phi$ is the reduction of order map of Theorem \ref{izr:reductionMap}. Derivatives of specific order are extracted through projections on components of $P_n$, and can be used in any of the well established training methods in the industry. 
+from \eqref{eq:tenNetKthDer} through Corollary \ref{cor:extraxtDerivatives}, were $\phi$ is the reduction of order map of Theorem \ref{izr:reductionMap}. Derivatives of specific order are extracted through projections on components of $P_n$, and can be used in any of the well established training methods in the industry. 
 
 \begin{trditev}
-Using the operator $\exp(\D_fe^{h\D_g})$ of Theorem \ref{izr:kompo}, both forward and reverse mode automatic differentiation (of arbitrary order) can be implemented on general tensor networks.
+Using the operator $\exp(\D_fe^{h\D_g})$ of Theorem \ref{izr:kompo}, both forward and reverse mode automatic differentiation (of arbitrary order) can be implemented on general tensor networks, as by Claim \ref{trd:reverseForward}.
 \end{trditev}
 
 \begin{opomba}
@@ -1472,7 +1472,7 @@ By interpreting heuristics as principles, we can improve any part of the program
 
 \section{Conclusions}
 
-Existence of a program is embedded in a virtual reality, forming a system of objects undergoing change in a virtual space. Just as the reality inhabited by us is being studied by science, revealing principles and laws, so can the virtual reality inhabited by programs. Yet here lies a tougher task, as the laws of the system are simultaneously observed and constructed \footnote{the universe is bug-free while our programs are not}. This reinforces the need for a language capable of not only capturing, but also constructing digital phenomena, a feat demonstrated by the theory presented in this paper. 
+Existence of a program is embedded in a virtual reality, forming a system of objects undergoing change in a virtual space. Just as the reality inhabited by us is being studied by science, revealing principles and laws, so can the virtual reality inhabited by programs. Yet here lies a tougher task, as the laws of the system are simultaneously observed and constructed \footnote{the universe is bug-free, up to philosophic precision, while our programs are not}. This reinforces the need for a language capable of not only capturing, but also constructing digital phenomena, a feat demonstrated by the theory presented in this paper. 
 
 Like Feynman \cite{Feynman} and Heaviside \cite{HeavisideOperational} for physics before us, we developed operational calculus on programming spaces, allowing analytic conclusions through algebraic means, easing implementation. We derived the operator of program composition, generalizing both forward and reverse mode of automatic differentiation (of arbitrary order), under a single operator in the theory. Both the use of algebra and calculus were demonstrated upon the operator, as calculations and manipulations were performed on the operator level, before the operator is applied to a particular program.
 This language condenses complex notions into simple expressions, enabling formulation of meaningful algebraic equations to be solved. Doing so, we derived functional transformations of programs in arbitrary function basis', a useful tool when adapting code to the specifics of a given hardware, among other.
@@ -1481,7 +1481,7 @@ All such formulations are invariant not only to the choice of a programming spac
 In Section \ref{sec:generalTensorNet}, we generalized neural networks by constructing general tensor networks and showed them to be differentiable and trainable using operators constructed in Section \ref{sec:operational}. We derived transformations of arbitrary programs to general tensor networks and provided a new way of initializing networks. This may prove useful in future developments of the field, as neural networks currently give best results to many problems. To this aim, we developed tools for analyzing procedures and probe their inner structure.
 State of the art methods for analyzing neural networks were generalized to general programs in the theory.
 We demonstrated how the developed operational calculus is employed in practice towards such a cause, and how through it countless methods from analysis can be trivially transfered to the subject, limited only by the imagination and inventiveness of the employer of the theory.
-  \clearpage
+
   \printbibliography
 \end{document}
 
