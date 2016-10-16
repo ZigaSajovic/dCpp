@@ -25,4 +25,4 @@ We use it to generalize state of the art methods for analyzing neural networks t
 
 ###Implementation
 
-An illustrative example of the implementation of the theory is available at [/ZigaSajovic/dCpp](https://github.com/ZigaSajovic/dCpp). Implementation closely follows theorems and derivations of this paper, intended as an educational guide. 
+An illustrative example of the implementation of the theory is available at [/ZigaSajovic/dCpp](https://github.com/ZigaSajovic/dCpp). Implementation closely follows theorems and derivations of this paper, intended as an educational guide. A paper explaining the process of implementation accompanies the source-code. 
