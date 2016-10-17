@@ -466,7 +466,7 @@ dCpp<\dP_0\iff \DD dCpp\subset dCpp\otimes T(\VV^*)
 \end{izrek}
 \begin{proof}
 \begin{equation}
-\forall_{\phi_i\in dCpp}\exists_{\phi_i\in dCpp}(\phi_i.primitive=\phi_j)
+\forall_{\phi_i\in dCpp}\exists_{\phi_j\in dCpp}(\phi_i.primitive=\phi_j)
 \end{equation}
 $$\implies$$
 \begin{equation}
@@ -482,6 +482,53 @@ dCpp<\dP_0\iff \DD^n dCpp\subset dCpp\otimes T(\VV^*)
 \begin{proof}
 Follows directly from Theorem \ref{izr:dCpp} by Theorem \ref{izr:P}.
 \end{proof}
+
+\subsection{External libraries}
+
+Any $\CC$ library written in the generic paradigm employing templates is fully compatible with differentiable programming space and the virtual memory $\VV$. 
+
+We illustrate on the example of Eigen. We will code a perceptron with sigmoid activations, followed by softmax normalization, taking 28x28 image as an input and outputting a 10 class classifier. Existence of needed, but trivial and intuitively understood mappings is assumed (ex. $init$ initializes elements to the desired order). 
+
+\begin{lstlisting}
+template <typename Derived>
+    void softmax(Eigen::MatrixBase<Derived>& matrix){
+            //maps each element of the matrix by y=e^x;
+            dCpp::map_by_element(matrix,&dCpp::e);
+            //sums the elements of the matrix using Eigens function
+            var tmp=matrix.sum();
+            //divides each element by the sum
+            for (size_t i=0, nRows=matrix.rows(), 
+            	nCols=matrix.cols(); i<nCols; ++i)
+                for (size_t j=0; j<nRows; ++j){
+                    matrix(j,i)/=tmp;
+                }
+}
+
+int main(){
+//order of derivatives needed
+int order=...;
+//    Matrix holding the inputs (imgSizeX1 vector)
+const int imgSize=28*28;
+const Eigen::Matrix<var,1,imgSize>input=Eigen::Matrix<var,1,
+	imgSize>::Random(1,imgSize);
+//    number of outputs of the layer
+const int numOfOutOnFirstLevel=10;
+//    matrix of weights on the first level 
+//    (imgSizeXnumOfOutOnFirstLevel)
+Eigen::Matrix<var,imgSize,numOfOutOnFirstLevel>firstLayerVars=
+	Eigen::Matrix<var,imgSize,numOfOutOnFirstLevel>::
+	Random(imgSize,numOfOutOnFirstLevel);
+//    initializing weights
+dCpp::init(firstLayerVars, order);
+//    mapping of the first layer --> resulting in 10x1 vector
+Eigen::Matrix<var,numOfOutOnFirstLevel,1>firstLayerOutput=
+	input*firstLayerVars;
+//    apply sigmoid layer --> resulting in 10x1 vector
+dCpp::map_by_element(firstLayerOutput,&dCpp::sigmoid);
+//    apply sofmax layer --> resulting in 10x1 vector
+softmax(firstLayerOutput);
+//retrieve the computed derivatives
+\end{lstlisting}
 
   
 \end{document}
