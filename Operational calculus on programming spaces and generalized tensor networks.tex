@@ -1263,7 +1263,7 @@ By Claim \ref{trd:composeOperators}, an arbitrary $p\in\dP:\VV\to\VV$ can be com
 \begin{equation}\label{eq:composedNet}
 P=\NN_2\circ p\circ\NN_1 \in \dP
 \end{equation}
-The expression $P\in\dP$ \eqref{eq:composedNet} is an element of a differentiable programming space, and can thus be treated by the operational calculus presented in this paper.
+The expression $P\in\dP$ \eqref{eq:composedNet} is an element of a differentiable programming space, and can thus be treated by the operational calculus presented in this paper. 
 \end{trditev}
 
 \begin{opomba}
@@ -1292,7 +1292,7 @@ Using the operator $\exp(\D_fe^{h\D_g})$ of Theorem \ref{izr:kompo}, both forwar
 The operational calculus developed in this paper can be applied to the training process $T\in\dP_0$ of a general tensor network itself, as it is but an element of a differentiable programming space $\dP$. Thus, hyper-parameters of the training process \cite{HyperParams} can be studied, analyzed and trained, as to be adapted to the particulars of the problem being solved.
 \end{opomba}
 
-All methods of program analysis presented in the next Section \ref{sec:Analysis} can also be applied to tensor networks, as we study them.
+By Claim \ref{clm:composedNet}, any training methods enabled by the operational calculus presented in this paper apply to all compositions of general tensor networks $\NN_i$ with arbitrary programs $P\in\dP$. This allows seamless trainable transitions between code formulations, naturally extending the Transformation diagram of Figure \ref{fig:diagram}. 
   
 \section{Analysis}\label{sec:Analysis}
   
