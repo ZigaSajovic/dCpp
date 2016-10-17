@@ -327,6 +327,8 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
           \end{opomba}
         
         \begin{lstlisting}
+        typedef var (*dTau)(var);
+        
         template<class K>
         class tau
         {
@@ -336,7 +338,7 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
                 ~tau();
                 var operator()(const var&v);
             private:
-                tau dTau;
+                dTau primitive;
                 K mapping;
         };
         \end{lstlisting}
@@ -346,7 +348,7 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
             var out;
             out.id=mapping(v.id);
             for_each_copy(...,mul_make_pair<std::pair<&var,var> >, 
-            	dTau(v));
+            	primitive(v));
             return out;
         }
         \end{lstlisting}
@@ -388,7 +390,7 @@ Any library implementing functions acting on variables of type $double$ or $floa
 
 \subsubsection{Example}
   
-As an illustrative example, we provide a simple implementation of a differentiable programming space through the use of the operator $\sumd_n$. Assume the existence of functions
+As an illustrative example, we provide a simple implementation of a differentiable programming space through the use of the operator $tau$. Assume the existence of functions
 \begin{equation}
 \sin\_double:double\to double
 \end{equation}
@@ -402,5 +404,84 @@ e\_double:double\to double
 \ln\_double:double\to double
 \end{equation} 
 filling the set spanning $\CC$.
+
+Previous declarations of needed functions are assumed. 
+
+\begin{lstlisting}
+namespace dCpp{
+var sin(const var& v);
+tau cos;
+tau e;
+tau ln;
+var cos_primitive(const var& v);
+var ln_primitive(const var& v);
+var e_primitive(const var& v);
+}
+\end{lstlisting}
+
+We construct the map $sin$ explicitly for educational purposes
+
+\begin{lstlisting}
+var dC::sin(const var& v){
+    var out;
+    out.id=std::sin_double(v.id);
+    if(v.order>0){
+    	for_each_copy(...,mul_make_pair<std::pair<&var,var> >,
+    		cos(v.reduceOrder()));
+    }
+    return out;
+}
+\end{lstlisting}
+
+Other maps are constructed through employment of the operator $tau$.
+
+\begin{lstlisting}
+typedef double (*mapping)(double);
+
+dCpp::cos_primitive(cont $var v){
+	return (-1)*sin(v.reduceOrder());
+}
+
+dCpp::cos=tau<mapping>(cos_double,cos_primitive);
+
+dCpp::ln_primitive(cont $var v){
+	return 1/v.reduceOrder();
+}
+
+dCpp::ln=tau<mapping>(ln_double,ln_primitive);
+
+dCpp::e_primitive(cont $var v){
+	return e(v.reduceOrder());
+}
+
+tau dCpp::e=tau<mapping>(e_double,e_primitive);
+
+\end{lstlisting}
+
+\begin{izrek}\label{izr:dCpp}
+The programming space $dCpp$ is a differentiable programming space satisfying
+\begin{equation}
+dCpp<\dP_0\iff \DD dCpp\subset dCpp\otimes T(\VV^*)
+\end{equation}
+\end{izrek}
+\begin{proof}
+\begin{equation}
+\forall_{\phi_i\in dCpp}\exists_{\phi_i\in dCpp}(\phi_i.primitive=\phi_j)
+\end{equation}
+$$\implies$$
+\begin{equation}
+\DD dCpp\subset dCpp\otimes T(\VV^*)
+\end{equation}
+\end{proof}
+\begin{corollary}
+The programming space $dCpp$ is an infinitely-differentiable programming space satisfying
+\begin{equation}
+dCpp<\dP_0\iff \DD^n dCpp\subset dCpp\otimes T(\VV^*)
+\end{equation}
+\end{corollary}
+\begin{proof}
+Follows directly from Theorem \ref{izr:dCpp} by Theorem \ref{izr:P}.
+\end{proof}
+
   
 \end{document}
