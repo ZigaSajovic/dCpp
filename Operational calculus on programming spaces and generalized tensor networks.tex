@@ -170,7 +170,9 @@ a space spanned by a set of elementary operations that are sequentially applied 
 \begin{definicija}[Euclidian virtual machine] The tuple $\langle \VV,\F\rangle$ is an Euclidian virtual machine.
   \begin{itemize}
   \item
-  $\VV$ is a finite dimensional vector space over a filed $K$ serving as alphabet symbols
+  $\VV$ is a finite dimensional vector space over a complete field $K$ serving
+  as alphabet symbols\footnote{In most aplications the field $K$ will
+    be $\RR$}
   \item
   $\F= \VV^\VV$ is the space of maps $P:\VV\to \VV$, called \emph{programming space}, serving as states
   \end{itemize}  
@@ -189,13 +191,14 @@ basis. Function $P_i:\VV\to K$ is a scalar function and is equal to $x_i\circ P$
     The variable $x_i$ is called \emph{free}, if
     \begin{equation}
       \label{eq:free}
-      \frac{\partial P_j}{\partial x_i}\equiv \delta_{ij}\wedge \frac{\partial P_i}{\partial x_j}\equiv \delta_{ij}.
+      \frac{\partial P_j}{\partial x_i}\equiv \delta_{ij}\land \frac{\partial P_i}{\partial x_j}\equiv \delta_{ij}.
     \end{equation}
 \item 
     The variable $x_i$ is called \emph{input parameter} if
     \begin{equation}
       \label{eq:input}
-      \frac{\partial P_j}{\partial x_i}\not\equiv \delta_{ij}.\footnote{this statement also includes the case that the partial derivative do not exist at some point}
+      \frac{\partial P_j}{\partial x_i}\not\equiv \delta_{ij} \lor
+      \left(  \frac{\partial P_j}{\partial x_i}\equiv \delta_{ij}\land \frac{\partial P_i}{\partial x_j}\not\equiv \delta_{ij}\right) .\footnote{this statement also includes the case that the partial derivative do not exist at some point}
     \end{equation}
 \item  The variable $x_i$ is called \emph{output value} if
     \begin{equation}
