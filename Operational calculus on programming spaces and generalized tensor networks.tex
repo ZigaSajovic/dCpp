@@ -1169,6 +1169,7 @@ Let $W\in \VV\otimes T_n(\VV^*)$ be an element of the virtual memory. We define 
 \begin{equation}
 W(v)=\sum\limits_{i=0}^n(w_i\in \VV\otimes \VV^{*\otimes i})(v^{\otimes i})\in \VV
 \end{equation}
+where each contraction $(w_i\in \VV\otimes \VV^{*\otimes i})(v^{\otimes i})$ is defined by the programming algebra of Theorem \ref{izr:alg}.
 
 \begin{definicija}
 A general tensor network $\NN$ is defined by the equation
@@ -1478,7 +1479,7 @@ where $\phi$ is the reduction of order map of Theorem $\ref{izr:reductionMap}$. 
 H^\prime=e^{\D_p}_1(H)\circ(P^{i\prime}_1,P^{i\prime\prime}_1)\in\dP_1
 \end{equation}
 
-By an algorithm similar to Algorithms \ref{alg:appoint}, we can drive a procedure $P$, whose conceptual step $P_i$ maximizes action of the principle $H$ upon the input objects inhabiting the virtual memory.
+By an algorithm similar to Algorithm \ref{alg:appoint}, we can drive a procedure $P$, whose conceptual step $P_i$ maximizes action of the principle $H$ upon the input objects inhabiting the virtual memory.
 
 By interpreting heuristics as principles, we can improve any part of the program, at which the principle can be applied. This way we can change parts of the program as we search for a solution, improving the program itself. By noting receptiveness to a specific principle (heuristics) we might gain new knowledge about the problem we are trying to solve.
 
@@ -1486,7 +1487,7 @@ By interpreting heuristics as principles, we can improve any part of the program
 
 Existence of a program is embedded in a virtual reality, forming a system of objects undergoing change in a virtual space. Just as the reality inhabited by us is being studied by science, revealing principles and laws, so can the virtual reality inhabited by programs. Yet here lies a tougher task, as the laws of the system are simultaneously observed and constructed; the universe is bug-free, up to philosophic precision, while our programs are not. This reinforces the need for a language capable of not only capturing, but also constructing digital phenomena, a feat demonstrated by the theory presented in this paper. 
 
-Like Feynman \cite{Feynman} and Heaviside \cite{HeavisideOperational} for physics before us, we developed operational calculus on programming spaces, allowing analytic conclusions through algebraic means, easing implementation. We derived the operator of program composition, generalizing both forward \cite{PcAD} and reverse \cite{ReverseAD} mode of automatic differentiation to arbitrary order, under a single operator in the theory. Both the use of algebra and calculus were demonstrated upon the operator, as calculations and manipulations were performed on the operator level, before the operator is applied to a particular program.
+Like Feynman \cite{Feynman} and Heaviside \cite{HeavisideOperational} for physics before us, we developed operational calculus on programming spaces, allowing analytic conclusions through algebraic means, easing implementation. We derived the operator of program composition, generalizing both forward \cite{PcAD} and reverse \cite{ReverseAD} mode of automatic differentiation to arbitrary order, under a single operator in the theory. Both the use of algebra and operational calculus were demonstrated upon the operator, as calculations and manipulations were performed on the operator level, before the operator is applied to a particular program.
 This language condenses complex notions into simple expressions, enabling formulation of meaningful algebraic equations to be solved. Doing so, we derived functional transformations of programs in arbitrary function basis', a useful tool when adapting code to the specifics of a given hardware, among other.
 All such formulations are invariant not only to the choice of a programming space, but also to the point in execution of a program, introducing the principle of general covariance \cite{GeneralCovariance} to programming. Offerings of this principle were exploited, as we designed methods on how transformations are to be interchangeably applied in practice in Section \ref{sec:TransInPractice}. These methods allow for seamless transitions between transformed forms and original code throughout the program. All analytic machines attain and expand on the expressive freedom of algorithmic control flow, as they fully integrate control structures.
 
