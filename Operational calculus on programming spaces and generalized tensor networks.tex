@@ -110,7 +110,7 @@ of its dual. Extended virtual memory serves by itself as an algebra of programs,
 program's input values. 
 
 We present a theory of operators on programming spaces, that enables analysis of programs
-and computations on the operator level, which favors general implementation. The theory enables
+and computations on the operator level, which favors general implementation. Theory enables
 approximation and transformations of programs to a more appropriate function basis'. We
 also present several examples of how the theory can be used in computer science.
 
@@ -144,7 +144,7 @@ As different hardware is optimized for running of different sets of functions, t
 We provide instructions on methods of usage in Section \ref{sec:TransInPractice} and outline the process of how these transformations are to be interchangeably applied in practice. 
 
 Analytic virtual machines fully integrate control structures as shown in Section \ref{sec:control}, thus retaining algorithmic control flow and the expressive power it possesses. 
-We generalize neural networks by constructing general tensor networks in Section \ref{sec:generalTensorNet} and reveal their connection with programs in Section \ref{sec:progAsNet}. In Section \ref{sec:transToNet} we derive transformations of arbitrary programs to general tensor networks, providing a new way of network initialization. These tensor networks are freely composed with general programs, as revealed in Section \ref{sec:compoNetProg}. Such constructs are trainable (as is their training process itself) and adhere to the operational calculus presented in this paper. This is demonstrated in Section \ref{sec:trainNet}, enabling analytic study through the theory.
+We generalize neural networks by constructing general tensor networks in Section \ref{sec:generalTensorNet} and reveal their connection with programs in Section \ref{sec:progAsNet}. In Section \ref{sec:transToNet} we derive transformations of arbitrary programs to general tensor networks, providing a meaningful way of network initialization. These tensor networks are freely composed with general programs, as revealed in Section \ref{sec:compoNetProg}. Such constructs are trainable (as is their training process itself) and adhere to the operational calculus presented in this paper. This is demonstrated in Section \ref{sec:trainNet}, enabling analytic study through the theory.
 
 Theory offers new insights into programs, as we demonstrate how to probe their inner structure in Section \ref{sec:Analysis}, revealing what actions properties of the domain most react to in Section \ref{sec:studyProperties}. This enables us to alter data by imposing some property it lacks upon it.
 We generalize state of the art methods for analyzing neural networks \cite{DeepDream} to general programs in Section \ref{sec:propertyMeasure} and provide a framework for analysis of machine learning architectures and other virtual constructs, as actions on the virtual space. Exploring procedures as systems inducing change upon objects in this space, we study dynamics of computation as fields and the principles they induce upon the system, attaining valuable tools for general problem solving in Section \ref{sec:dynamComp}.
@@ -604,8 +604,11 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
     When $\dP_0$ is a differentiable programming space, this defines an
     infinitely differentiable virtual machine.
   \end{definicija}
-Anything that operates under these specifications is an analytic virtual machine, with the ability to implement infinitely differentiable programming spaces $\dP_\infty$. Algebraic manipulations it enables are employed throughout the paper, revealing analytic insights in Section \ref{sec:Analysis}.  All analytic virtual machines fully integrate usage of control structures, as it is demonstrated and proven in Section \ref{sec:control}, thus retaining algorithmic control flow and the expressive power it possesses. 
+Algebraic manipulations these machines enable are employed throughout the paper, revealing analytic insights in Section \ref{sec:Analysis}.  All analytic virtual machines fully integrate usage of control structures, as it is demonstrated and proven in Section \ref{sec:control}, thus retaining algorithmic control flow and the expressive power it possesses.
+\begin{opomba}
+By employing analytic virtual machines, we can construct analytic procedures, viewing algorithms in a new light. One can start incorporating variable parameters into algorithm design, revealing the true nature of hyper-parameters often used in practice.
 
+\end{opomba}
 \subsubsection{Implementation}
 
 An illustrative example of the implementation of the theory is available on github \cite{dC++}. Implementation closely follows theorems and derivations of this paper, intended as an educational guide.
@@ -1490,7 +1493,7 @@ Like Feynman \cite{Feynman} and Heaviside \cite{HeavisideOperational} for physic
 This language condenses complex notions into simple expressions, enabling formulation of meaningful algebraic equations to be solved. Doing so, we derived functional transformations of programs in arbitrary function basis', a useful tool when adapting code to the specifics of a given hardware, among other.
 All such formulations are invariant not only to the choice of a programming space, but also to the point in execution of a program, introducing the principle of general covariance \cite{GeneralCovariance} to programming. Offerings of this principle were exploited, as we designed methods on how transformations are to be interchangeably applied in practice in Section \ref{sec:TransInPractice}. These methods allow for seamless transitions between transformed forms and original code throughout the program. All analytic machines attain expressive freedom of algorithmic control flow, as they fully integrate control structures. Employing them, we can construct analytic procedures, viewing algorithms in a new light. One can start incorporating variable parameters into algorithm design, revealing the true nature of hyper-parameters often used in practice.
 
-In Section \ref{sec:generalTensorNet}, we generalized neural networks by constructing general tensor networks and showed them to be differentiable and trainable using operators constructed in Section \ref{sec:operational}. We derived transformations of arbitrary programs to general tensor networks and provided a new way of initializing networks. 
+In Section \ref{sec:generalTensorNet}, we generalized neural networks by constructing general tensor networks and showed them to be differentiable and trainable using operators constructed in Section \ref{sec:operational}. We derived transformations of arbitrary programs to general tensor networks and provided a meaningful way of initializing networks. 
 This may prove useful in future developments of the field, as neural networks currently give best results to many problems. To this aim, we developed tools for analyzing procedures and probe their inner structure.
 State of the art methods for analyzing neural networks were generalized to general programs in the theory.
 We demonstrated how the developed operational calculus is employed in practice towards such a cause, and how through it countless methods from analysis can be trivially transfered to the subject, limited only by the imagination and inventiveness of the employer of the theory.
