@@ -59,6 +59,12 @@
 \newtheorem{proposition}{Proposition}[section]
 
 \usepackage[hidelinks]{hyperref}
+\usepackage{epigraph}
+\usepackage{etoolbox}
+
+\makeatletter
+\patchcmd{\epigraph}{\@epitext{#1}}{\itshape\@epitext{#1}}{}{}
+\makeatother
 
 \title{$\DD^n\CC$}
 \author{Žiga Sajovic}
@@ -70,6 +76,8 @@
 \begin{abstract}
 We provide an illustrative implementation of an analytic, infinitely-differentiable machine, implementing infinitely-differentiable programming spaces and operators acting upon them, constructed in the paper \emph{Operational calculus on programming spaces and generalized tensor networks}. Implementation closely follows theorems and derivations of the paper, intended as an educational guide.
 \end{abstract}
+
+\epigraph{Nothing at all takes place in the universe in which some rule of maximum or minimum does not appear.}{--- \textup{Leonhard Euler}}
 
 \tableofcontents
 
