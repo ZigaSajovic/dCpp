@@ -116,10 +116,10 @@ class var
         std::map<&var,var>* dTau;
 
         var();
+        var(V id);
         var(const var& other);
         ~var();
-        var(double n);
-        void init();
+        void init(int order);
         /*
         *declerations of algebraic operations
         */
@@ -130,6 +130,20 @@ The expanded virtual memory $\VV_n$ is the tensor product of the virtual memory 
 
 Tensor products of the virtual memory $\VV$ with its dual are modeled using maps, denoted by \emph{dTau}. Naming reflects how the algebra will be constructed, mimicking the operator $\sumd_nn$ \eqref{eq:sumd}.
 
+\subsection{Initialization}
+
+A constant element $v_0$ of the virtual memory is an element of $\VV_0=\VV<\VV_n$. We initialize an element to be $n$-differentiable, by mapping
+\begin{equation}
+init:\VV\times\mathbb{N}\to\VV_n
+\end{equation}
+\begin{equation}
+v_0.init(n)=v_n\in\VV_n
+\end{equation}
+The image $v_n$ is an element of $\VV_1=\VV\otimes\VV^*$ naturally included in $\VV_n$.
+\begin{equation}
+v_n=(v_0\in\VV)+(\delta^i_j\in\VV\otimes\VV^ {*\otimes})+\sum\limits_{i=2}^n(0\in\VV\otimes\VV^ {*i\otimes})
+\end{equation}
+where $\delta^i_j$ is the identity.
 \subsection{Algebra over a field}
 
  Algebra over a field is a vector space equipped with a bilinear product. Thus, an algebra is an algebraic structure, which consists of a set, together with operations of multiplication, addition, and scalar multiplication by elements of the underlying field.
