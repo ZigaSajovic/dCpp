@@ -152,7 +152,7 @@ The image $v_n$ is an element of $\VV_1=\VV\otimes\VV^*$ naturally included in $
 v_n=(v_0\in\VV)+(\delta^i_j\in\VV\otimes\VV^ {*\otimes})+\sum\limits_{i=2}^n(0\in\VV\otimes\VV^ {*i\otimes})
 \end{equation}
 where $\delta^i_j$ is the identity.
-\subsection{Algebra over a field}
+\subsection{Algebra over a field}\label{sec:Algebra}
 
  Algebra over a field is a vector space equipped with a bilinear product. Thus, an algebra is an algebraic structure, which consists of a set, together with operations of multiplication, addition, and scalar multiplication by elements of the underlying field.
  
@@ -172,8 +172,6 @@ An instance of the class $var$ is an element of the virtual memory $\VV_n$.
  \begin{equation}
  var=id\oplus dTau\implies var\in\VV_n
  \end{equation}
-
-
 \end{proof}
 
 \subsubsection{Vector space over a field $K$}
@@ -257,7 +255,7 @@ Class $var$ models an algebra over a field $K$.
 By the implementation of a bilinear product by components the axioms of an algebra over a field are satisfied.
 \end{proof}
 
-For ease of expression we implement exponentiation,
+For ease of expression we implement exponentiation, naturally existing in the algebra
 
 \begin{lstlisting}
 var var::operator^(double n) const{
@@ -279,7 +277,18 @@ T powTimes(T v1, V v2, K n) {
 \end{lstlisting}
 to each component.
 
-The above is sufficient to implement the following decelerations.
+We may now trivially implement operators existing in the algebra.
+
+\begin{lstlisting}
+var var::operator-(const var& v)const{
+		return *this+(-1)*v;
+}
+
+var var::operator/(const var& v)const{
+		return *this*(v^(-1));
+}
+\end{lstlisting}
+
 \begin{lstlisting}
 var operator*(double n)const;
 var operator+(double n)const;
@@ -410,13 +419,14 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
               \DD^n\CC<\dP_n\iff\DD^n\CC\subset\CC\otimes T(\VV^*)
               \end{equation}
 
-\begin{trditev}
+\begin{trditev}\label{trd:library}
 Any library implementing functions acting on variables of type $double$ or $float$, could be trivially included into $\CC<\dP_0$, simply by replacing all variables with the class $var$. Moreover, any implementations using the implemented algebra in its construction of functions, are contained in $\dP_0$.
 \end{trditev}
 
 \subsubsection{Example}
   
-As an illustrative example, we provide a simple implementation of a differentiable programming space through the use of the operator $tau$. Assume the existence of functions
+As an illustrative example, we provide a simple implementation of a differentiable programming space through the use of the operator $tau$. 
+Assume the existence of functions
 \begin{equation}
 \sin\_double:double\to double
 \end{equation}
@@ -429,7 +439,7 @@ e\_double:double\to double
 \begin{equation}
 \ln\_double:double\to double
 \end{equation} 
-filling the set spanning $\CC$.
+filling the set spanning $\CC$. Note, that these functions are usually implemented using operations existing in the algebra constructed in Section \ref{sec:Algebra}. Thus by employing it in their construction (coding), they would have been elements of a differentiable programming space, as by Claim \ref{trd:library}. Here we demonstrate how to explicitly construct them as maps.
 
 Previous declarations of needed functions are assumed. 
 
@@ -460,6 +470,7 @@ var dC::sin(const var& v){
 \end{lstlisting}
 
 Other maps are constructed through employment of the operator $tau$.
+
 
 \begin{lstlisting}
 typedef double (*mapping)(double);
