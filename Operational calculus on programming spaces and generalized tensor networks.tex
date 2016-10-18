@@ -1382,6 +1382,19 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
    
     The flow curve outputted by Algorithm $\ref{alg:appoint}$ is $\gamma$, the path of change. When $T$ serves as a simulation, with $v$ modeling a real-life object of study, the procedure opens new doors in analyzing real-life phenomena. Through it, we may observe how $v$ evolves through iterations and study different stages of change, which serves as a useful insight when designing procedures causing change in real-life phenomena.
    
+   \begin{izrek}\label{izr:algA}
+           With an appropriate choice of the activity profile $\mathcal{A}$, there exist an algorithm
+           \begin{equation}\label{eq:algA}
+             A:T\in\dP\to P\in\dP
+             \end{equation}
+             transforming a procedure $T\in\dP$, testing for a property $X_j$, to a procedure $P$, such that it increases the property measure of any object in the domain. 
+           \end{izrek}
+           \begin{corollary}
+                      By Theorem \ref{izr:algA}, existence of a procedure testing an object for validity is sufficient for constructing a procedure transforming a non-valid object to a valid one
+                      $$P\in \dP_0:v\notin X_j\to P(v)\in X_j$$
+                      under the assumption that the increase of the property measure is sufficient.
+                      \end{corollary}
+   
    \begin{algorithm}[H]
    \caption{Appoint property $X_j$ to $v\in \Omega$}
    \label{alg:appoint}
@@ -1402,20 +1415,8 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
    \EndProcedure
    \end{algorithmic}
    \end{algorithm}
-   
-
-   \begin{izrek}\label{izr:algA}
-        With an appropriate choice of the activity profile $\mathcal{A}$, there exist an algorithm
-        \begin{equation}\label{eq:algA}
-          A:T\in\dP\to P\in\dP
-          \end{equation}
-          transforming a procedure $T\in\dP$, testing for a property $X_j$, to a procedure $P$, such that it increases the property measure of any object in the domain. 
-        \end{izrek}
-        \begin{corollary}
-           By Theorem \ref{izr:algA}, existence of a procedure testing an object for validity is sufficient for constructing a procedure transforming a non-valid object to a valid one
-           $$P\in \dP_0:v\notin X_j\to P(v)\in X_j$$
-           under the assumption that the increase of the property measure is sufficient.
-           \end{corollary}
+  
+        
    
    \subsubsection{Example}
    
