@@ -326,7 +326,7 @@ effective map can be implemented as a program, since the memory space is limited
 Putting memory considerations aside, we propose an universal model of the memory
 space to be 
 $$\VV_\infty = \VV\otimes T(\VV^*) = \VV\oplus
-(\VV\otimes\VV^*)+\ldots.$$
+(\VV\otimes\VV^*)\oplus\ldots.$$
 We will call $\VV_\infty$ the \emph{universal virtual memory space} of a virtual computing machine. The term virtual memory is used as it is
 only possible to embed certain subspaces of $\VV_\infty$ into memory space $\VV$, making it similar to
 virtual memory as a memory management technique.  
@@ -590,7 +590,7 @@ The tuple  $(\VV,\dP_0)$ and the belonging \emph{tensor series algebra} are suff
 
 We propose an abstract computational model, a virtual machine capable of constructing and implementing the derived theory. Such a machine provides a framework for analytic study of algorithmic procedures through algebraic means.
 
-\begin{definicija}[Analytic virtual machine]
+\begin{definicija}[Analytic virtual machine]\label{def:analyticMachine}
 The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiable virtual machine.
    
     \begin{itemize}
@@ -1167,7 +1167,7 @@ Thus, we have acquired a tool, enabling us to choose the complexity of arbitrary
 
 \section{Generalized tensor networks}\label{sec:generalTensorNet}
 
-Let $W\in \VV\otimes T_n(\VV^*)$ be an element of the virtual memory. We define the application of $v\in \VV$ by
+Let $W$ be an element of the virtual memory $\VV\otimes T_n(\VV^*)$ in an analytic machine of Definition \ref{def:analyticMachine}. We define the application of $v\in \VV$ by
 \begin{equation}
 W(v)=\sum\limits_{i=0}^n(w_i\in \VV\otimes \VV^{*\otimes i})(v^{\otimes i})\in \VV
 \end{equation}
@@ -1498,6 +1498,7 @@ This may prove useful in future developments of the field, as neural networks cu
 State of the art methods for analyzing neural networks were generalized to general programs in the theory.
 We demonstrated how the developed operational calculus is employed in practice towards such a cause, and how through it countless methods from analysis can be trivially transfered to the subject, limited only by the imagination and inventiveness of the employer of the theory.
 
+\clearpage
   \printbibliography
 \end{document}
 
