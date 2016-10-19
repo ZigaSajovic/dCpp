@@ -261,7 +261,7 @@ For ease of expression we implement exponentiation, naturally existing in the al
 var var::operator^(double n) const{
 		var out;
         out.id=std::pow(this->real,n);
-        if(this->order>0){
+        if(n>0&&this->order>0){
         	for_each_copy(...,powTimes<pair<var*,var> >, 
         		this->reduceOrder(),n);
         }
