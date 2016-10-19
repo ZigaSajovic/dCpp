@@ -1,0 +1,257 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>dCpp by ZigaSajovic</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>dCpp</h1>
+        <p>Differentiable C++; conditionals, loops, recursion and all things C++</p>
+
+        <p class="view"><a href="https://github.com/ZigaSajovic/dCpp">View the Project on GitHub <small>ZigaSajovic/dCpp</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/ZigaSajovic/dCpp/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/ZigaSajovic/dCpp/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/ZigaSajovic/dCpp">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="dcpp" class="anchor" href="#dcpp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>dCpp</h1>
+
+<p>Differentiable C++; conditionals, loops, recursion and all things C++</p>
+
+<h3>
+<a id="abstract" class="anchor" href="#abstract" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Abstract</h3>
+
+<p>Algorithms were defined as a non-Abelian subgroup (or more generally a submonoid) of operators acting on a virtual space. By defining a norm on this space, and the notion of a limit, we show the operators to be differentiable through τ − calculus developed by the author. Thus all techniques of Functional analysis may be applied to any algorithm. </p>
+
+<p>Library dC++ implements the theory of τ − calculus in a natural way, needing only replacement of the type double with a differentiable variable <a href="/include/var.h">var</a>. Thus all C++ written code is compliable with the library. dC++ supports all external C++ libraries written in generic programming paradigm.</p>
+
+<p>This is the openSource version.</p>
+
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h3>
+
+<p>As algorithms become differentiable, so does a whole new set of procedures. Algorithms involving solving equations, approximating models, SVD decomposition, eigen vector/value calculation, etc. as one of their steps, Runge-Kutta and other approximation methods, all become differentiable and can be subjected to standard methods of Functional analysis, thus providing exact derivatives of analyticaly non-computable expressions.</p>
+
+<h3>
+<a id="tutorial" class="anchor" href="#tutorial" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tutorial</h3>
+
+<p>As most programmers face the need of differentiability through machine learning, we use the concept of a <a href="https://en.wikipedia.org/wiki/Recurrent_neural_network">Reccurent Neural Network</a> as a vessel for this tutorial.</p>
+
+<p>We will create a simple 2-layers deep Neural Network with 10 recursive layers. 20 layers all together. Each layer will have sigmoid activation functions, ending with a softmax layer, producing a distribution. We will code all the functions as we go (even though much of such functionality comes with the library), for educational purposes.</p>
+
+<p>First we include the necessities</p>
+
+<div class="highlight highlight-source-c++"><pre>#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>iostream<span class="pl-pds">&gt;</span></span>
+#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>dC.h<span class="pl-pds">&gt;</span></span></pre></div>
+
+<p>We will need the folowing functions</p>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Exponential_function">e(x)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Sigmoid_function">sigmoid(x)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Softmax_function">softmax(vec)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Dot_product">dotProduct(vec1,vec2)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Matrix_multiplication">matVecProduct(mat,vec)</a></li>
+</ul>
+
+<p>By coding e(x), we will learn about the class <a href="include/tau.h">tau</a>, which allows one to create it's own differentiable maps, returning a differentiable variable <a href="/include/var.h">var</a>.
+First we create maps double-&gt;double, for e(x) and its' derivative.</p>
+
+<div class="highlight highlight-source-c++"><pre><span class="pl-c">//y=e^x</span>
+<span class="pl-k">double</span> <span class="pl-en">eMap</span>(<span class="pl-k">double</span> x){
+    <span class="pl-k">return</span> <span class="pl-c1">std::exp</span>(x);
+}
+
+<span class="pl-c">//dy/dx=e^x</span>
+<span class="pl-k">double</span> <span class="pl-en">deMap</span>(<span class="pl-k">double</span> x){
+    <span class="pl-k">return</span> <span class="pl-c1">std::exp</span>(x);
+}</pre></div>
+
+<p>We create a differentiable map e(x), by providing <a href="include/tau.h">tau</a> with the above functions.</p>
+
+<div class="highlight highlight-source-c++"><pre><span class="pl-c">//create a differentiable mapping</span>
+tau e=tau(eMap,deMap);</pre></div>
+
+<p>Using this, we may code the sigmoid map.</p>
+
+<div class="highlight highlight-source-c++"><pre><span class="pl-c">//sigmoid map</span>
+<span class="pl-k">void</span> <span class="pl-en">sigmoid</span>(var *v,<span class="pl-k">int</span> n){
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;n;i++){
+        v[i]=<span class="pl-c1">1</span>/(<span class="pl-c1">1</span>+<span class="pl-c1">e</span>(-v[i]));
+    }
+}</pre></div>
+
+<p>Now the softmax map.</p>
+
+<div class="highlight highlight-source-c++"><pre><span class="pl-k">void</span> <span class="pl-en">softmax</span>(var *v, <span class="pl-k">int</span> n){
+    var sum=<span class="pl-c1">var</span>(<span class="pl-c1">0</span>);
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;n;i++){
+        v[i]=<span class="pl-c1">e</span>(v[i]);
+        sum+=v[i];
+    }
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;n;i++) {
+        v[i]/=sum;
+    }
+}</pre></div>
+
+<p>Next, we code the dot product and the matrix vector multiplication. For simplicity dimensions are specific to the example.</p>
+
+<div class="highlight highlight-source-c++"><pre><span class="pl-c">//dot product mapping</span>
+var <span class="pl-en">dotProduct</span>(var *v1,var *v2, <span class="pl-k">int</span> n){
+    var out=<span class="pl-c1">var</span>(<span class="pl-c1">0</span>);
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;n;i++){
+        out+=v1[i]*v2[i];
+    }
+    <span class="pl-k">return</span> out;
+}
+<span class="pl-c">//computes M*x</span>
+<span class="pl-k">void</span> <span class="pl-en">matVecProduct</span>(var *out,var mat[][<span class="pl-c1">2</span>],var *vec, <span class="pl-k">int</span> size1,<span class="pl-k">int</span> size2){
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;size1;i++){
+        out[i]=<span class="pl-c1">dotProd</span>(mat[i],vec,size2);
+    }
+}</pre></div>
+
+<p>We have all the tools needed to build a recursive layer. It will consist of two layers, mapping a 2-vector to a 2-vector. Output of the second layer will be recursively connected to the input of the next recursive layer.</p>
+
+<div class="highlight highlight-source-c++"><pre><span class="pl-k">void</span> <span class="pl-en">recursionNet</span>(var *input, var layer1[<span class="pl-c1">2</span>][<span class="pl-c1">2</span>],var layer2[<span class="pl-c1">2</span>][<span class="pl-c1">2</span>],var *result, <span class="pl-k">int</span> depth){
+    <span class="pl-k">if</span>(depth==<span class="pl-c1">0</span>){
+        <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;<span class="pl-c1">2</span>;i++){
+            result[i]=input[i];
+        }
+        <span class="pl-c1">softmax</span>(result,<span class="pl-c1">2</span>);
+    }
+    <span class="pl-k">else</span>{
+        var firstOut[<span class="pl-c1">2</span>];
+        <span class="pl-c">//matrix vector multiplication</span>
+        <span class="pl-c1">matVecProduct</span>(firstOut,layer1,input,<span class="pl-c1">2</span>,<span class="pl-c1">2</span>);
+        <span class="pl-c1">sigmoid</span>(firstOut,<span class="pl-c1">2</span>);
+        var secondOut[<span class="pl-c1">2</span>];
+        <span class="pl-c1">matVecProduct</span>(secondOut,layer2,firstOut,<span class="pl-c1">2</span>,<span class="pl-c1">2</span>);
+        <span class="pl-c1">sigmoid</span>(secondOut,<span class="pl-c1">2</span>);
+        <span class="pl-c1">recursionNet</span>(secondOut,layer1,layer2,result,depth-<span class="pl-c1">1</span>);
+    }
+}</pre></div>
+
+<p>All that is left, is the main function in which we will learn about the initialization of differentiable variables <a href="/include/var.h">var</a>. Note, how we do not initialize the input vector, but we do initialize the weight matricies, as only their derivatives are of interest.
+Finally, we call recursionNet, for a depth of 10 layers and display its' Jacobian and image.</p>
+
+<div class="highlight highlight-source-c++"><pre><span class="pl-k">int</span> <span class="pl-en">main</span>(){
+    <span class="pl-c">//create input vector</span>
+    var input[<span class="pl-c1">2</span>];
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;<span class="pl-c1">2</span>;i++){
+        input[i]=<span class="pl-c1">var</span>(i+<span class="pl-c1">1</span>);
+    }
+    <span class="pl-c">//create initial matrix</span>
+    var firstMat[<span class="pl-c1">2</span>][<span class="pl-c1">2</span>];
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;<span class="pl-c1">2</span>;i++){
+        <span class="pl-k">for</span>(<span class="pl-k">int</span> j=<span class="pl-c1">0</span>;j&lt;<span class="pl-c1">2</span>;j++){
+            firstMat[i][j]=<span class="pl-c1">var</span>((i+<span class="pl-c1">1</span>)*(j+<span class="pl-c1">1</span>));
+        }
+    }
+    <span class="pl-c">//initialize all elements</span>
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;<span class="pl-c1">2</span>;i++){
+        <span class="pl-k">for</span>(<span class="pl-k">int</span> j=<span class="pl-c1">0</span>;j&lt;<span class="pl-c1">2</span>;j++){
+            <span class="pl-c1">dC::init</span>(firstMat[i][j]);
+        }
+    }
+    <span class="pl-c">//create inital matrix for second layer</span>
+    var secondMat[<span class="pl-c1">2</span>][<span class="pl-c1">2</span>];
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;<span class="pl-c1">2</span>;i++){
+        <span class="pl-k">for</span>(<span class="pl-k">int</span> j=<span class="pl-c1">0</span>;j&lt;<span class="pl-c1">2</span>;j++){
+            secondMat[i][j]=<span class="pl-c1">var</span>((j+<span class="pl-c1">1</span>)*(i+<span class="pl-c1">1</span>));
+        }
+    }
+    <span class="pl-c">//initialize all elements</span>
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;<span class="pl-c1">2</span>;i++){
+        <span class="pl-k">for</span>(<span class="pl-k">int</span> j=<span class="pl-c1">0</span>;j&lt;<span class="pl-c1">2</span>;j++){
+            <span class="pl-c1">dC::init</span>(secondMat[i][j]);
+        }
+    }
+    var out[<span class="pl-c1">2</span>];
+    <span class="pl-c">//run for 10 recursive steps</span>
+    <span class="pl-c1">recursionNet</span>(input,firstMat,secondMat,out,<span class="pl-c1">10</span>);
+    <span class="pl-c">//display the image and the Jacobian</span>
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i=<span class="pl-c1">0</span>;i&lt;<span class="pl-c1">2</span>;i++){
+        <span class="pl-c1">dC::print</span>(out[i]);
+    }
+}</pre></div>
+
+<h3>
+<a id="external-libraries" class="anchor" href="#external-libraries" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>External libraries</h3>
+
+<p>Usage with external libraries written in generic paradigm is demonstrated on the example of <a href="http://eigen.tuxfamily.org/">Eigen</a>. 
+We will code a perceptron with sigmoid activations, followed by softmax normalization, taking 28x28 image as an input and outputting a 10 class classifier. We will use dC++ provided mappings.</p>
+
+<div class="highlight highlight-source-c++"><pre>#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>iostream<span class="pl-pds">&gt;</span></span>
+#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>dC.h<span class="pl-pds">&gt;</span></span>
+
+<span class="pl-k">using</span> <span class="pl-k">namespace</span> <span class="pl-en">std</span><span class="pl-k">;</span>
+<span class="pl-k">using</span> <span class="pl-k">namespace</span> <span class="pl-en">dC</span><span class="pl-k">;</span>
+
+<span class="pl-c">//create a softmax function</span>
+<span class="pl-k">template </span>&lt;<span class="pl-k">typename</span> Derived&gt;
+    <span class="pl-k">void</span> <span class="pl-en">softmax</span>(Eigen::MatrixBase&lt;Derived&gt;&amp; matrix){
+            <span class="pl-c">//maps each element of the matrix by y=e^x;</span>
+            <span class="pl-c1">dC::map_by_element</span>(matrix,&amp;dC::<span class="pl-c1">exp</span>);
+            <span class="pl-c">//sums the elements of the matrix using Eigens function</span>
+            var tmp=matrix.<span class="pl-c1">sum</span>();
+            <span class="pl-c">//divides each element by the sum</span>
+            <span class="pl-k">for</span> (<span class="pl-c1">size_t</span> i=<span class="pl-c1">0</span>, nRows=matrix.<span class="pl-c1">rows</span>(), nCols=matrix.<span class="pl-c1">cols</span>(); i&lt;nCols; ++i)
+                <span class="pl-k">for</span> (<span class="pl-c1">size_t</span> j=<span class="pl-c1">0</span>; j&lt;nRows; ++j){
+                    <span class="pl-c1">matrix</span>(j,i)/=tmp;
+                }
+}
+
+<span class="pl-k">int</span> <span class="pl-en">main</span>(){
+    <span class="pl-c">//    Matrix holding the inputs (imgSizeX1 vector)</span>
+    <span class="pl-k">const</span> <span class="pl-k">int</span> imgSize=<span class="pl-c1">28</span>*<span class="pl-c1">28</span>;
+    <span class="pl-k">const</span> Eigen::Matrix&lt;var,<span class="pl-c1">1</span>,imgSize&gt;input=Eigen::Matrix&lt;var,<span class="pl-c1">1</span>,imgSize&gt;::<span class="pl-c1">Random</span>(<span class="pl-c1">1</span>,imgSize);
+    <span class="pl-c">//    number of outputs of the layer</span>
+    <span class="pl-k">const</span> <span class="pl-k">int</span> numOfOutOnFirstLevel=<span class="pl-c1">10</span>;
+    <span class="pl-c">//    matrix of weights on the first level (imgSizeXnumOfOutOnFirstLevel)</span>
+    Eigen::Matrix&lt;var,imgSize,numOfOutOnFirstLevel&gt;firstLayerVars=Eigen::Matrix&lt;var,imgSize,numOfOutOnFirstLevel&gt;::<span class="pl-c1">Random</span>(imgSize,numOfOutOnFirstLevel);
+    <span class="pl-c">//    initializing weights</span>
+    <span class="pl-c1">dC::init</span>(firstLayerVars);
+    <span class="pl-c">//    mapping of the first layer --&gt; resulting in 10x1 vector</span>
+    Eigen::Matrix&lt;var,numOfOutOnFirstLevel,<span class="pl-c1">1</span>&gt;firstLayerOutput=input*firstLayerVars;
+    <span class="pl-c">//    apply sigmoid layer --&gt; resulting in 10x1 vector</span>
+    <span class="pl-c1">dC::map_by_element</span>(firstLayerOutput,&amp;dC::sigmoid);
+    <span class="pl-c">//    apply sofmax layer --&gt; resulting in 10x1 vector</span>
+    <span class="pl-c1">softmax</span>(firstLayerOutput);
+    <span class="pl-c">//    display the first output layer and its Jaccobian</span>
+    <span class="pl-c">//    Jacobian is a 10x7840 matrix of derivatives</span>
+    <span class="pl-k">for</span> (<span class="pl-c1">size_t</span> i=<span class="pl-c1">0</span>, nRows=firstLayerOutput.<span class="pl-c1">rows</span>(), nCols=firstLayerOutput.<span class="pl-c1">cols</span>(); i&lt;nCols; ++i){
+                <span class="pl-k">for</span> (<span class="pl-c1">size_t</span> j=<span class="pl-c1">0</span>; j&lt;nRows; ++j) {
+                    <span class="pl-c1">dC::print</span>(<span class="pl-c1">firstLayerOutput</span>(j,i));
+                }
+                cout&lt;&lt;endl;
+    }
+}
+</pre></div>
+
+<p><a href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a><br>dC++ by <a href="https://si.linkedin.com/in/zigasajovic">Žiga Sajovic</a> is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/ZigaSajovic">ZigaSajovic</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
