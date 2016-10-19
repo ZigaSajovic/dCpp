@@ -11,7 +11,7 @@ This is the openSource version.
 From _abstract_ of the paper  _Operational calculus on programming spaces and generalized tensor networks_ in which I derived the theory
 
 In this paper, we develop the theory of analytic virtual machines, that
-implement analytic programming spaces and operators acting upon them.
+implement analytic programming spaces and operators acting upon them. Such a machine fully integrates control structures, reataining the expressive freedom of algorithmic control flow.
 
 A programming space is a subspace of the function space of maps on the virtual
 memory. We can construct a differential operator on programming spaces as we 
