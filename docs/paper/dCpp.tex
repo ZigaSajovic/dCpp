@@ -121,7 +121,7 @@ class var
     public:
     	int order;
         V id;
-        std::shared_ptr<std::map<&var,var> >* dTau;
+        std::shared_ptr<std::map<var*,var> >* dTau;
 
         var();
         var(V id);
@@ -134,7 +134,7 @@ class var
 };
 \end{lstlisting}
 
-The expanded virtual memory $\VV_n$ is the tensor product of the virtual memory $\VV$ with the tensor algebra of its dual. The address \emph{\&var} stands for the component of $v\in\VV_{n-1}$ the tensor product with the component of $v^*\in\VV^*$ was computed on to generate $v\in\VV_n$ in equation \eqref{eq:V_n}. This depth is contained in the \emph{int order}.
+The expanded virtual memory $\VV_n$ is the tensor product of the virtual memory $\VV$ with the tensor algebra of its dual. The address \emph{var*} stands for the component of $v\in\VV_{n-1}$ the tensor product with the component of $v^*\in\VV^*$ was computed on to generate $v\in\VV_n$ in equation \eqref{eq:V_n}. This depth is contained in the \emph{int order}.
 
 Tensor products of the virtual memory $\VV$ with its dual are modeled using maps, denoted by \emph{dTau}. Naming reflects how the algebra will be constructed, mimicking the operator $\sumd_nn$ \eqref{eq:sumd}.
 
@@ -185,7 +185,7 @@ template<class K>
 var var::operator*(K n)const{
 		var out;
         out.id=this->id*n;
-        for_each_copy(...,mul_make_pair<pair<&var,var> >, n);
+        for_each_copy(...,mul_make_pair<pair<var*,var> >, n);
         return out;
 }
 
@@ -237,11 +237,11 @@ var var::operator*(const var& v)const{
         if(max(v.order,this->order)>0){
         	map<int,double> tmp1;
         	map<int,double> tmp2;
-        	for_each_copy(...,mul_make_pair<pair<&var,var> >, 
+        	for_each_copy(...,mul_make_pair<pair<var*,var> >, 
         		v.reduceOrder());
-        	for_each_copy(...,mul_make_pair<pair<&var,var> >, 
+        	for_each_copy(...,mul_make_pair<pair<var*,var> >, 
         		this->reduceOrder());
-        	merge_apply(..., sum_pairs<pair<&var,var> >);
+        	merge_apply(..., sum_pairs<pair<var*,var> >);
         }
         return out;
 }
@@ -262,7 +262,7 @@ var var::operator^(double n) const{
 		var out;
         out.id=std::pow(this->real,n);
         if(this->order>0){
-        	for_each_copy(...,powTimes<pair<&var,var> >, 
+        	for_each_copy(...,powTimes<pair<var*,var> >, 
         		this->reduceOrder(),n);
         }
         return out;
@@ -351,7 +351,7 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
         \sumd_{k+1}\CC = \CC+\D\sumd_k\CC
         \end{equation}
         
-        The \emph{double id} stands for the identity operator $1$ in the expression and the \emph{map<\&var, var> dTau} for the operator $\D\sumd_k$.
+        The \emph{double id} stands for the identity operator $1$ in the expression and the \emph{map<var*, var> dTau} for the operator $\D\sumd_k$.
         
         Compositions of these operators is achieved by mimicking the generalized pullback operator
         \begin{equation}\label{eq:opKompo}
@@ -382,7 +382,7 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
         var tau::operator()(const var&v){
             var out;
             out.id=mapping(v.id);
-            for_each_copy(...,mul_make_pair<std::pair<&var,var> >, 
+            for_each_copy(...,mul_make_pair<std::pair<var*,var> >, 
             	primitive(v));
             return out;
         }
@@ -462,7 +462,7 @@ var dC::sin(const var& v){
     var out;
     out.id=std::sin_double(v.id);
     if(v.order>0){
-    	for_each_copy(...,mul_make_pair<std::pair<&var,var> >,
+    	for_each_copy(...,mul_make_pair<std::pair<var*,var> >,
     		cos(v.reduceOrder()));
     }
     return out;
