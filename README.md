@@ -1,167 +1,174 @@
 # dCpp
-Differentiable C++; conditionals, loops, recursion and all things C++
+Infinitely differentiable C++; conditionals, loops, recursion and all things C++
 
 ###Abstract
-Algorithms were defined as a non-Abelian subgroup (or more generally a submonoid) of operators acting on a virtual space. By defining a norm on this space, and the notion of a limit, we show the operators to be differentiable through τ − calculus developed by the author. Thus all techniques of Functional analysis may be applied to any algorithm. 
-
-Library dC++ implements the theory of τ − calculus in a natural way, needing only replacement of the type double with a differentiable variable [var](/include/var.h). Thus all C++ written code is compliable with the library. dC++ supports all external C++ libraries written in generic programming paradigm.
+We provide an illustrative implementation of an analytic, infinitely-differentiable machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper _Operational calculus on programming spaces and generalized tensor networks_. Implementation closely follows theorems and derivations of the paper, intended as an educational guide.
 
 This is the openSource version.
 
+###Theory
+
+From _abstract_ of the paper  _Operational calculus on programming spaces and generalized tensor networks_ is which I derived the theory
+
+In this paper, we develop the theory of analytic virtual machines, that
+implement analytic programming spaces and operators acting upon them.
+
+A programming space is a subspace of the function space of maps on the virtual
+memory. We can construct a differential operator on programming spaces as we 
+extend the virtual memory to a tensor product of a virtual space with tensor algebra
+of its dual. Extended virtual memory serves by itself as an algebra of programs, giving the expansion of the original program as an infinite tensor series at
+program's input values. 
+
+A paper explaining implementation of this theory is avaliable [/paper/dCpp.pdf](https://zigasajovic.github.io/dCpp/paper/dCpp.pdf).
+
+Paper with construction of the theory will soon be available on arXiv.
+
 ###Usage
-As algorithms become differentiable, so does a whole new set of procedures. Algorithms involving solving equations, approximating models, SVD decomposition, eigen vector/value calculation, etc. as one of their steps, Runge-Kutta and other approximation methods, all become differentiable and can be subjected to standard methods of Functional analysis, thus providing exact derivatives of analyticaly non-computable expressions.
+By employing analytic virtual machines, we can construct analytic procedures, viewing algorithms in a new light. One can start incorporating variable parameters into algorithm design, revealing the true nature of hyper-parameters often used in practice.
 
 ###Tutorial
-As most programmers face the need of differentiability through machine learning, we use the concept of a [Reccurent Neural Network](https://en.wikipedia.org/wiki/Recurrent_neural_network) as a vessel for this tutorial.
-
-We will create a simple 2-layers deep Neural Network with 10 recursive layers. 20 layers all together. Each layer will have sigmoid activation functions, ending with a softmax layer, producing a distribution. We will code all the functions as we go (even though much of such functionality comes with the library), for educational purposes.
+As most programmers face the need of differentiability through machine learning, we use the concept a [Recurrent neural network](https://en.wikipedia.org/wiki/Recurrent_neural_network) employing [logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) with [softmax normalization](https://en.wikipedia.org/wiki/Softmax_function#Softmax_Normalization) as a vessel for this tutorial. We demostrate, how it is simply constructed using algorithmic control flow and reccursion.
 
 First we include the necessities
 
 ```c++
 #include <iostream>
-#include <dC.h>
+#include <dCpp.h>
+#include <vector>
 ```
+
+We initialize a n-differentiable programming space (order is arbitrary here)
+
+```c++
+using namespace dCpp;
+int n_differentiable=2;
+initSpace(n_differentiable);
+```
+
 We will need the folowing functions
-* [e(x)](https://en.wikipedia.org/wiki/Exponential_function)
 * [sigmoid(x)](https://en.wikipedia.org/wiki/Sigmoid_function)
 * [softmax(vec)](https://en.wikipedia.org/wiki/Softmax_function)
 * [dotProduct(vec1,vec2)](https://en.wikipedia.org/wiki/Dot_product)
 * [matVecProduct(mat,vec)](https://en.wikipedia.org/wiki/Matrix_multiplication)
 
-By coding e(x), we will learn about the class [tau](include/tau.h), which allows one to create it's own differentiable maps, returning a differentiable variable [var](/include/var.h).
+By coding sigmoid(x), we will learn about creating differentiable maps, constructable using the differentiable programming space _dCpp_ and the algebra of the virtual memory _var_.
 First we create maps double->double, for e(x) and its' derivative.
 ```c++
-//y=e^x
-double eMap(double x){
-    return std::exp(x);
-}
+var sigmoidMap(const var&v){return 1/(1+exp(-1*v));};
 
-//dy/dx=e^x
-double deMap(double x){
-    return std::exp(x);
-}
 ```
-We create a differentiable map e(x), by providing [tau](include/tau.h) with the above functions.
+
+We test it out and display all first and second derivatives.
+
 ```c++
-//create a differentiable mapping
-tau e=tau(eMap,deMap);
+//  set inputs
+    double x=4;
+    double y=2;
+//  set weights
+    var w_1(0.4);
+    var w_2(0.6);
+//  initialize weights as twice differentiable variables
+    dCpp::init(w_1);
+    dCpp::init(w_2);
+//  now we use sigmoid map as a differentiable map
+    var f=sigmoidMap(w_1*x+w_2*y);
+//  df/dx
+    std::cout<<"df/dw_1 = "<<f.d(&w_1).id<<std::endl;
+//  df/dw_2
+    std::cout<<"df/dw_2 = "<<f.d(&w_2).id<<std::endl;
+//  df/dw_1dw_1
+    std::cout<<"df/dw_1dw_1 = "<<f.d(&w_1).d(&w_1).id<<std::endl;
+//  df/dw_1dw_2
+    std::cout<<"df/dw_1dw_2 = "<<f.d(&w_1).d(&w_2).id<<std::endl;
+//  df/dw_2dw_1
+    std::cout<<"df/dw_2dw_1 = "<<f.d(&w_2).d(&w_1).id<<std::endl;
+//  df/dw_2dw_2
+    std::cout<<"df/dw_2dw_2 = "<<f.d(&w_2).d(&w_2).id<<std::endl;
 ```
-Using this, we may code the sigmoid map.
+
+ Similarly, we could have used the operator [tau](include/tau.h) by coding , which allows one to create it's own elements of the differentiable programming space _dCpp_, returning a differentiable variable [var](/include/var.h).
+```
+By coding the softmax normalization, we reveal how analytic differentiable machines fully integrate control structures.
 ```c++
-//sigmoid map
-void sigmoid(var *v,int n){
-    for(int i=0;i<n;i++){
-        v[i]=1/(1+e(-v[i]));
+//simply code the map existing in the programming space dCpp
+//and the belonging algebra
+std::vector<var> softmax(const std::vector<var>& V){
+    std::vector<var> out;
+    var sum(0);
+    init(sum);
+    for(var v:V){
+        sum=sum+exp(v);
     }
-}
-```
-Now the softmax map.
-```c++
-void softmax(var *v, int n){
-    var sum=var(0);
-    for(int i=0;i<n;i++){
-        v[i]=e(v[i]);
-        sum+=v[i];
-    }
-    for(int i=0;i<n;i++) {
-        v[i]/=sum;
-    }
-}
-```
-Next, we code the dot product and the matrix vector multiplication. For simplicity dimensions are specific to the example.
-```c++
-//dot product mapping
-var dotProduct(var *v1,var *v2, int n){
-    var out=var(0);
-    for(int i=0;i<n;i++){
-        out+=v1[i]*v2[i];
+    for(var v:V){
+        out.push_back(exp(v)/sum);
     }
     return out;
 }
-//computes M*x
-void matVecProduct(var *out,var mat[][2],var *vec, int size1,int size2){
-    for(int i=0;i<size1;i++){
-        out[i]=dotProd(mat[i],vec,size2);
-    }
-}
+
 ```
-We have all the tools needed to build a recursive layer. It will consist of two layers, mapping a 2-vector to a 2-vector. Output of the second layer will be recursively connected to the input of the next recursive layer.
+We test it, by inititalizing a four-differentiable programming space and displaying all derivatives.
 
 ```c++
-void recursionNet(var *input, var layer1[2][2],var layer2[2][2],var *result, int depth){
+//  initiaize Virtual memory of fourth order
+    initSpace(4);
+//get a vector of variables
+    int size=2;
+    std::vector<var> vars;
+    for(int i=1;i<=size;i++){
+        var tmp=var(i);
+        init(tmp);
+        vars.push_back(tmp);
+    }
+//  use the softmax function
+    std::vector<var> f=softmax(vars);
+//  display derivatives of all four orders
+//   of one of the components
+    f[1].print();
+
+```
+
+Assume existence of functions _vecSum_, _matVecProd_, _genRandVec_ and _forAll_ written in a similar fashion. Thus, we have all the tools needed to build a recursive layer. It will consist of two layers, mapping a 2-vector to a 2-vector. Output of the second layer will be recursively connected to the input of the next recursive layer.
+
+For brevity, we denote _std::vector<std::vector<var> >_ by _mat_ and _std::vector<var>_ by _vec_.
+
+```c++
+vec recursionNet(vec input, mat weights[2],vec bias[], int depth){
     if(depth==0){
-        for(int i=0;i<2;i++){
-            result[i]=input[i];
-        }
-        softmax(result,2);
+        return softmax(input);
     }
     else{
-        var firstOut[2];
+        vec firstOut;
         //matrix vector multiplication
-        matVecProduct(firstOut,layer1,input,2,2);
-        sigmoid(firstOut,2);
-        var secondOut[2];
-        matVecProduct(secondOut,layer2,firstOut,2,2);
-        sigmoid(secondOut,2);
-        recursionNet(secondOut,layer1,layer2,result,depth-1);
+        firstOut=matVecProd(weights[0],input);
+        firstOut=vecSum(firstOut,bias[0]);
+        forAll(firstOut,sigmoid);
+        vec secondOut;
+        secondOut=matVecProd(weights[1],firstOut);
+        secondOut=vecSum(secondOut,bias[1]);
+        forAll(secondOut,sigmoid);
+        return recursionNet(secondOut,weights, bias,depth-1);
     }
 }
 ```
-All that is left, is the main function in which we will learn about the initialization of differentiable variables [var](/include/var.h). Note, how we do not initialize the input vector, but we do initialize the weight matricies, as only their derivatives are of interest.
-Finally, we call recursionNet, for a depth of 10 layers and display its' Jacobian and image.
+
+Now only some initialization of weights is needed and the network can be used, exactly like any other function would, with the exception, that this function is _n-differentiable_.
+
 ```c++
-int main(){
-    //create input vector
-    var input[2];
-    for(int i=0;i<2;i++){
-        input[i]=var(i+1);
-    }
-    //create initial matrix
-    var firstMat[2][2];
-    for(int i=0;i<2;i++){
-        for(int j=0;j<2;j++){
-            firstMat[i][j]=var((i+1)*(j+1));
-        }
-    }
-    //initialize all elements
-    for(int i=0;i<2;i++){
-        for(int j=0;j<2;j++){
-            dC::init(firstMat[i][j]);
-        }
-    }
-    //create inital matrix for second layer
-    var secondMat[2][2];
-    for(int i=0;i<2;i++){
-        for(int j=0;j<2;j++){
-            secondMat[i][j]=var((j+1)*(i+1));
-        }
-    }
-    //initialize all elements
-    for(int i=0;i<2;i++){
-        for(int j=0;j<2;j++){
-            dC::init(secondMat[i][j]);
-        }
-    }
-    var out[2];
-    //run for 10 recursive steps
-    recursionNet(input,firstMat,secondMat,out,10);
-    //display the image and the Jacobian
-    for(int i=0;i<2;i++){
-        dC::print(out[i]);
-    }
-}
+vec output = recursionNet(input,weights[],bias[], depth);
+for(var v:output)v.print();
 ```
+
+to display derivatives of all orders, upt to _n_ by which the space has been initialized.
 
 ###External libraries
 
 Usage with external libraries written in generic paradigm is demonstrated on the example of [Eigen](http://eigen.tuxfamily.org/). 
-We will code a perceptron with sigmoid activations, followed by softmax normalization, taking 28x28 image as an input and outputting a 10 class classifier. We will use dC++ provided mappings.
+We will code a perceptron with sigmoid activations, followed by softmax normalization, taking 28x28 image as an input and outputting a 10 class classifier. We will use dCpp provided mappings in the _dEigen_ header.
 
 ```c++
 #include <iostream>
-#include <dC.h>
-
+#include <dCpp.h>
+#include <dEigen.h>
 using namespace std;
 using namespace dC;
 
