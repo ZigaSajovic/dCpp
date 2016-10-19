@@ -189,7 +189,7 @@ template <typename Derived>
 int main(){
     //    Matrix holding the inputs (imgSizeX1 vector)
     const int imgSize=28*28;
-    const Eigen::Matrix<var,1,imgSize>input=Eigen::Matrix<var,1,imgSize>::Random(1,imgSize);
+    const Eigen::Matrix<double,1,imgSize>input=Eigen::Matrix<var,1,imgSize>::Random(1,imgSize);
     //    number of outputs of the layer
     const int numOfOutOnFirstLevel=10;
     //    matrix of weights on the first level (imgSizeXnumOfOutOnFirstLevel)
