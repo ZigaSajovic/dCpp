@@ -156,7 +156,7 @@ where $\delta^i_j$ is the identity.
 
  Algebra over a field is a vector space equipped with a bilinear product. Thus, an algebra is an algebraic structure, which consists of a set, together with operations of multiplication, addition, and scalar multiplication by elements of the underlying field.
  
- Algebra is constructed by mimicking a direct sum of operators $\sumd_n$ \eqref{eq:sumd} mapping $\dP_0\oplus\dP_0\to\dP_n$. This is reflected in the structure of the class $var$  modeling the elements of the virtual space $v\in\VV_n$. Compositions are modeled by mimicking the projection of the operator $\exp(\D_fe^{h\D_g})$, generalizing both forward and reverse mode automatic differentiation, to the unitary ball and applying it to the resulting direct sum.
+ Algebra is constructed by mimicking a direct sum of operators $\sumd_n$ \eqref{eq:sumd} mapping $\dP_0\oplus\dP_0\to\dP_n$. This is reflected in the structure of the class $var$  modeling the elements of the virtual space $v\in\VV_n$. Compositions are modeled by mimicking the projection of the operator $\exp(\D_fe^{h\D_g})$, generalizing both forward and reverse mode automatic differentiation, to the unit hyper-cube and applying it to the resulting direct sum.
  
 \begin{izrek}
 An instance of the class $var$ is an element of the virtual memory $\VV_n$.
@@ -357,7 +357,7 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
         \begin{equation}\label{eq:opKompo}
           \exp(\D_fe^{h\D_g})(g): \dP\to\dP_\infty(g)
           \end{equation}
-          projected onto the unit sphere.
+          projected onto the unit hyper-cube.
           
           \begin{opomba}
           Implementation in this paper is intended to be simply understood and is written as such. But, with the existing algebra and operational calculus, one could easily implement the operator $\exp(\D_fe^{h\D_g})(g)$ by any of the efficient techniques available, as it is given by a generating function.
