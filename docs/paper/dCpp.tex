@@ -1,0 +1,573 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{caption}
+\usepackage{bbm}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+
+\usepackage[sorting=none,backend=bibtex]{biblatex}
+\bibliography{biblio}
+
+
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\Shift}{\mathcal{S}}
+\newcommand{\II}{\mathbb{I}}
+\newcommand{\JJ}{\mathbb{J}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\MM}{\mathcal{M}}
+\newcommand{\NN}{\mathcal{N}}
+\newcommand{\e}{\mathbf{e}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\m}{\mathbf{m}}
+\newcommand{\uu}{\mathbf{u}}
+\newcommand{\vv}{\mathbf{v}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\CC}{C\nolinebreak\hspace{-.05em}\raisebox{.4ex}{\tiny\bf +}\nolinebreak\hspace{-.10em}\raisebox{.4ex}{\tiny\bf +}}
+\def\CC{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\tiny\bf ++}}}
+\newcommand{\dP}{\mathcal{P}}
+% operator odvoda
+\newcommand{\D}{\partial}
+%operator 1 + \D
+\newcommand{\DD}{\mathcal{D}}
+% operator 1+ \D + \D^2 + ...
+\newcommand{\sumd}{\tau}
+\newcommand{\Op}{\partial^{\bigoplus}}
+\newcommand{\op}[1]{\partial^{#1\bigoplus}}
+\DeclareMathOperator{\interior}{int}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset { %
+    language=C++,
+    backgroundcolor=\color{black!5}, % set backgroundcolor
+    basicstyle=\footnotesize,% basic font setting
+}
+
+\newtheorem{definicija}{Definition}[section]
+\newtheorem{trditev}{Claim}[section]
+\newtheorem{izrek}{Theorem}[section]
+\newtheorem{opomba}{Remark}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{proposition}{Proposition}[section]
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{epigraph}
+\usepackage{etoolbox}
+
+\makeatletter
+\patchcmd{\epigraph}{\@epitext{#1}}{\itshape\@epitext{#1}}{}{}
+\makeatother
+
+\title{$\DD^n\CC$}
+\author{Žiga Sajovic}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We provide an illustrative implementation of an analytic, infinitely-differentiable machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper \emph{Operational calculus on programming spaces and generalized tensor networks}. Implementation closely follows theorems and derivations of the paper, intended as an educational guide.
+\end{abstract}
+
+\epigraph{Nothing at all takes place in the universe in which some rule of maximum or minimum does not appear.}{--- \textup{Leonhard Euler}}
+
+\tableofcontents
+
+\section{Introduction}
+
+We provide an illustrative implementation of the virtual memory $\VV$ and its expansion to $\VV\otimes T(\VV^*)$, serving by itself as an algebra of programs and an infinitely differentiable programming space
+\begin{equation}
+\DD^n\CC<\dP_n:\VV\to\VV\otimes T(\VV^*)
+\end{equation}
+acting on it.
+
+We provide a construction of operators
+\begin{equation}
+\DD^n=\{\D^k;\quad 0\le k\le n\}
+\end{equation}
+allowing for implementation of the operator
+\begin{equation}\label{eq:sumd}
+\sumd_n=1+\D+\D^2+\cdots+\D^n
+\end{equation}
+increasing the order of a differentiable programming space
+\begin{equation}
+\sumd_n:\dP_k\to\dP_{n+k}
+\end{equation}
+
+All required theorems and proofs are provided by the paper \emph{Operational calculus on programming spaces and generalized tensor networks}. Source code can be found on github \cite{dCpp}.
+
+\section{Virtual memory}
+
+We model an element of the virtual memory $v\in\VV_n$ 
+\begin{eqnarray}
+\VV_{n}=\VV_{n-1}\oplus(V_{n-1}\otimes\VV^*) \\
+\VV_{n}=\VV\oplus\VV\otimes\VV^*\oplus\cdots\oplus\VV\otimes\VV^{*n\otimes}\\ \label{eq:V_n}
+\VV_n=\VV\otimes T(\VV^*)
+\end{eqnarray}
+with the class $var$.
+
+\begin{lstlisting}
+template<class V>
+class var
+{
+    public:
+    	int order;
+        V id;
+        std::shared_ptr<std::map<&var,var> >* dTau;
+
+        var();
+        var(V id);
+        var(const var& other);
+        ~var();
+        void init(int order);
+        /*
+        *declerations of algebraic operations
+        */
+};
+\end{lstlisting}
+
+The expanded virtual memory $\VV_n$ is the tensor product of the virtual memory $\VV$ with the tensor algebra of its dual. The address \emph{\&var} stands for the component of $v\in\VV_{n-1}$ the tensor product with the component of $v^*\in\VV^*$ was computed on to generate $v\in\VV_n$ in equation \eqref{eq:V_n}. This depth is contained in the \emph{int order}.
+
+Tensor products of the virtual memory $\VV$ with its dual are modeled using maps, denoted by \emph{dTau}. Naming reflects how the algebra will be constructed, mimicking the operator $\sumd_nn$ \eqref{eq:sumd}.
+
+\subsection{Initialization}
+
+A constant element $v_0$ of the virtual memory is an element of $\VV_0=\VV<\VV_n$. We initialize an element to be $n$-differentiable, by mapping
+\begin{equation}
+init:\VV\times\mathbb{N}\to\VV_n
+\end{equation}
+\begin{equation}
+v_0.init(n)=v_n\in\VV_n
+\end{equation}
+The image $v_n$ is an element of $\VV_1=\VV\otimes\VV^*$ naturally included in $\VV_n$.
+\begin{equation}
+v_n=(v_0\in\VV)+(\delta^i_j\in\VV\otimes\VV^ {*\otimes})+\sum\limits_{i=2}^n(0\in\VV\otimes\VV^ {*i\otimes})
+\end{equation}
+where $\delta^i_j$ is the identity.
+\subsection{Algebra over a field}\label{sec:Algebra}
+
+ Algebra over a field is a vector space equipped with a bilinear product. Thus, an algebra is an algebraic structure, which consists of a set, together with operations of multiplication, addition, and scalar multiplication by elements of the underlying field.
+ 
+ Algebra is constructed by mimicking a direct sum of operators $\sumd_n$ \eqref{eq:sumd} mapping $\dP_0\oplus\dP_0\to\dP_n$. This is reflected in the structure of the class $var$  modeling the elements of the virtual space $v\in\VV_n$. Compositions are modeled by mimicking the projection of the operator $\exp(\D_fe^{h\D_g})$, generalizing both forward and reverse mode automatic differentiation, to the unit hyper-cube and applying it to the resulting direct sum.
+ 
+\begin{izrek}
+An instance of the class $var$ is an element of the virtual memory $\VV_n$.
+ \begin{equation}
+ var\in\VV_n
+ \end{equation}
+\end{izrek}
+\begin{proof}
+\begin{equation}
+ id\in \VV\land  dTau\in \VV_{n-1}
+ \end{equation}
+ $$\land$$
+ \begin{equation}
+ var=id\oplus dTau\implies var\in\VV_n
+ \end{equation}
+\end{proof}
+
+\subsubsection{Vector space over a field $K$}
+ 
+To firstly construct a vector space $\VV_n$ over a field $K$, we implement scalar multiplication and addition. 
+
+We begin with scalar multiplication.
+
+\begin{lstlisting}
+template<class K>
+var var::operator*(K n)const{
+		var out;
+        out.id=this->id*n;
+        for_each_copy(...,mul_make_pair<pair<&var,var> >, n);
+        return out;
+}
+
+template<class K>
+var var::operator/(K n)const {...};
+\end{lstlisting}
+Scalar multiplication and its convenient inverse employ the function \emph{for\_each\_copy}, applying the provided operation 
+\begin{lstlisting}
+template<class V, class K>
+V mul_make_pair(V v, K n) {
+  return std::make_pair(v.first, v.second * n);
+}
+\end{lstlisting}
+to each one of the components of $this$ and storing the result in $out.dTau$.
+
+Vector addition by component is implemented by 
+\begin{lstlisting}
+var var::operator+(const var& v)const{
+		var out;
+        out.id=this->id+v.id;
+        merge_apply(..., sum_pairs<pair<$var, var> >);
+            return out;
+}
+\end{lstlisting}
+Vector addition by component employs the function \emph{merge\_apply}, applying the provided function \emph{sum\_pairs}
+\begin{lstlisting}
+template<class V>
+T sum_pairs(V v1, V v2) {
+  return std::make_pair(v1.first, v1.second + v2.second);
+}
+\end{lstlisting}
+to corresponding components, storing the result in $out.dTau$, in $\mathcal{O}(n\log(n))$.
+
+\begin{izrek}
+Class $var$ models a vector space over a field $K$.
+\end{izrek}
+\begin{proof}
+By implementations of addition by components and multiplication with a scalar $K$, the axioms of the vector space are satisfied.
+\end{proof}
+
+\subsubsection{Algebra over a field $K$}
+
+With the vector space constructed, we turn towards constructing the algebra. To construct an algebra over a field $K$, we equip the vector space $\VV_n$ with a bilinear product by components.
+
+\begin{lstlisting}
+var var::operator*(const var& v)const{
+		var out;
+        out.id=this->real*v.id;
+        if(max(v.order,this->order)>0){
+        	map<int,double> tmp1;
+        	map<int,double> tmp2;
+        	for_each_copy(...,mul_make_pair<pair<&var,var> >, 
+        		v.reduceOrder());
+        	for_each_copy(...,mul_make_pair<pair<&var,var> >, 
+        		this->reduceOrder());
+        	merge_apply(..., sum_pairs<pair<&var,var> >);
+        }
+        return out;
+}
+\end{lstlisting}
+The employed functions have been explained at previously usage. The \emph{reduce.Order} function makes a shallow copy of $this$, while reducing the order of the returned copy. This bilinear product contains Leibniz rule within its structure.
+
+\begin{izrek}
+Class $var$ models an algebra over a field $K$.
+\end{izrek}
+\begin{proof}
+By the implementation of a bilinear product by components the axioms of an algebra over a field are satisfied.
+\end{proof}
+
+For ease of expression we implement exponentiation, naturally existing in the algebra
+
+\begin{lstlisting}
+var var::operator^(double n) const{
+		var out;
+        out.id=std::pow(this->real,n);
+        if(this->order>0){
+        	for_each_copy(...,powTimes<pair<&var,var> >, 
+        		this->reduceOrder(),n);
+        }
+        return out;
+}
+\end{lstlisting}
+employing the function \emph{for\_each\_copy}, applying the provided operation 
+\begin{lstlisting}
+template<class T, class V, class K>
+T powTimes(T v1, V v2, K n) {
+  return std::make_pair(v1.first, n*(v2^(n-1))*v1.second);
+}
+\end{lstlisting}
+to each component.
+
+We may now trivially implement operators existing in the algebra.
+
+\begin{lstlisting}
+var var::operator-(const var& v)const{
+		return *this+(-1)*v;
+}
+
+var var::operator/(const var& v)const{
+		return *this*(v^(-1));
+}
+\end{lstlisting}
+
+Similarly, the following operators can be assumed to be generated by the existing algebra, implementation of which is omitted here for brevity.
+
+\begin{lstlisting}
+var operator*(double n)const;
+var operator+(double n)const;
+var operator-(double n)const;
+var operator/(double n)const;
+var operator*(const var& v)const;
+var operator/(const var& v)const;
+var operator+(const var& v)const;
+var operator-(const var& v)const;
+var operator^(double n) const;
+var operator-()const;
+var& operator=(const var& v);
+var& operator=(double n);
+var& operator+=(const var& v);
+var& operator-=(const var& v);
+var& operator*=(const var& v);
+var& operator/=(const var& v);
+var& operator*=(double n);
+var& operator/=(double n);
+var& operator+=(double n);
+var& operator-=(double n);
+var operator*(double n, const var& v);
+var operator+(double n, const var& v);
+var operator-(double n, const var& v);
+var operator/(double n, const var& v);
+var operator^(double n, const var& v);
+\end{lstlisting} 
+
+\section{Analytic virtual machine}
+
+\begin{definicija}[Analytic virtual machine]
+The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiable virtual machine.
+   
+    \begin{itemize}
+    \item
+    $\VV$ is a finite dimensional vector space
+    \item
+    $\VV\otimes T(\VV^*)$ is the virtual memory space, serving as alphabet symbols
+    \item
+    $\dP_0$ is an analytic programming space over $\VV$
+    \end{itemize}
+    When $\dP_0$ is a differentiable programming space, this defines an
+    infinitely differentiable virtual machine.
+  \end{definicija}
+  
+  \subsection{Operators}
+        
+        The operator 
+        \begin{equation}\label{eq:DD}
+          	\sumd_n = 1+\D +\D^2 +\ldots + \D^n 
+          \end{equation}
+        is used to implement $\DD^n\CC\subset\dP_n$, employing the recursive relation
+        \begin{equation}
+              \label{eq:rekurzija}
+              \sumd_{k+1} = 1+\D\sumd_k.
+            \end{equation}
+        \begin{equation}
+        \sumd_{k+1}\CC = \CC+\D\sumd_k\CC
+        \end{equation}
+        
+        The \emph{double id} stands for the identity operator $1$ in the expression and the \emph{map<\&var, var> dTau} for the operator $\D\sumd_k$.
+        
+        Compositions of these operators is achieved by mimicking the generalized pullback operator
+        \begin{equation}\label{eq:opKompo}
+          \exp(\D_fe^{h\D_g})(g): \dP\to\dP_\infty(g)
+          \end{equation}
+          projected onto the unit hyper-cube.
+          
+          \begin{opomba}
+          Implementation in this paper is intended to be simply understood and is written as such. But, with the existing algebra and operational calculus, one could easily implement the operator $\exp(\D_fe^{h\D_g})(g)$ by any of the efficient techniques available, as it is given by a generating function.
+          \end{opomba}
+        
+        \begin{lstlisting}
+        template<class dTau, class K>
+        class tau
+        {
+            public:
+                tau();
+                tau(K mapping, var dTau);
+                ~tau();
+                var operator()(const var&v);
+            private:
+                dTau primitive;
+                K mapping;
+        };
+        \end{lstlisting}
+        
+        \begin{lstlisting}
+        var tau::operator()(const var&v){
+            var out;
+            out.id=mapping(v.id);
+            for_each_copy(...,mul_make_pair<std::pair<&var,var> >, 
+            	primitive(v));
+            return out;
+        }
+        \end{lstlisting}
+        
+          \subsection{Differentiable programming space}
+              
+              With the algebra over $\VV_n$ implemented, we turn to the construction of a differentiable programming space
+              
+              \begin{equation}
+              \CC:\VV\to\VV
+              \end{equation}
+              
+              \begin{definicija}\label{def:dP}
+               	A \emph{differentiable programming space} $\dP_0$ is any subspace of $\F_0$ such that
+               	\begin{equation}\label{eq:P}
+               	\D\dP_0\subset\dP_0\otimes T(V^*)
+               	\end{equation}
+               	When all elements of $\dP_0$ are analytic, we denote $\dP_0$ as an \emph{analytic programming space}.
+               \end{definicija}
+              
+              \begin{izrek}\label{izr:P}
+              	Any differentiable programming space $\dP_0$ is an
+                infinitely differentiable programming space, such that
+              	\begin{equation}\label{eq:P_n}
+              	 		\D^k\dP_0\subset\dP_0\otimes T(V^*)
+              	 	\end{equation}
+              for any $k\in\mathbb{N}$.
+              \end{izrek}
+              
+              Thus, in order to have a differential programming space, we must provide closure under the differential operator, for the function space $\CC$, expanded by the tensor product with the tensor algebra of the dual of the virtual memory $\VV$.
+              
+              \begin{equation}
+              \DD^n\CC<\dP_n\iff\DD^n\CC\subset\CC\otimes T(\VV^*)
+              \end{equation}
+
+\begin{trditev}\label{trd:library}
+Any library implementing functions acting on variables of type $double$ or $float$, could be trivially included into $\CC<\dP_0$, simply by replacing all variables with the class $var$. Moreover, any implementations using the implemented algebra in its construction of functions, are contained in $\dP_0$.
+\end{trditev}
+
+\subsubsection{Example}
+  
+As an illustrative example, we provide a simple implementation of a differentiable programming space through the use of the operator $tau$. 
+Assume the existence of functions
+\begin{equation}
+\sin\_double:double\to double
+\end{equation}
+\begin{equation}
+\cos\_double:double\to double
+\end{equation} 
+\begin{equation}
+e\_double:double\to double
+\end{equation}  
+\begin{equation}
+\ln\_double:double\to double
+\end{equation} 
+filling the set spanning $\CC$. Note, that these functions are usually implemented using operations existing in the algebra constructed in Section \ref{sec:Algebra}. Thus by employing it in their construction (coding), they would have been elements of a differentiable programming space, as by Claim \ref{trd:library}. Here we demonstrate how to explicitly construct them as maps.
+
+Previous declarations of needed functions are assumed. 
+
+\begin{lstlisting}
+namespace dCpp{
+var sin(const var& v);
+tau cos;
+tau e;
+tau ln;
+var cos_primitive(const var& v);
+var ln_primitive(const var& v);
+var e_primitive(const var& v);
+}
+\end{lstlisting}
+
+We construct the map $sin$ explicitly for educational purposes
+
+\begin{lstlisting}
+var dC::sin(const var& v){
+    var out;
+    out.id=std::sin_double(v.id);
+    if(v.order>0){
+    	for_each_copy(...,mul_make_pair<std::pair<&var,var> >,
+    		cos(v.reduceOrder()));
+    }
+    return out;
+}
+\end{lstlisting}
+
+Other maps are constructed through employment of the operator $tau$.
+
+
+\begin{lstlisting}
+typedef var (*dTau)(var);
+typedef double (*mapping)(double);
+
+var dCpp::cos_primitive(cont $var v){
+	return (-1)*sin(v.reduceOrder());
+}
+
+dCpp::cos=tau<dTau,mapping>(cos_double,cos_primitive);
+
+var dCpp::ln_primitive(cont $var v){
+	return 1/v.reduceOrder();
+}
+
+dCpp::ln=tau<dTau,mapping>(ln_double,ln_primitive);
+
+dCpp::e_primitive(cont $var v){
+	return e(v.reduceOrder());
+}
+
+tau dCpp::e=tau<dTau,mapping>(e_double,e_primitive);
+
+\end{lstlisting}
+
+\begin{izrek}\label{izr:dCpp}
+The programming space $dCpp$ is a differentiable programming space satisfying
+\begin{equation}
+dCpp<\dP_0\iff \DD dCpp\subset dCpp\otimes T(\VV^*)
+\end{equation}
+\end{izrek}
+\begin{proof}
+\begin{equation}
+\forall_{\phi_i\in dCpp}\exists_{\phi_j\in dCpp}(\phi_i.primitive=\phi_j)
+\end{equation}
+$$\implies$$
+\begin{equation}
+\DD dCpp\subset dCpp\otimes T(\VV^*)
+\end{equation}
+\end{proof}
+\begin{corollary}
+The programming space $dCpp$ is an infinitely-differentiable programming space satisfying
+\begin{equation}
+dCpp<\dP_0\iff \DD^n dCpp\subset dCpp\otimes T(\VV^*)
+\end{equation}
+\end{corollary}
+\begin{proof}
+Follows directly from Theorem \ref{izr:dCpp} by Theorem \ref{izr:P}.
+\end{proof}
+
+\subsection{External libraries}
+
+Any $\CC$ library written in the generic paradigm employing templates is fully compatible with differentiable programming space and the virtual memory $\VV$. 
+
+We illustrate on the example of Eigen \cite{Eigen}. We will code a perceptron with sigmoid activations, followed by softmax normalization, taking 28x28 image as an input and outputting a 10 class classifier. Existence of needed, but trivial and intuitively understood mappings is assumed (ex. $init$ initializes elements to the desired order). 
+
+\begin{lstlisting}
+template <typename Derived>
+    void softmax(Eigen::MatrixBase<Derived>& matrix){
+            //maps each element of the matrix by y=e^x;
+            dCpp::map_by_element(matrix,&dCpp::e);
+            //sums the elements of the matrix using Eigens function
+            var tmp=matrix.sum();
+            //divides each element by the sum
+            for (size_t i=0, nRows=matrix.rows(), 
+            	nCols=matrix.cols(); i<nCols; ++i)
+                for (size_t j=0; j<nRows; ++j){
+                    matrix(j,i)/=tmp;
+                }
+}
+
+int main(){
+//order of derivatives needed
+int order=...;
+//    Matrix holding the inputs (imgSizeX1 vector)
+const int imgSize=28*28;
+const Eigen::Matrix<var,1,imgSize>input=Eigen::Matrix<var,1,
+	imgSize>::Random(1,imgSize);
+//    number of outputs of the layer
+const int numOfOutOnFirstLevel=10;
+//    matrix of weights on the first level 
+//    (imgSizeXnumOfOutOnFirstLevel)
+Eigen::Matrix<var,imgSize,numOfOutOnFirstLevel>firstLayerVars=
+	Eigen::Matrix<var,imgSize,numOfOutOnFirstLevel>::
+	Random(imgSize,numOfOutOnFirstLevel);
+//    initializing weights
+dCpp::init(firstLayerVars, order);
+//    mapping of the first layer --> resulting in 10x1 vector
+Eigen::Matrix<var,numOfOutOnFirstLevel,1>firstLayerOutput=
+	input*firstLayerVars;
+//    apply sigmoid layer --> resulting in 10x1 vector
+dCpp::map_by_element(firstLayerOutput,&dCpp::sigmoid);
+//    apply sofmax layer --> resulting in 10x1 vector
+softmax(firstLayerOutput);
+//retrieve the computed derivatives
+\end{lstlisting}
+
+  \printbibliography
+  
+\end{document}
