@@ -8,7 +8,7 @@ This is the openSource version.
 
 ###Theory
 
-From _abstract_ of the paper  _Operational calculus on programming spaces and generalized tensor networks_ is which I derived the theory
+From _abstract_ of the paper  _Operational calculus on programming spaces and generalized tensor networks_ in which I derived the theory
 
 In this paper, we develop the theory of analytic virtual machines, that
 implement analytic programming spaces and operators acting upon them.
