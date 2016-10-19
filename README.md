@@ -165,6 +165,8 @@ to display derivatives of all orders, upt to _n_ by which the space has been ini
 Usage with external libraries written in generic paradigm is demonstrated on the example of [Eigen](http://eigen.tuxfamily.org/). 
 We will code a perceptron with sigmoid activations, followed by softmax normalization, taking 28x28 image as an input and outputting a 10 class classifier. We will use dCpp provided mappings in the _dEigen_ header.
 
+This perceptron is _4-differentiable_.
+
 ```c++
 #include <iostream>
 #include <dCpp.h>
@@ -187,6 +189,7 @@ template <typename Derived>
 }
 
 int main(){
+    initSpace(4);
     //    Matrix holding the inputs (imgSizeX1 vector)
     const int imgSize=28*28;
     const Eigen::Matrix<double,1,imgSize>input=Eigen::Matrix<var,1,imgSize>::Random(1,imgSize);
