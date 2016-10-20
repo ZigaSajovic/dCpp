@@ -88,8 +88,9 @@ We test it out and display all first and second derivatives.
 ```
 
  Similarly, we could have used the operator [tau](include/tau.h) by coding , which allows one to create it's own elements of the differentiable programming space _dCpp_, returning a differentiable variable [var](/include/var.h).
-```
-By coding the softmax normalization, we reveal how analytic differentiable machines fully integrate control structures.
+ 
+By coding the softmax normalization, we reveal how analytic virtual machines fully integrate control structures. 
+
 ```c++
 //simply code the map existing in the programming space dCpp
 //and the belonging algebra
@@ -170,49 +171,55 @@ We will code a perceptron with sigmoid activations, followed by softmax normaliz
 #include <iostream>
 #include <dCpp.h>
 #include <dEigen.h>
+
 using namespace std;
-using namespace dC;
+using namespace dCpp;
 
 //create a softmax function
 template <typename Derived>
-    void softmax(Eigen::MatrixBase<Derived>& matrix){
-            //maps each element of the matrix by y=e^x;
-            dC::map_by_element(matrix,&dC::exp);
-            //sums the elements of the matrix using Eigens function
-            var tmp=matrix.sum();
-            //divides each element by the sum
-            for (size_t i=0, nRows=matrix.rows(), nCols=matrix.cols(); i<nCols; ++i)
-                for (size_t j=0; j<nRows; ++j){
-                    matrix(j,i)/=tmp;
-                }
+void softmax(Eigen::MatrixBase<Derived>& matrix){
+        //maps each element of the matrix by y=e^x;
+        dCpp::map_by_element(matrix,&dCpp::exp);
+        //sums the elements of the matrix using Eigens function
+        var tmp=matrix.sum();
+        //divides each element by the sum
+        for (size_t i=0, nRows=matrix.rows(), nCols=matrix.cols(); i<nCols; ++i)
+            for (size_t j=0; j<nRows; ++j)matrix(j,i)=matrix(j,i)/tmp;
 }
 
-int main(){
+
+void dEigenExample(){
+    //    space is n-times differentiable
+    int n=2;
+    //    initialize the space
+    dCpp::initSpace(n);
     //    Matrix holding the inputs (imgSizeX1 vector)
-    const int imgSize=28*28;
-    const Eigen::Matrix<var,1,imgSize>input=Eigen::Matrix<var,1,imgSize>::Random(1,imgSize);
+    const int inputSize=28;
+    Eigen::Matrix<var,1,inputSize>input=Eigen::Matrix<var,1,inputSize>::Random(1,inputSize);
+    dCpp::init(input);
     //    number of outputs of the layer
-    const int numOfOutOnFirstLevel=10;
+    const int outputSize=1;
     //    matrix of weights on the first level (imgSizeXnumOfOutOnFirstLevel)
-    Eigen::Matrix<var,imgSize,numOfOutOnFirstLevel>firstLayerVars=Eigen::Matrix<var,imgSize,numOfOutOnFirstLevel>::Random(imgSize,numOfOutOnFirstLevel);
+    Eigen::Matrix<var,inputSize,outputSize>firstLayerVars=Eigen::Matrix<var,inputSize,outputSize>::Random(inputSize,outputSize);
     //    initializing weights
-    dC::init(firstLayerVars);
-    //    mapping of the first layer --> resulting in 10x1 vector
-    Eigen::Matrix<var,numOfOutOnFirstLevel,1>firstLayerOutput=input*firstLayerVars;
-    //    apply sigmoid layer --> resulting in 10x1 vector
-    dC::map_by_element(firstLayerOutput,&dC::sigmoid);
-    //    apply sofmax layer --> resulting in 10x1 vector
+    dCpp::init(firstLayerVars);
+    //    mapping of the first layer
+    Eigen::Matrix<var,outputSize,1>firstLayerOutput=input*firstLayerVars;
+    //    add bias
+    Eigen::Matrix<var,outputSize,1>bias=Eigen::Matrix<var,outputSize,1>::Random(outputSize,1);
+    //    initialize bias
+    dCpp::init(bias);
+    firstLayerOutput=bias+firstLayerOutput;
+    //    apply sigmoid we coded earlier
+    dCpp::map_by_element(firstLayerOutput,sigmoid);
+    //    apply sofmax layer
     softmax(firstLayerOutput);
-    //    display the first output layer and its Jaccobian
-    //    Jacobian is a 10x7840 matrix of derivatives
+    //    display the first output layer and its (1-n)-th derivatives
     for (size_t i=0, nRows=firstLayerOutput.rows(), nCols=firstLayerOutput.cols(); i<nCols; ++i){
-                for (size_t j=0; j<nRows; ++j) {
-                    dC::print(firstLayerOutput(j,i));
-                }
+                for (size_t j=0; j<nRows; ++j) firstLayerOutput(j,i).print();
                 cout<<endl;
     }
 }
-
 ```
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">dC++</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://si.linkedin.com/in/zigasajovic" property="cc:attributionName" rel="cc:attributionURL">Žiga Sajovic</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
