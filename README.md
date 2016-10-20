@@ -1,5 +1,5 @@
 # dCpp
-Infinitely differentiable C++; conditionals, loops, recursion and all things C++
+Infinitely-differentiable C++; conditionals, loops, recursion and all things C++
 
 ###Abstract
 We provide an illustrative implementation of an analytic, infinitely-differentiable machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper _Operational calculus on programming spaces and generalized tensor networks_. Implementation closely follows theorems and derivations of the paper, intended as an educational guide.
@@ -21,7 +21,7 @@ program's input values.
 
 A paper explaining implementation of this theory is avaliable [/paper/dCpp.pdf](https://zigasajovic.github.io/dCpp/paper/dCpp.pdf).
 
-Paper with construction of the theory will soon be available on arXiv.
+The paper _Operational calculus on programming spaces and generalized tensor networks_ , containing construction of the theory will soon be available on arXiv.
 
 ###Usage
 By employing analytic virtual machines, we can construct analytic procedures, viewing algorithms in a new light. One can start incorporating variable parameters into algorithm design, revealing the true nature of hyper-parameters often used in practice.
