@@ -24,7 +24,7 @@ std::vector<var> softmax(const std::vector<var>& V){
     return out;
 }
 
-int main(){
+void softmax(){
 //  initiaize Virtual memory of fourth order
     initSpace(4);
 //get a vector of variables

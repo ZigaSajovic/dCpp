@@ -45,7 +45,6 @@ std::cout<<"\n";
 
 }
 
-
 var::var(const var& other) {
     this->order=other.order;
     this->dTau = std::make_shared<std::map<var*, var> >();
@@ -98,7 +97,6 @@ var var::operator/(double n)const{
 }
 
 var var::operator*(double n)const{
-    //std::cout<<"order "<<this->order<<"product double  "<<this->id<<" "<<n<<"\n";
     var out;
     out.id=this->id*n;
     out.order=this->order;
@@ -107,21 +105,14 @@ var var::operator*(double n)const{
 }
 
 var var::operator^(double n) const{
-    //std::cout<<"in order "<<this->order<<"pow double  "<<this->id<<" "<<n<<"\n";
     var out;
     out.order=this->order;
     out.id=std::pow(this->id,n);
-//    std::cout<<"this\n";
-//    this->print();
-//    std::cout<<"in out\n";
-//    out.print();
 
     if(n!=0&&this->order>0){
         for_each_copy(this->dTau.get()->begin(),this->dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),mul_make_pair<std::pair<var*,var> , var>, ((this->reduce())^(n-1))*n);
     }
-//    std::cout<<"out order "<<this->order<<"pow double  "<<this->id<<" "<<n<<"\n";
-//    std::cout<<"out out\n";
-//    out.print();
+
     return out;
 }
 
@@ -143,7 +134,6 @@ var var::operator-(const var& v)const{
 }
 
 var var::operator*(const var& v)const{
-//std::cout<<"order "<<this->order<<"product var  "<<this->id<<" "<<v.id<<"\n";
     var out;
     out.id=this->id*v.id;
     out.order=this->order<v.order?this->order:v.order;
