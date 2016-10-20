@@ -8,7 +8,7 @@ This is the openSource version.
 
 ###Theory
 
-From _abstract_ of the paper  _Operational calculus on programming spaces and generalized tensor networks_ in which I derived the theory
+From _abstract_ of the paper  _Operational calculus on programming spaces and generalized tensor networks_ in which the theory is derived by [Žiga Sajovic](https://www.linkedin.com/in/zigasajovic):
 
 In this paper, we develop the theory of analytic virtual machines, that
 implement analytic programming spaces and operators acting upon them. Such a machine fully integrates control structures, reataining the expressive freedom of algorithmic control flow.
@@ -22,6 +22,7 @@ program's input values.
 A paper explaining implementation of this theory is avaliable [/paper/dCpp.pdf](https://zigasajovic.github.io/dCpp/paper/dCpp.pdf).
 
 The paper _Operational calculus on programming spaces and generalized tensor networks_ , containing construction of the theory will soon be available on arXiv.
+
 
 ###Usage
 By employing analytic virtual machines, we can construct analytic procedures, viewing algorithms in a new light. One can start incorporating variable parameters into algorithm design, revealing the true nature of hyper-parameters often used in practice.
@@ -165,8 +166,6 @@ to display derivatives of all orders, upt to _n_ by which the space has been ini
 Usage with external libraries written in generic paradigm is demonstrated on the example of [Eigen](http://eigen.tuxfamily.org/). 
 We will code a perceptron with sigmoid activations, followed by softmax normalization, taking 28x28 image as an input and outputting a 10 class classifier. We will use dCpp provided mappings in the _dEigen_ header.
 
-This perceptron is _4-differentiable_.
-
 ```c++
 #include <iostream>
 #include <dCpp.h>
@@ -189,10 +188,9 @@ template <typename Derived>
 }
 
 int main(){
-    initSpace(4);
     //    Matrix holding the inputs (imgSizeX1 vector)
     const int imgSize=28*28;
-    const Eigen::Matrix<double,1,imgSize>input=Eigen::Matrix<var,1,imgSize>::Random(1,imgSize);
+    const Eigen::Matrix<var,1,imgSize>input=Eigen::Matrix<var,1,imgSize>::Random(1,imgSize);
     //    number of outputs of the layer
     const int numOfOutOnFirstLevel=10;
     //    matrix of weights on the first level (imgSizeXnumOfOutOnFirstLevel)

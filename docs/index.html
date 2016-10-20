@@ -16,7 +16,7 @@
     <div class="wrapper">
       <header>
         <h1>dCpp</h1>
-        <p>Infinitely differentiable C++; conditionals, loops, recursion and all things C++</p>
+        <p>Infinitely-differentiable C++; conditionals, loops, recursion and all things C++</p>
 
         <p class="view"><a href="https://github.com/ZigaSajovic/dCpp">View the Project on GitHub <small>ZigaSajovic/dCpp</small></a></p>
 	<p class="view"><a href="https://zigasajovic.github.io/dCpp/paper/dCpp.pdf">Read paper on implementation <small>ZigaSajovic/dCpp/paper</small></a></p>
@@ -40,7 +40,7 @@
 <h3>
 <a id="theory" class="anchor" href="#theory" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Theory</h3>
 
-<p>From <em>abstract</em> of the paper  <em>Operational calculus on programming spaces and generalized tensor networks</em> in which I derived the theory</p>
+<p>From <em>abstract</em> of the paper  <em>Operational calculus on programming spaces and generalized tensor networks</em> in which the theory is derived by <a href="https://www.linkedin.com/in/zigasajovic">Žiga Sajovic</a>:</p>
 
 <p>In this paper, we develop the theory of analytic virtual machines, that
 implement analytic programming spaces and operators acting upon them. Such a machine fully integrates control structures, reataining the expressive freedom of algorithmic control flow.</p>
@@ -53,7 +53,7 @@ program's input values. </p>
 
 <p>A paper explaining implementation of this theory is avaliable <a href="https://zigasajovic.github.io/dCpp/paper/dCpp.pdf">/paper/dCpp.pdf</a>.</p>
 
-<p>Paper with construction of the theory will soon be available on arXiv.</p>
+<p>The paper <em>Operational calculus on programming spaces and generalized tensor networks<em> , containing construction of the theory will soon be available on arXiv.</p>
 
 <h3>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h3>
@@ -120,8 +120,8 @@ First we create maps double-&gt;double, for e(x) and its' derivative.</p>
 
 <p>Similarly, we could have used the operator <a href="include/tau.h">tau</a> by coding , which allows one to create it's own elements of the differentiable programming space <em>dCpp</em>, returning a differentiable variable <a href="/include/var.h">var</a>.</p>
 
-<pre><code>By coding the softmax normalization, we reveal how analytic differentiable machines fully integrate control structures.
-```c++
+<p>By coding the softmax normalization, we reveal how analytic differentiable machines fully integrate control structures.</p>
+<pre><code>
 //simply code the map existing in the programming space dCpp
 //and the belonging algebra
 std::vector&lt;var&gt; softmax(const std::vector&lt;var&gt;&amp; V){
@@ -136,7 +136,6 @@ std::vector&lt;var&gt; softmax(const std::vector&lt;var&gt;&amp; V){
     }
     return out;
 }
-
 </code></pre>
 
 <p>We test it, by inititalizing a four-differentiable programming space and displaying all derivatives.</p>
