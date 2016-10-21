@@ -209,7 +209,7 @@ to display derivatives of all orders, up to _n_ by which the space has been init
 ###External libraries
 
 Usage with external libraries written in generic paradigm is demonstrated on the example of [Eigen](http://eigen.tuxfamily.org/). 
-We will code a perceptron with sigmoid activations, followed by softmax normalization. We will use dCpp provided mappings in the _dEigen_ header.
+We will code a perceptron with sigmoid activations, followed by softmax normalization. We will use dCpp provided mappings in the [dEigen](/include/dEigen.h) header.
 
 ```c++
 #include <iostream>
