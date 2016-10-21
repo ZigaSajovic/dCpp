@@ -28,7 +28,7 @@ The paper _Operational calculus on programming spaces and generalized tensor net
 By employing analytic virtual machines, we can construct analytic procedures, viewing algorithms in a new light. One can start incorporating variable parameters into algorithm design, revealing the true nature of hyper-parameters often used in practice.
 
 ###Tutorial
-As most programmers face the need of differentiability through machine learning, we use the concept a [Recurrent neural network](https://en.wikipedia.org/wiki/Recurrent_neural_network) employing [logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) with [softmax normalization](https://en.wikipedia.org/wiki/Softmax_function#Softmax_Normalization) as a vessel for this tutorial. We demostrate, how it is simply constructed using algorithmic control flow and reccursion.
+As most programmers face the need of differentiability through machine learning, we use the concept a [Recurrent neural network](https://en.wikipedia.org/wiki/Recurrent_neural_network) employing [logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) with [softmax normalization](https://en.wikipedia.org/wiki/Softmax_function#Softmax_Normalization) as a vessel for this tutorial. We demostrate, how it is simply constructed using algorithmic control flow and reccursion, by employing _dCpp_.
 
 First we include the necessities
 
@@ -59,7 +59,7 @@ var sigmoidMap(const var&v){return 1/(1+exp(-1*v));};
 
 ```
 
-We test it out and display all first and second derivatives.
+We test it out and and compute it on a simple example.
 
 ```c++
 //  set inputs
@@ -73,7 +73,11 @@ We test it out and display all first and second derivatives.
     dCpp::init(w_2);
 //  now we use sigmoid map as a differentiable map
     var f=sigmoidMap(w_1*x+w_2*y);
-//  df/dx
+```    
+Accessing the derivatives is done by calling _d(var* w)_ function of the class _var_. It returns the derivative with respect to the variable _w_, as a _var_ variable.
+
+```c++
+//  df/dw_1
     std::cout<<"df/dw_1 = "<<f.d(&w_1).id<<std::endl;
 //  df/dw_2
     std::cout<<"df/dw_2 = "<<f.d(&w_2).id<<std::endl;
@@ -87,9 +91,45 @@ We test it out and display all first and second derivatives.
     std::cout<<"df/dw_2dw_2 = "<<f.d(&w_2).d(&w_2).id<<std::endl;
 ```
 
- Similarly, we could have used the operator [tau](include/tau.h) by coding , which allows one to create it's own elements of the differentiable programming space _dCpp_, returning a differentiable variable [var](/include/var.h).
+ Similarly, we could have used the operator [tau](include/tau.h) by coding , which allows one to create it's own elements of the differentiable programming space _dCpp_, returning a differentiable variable [var](/include/var.h). The operator [tau](include/tau.h) is initialized by a double-->double map representing the desired function, and a var-->var map representing its derivative. Lets take a closer look, by creating a differentiable map log:var-->var.
  
-By coding the softmax normalization, we reveal how analytic virtual machines fully integrate control structures. 
+ ```c++
+ //coding the derivative
+ var log_primitive(const var&v){return 1/v;};
+```
+The map is created by providing the operator with the two maps
+ ```c++
+ //operator returning a differentiable map
+tau log(std::log,log_primitive);
+```
+The map is now ready to use
+ ```c++
+ //  set variables
+    var x(10);
+    var y(20);
+//  initialize x and y as a differentiable variables
+    dCpp::init(x);
+    dCpp::init(y);
+ //  now we use log as a differentiable map
+    var f=log(((x^2)-(y^0.23))^2.1);
+```
+Again, we display all first and second derivatives
+ ```c++
+//  df/dx
+    std::cout<<"df/dx = "<<f.d(&x).id<<std::endl;
+//  df/dy
+    std::cout<<"df/dy = "<<f.d(&y).id<<std::endl;
+//  df/dxdx
+    std::cout<<"df/dxdx = "<<f.d(&x).d(&x).id<<std::endl;
+//  df/dxdy
+    std::cout<<"df/dxdy = "<<f.d(&x).d(&y).id<<std::endl;
+//  df/dydx
+    std::cout<<"df/dydx = "<<f.d(&y).d(&x).id<<std::endl;
+//  df/dydy
+    std::cout<<"df/dydy = "<<f.d(&y).d(&y).id<<std::endl;
+```
+
+With _dTau_ explained, we turn to coding the softmax normalization, we reveal how analytic virtual machines fully integrate control structures. 
 
 ```c++
 //simply code the map existing in the programming space dCpp
