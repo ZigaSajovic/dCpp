@@ -55,12 +55,10 @@ We will need the folowing functions
 ####Maps contained in the function algebra over var
 
 By coding sigmoid(x), we will learn about creating differentiable maps, constructable using the differentiable programming space _dCpp_ and the algebra of the virtual memory _var_.
-First we create maps double->double, for e(x) and its' derivative.
 ```c++
 var sigmoidMap(const var&v){return 1/(1+exp(-1*v));};
 
 ```
-
 We test it out and and compute it on a simple example.
 
 ```c++
@@ -206,7 +204,7 @@ vec output = recursionNet(input,weights[],bias[], depth);
 for(var v:output)v.print();
 ```
 
-to display derivatives of all orders, upt to _n_ by which the space has been initialized.
+to display derivatives of all orders, up to _n_ by which the space has been initialized.
 
 ###External libraries
 
