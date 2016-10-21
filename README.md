@@ -132,7 +132,7 @@ Again, we display all first and second derivatives
 //  df/dydy
     std::cout<<"df/dydy = "<<f.d(&y).d(&y).id<<std::endl;
 ```
-####Algorithmic control flow
+####Integrating control structures
 
 With _dTau_ explained, we turn to coding the softmax normalization, we reveal how analytic virtual machines fully integrate control structures. 
 
