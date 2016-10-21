@@ -52,6 +52,8 @@ We will need the folowing functions
 * [dotProduct(vec1,vec2)](https://en.wikipedia.org/wiki/Dot_product)
 * [matVecProduct(mat,vec)](https://en.wikipedia.org/wiki/Matrix_multiplication)
 
+####Maps contained in the function algebra over var
+
 By coding sigmoid(x), we will learn about creating differentiable maps, constructable using the differentiable programming space _dCpp_ and the algebra of the virtual memory _var_.
 First we create maps double->double, for e(x) and its' derivative.
 ```c++
@@ -91,6 +93,8 @@ Accessing the derivatives is done by calling _d(var* w)_ function of the class _
     std::cout<<"df/dw_2dw_2 = "<<f.d(&w_2).d(&w_2).id<<std::endl;
 ```
 
+####Operator dTau
+
  Similarly, we could have used the operator [tau](include/tau.h) by coding , which allows one to create it's own elements of the differentiable programming space _dCpp_, returning a differentiable variable [var](/include/var.h). The operator [tau](include/tau.h) is initialized by a double-->double map representing the desired function, and a var-->var map representing its derivative. Lets take a closer look, by creating a differentiable map log:var-->var.
  
  ```c++
@@ -128,6 +132,7 @@ Again, we display all first and second derivatives
 //  df/dydy
     std::cout<<"df/dydy = "<<f.d(&y).d(&y).id<<std::endl;
 ```
+####Algorithmic control flow
 
 With _dTau_ explained, we turn to coding the softmax normalization, we reveal how analytic virtual machines fully integrate control structures. 
 
@@ -168,6 +173,7 @@ We test it, by inititalizing a four-differentiable programming space and display
     f[1].print();
 
 ```
+####Recurrent neural network
 
 Assume existence of functions _vecSum_, _matVecProd_, _genRandVec_ and _forAll_ written in a similar fashion. Thus, we have all the tools needed to build a recursive layer. It will consist of two layers, mapping a 2-vector to a 2-vector. Output of the second layer will be recursively connected to the input of the next recursive layer.
 
@@ -205,7 +211,7 @@ to display derivatives of all orders, upt to _n_ by which the space has been ini
 ###External libraries
 
 Usage with external libraries written in generic paradigm is demonstrated on the example of [Eigen](http://eigen.tuxfamily.org/). 
-We will code a perceptron with sigmoid activations, followed by softmax normalization, taking 28x28 image as an input and outputting a 10 class classifier. We will use dCpp provided mappings in the _dEigen_ header.
+We will code a perceptron with sigmoid activations, followed by softmax normalization. We will use dCpp provided mappings in the _dEigen_ header.
 
 ```c++
 #include <iostream>
