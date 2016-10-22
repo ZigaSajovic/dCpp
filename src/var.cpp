@@ -171,3 +171,23 @@ var var::operator^(const var& v)const{
 bool var::operator==(const var& v)const{
     return this->id==v.id;
 }
+
+bool var::operator!=(const var& v)const{
+    return this->id!=v.id;
+}
+
+bool var::operator<(const var& v)const{
+    return this->id<v.id;
+}
+
+bool var::operator<=(const var& v)const{
+    return this->id<=v.id;
+}
+
+bool var::operator>(const var& v)const{
+    return this->id>v.id;
+}
+
+bool var::operator>=(const var& v)const{
+    return this->id>=v.id;
+}
