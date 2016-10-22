@@ -167,3 +167,7 @@ var var::operator^(const var& v)const{
     }
     return out;
 }
+
+bool var::operator==(const var& v)const{
+    return this->id==v.id;
+}

@@ -31,6 +31,8 @@ class var
         var operator-(const var& v)const;
         var operator/(const var& v)const;
         var operator^(const var& v)const;
+        //equalities
+        bool operator==(const var& v)const;
 };
 
 #endif // VAR_H
