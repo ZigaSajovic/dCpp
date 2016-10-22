@@ -40,4 +40,3 @@ void dTauOperatorUse()
 //  df/dydy
     std::cout<<"df/dydy = "<<f.d(&y).d(&y).id<<std::endl;
 }
-int main(){dTauOperatorUse();}
