@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <iostream>
+#include <dCpp.h>
 
 
 var:: var(){
@@ -150,4 +151,19 @@ var var::operator*(const var& v)const{
 
 var var::operator/(const var& v)const{
     return *this*(v^(-1));
+}
+
+var var::operator^(const var& v)const{
+    var out;
+    out.id=std::pow(this->id,v.id);
+    out.order=this->order<v.order?this->order:v.order;
+    if(out.order>0){
+        std::map<var*,var> tmp1;
+        std::map<var*,var> tmp2;
+        for_each_copy(this->dTau.get()->begin(),this->dTau.get()->end(),inserter(tmp1,tmp1.begin()),mul_make_pair<std::pair<var*,var> ,var >, this->reduce()^(v.reduce()-1));
+        for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(tmp2,tmp2.begin()),mul_make_pair<std::pair<var*,var> ,var>, (this->reduce()^v.reduce())*dCpp::ln(this->reduce()));
+        merge_apply(tmp1.begin(), tmp1.end(), tmp2.begin(), tmp2.end(), inserter(*out.dTau.get(), out.dTau.get()->begin()),
+            compare_first<std::pair<var*, var> >, sum_pairs<std::pair<var*, var> >);
+    }
+    return out;
 }

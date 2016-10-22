@@ -21,15 +21,16 @@ class var
         var d(var*dvar);
         void print() const;
         //declerations of algebraic operations
-        var operator*(double n)const;
         var operator+(double n)const;
+        var operator*(double n)const;
         var operator-(double n)const;
         var operator/(double n)const;
         var operator^(double n) const;
-        var operator*(const var& v)const;
-        var operator/(const var& v)const;
         var operator+(const var& v)const;
+        var operator*(const var& v)const;
         var operator-(const var& v)const;
+        var operator/(const var& v)const;
+        var operator^(const var& v)const;
 };
 
 #endif // VAR_H
