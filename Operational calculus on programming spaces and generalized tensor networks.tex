@@ -95,7 +95,7 @@ basicstyle=\ttfamily
 
 
 \title{Operational calculus on programming spaces and generalized tensor networks}
-\author{Žiga Sajovic\footnote{\href{mail.to:ziga.sajovic@gmail.com}{ziga.sajovic@gmail.com}}, Martin Vuk\thanks{a willing mentor on this endeavor}}
+\author{Žiga Sajovic\footnote{\href{mail.to:ziga.sajovic@gmail.com}{ziga.sajovic@gmail.com}}, Martin Vuk}
 
 \begin{document}
 \maketitle
@@ -167,14 +167,13 @@ We can compose two programs sequentially, to obtain another program, which
 results in map composition. The set of all such maps $\F=\VV^\VV$ is a
 \emph{monoid} for the operation of composition $\circ$. A programing space is
 a space spanned by a set of elementary operations that are sequentially applied into programs. 
-\begin{definicija}[Euclidian virtual machine] The tuple $\langle \VV,\F\rangle$ is an Euclidian virtual machine.
+\begin{definicija}[Euclidian virtual machine] The tuple $\langle \VV,\F\rangle$ is an Euclidian virtual machine, where
   \begin{itemize}
   \item
-  $\VV$ is a finite dimensional vector space over a complete field $K$ serving
-  as alphabet symbols\footnote{In most aplications the field $K$ will
+  $\VV$ is a finite dimensional vector space over a complete field $K$, serving as memory\footnote{In most applications the field $K$ will
     be $\RR$}
   \item
-  $\F= \VV^\VV$ is the space of maps $P:\VV\to \VV$, called \emph{programming space}, serving as states
+  $\F= \VV^\VV$ is the space of maps $P:\VV\to \VV$, called \emph{programming space}, serving as actions on the memory
   \end{itemize}  
 \end{definicija}
 
@@ -251,7 +250,7 @@ For maps $\RR^n\to \RR^m$ Fréchet derivative can be expressed by multiplication
 of vector $h$ by the Jacobi matrix $\mathrm{J} P$ of the  partial derivatives of the 
 components of the map $P$
 \begin{equation*}
-  TP_x(h) = \mathrm{J} P(x)\cdot h.
+  T_xP(h) = \mathrm{J} P(x)\cdot h.
 \end{equation*}
 We assume for the remainder of this section that the map $P:V\to U$ is
 differentiable for all $\x\in V$. The derivative defines a map from $V$ to
@@ -478,7 +477,7 @@ $$\D\dP_0\subset\dP_0\otimes T(\VV^*)$$
 \end{proof}
 
  \begin{corollary}\label{izr:dP}
-	A programming space $\dP=\{\dP:\VV\to \VV\otimes T(\VV^*)\}$, is closed under the differential operator $\D^k$.
+	A programming space $\dP_0\otimes T(\VV^*)=\{P:\VV\to \VV\otimes T(\VV^*)\}$, is closed under the differential operator $\D^k$.
  \end{corollary}
  \begin{proof}
  	 By $\eqref{eq:P_n}$ and the symmetric nature of the operator $\D$, for each $k$ there exists an isomorphism
@@ -509,7 +508,7 @@ By Corollary $\ref{izr:dP}$ we may represent calculation of derivatives of the m
 We seek to generalize such notions.
 
 \begin{definicija}\label{def:P_n}
-Let $\dP_n$ be the subspace, spanned by $\DD^n\dP_0$ over $K$.
+Let $\dP_n<\F_n$ be the space spanned by $\DD^n\dP_0$ over $K$.
  \end{definicija}
  
  \begin{izrek}\label{izr:P_n}
@@ -582,7 +581,7 @@ with the product defined by \eqref{eq:algebra_product} for any bilinear map $\cd
 \end{izrek}
 
 \subsection{Analytic virtual machine}
-Algorithms may be interpreted as a function algebra over $\dP_0:\VV\to \VV$.
+Algorithms may be interpreted as a function algebra over a field $K$.
 By Theorem $\ref{izr:P_n}$, we can express $\dP_n$, that is spanned by $\DD^n\dP_0$ over $K$, through linear combinations of elements of $\dP_0\otimes T(V^*)$. To construct $\dP_n$, only the tuple $(\VV,\dP_0)$, equipped with tensor algebra is required.
 \begin{trditev}
 The tuple  $(\VV,\dP_0)$ and the belonging \emph{tensor series algebra} are sufficient conditions for the existence and construction of \emph{infinitely differentiable programing spaces} $\dP_\infty$ $\eqref{def:P_n}$, which are \emph{function algebras} by Theorem $\ref{izr:alg}$.
@@ -591,13 +590,13 @@ The tuple  $(\VV,\dP_0)$ and the belonging \emph{tensor series algebra} are suff
 We propose an abstract computational model, a virtual machine capable of constructing and implementing the derived theory. Such a machine provides a framework for analytic study of algorithmic procedures through algebraic means.
 
 \begin{definicija}[Analytic virtual machine]\label{def:analyticMachine}
-The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiable virtual machine.
+The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiable virtual machine, where
    
     \begin{itemize}
     \item
     $\VV$ is a finite dimensional vector space
     \item
-    $\VV\otimes \T(\VV^*)$ is the virtual memory space, serving as alphabet symbols
+    $\VV\otimes \T(\VV^*)$ is the virtual memory space
     \item
     $\dP_0$ is an analytic programming space over $\VV$
     \end{itemize}
@@ -625,7 +624,7 @@ using the developed operational calculus. A paper \cite{dC++Paper} explaining th
 
  \subsection{Tensor series expansion}\label{sec:Vrsta}
  
- Expansion into a series offers valuable insights into programs through methods of analysis, as explored in the coming sections. But before tackling analysis, we motivate the following with an immediate example. Suppose an algorithm of high time complexity. As speed is of importance, an approximation would suffice. Using the described mechanics, we may linearize the program. We choose a $v_0\in\dP$ and linearize $P'=P(v_0)+\D P(v_0)\cdot(v-v_0)$. The latter has to be done only once.
+ Expansion into a series offers valuable insights into programs through methods of analysis, as explored in the coming sections. But before tackling analysis, we motivate the following with an immediate example. Suppose an algorithm of high time complexity. As speed is of importance, an approximation would suffice. Using the described mechanics, we may linearize the program. We choose a $v_0\in\VV$ and linearize $P'=P(v_0)+\D P(v_0)\cdot(v-v_0)$. The latter has to be done only once.
  Locally, the image of the linearization is a good approximation of the original program. To extend this radius, we would like to expand said program into a series.
  
  By Claim $\ref{izr:linearnaNeodvisnost}$  there exists a space spanned by the set $\DD^n=\{\D^k;\quad 0\le k\le n\}$ over a field $K$. Thus, the expression
@@ -704,14 +703,14 @@ of $h$ have coinciding Taylor series and are therefore equal.\\
  $$\implies$$
  $$\left(\D^n(P)(\vv_0)\right)(\vv^{\otimes n})$$
  \end{proof}
- \begin{corollary}
+ \begin{opomba}
  The operator $e^{h\D}:\dP\times \VV\to \VV\otimes \T(\VV^*)$ evaluated at $h=1$ is a broad generalization of the shift operator \cite{OpCalc}, as the theory it exists in offers more than a mere shift, as will become apparent in the coming sections.
- For a specific $v_0\in\VV$ it is heron denoted by
+ For a specific $v_0\in\VV$ it is hereon denoted by
  \begin{equation}
  e^\D\vert_{v_0}:\dP\to \VV\otimes \T(\VV^*)
  \end{equation}
- When the choice of $v_0\in\VV$ is arbitrary, we omit it from expressions for simplicity.
- \end{corollary}
+ When the choice of $v_0\in\VV$ is arbitrary, we omit it from expressions for brevity.
+ \end{opomba}
  
  The image of the contraction is an element of the original virtual space $\VV^i$. Independence of the operator $(\ref{eq:specProg})$ from a coordinate system, translates to independence in execution. Thus the expression $(\ref{eq:tenzorVrsta})$ is invariant to the point in execution of a program, a fact we explore later on.  
  
@@ -722,7 +721,7 @@ of $h$ have coinciding Taylor series and are therefore equal.\\
 which enables efficient implementation.
  
  \begin{izrek}\label{izr:prod}
- The operator $e^{h\D}$ is an automorphism of the algebra over $\dP_\infty$
+ The operator $e^{h\D}$ is an automorphism of the programming algebra $\dP_\infty$
  \begin{equation}
  	e^{h\D}(p_1\cdot p_2)=e^{h\D}(p_1)\cdot e^{h\D}(p_2)
  \end{equation}
@@ -907,9 +906,9 @@ By Theorem \ref{izr:reductionMap}, $n$-differentiable $k$-th derivatives of a pr
    $\eqref{eq:pToPol}$ from the space of programs, to the space of polynomials,
    with unknowns in $\VV^k$, using the operator $e^\D$. Let $\X=\{p_i\}$ denote a basis of
    the space of polynomials $\VV\to \VV$ \footnote{one choice would be the monomial basis,
-   consisnting of elemets $\e_i\otimes\prod\limits_{\alpha,\forall_j}
+   consisting of elements $\e_i\otimes\prod\limits_{\alpha,\forall_j}
    x_{\alpha_j}$, where $\e_i$ span $\VV$, $x_i$ span $\VV^*$ and $\alpha$
-   multiindex}. Than, we can interpret $e^\D_n(P\in\dP)$ as a vector of linear combinations of $\X$, which is assumed heron.
+   multi-index}. Than, we can interpret $e^\D_n(P\in\dP)$ as a vector of linear combinations of $\X$, which is assumed hereon.
   
   Thus, we define the tensor of basis transformation $F\to\X$
   
@@ -938,7 +937,7 @@ By Theorem \ref{izr:reductionMap}, $n$-differentiable $k$-th derivatives of a pr
   
   If $F$ does not span $\dP$, or we used the projection of the operator $e^\D_{n<N}$, the expression $P_F$ still represents the best possible approximation of the original program, on components $\{\D^n\}$, in basis $F$.
   
-  It makes sense to, before computing the tensor $\eqref{eq:matTrans}$, to expand the set $F$, by mutual (nested) compositions, and gain mappings, that can not be expressed as linear combinations (but are still optimized for hardware $H$), and so increasing the power of the method.
+  It makes sense to, before computing the tensor $\eqref{eq:matTrans}$, expand the set $F$, by mutual (nested) compositions, and gain mappings, that can not be expressed as linear combinations (but are still optimized for hardware $H$), and so increasing the power of the method.
 \subsection{Special case of functions $\VV\to K$}
 We describe a special case when $\dP_0=\VV\otimes\dP_{-1}$, where
 $\dP_{-1}<K^\VV$ is a subspace of the space of functions $\VV\to K$. This is
@@ -1020,7 +1019,7 @@ functions.
  Each program $P\in\dP$ containing control structures is differentiable on the domain $\Omega=\bigcup\limits_{\forall_i}\interior(\Omega_i)$.
  \end{izrek}
  \begin{proof}
-  Interiror of each domain $\Omega_i$ is open. As the entire domain $\Omega=\bigcup\limits_{\forall_i}\interior(\Omega_i)$ is a union of open sets, it is therefor open itself. Thus, all evaluations are computed in the interior of some open set, effectively removing boundaries, where problems might have otherwise occurred.
+  Interior of each domain $\Omega_i$ is open. As the entire domain $\Omega=\bigcup\limits_{\forall_i}\interior(\Omega_i)$ is a union of open sets, it is therefore open itself. Thus, all evaluations are computed in the interior of some open set, effectively removing boundaries, where problems might have otherwise occurred.
  \end{proof}
  
  \begin{corollary}
@@ -1227,7 +1226,7 @@ and through Corollary \ref{izr:komp_homo}
 \begin{equation}\label{eq:eDkompo}
 P(v_0+v\in \VV)=e^\D\vert_{v_n} P_n\circ\cdots \circ e^\D\vert_{v_0} P_0(v\in \VV)
 \end{equation}
-which is the transformation heron denoted by $e^\D P$.
+which is the transformation hereon denoted by $e^\D P$.
 
 \begin{trditev}
 The image of the application of the operator $e^\D$ to a program $P\in\dP_0$ as in \eqref{eq:eDkompo}, is a general tensor network, with the activation function $\Phi_i$ being the identity map, at each layer.
@@ -1238,7 +1237,7 @@ The image of the application of the operator $e^\D$ to a program $P\in\dP_0$ as 
 The transformed program equals the original program by Theorem \ref{izr:e^d} and Corollary \ref{izr:komp_homo}. But in practice, we are always working with a finite virtual memory $\VV\otimes T_n(\VV^*)$ and the equality becomes an approximation. Thus we treat the transformation of the original program, as the initialization of the weights (and the bias) of a general tensor network to be trained.  
 
 \begin{izrek}\label{izr:transToTensorNet}
-Let $\Phi=\{\Phi_k\in\dP_0:\VV\to\VV;\quad 0\le k\le n\}$ be the set of activation functions. Than the transformation
+Let $\Phi=\{\Phi_k\in\dP_0:\VV\to\VV;\quad 0\le k\le n\}$ be the set of activation functions. Then the transformation
 \begin{equation}
 \tilde{P}:\VV\to\VV
 \end{equation}
@@ -1292,7 +1291,7 @@ Thus by Corollary \ref{cor:extraxtDerivatives}, the $n$-differentiable $k$-th de
 \begin{equation}
 ^{n}L_{i+1}^{k\prime}=\phi^k\circ e^\D_{n+k}(L_{i+1})\in\dP_n
 \end{equation}
-from \eqref{eq:tenNetKthDer} through Corollary \ref{cor:extraxtDerivatives}, were $\phi$ is the reduction of order map of Theorem \ref{izr:reductionMap}. Derivatives of specific order are extracted through projections on components of $P_n$, and can be used in any of the well established training methods in the industry. 
+from \eqref{eq:tenNetKthDer} through Corollary \ref{cor:extraxtDerivatives}, where $\phi$ is the reduction of order map of Theorem \ref{izr:reductionMap}. Derivatives of specific order are extracted through projections on components of $P_n$, and can be used in any of the well established training methods in the industry. 
 
 \begin{trditev}
 Using the operator $\exp(\D_fe^{h\D_g})$ of Theorem \ref{izr:kompo}, both forward \cite{PcAD} and reverse \cite{ReverseAD} mode automatic differentiation (generalized to arbitrary order) can be implemented on general tensor networks, as by Claim \ref{trd:reverseForward}.
@@ -1429,9 +1428,9 @@ appropriate derivative, as it measures the rate of change. A measure easily repl
    
    We take the measure of activity to be the norm of the derivative with respect to the variable parameters in sub-procedure $T_i$.
    $$\left\Vert\D_{T_i}T\right\Vert=\left\Vert proj_{\{\D\}}\left(e^{\D_{T_i}}_1(T)\right)\right\Vert$$
-   Than for each property $X_j$ we select the set of sub-procedures 
+   Then for each property $X_j$ we select the set of sub-procedures 
    $$T_{X_j}=\{T_i\in T_{X_j}\iff \left\Vert\D_{T_i}T\right\Vert\ge c\}$$
-   that have the highest measure of activity at the elements of $X_j$. The property measure for the property $X_j$ is than simply the sum of squares of norms of the derivatives of selected sub-procedures $T^i_1=T_i\circ\cdots\circ T_1$. This completes Algorithm \ref{alg:propertyMeasure}. 
+   that have the highest measure of activity at the elements of $X_j$. The property measure for the property $X_j$ is then simply the sum of squares of norms of the derivatives of selected sub-procedures $T^i_1=T_i\circ\cdots\circ T_1$. This completes Algorithm \ref{alg:propertyMeasure}. 
    
    By Corollary \ref{cor:extraxtDerivatives}, $n$-differentiable $k$-th derivatives $^{n}T^{k\prime}_i\in\dP_n$ with respect to the input $v\in\Omega$ are computed by
    
@@ -1481,7 +1480,7 @@ where $\phi$ is the reduction of order map of Theorem $\ref{izr:reductionMap}$. 
 H^\prime=e^{\D_p}_1(H)\circ(P^{i\prime}_1,P^{i\prime\prime}_1)\in\dP_1
 \end{equation}
 
-By an algorithm similar to Algorithm \ref{alg:appoint}, we can drive a procedure $P$, whose conceptual step $P_i$ maximizes action of the principle $H$ upon the input objects inhabiting the virtual memory.
+By an algorithm similar to Algorithm \ref{alg:appoint}, we can derive a procedure $P$, whose conceptual step $P_i$ maximizes action of the principle $H$ upon the input objects inhabiting the virtual memory.
 
 By interpreting heuristics as principles, we can improve any part of the program, at which the principle can be applied. This way we can change parts of the program as we search for a solution, improving the program itself. By noting receptiveness to a specific principle (heuristics) we might gain new knowledge about the problem we are trying to solve.
 
