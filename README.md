@@ -8,7 +8,7 @@ This is the openSource version.
 
 ###Theory
 
-From _abstract_ of the paper  _Operational calculus on programming spaces and generalized tensor networks_ in which the theory is derived by [Žiga Sajovic](https://www.linkedin.com/in/zigasajovic):
+From _abstract_ of the paper  _Operational calculus on programming spaces and generalized tensor networks_ in which the theory is derived by [Žiga Sajovic](https://www.linkedin.com/in/zigasajovic) and [Martin Vuk](http://www.fri.uni-lj.si/en/martin-vuk/default.html):
 
 In this paper, we develop the theory of analytic virtual machines, that
 implement analytic programming spaces and operators acting upon them. Such a machine fully integrates control structures, reataining the expressive freedom of algorithmic control flow.
