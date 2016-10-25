@@ -12,12 +12,13 @@ From _abstract_ of the paper  _Operational calculus on programming spaces and ge
 
 In this paper, we develop the theory of analytic virtual machines, that
 implement analytic programming spaces and operators acting upon them. Such a machine fully integrates control structures, reataining the expressive freedom of algorithmic control flow.
+=======
+#Operational calculus on programming spaces and generalized tensor networks
 
-A programming space is a subspace of the function space of maps on the virtual
-memory. We can construct a differential operator on programming spaces as we 
-extend the virtual memory to a tensor product of a virtual space with tensor algebra
-of its dual. Extended virtual memory serves by itself as an algebra of programs, giving the expansion of the original program as an infinite tensor series at
-program's input values. 
+###Abstract
+
+In this paper, we develop the theory of analytic virtual machines, that
+implement analytic programming spaces and operators acting upon them.
 
 A paper explaining implementation of this theory is avaliable [/paper/dCpp.pdf](https://zigasajovic.github.io/dCpp/paper/dCpp.pdf).
 
@@ -267,3 +268,4 @@ void dEigenExample(){
 ```
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">dC++</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://si.linkedin.com/in/zigasajovic" property="cc:attributionName" rel="cc:attributionURL">Žiga Sajovic</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+

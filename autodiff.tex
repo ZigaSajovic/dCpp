@@ -1,0 +1,1527 @@
+\documentclass{article}
+
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{caption}
+\usepackage{bbm}
+
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{positioning}
+
+\usepackage{color}
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+
+\usepackage{listings}
+
+\lstset{language=[GNU]C++,
+showspaces=false,
+showtabs=false,
+breaklines=true,
+showstringspaces=false,
+breakatwhitespace=true,
+escapeinside={(*@}{@*)},
+commentstyle=\color{greencomments},
+keywordstyle=\color{bluekeywords}\bfseries,
+stringstyle=\color{redstrings},
+basicstyle=\ttfamily
+}
+
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\Shift}{\mathcal{S}}
+\newcommand{\II}{\mathbb{I}}
+\newcommand{\JJ}{\mathbb{J}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\MM}{\mathcal{M}}
+\newcommand{\NN}{\mathcal{N}}
+\newcommand{\e}{\mathbf{e}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\m}{\mathbf{m}}
+\newcommand{\uu}{\mathbf{u}}
+\newcommand{\vv}{\mathbf{v}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\CC}{C\nolinebreak\hspace{-.05em}\raisebox{.4ex}{\tiny\bf +}\nolinebreak\hspace{-.10em}\raisebox{.4ex}{\tiny\bf +}}
+\def\CC{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\tiny\bf ++}}}
+\newcommand{\dP}{\mathcal{P}}
+% operator odvoda
+\newcommand{\D}{\partial}
+%operator 1 + \D
+\newcommand{\Dplus}{\mathcal{D}}
+% operator 1+ \D + \D^2 + ...
+\newcommand{\sumd}{\tau}
+\newcommand{\Op}{\partial^{\bigoplus}}
+\newcommand{\op}[1]{\partial^{#1\bigoplus}}
+\DeclareMathOperator{\interior}{int}
+\newtheorem{definicija}{Definicija}[section]
+\newtheorem{trditev}{Trditev}[section]
+\newtheorem{izrek}{Izrek}[section]
+\newtheorem{opomba}{Opomba}[section]
+\newtheorem{posledica}{Posledica}[section]
+\newtheorem{konstrukcija}{Konstrukcija}[section]
+\newtheorem{koda}{Koda}[section]
+\title{Operatorska analiza v Algebri algoritmov}
+\author{Žiga Sajovic, Martin Vuk}
+\begin{document}
+\maketitle
+\begin{abstract}
+  V tem članku razvijemo teorijo analitičnih strojev, ki implementirajo neskončno-krat odvedljive programske jezike, in operatorjev nad njimi.
+
+  Programski jezik definiramo kot monoid v funkcijskem vektorskem prostoru preslikav nad virtualnim pomnilnikom. Virtualni pomnilnik konstruiramo skozi tenzorsko algebro in ga opremimo s pripadajočo algebro algoritmov. Skozi to algebro konstruiramo diferencialne operatorje, ki nad programskimi jeziki napenjajo prostor neskončno-krat odvedljivih programov. Predstavimo celostno teorijo operatorjev, ki omogoča analizo programov in izračune na nivoju operatorjev samih, kar je seveda naklonjeno splošni implementaciji. Skozi teorijo izpeljemo nove operatorje, ki program razvijejo v neskončne potenčne vrste v algebri algoritmov. Teorijo uporabimo za analizo iteratorjev in drugih kontrolnih struktur v programskih jezikih, in njihove odvisnosti od izstopnih pogojev. 
+  
+  Z razvitim konstruiramo funkcijske transformacije programov v poljubni funkcijski bazi (navadno tisti, ki jo kot optimalno navaja proizvajalec strojne opreme). 
+  Tako s teorijo pridobimo nov pristop k analizi programov in sposobnost določanja časovne kompleksnosti algoritmov, s poznavanjem reda napak aproksimacije.
+\end{abstract}
+\section{Uvod}
+Za začetek si oglejmo preprost primer, na katerem ilustriramo osnovno idejo.
+Recimo, da računamo vrednosti funkcije $y=\sqrt{x}$ z babilonskim oziroma Haronovim obrazcem.
+Pri tem postopku, najprej izberemo začetni približek za
+kvadratni koren $y_0=y_z$. Nato pa z rekurzivno formulo
+\begin{equation*}
+  y_n=\frac{1}{2}\left( y_{n-1}+\frac{x}{y_{n-1}} \right)
+\end{equation*}
+računamo člene zaporedja $y_n$. Zaporedje $y_n$ konvergira zelo hitro k
+vrednosti $\sqrt{x}$, zato so vrednosti $y_n$ že po nekaj korakih zelo blizu
+iskani vrednosti $\sqrt{x}$. Opisani postopek lahko prevedemo v računalniški
+program. Na primer v programskem jeziku Python, bi program izgledal takole 
+
+\begin{verbatim}
+y = x/2
+while abs(y*y-x) > 5e-11:
+  y = (y+x/y)/2
+\end{verbatim}
+
+Pri tem smo za začetni približek izbrali $x/2$, lahko pa bi izbrali tudi kaj
+drugega. Vrednost pa nas zanima na 10 decimalk natančno. 
+Za funkcijo $f(x)$ želimo izračunati tudi njen odvod $f'(x)$. V našem
+primeru lahko odvod preprosto izrazimo s funkcijo $f'(x)=\frac{1}{2\sqrt{x}}$,
+ampak zamislimo si, da funkcije $f$ sploh ne poznamo, ampak poznamo le računalniški program za
+njen izračun. Še vedno pa bi radi izračunali vrednosti odvoda $f'(x)$. Uporabimo
+lahko numerične približke za odvod, vendar pri tem izgubimo natančnost. 
+
+Osnovna ideja avtomatskega odvajanja je v tem, da odvajamo program. Računalniški program ni nič drugega kot zaporedje osnovnih
+računskih operacij in premetavanja vrednosti po pomnilniku. V našem primeru
+uporabljamo dve spremenljivki \texttt{x} in \texttt{y}, zato si lahko vsako vrstico
+programa, ki spreminja vrednosti \texttt{x} ali \texttt{y} predstavljamo kot
+funkcijo $\phi_i:\RR^2\to\RR^2$. Označimo z $(x_k,y_k)$ vrednosti spremenljivk
+\texttt{x} in \texttt{y}, po izvedbi $k$-te vrstice programa in pred izvedbo
+$k+1$-ve vrstice. Vsaka vrstica programa določa preslikavo
+\begin{eqnarray*}
+  \phi_k&:&\RR^2\to \RR^2\\
+  \phi_k&:&(x_{k-1},y_{k-1})\mapsto (x_k,y_k).
+\end{eqnarray*}
+Celoten program predstavlja preslikavo $F:(x_0,y_0)\mapsto (x_n,y_n)$, ki jo
+lahko predstavimo kot kompozitum preslikav $\phi_k$, defniranih z vsako vrstico programa:
+\begin{equation*}
+  F(x_0,y_0) = \phi_n\circ\phi_{n-1}\circ \ldots \phi_1(x_0,y_0) = \phi_n(\phi_{n-1}(\ldots \phi_1(x_0,y_0)\ldots))
+\end{equation*}
+
+Odvod preslikave $F$ lahko po verižnem pravilu izrazimo kot produkt Jacobijevih matrik
+$\D\phi_i$ preslikav $\phi_i$. Ker nas zanima le odvod $y$ po $x$, matriko $\D F$
+pomnožimo z leve in desne z vektorjem $(0,1)$ 
+\begin{equation}
+\label{eq:kompozitum}
+  \frac{dy}{dx} =
+  \begin{bmatrix}
+    0& 1
+  \end{bmatrix}
+\cdot \D\phi_n(x_{n-1},y_{n-1})\cdot \D\phi_{n-1}(x_{n-2},y_{n-2})\ldots \D\phi_1(x_0,y_0)\cdot
+  \begin{bmatrix}
+    0\\
+    1
+  \end{bmatrix} 
+\end{equation}
+Program za računanje odvoda lahko povsem sledi originalnemu programu, le da si
+mora na vsakem koraku zapomniti vmesne vrednosti odvoda. Na vsakem
+koraku programa, si mora program za odvod zapomniti vektor
+\begin{equation*}
+\begin{bmatrix}dx_{k}\\dy_{k}\end{bmatrix} = \D\phi_{k}(x_{k-1},y_{k-1})\ldots \D\phi_1(x_0,y_0)\cdot \begin{bmatrix} 0\\ 1\end{bmatrix} 
+\end{equation*}
+Vrednost $(dx_k,dy_k)$ lahko definiramo rekurzivno
+\begin{equation}
+  \label{eq:rek_odvod}
+\begin{bmatrix}dx_{k}\\dy_{k}\end{bmatrix} = \D\phi_{k}(x_{k-1},y_{k-1})\cdot \begin{bmatrix} dx_{k-1}\\ dy_{k-1}\end{bmatrix} 
+\end{equation}
+V našem primeru je 
+\begin{equation*}
+  \phi_1(x,y)=(x,x/2)\text{ in } \phi_n(x,y)=\left(x,\frac{1}{2}\left( y+\frac{x}{y} \right)\right)
+\end{equation*}
+Vrednost spremenljivke $x$ se ne spreminja tekom programa, zato je dovolj, da
+spremljamo le vrednosti odvoda po $y$
+\begin{equation*}
+  \frac{d}{dx}\phi_0(x,y(x))_2=1/2\text{ in }\frac{d}{dx}\phi_k(x,y(x))_2=\frac{1}{2}\left( \frac{dy}{dx}+\left(\frac{1}{y}-\frac{x}{y^2}\frac{dy}{dx}\right) \right)
+\end{equation*}
+ 
+Naslednji program poleg vrednosti funkcije (spremenljivka \texttt{y}) računa
+tudi njen odvod (spremenljivka \texttt{dy})
+\begin{verbatim}
+y = x/2
+dy = 0.5
+while abs(y*y-x) > eps:
+  y = (y+x/y)/2
+  dy = (dy + (1/y - x/(y*y)*dy)/2
+\end{verbatim}
+
+\section{Programi kot preslikave vektorskih prostorov}
+Na uvodnem primeru smo videli, da si lahko računalniški program predstavljamo
+kot vektorsko funkcijo več spremenljivk. Vektorska funkcija, ki predstavlja
+program, je podana kot kompozitum preslikav, ki ustrezajo posameznim vrsticam
+programa. Program za odvod smo napisali tako, da smo vsaki vrstici
+programa dodali vrstico, ki je izračunala odvod. Ta postopek lahko namesto nas
+opravi računalnik (od tod ime avtomatski odvod). V nadaljevanju bomo opisali dva
+načina, kako je to izvedeno v obstoječih knjižnicah. 
+
+Oglejmo si matematični model, s katerim lahko utemeljimo postopke avtomatičnega
+odvajanja. V našem modelu bomo zajeli le spremenljivke predstavljene s števili s
+plavajočo vejico,  s katerimi v računalniku predstavljamo realna števila. 
+Ostale spremenljivke kot so števci v zankah, celoštevilske vrednosti, logične
+vrednosti in podobne ne bodo vključene v našem modelu, ampak jih upoštevamo
+zgolj kot parametre, ki sicer vplivajo na potek programa, vendar njihovega
+vpliva ne moremo infinitezimalno obravnavati. Če predpostavimo, da so vse
+spremenjivke, ki nas zanimajo tipa \texttt{float} (ali \texttt{double)}), si lahko stanje spomina
+predstavljamo kot $n$-razsežni realni vektor\footnote[1]{omejitev, da je
+  spremenljivka tipa \texttt{float}, smo vpeljali zgolj zaradi enostavnosti.
+  Odvajamo lahko po poljubnem tipu, ki to dopušča. Če bi npr. definirali
+  poseben tip, ki bi predstavljal funkcijo, bi na isti način lahko računali
+  funkcijski odvod, kot ga poznamo v variacijskem računu.}. Vsaka spremenljivka(lokacija v
+spominu) predstavlja eno komponento tega vektorja. Množico vseh možnih stanj
+spomina, s katerim razpolaga program, lahko modeliramo z $n$-razsežnim
+vektorskim prostorom $\VV\simeq\RR^n$. Vektorski prostor $\VV$ bomo imenovali
+\emph{virtualni pomnilnik programa}. Računalniški program, ki
+ima na voljo $n$-mest v virtualnem pomnilniku, si lahko predstavljamo kot preslikavo
+\begin{equation}
+  \label{eq:program_kot_preslikava}
+  P: \VV\to \VV,
+\end{equation}
+kjer je $\VV$ vektorski prostor dimenzije $n$.
+
+V nadaljevanju bomo definirali, kako si predstavljamo odvedljiv programski jezik
+oziroma računski stroj. Odvedljiv stroj si bomo predstavljali kot računski
+stroj, ki izvaja zaporedne enostavne operacije, ki so odvedljive, na virtualnem
+pomnilniku $\VV\simeq\RR^n$. 
+Zanimali nas bodo stroji, ki manipulirajo z virtualnim
+pomnilnikom $\VV$. Osnovne operacije na stroju so preslikave 
+$\epsilon_i:\VV\to \VV$.
+\begin{definicija}[računski stroj]
+  Par $(\VV,\E)$, kjer je $\VV$ končnodimenzionalen vektorski prostor in $\E$
+  končna množica preslikav $\VV\to \VV$ imenujemo \emph{računski stroj}.
+  Prostoru $\VV$ pravimo \emph{virtualni pomnilnik}, preslikavam $\epsilon_i$ pa
+  \emph{elementarne operacije}.
+\end{definicija}
+\subsection{Monoid preslikav na virtualnem pomnilniku}
+Označimo z $\VV^\VV$ prostor preslikav $\VV\to \VV$. Množiča $\VV^\VV$
+je naravno opremljena z operacijo kompozituma $\circ$. Če imamo dve preslikavi
+$F:\VV\to\VV$ in $G:\VV\to \VV$ je njun kompozitum 
+$$F\circ G:\VV\xrightarrow{G} \VV\xrightarrow{F} \VV$$ 
+zopet preslikava iz prostora
+$\VV^\VV$. Prostor preslikav $(\VV^\VV, \circ)$ je \emph{monoid}. Računalniški
+program si lahko predstavljamo kot zaporedje osnovnih ukazov. Če se omejimo le
+na učinke, ki jih ima program na pomnilnik, lahko vsak program $P$, če ga
+gledamo kot preslikava iz
+$\VV^\VV$, zapišemo kot kompozitum zaporedja elementarnih preslikav: 
+\[
+P = \epsilon_n\circ\epsilon_{n-1}\circ \ldots \epsilon_1.
+\]
+
+Računalniki redko uporabljajo ves pomnilnik hkrati, zato bomo definirali, kateri
+del pomnilnika sodeluje v določenem programu. Naj bo $P:\VV\to\VV$ preslikava.
+\emph{Negibni podprostor programa P} je vektorski podprostor $N<\VV$, tako da
+je $pr_N\circ P|_N=Id_N$. Negibni podprostor je podprostor, ki ga
+preslikava $P$ ne spremeni. Če je $P$ linearna preslikava, je negibni podprostor
+napet na lastne vektorje za lastno vrednost $1$. Negibni podprostor predstavlja
+del pomnilnika, ki ga program pusti na miru. K negibnemu prostoru bomo šteli
+tudi del pomnilnika, ki ga program med izvajanjem sprosti in je na koncu
+nealociran. Čeprav se fizične vrednosti v takem pomnilniku spremenijo, jih je
+smiselno ignorirati in si misliti, da so ostale enake.
+
+Podprostor $U<\VV$, ki je komplement negibnega prostora $U\oplus
+N=\VV$ imenujemo \emph{aktivni podprostor programa $P$}. Običajno za $U$ vzamemo
+kar ortogonalni komplement $N^\perp$, čeprav je za naše
+razmišljanje vseeno, kateri komplementarni podprostor izberemo. Podprostor $U$,
+je prostor spremenljivk, ki jih program dejansko spremeni. Negibni prostor
+je je sestavljen iz nezasedenega dela pomnilnika, vsebuje pa tudi neodvisne
+spremenljivke, ki se tekom programa ne spreminjajo.
+
+\subsection{Parametri, vhodne in izhodne spremenljivke}
+Naj bo $V<\VV$ podprostor virtualnega pomnilnika in naj bo ${\e_1,\ldots,\e_k}$
+baza prostora $V$. Označimo z ${x_1,x_2,\ldots,x_k}$ dualno bazo $V^*$. Elementi $x_i$
+so koordinatne funkcije na $\VV$ in ustrezajo spremenljivkam v programu.
+Zanimalo nas bo, kako je aktivni del pomnilnika odvisen od vrednosti
+spremenljivk $x_i$. Spremenljivke $x_i$ bomo imenovali \emph{vhodne
+  spremenljivke}, podprostor $V$ pa \emph{vhodni podprostor}. Vektor v vhodnem
+prostoru je nabor vrednosti vhodnih spremenljivk.
+ 
+Aktivni prostor programa je podprostor virtualnega pomnilnika, ki ga program
+spremeni. 
+\begin{definicija}[Domena programa]
+  \emph{Domena programa $P:\VV\to\VV$} je minimalen podprostor $V<\VV$ napet na
+  standardne bazne vektorje za katerega velja 
+  $$P\circ i_V\circ pr_V=P.$$ 
+  Podprostoru $V^\perp$ rečemo  
+\end{definicija}
+Preslikava $i_V\circ pr_V$ je preslikava, ki izbrani komplement podprostora $V$
+postavi na nič. Pogoj $P\circ i_V\circ pr_V=P$ pomeni, da je vrednost preslikave
+$P$ odvisna le od komponente iz $V$, ne pa tudi od njenega komplementa. Domena
+programa je podprostor določen s spremenljivkami, katerih začetna vrednost
+vpliva na končni rezultat programa. Podprostor $V$ ni enolično določen, je pa
+dimenzija takega prostora enolično določena.
+\section{Odvod}
+\begin{definicija}
+  Naj bo $V$ Banachov vektroski prostor. Preslikava $P:V\to V$ je odvedljiva v
+  točki $x\in V$, če obstaja
+  linearen omejen operator $TP_x:V\to V$, za katerega je
+  \begin{equation}
+    \label{eq:frechet}
+    \lim_{h\to 0}\frac{\|P(x+h)-P(x)-TP_x(h)\|}{\|h\|} = 0.
+  \end{equation}
+  Preslikavo $TP_x$ imenujemo \emph{Fréchetov odvod}. Preslikavo 
+  \begin{equation}
+    \label{eq:linearizacija}
+    h\mapsto P(x)+TP_x(h)
+  \end{equation}
+ imenujemo \emph{linearizacija} preslikave $P$ v točki $x$.
+\end{definicija}
+Za preslikave $\RR^n\to \RR^m$ lahko Fréchetov odvod
+izrazimo kot množenje vektorja $h$ z Jacobijevo matriko $\D P$ parcialnih odvodov
+komponent preslikave $P$
+\begin{equation*}
+  TP_x(h) = \D P(x)\cdot h.
+\end{equation*}
+\subsection{Polinomi in simetrična algebra}
+V prejšnjem razdelku smo definirali odvod kot \emph{linearizacijo} preslikave v dani
+točki. Pojem bi radi posplošili na aproksimacije s polinomi višjih stopenj.  
+ Naj bo $V$ vektorski prostor nad obsegom $F$. Linearne preslikave $V\to V$
+ lahko predstavimo s tenzorji 2. reda iz prostora $V\otimes V^*$. Če je
+ $\vv\otimes f\in V\otimes V^*$, je preslikava
+ \begin{equation}
+   \label{eq:lin_tenzor}
+   \x \mapsto f(\x)\cdot \vv
+ \end{equation}
+linearna preslikava (v koordinatah je matrika te preslikave produkt stopca $\vv$
+in vrstice $f$). Vsako linearno preslikavo lahko zapišemo kot linearno
+kombinacijo preslikav te vrste.
+
+Podobno lahko definiramo monomske preslikave $V\to V$. Označimo z $V^{\otimes k}
+= V\otimes V\ldots \otimes V$ tenzorski produkt $k$-kopij prostora $V$. Število
+$k$ imenujemo \emph{red} tenzorja. Tenzorji reda $0$  so skalarji $V^{\otimes
+  0}=F$, medtem ko so tenzorji reda 1 vektorji. Poljuben tenzor reda $k$ iz
+prostora $(V*)^{\otimes k}$, definira multilinearno funkcijo $V^k\to F$. Na
+tenzorjih oblike $f_1\otimes f_2\otimes \ldots\otimes f_k$ je definirana s
+formulo
+\begin{equation}
+  \label{eq:multilinear_f}
+  (\vv_1,\vv_2,\ldots,v_k) = f_k(\vv_1)f_{k-1}(\vv_2)\cdots f_1(\vv_k)
+\end{equation}
+ki se po linearnosti razširi na ves $(V^*)^{\otimes k}$.
+\begin{definicija}[Tenzorska in simetrična algebra]
+  Naj bo $V$ vektorski prostor nad obsegom $F$. \emph{Tenzorska algebra} $T(V)$ je direktna vsota
+  \begin{equation}
+    \label{eq:tenzorska_algebra}
+    T(V)=\bigoplus_{k=0}^\infty V^{\otimes k}=F\oplus V\oplus (V\otimes V)\oplus (V\otimes V\otimes V)\oplus\ldots
+  \end{equation}
+opremljena z operacijo tenzorskega produkta, ki je določena s kanoničnim
+izomorfizmom $V^{\otimes k}\otimes V^{\otimes l}\to V^{\otimes (k+1)}$. 
+\emph{Simetrična algebra} $S(V)$ je kvocientna algebra $T(V)/\mathcal{I}$, kjer
+je $\mathcal{I}$ ideal generiran z elementi oblike
+\begin{equation}
+  \label{eq:simetricna_algebra}
+  v\otimes u -u\otimes v.
+\end{equation}
+\end{definicija}
+Tenzorska algebra je množica linearnih kombinacij tenzorjev različnega ranga.
+Splošen element $T(V)$ bomo imenovali
+\emph{multitenzor}. Podobno bomo splošen element simetrične algebre imenovali
+\emph{simetrični multitenzor}.
+Če so vektorji  $\{\e_i;\quad i=1,2,\ldots n\}$ baza prostora $V$, lahko poljuben
+element $T(V)$ enolično zapišemo kot
+\begin{equation}
+  \label{eq:multitenzor}
+  \m = \sum_{\alpha\in \JJ}m_\alpha e_{\alpha_1}\otimes e_{\alpha_2}\otimes\ldots e_{\alpha_{k_\alpha}},
+\end{equation}
+kjer so koeficienti $m_\alpha\in F$ in je $\JJ$ množica vseh multiindeksov z
+vrednostmi v $\{1,2,\ldots,n\}$. Prav tako lahko vsak element simetrične algebre
+enolično zapišemo s podobno vsoto, le da gre vsota le po množici urejenih multinideksov.\footnote{Urejen multiindeks $\alpha$ dolžine $k$ je $k$-terica
+števil $(\alpha_1,\alpha_2, \ldots \alpha_k)$, kjer so vsi
+$\alpha_i\in{1,2,\ldots n}$ in velja $\alpha_i\le\alpha_j$, če je $i<j$.}.
+ 
+
+\subsection{Višji odvodi}
+Naj bo $P:V\to U$ odvedljiva v vsaki točki $\x\in V$. Odvod $T_\x P$ preslikave $P$ je v
+vsaki točki linearna preslikava, ki jo lahko predstavimo s tenzorjem iz
+$U\otimes V^*$. Odvod definira preslikavo 
+\begin{eqnarray}
+  \label{eq:odvod_preslikava}
+  \D P&:& V\to U\otimes V^*\\
+  \D P&:& \x \mapsto T_\x P.
+\end{eqnarray}
+Če gledamo na odvod kot na preslikavo $\D P:V\to U\otimes V^*$, lahko zopet govorimo
+o njeni odvedljivosti. Odvod preslikave $\D P$ imenujemo \emph{drugi odvod}
+preslikave $P$ in ga označimo z $\D^2P$. Drugi odvod je v vsaki točki linearna
+preslikava $V\to U\otimes V^*$, kar pomeni, da jo lahko predstavimo s tenzorjem
+iz prostora $(U\otimes V^*)\otimes V^*$. Na drugi odvod lahko zopet gledamo kot
+na preslikavo 
+$$\D^2 P:V\to U\otimes V^*\otimes V^*.$$ 
+Podobno lahko definiramo višje odvode
+
+\begin{definicija}[Višji odvodi]
+  Naj bo $P:V\to U$ preslikava med dvema vektorskima prostoroma $V$ in $U$. Odvod reda $k$ je preslikava $\D^kP:V\to U\otimes(V^*)^{\otimes k}$, ki
+  vsaki točki $\x\in V$ priredi odvod $T_\x(\D^{k-1}P)$ odvoda reda $k-1$, kot
+  preslikave $\D^{k-1}P: V\to U\otimes (V^*)^{\otimes k-1}$:
+  \begin{eqnarray}\label{eq:partial}
+    \label{eq:visji_odvod}
+    \D^kP&:&V\to U\otimes (V^*)^{\otimes k}\\
+    \D^kP&:&\x\mapsto T_\x\left( \D^{k-1}P \right)
+  \end{eqnarray}
+\end{definicija} 
+\begin{opomba}
+   V zgornji definiciji smo predpostavili, da so preslikava $P$ in njeni odvodi v
+  vseh točkah $v$ odvedljivi. Seveda se lahko dogodi, da v nekaterih točkah
+  odvod reda $k$ ne obstaja. V tem primeru bi lahko domeno $V$ ustrezno zožali.
+  Zaradi jasnosti, se bomo delali, da so vse preslikave, s katerimi imamo
+  opravka povsod neskončno krat odvedljive.
+\end{opomba}
+
+Iz definicije vidimo, da višji odvodi niso nič posebnega, le večkrat uporabimo
+odvajanje. Opazimo, da je prostor v katerega višji odvodi slikajo $V$
+vedno drugačen. Temu se lahko elegantno izognemo, če definiramo operator
+odvajanja na univerzalnem virtualnem prostoru $U\otimes T(V^*)$. Vsako preslikavo $P:V\to U\otimes (V^*)^{\otimes k}$ lahko gledamo kot na
+preslikavo $V\to U\otimes T(V)$, če jo na drugem faktorju komponiramo z naravno
+vložitvijo $(V^*)^{\otimes k}\hookrightarrow T(V^*)$. Tako lahko preslikavo
+$P:V\to U$ in vse njene odvode razumemo kot preslikave 
+$$\D^k P:V\to U\otimes T(V^*).$$ 
+\begin{definicija}\label{def:partial}
+  Odvod
+  $\D$ je operator na prostoru odvedljivih preslikav $V\to U\times T(V^*)$, ki
+  vsaki preslikavi priredi njen odvod
+  \begin{equation}
+    \label{eq:odvod_splosen}
+    \D : P \mapsto (\D P:\x\mapsto T_\x P)
+  \end{equation}
+\end{definicija}
+Višji odvodi so torej preprosto potence operatorja $\D$.
+
+Označimo z $T_k(V)=V^{\otimes 0}\oplus V \oplus V^{\otimes 2} \oplus \cdots
+\oplus V^{\otimes k}$ in z $S_k(V)$ ustrezen simetričen del. Prostor $U\otimes
+S_k(V^*)$ je izomorfen  prostoru vseh polinomskih preslikav $V\to U$ stopnje $k$
+ali manj. Operator $\D$ slika $U\otimes T_k(V^*)$ v $U\otimes T_{k+1}(V^*)$.
+
+
+\subsection{Odvedljivi stroji}
+
+\begin{definicija}[Odvedljivi stroji]
+  Računkski stroj $(\VV,E)$ je odvedljiv stroj, če za vsako elementarno operacijo
+  $\epsilon\in E$, z domeno $V_\epsilon$ in kodomeno $U_\epsilon$, lahko preslikavo 
+$$\D \epsilon:V_\epsilon\to U_\epsilon\otimes
+V_\epsilon$$ 
+zapišemo kot program računskega stroja $(\VV,E)$ z domeno $V_\epsilon$ in kodomeno
+  $U_\epsilon \otimes V^*$. 
+\end{definicija}
+ 
+\begin{definicija}[Odvedljiv program z domeno]
+  Naj bosta $V$ in $U$ poljubna vektorska prostora dimenzije manjše kot $\dim \VV$.
+  \emph{Odvedljiv program z domeno $V$} je vsaka odvedljiva preslikava
+  \begin{equation}
+    \label{eq:odvedljiv_program}
+    P:V\to U,
+  \end{equation}
+ ki se izraža kot kompozitum  afine vložitve $i_V:V\hookrightarrow \VV$,
+zaporedja elementarnih operacij $\epsilon_\vv^{i}$ in surjektivne preslikave na
+$:pr_U:\VV\to U$
+ \begin{equation}
+   \label{eq:zapis}
+   P = pr_U\circ\epsilon_{k}\circ \cdots \circ \epsilon_1\circ i_V.
+ \end{equation} 
+\end{definicija}
+\begin{opomba}
+  Domena programa $V$ določa, po katerih spremenljivkah bomo odvajali. Tekom
+  programa se to ne bo spreminljalo, zato moramo v virtualnem pomnilniku
+  rezervirati prostor le za $U\otimes S_k(V^*)$, kjer je $U$ prostor odvisnih
+  spremenljivk, ki so v danem trenutku alocirane v virtualnem pomnilniku. Faktor 
+$S_k(V^*)$ se ne spreminja, ne glede na to kakšna je dimenzija domene in
+ko-domene za vmesne operacije. Na ta način zmanjšamo potrebo po spominu na minimum.
+\end{opomba}
+
+Program $P:V\to U$ je \emph{brez stranskih učinkov}, če je zožitev preslikave 
+na $U^\perp$ 
+$$ pr_{U^\perp}\circ \epsilon_k\circ \cdots \circ \epsilon_k\circ i_{U^\perp}=Id_{U^\perp}$$  
+identiteta. To pomeni, da program ne spreminja pomnilnika, razen na lokacijah, 
+kamor se zapiše izhod programa. 
+ 
+\subsubsection{Komponiranje programov z domeno} 
+ 
+Program z domeno je matematični model za programerske funkcije. Domena programa 
+prostor $V$ je prostor argumentov funkcije, medtem ko je prostor $U$ prostor 
+vrednosti, ki ji funkcija vrne. Preslikava $i_V$, pove katere spremenljivke smo 
+postavili kot argumente funkciji, medtem ko $pr_U$ pove, kam smo shranili 
+vrednosti, ki jih funkcija vrne. Zaporedje ukazov $\epsilon_i$ pa pove, kako 
+funkcija vrednosti dejansko izračuna. 
+Zanima nas, kako lahko funkcije med sabo komponiramo. Naj bosta $P:V\to U$ in 
+$Q:U\to W$ programa z domeno $V$ oziroma $U$. Njuna kompozicija bo imela smisel 
+le, če $i_U\circ pr_U$ nadomestimo z identiteto na $\VV$. V nasprotnem primeru bi to 
+pomenilo, da se s klicem funkcije $Q$ ``pokvari'' del pomnilnika, ki nima nobene 
+zveze z argumenti funkcije $Q$ 
+
+\begin{definicija}
+  Kompozitum dveh programov z domeno $P:V\to U$ in $Q:U\to W$ je program
+  $QP:V\to W$ podan kot kompozitum
+  \begin{equation}
+    \label{eq:kompozitum_domena}
+    QP = pr_W\circ \epsilon^Q_k\circ\cdots\circ \epsilon_1^Q\circ T_u\circ \epsilon^P_l\circ\cdots\circ \epsilon^P_l\circ i_V,
+  \end{equation}
+kjer sta $P=pr_U\circ\epsilon^P_l\circ\cdots\circ \epsilon^P_l\circ i_V$,
+$Q=pr_W\circ \epsilon^Q_k\circ \cdots \circ\epsilon^Q_1\circ i_u$ in $T_U$
+preslikava $T_U:\VV \to \VV$, za katero je ??. 
+\end{definicija}
+
+Prostor $\T_V$ opisuje vse možne programe z domeno $V$, na našem
+stroju, množica generatorjev $\E$ pa elementarne operacije, ki jih stroj lahko
+izvaja. Ker je $\T_V=\langle \E \rangle$, lahko vsak program $P$ zapišemo kot
+kompozitum elementarnih operacij $\epsilon_i$:
+
+\[
+P = \epsilon_k\circ\epsilon_{k-1}\ldots\epsilon_0.
+\]
+
+Če želimo tekom programa sproti računati tudi odvode, moramo hraniti vmesne
+vrednosti odvodov. Zato moramo pomnilnik (vektorski prostor $V$) razširiti, da
+bo vseboval tudi odvode. Odvod je linearna preslikava $V\to V$, prostor
+vseh linearnih preslikav $\mathcal{L}(V)$ je izomorfen tenzorskemu produktu
+$V^*\otimes V$. Tako za izvedbo programa, ki računa odvode, potrebujemo virtualni
+pomnilnik izomorfen prostoru $V\oplus (V^*\otimes V)$. Poleg vsake spremenljivke $x_j$, ki
+jo uporabimo v programu, si moramo zapomniti še vrednosti odvodov po vseh
+ostalih spremenljivkah $\frac{\partial x_j}{\partial x_i}$.   
+
+Za višje odvode rekurzivno definiramo zaporedje vektorskih prostorov $V_n$, ki
+predstavljajo virtualni pomnilnik, ki ga potrebujemo za hranjenje vrednosti
+višjih odvodov.
+\begin{eqnarray}\label{eq:V_n}
+  \label{eq:prapor}
+  V_0 &=& V\\
+  V_{n+1}&=&V\oplus (V^*\otimes V_n),
+\end{eqnarray} 
+ki ga potrebuje program za izračun vrednosti $n$-tih odvodov. Izbira $V_n\simeq
+V\oplus (V^*\otimes V) \oplus (V^*\otimes V^*\otimes V) \ldots \oplus
+(V^*)^{\otimes n}\otimes V$ odraža dejstvo, da za izračun vrednosti $n$-tega odvoda v neki točki $x\in V$
+potrebujemo vrednosti funkcije in vseh nižjih odvodov.
+\begin{definicija}
+  Direktno limito zaporedja vektorskih prostorov $V_n$ imenujemo
+  \emph{univerzalni virtualni prostor} in jo označimo z $V_\infty$.
+\end{definicija}
+\begin{izrek}
+  Univerzalni virtualni prostor je izomorfen tenzorskemu produktu virtualnega
+  prostora $V$ in tenzorske algebre $T(V^*)$ duala virtualnega prostora $V^*$:
+  \begin{equation}
+\label{eq:tenzor_algebra}
+    V_\infty\simeq V\otimes T(V^*) = V \otimes\left(\bigoplus_{k=0}^\infty (V^*)^{\otimes k} \right)
+\end{equation}
+
+\end{izrek}
+
+Elementi $V_\infty$ predstavljajo neskončne potenčne vrste kot preslikave 
+$V\to V$. Prostor $(V^*)^{\times n}\otimes V$ je izomorfen prostoru
+multilinearnih preslikav $V^{\times n}\to V$. Če poljubno
+multilinearno preslikavo komponiramo z vložitvijo $V\to V^{\times n}$ na
+diagonalo, dobimo preslikavo $V\to V$, ki se v koordinatah izraža kot linearna
+kombinacija monomov stopnje $n$.
+
+\begin{izrek}
+ Dimenzija prostora $V_n$ je $\frac{k-k^{n+2}}{1-k}$, kjer je k dimenzija $V$.
+ \end{izrek}
+
+\begin{proof}
+	$$dim(V_n)=dim(V)\sum\limits_{i=0}^{n}dim((V^*)^{\otimes i})$$
+	$$dim(V^*)=dim(V)\land dim\Big((V)^{\otimes n}\Big)=div(V)^n$$
+	$$\implies$$
+	$$dim(V_n)=dim(V)\sum\limits_{i=0}^{n}dim(V)^{i}$$
+	$$dim(V_n)=dim(V)\frac{1-dim(V)^{n+1}}{1-dim(V)}$$
+\end{proof}
+
+Spominska kompleksnost modela je eksponentna. Gre poudarit, da v praksi redko projeciramo na celoten $V$, pogosteje nas zanima manjša podmnožica komponent.
+\subsection{Polinomske aproksimacije in Taylorjeva vrsta}
+Naj bo $f_1\otimes f_2\otimes \ldots \otimes f_k\in (V^*)^{\otimes k}$
+tenzor. Tenzorju lahko priredimo multilinearno funkcijo $f:V^k\to F$ 
+\begin{eqnarray}
+  \label{eq:multilinear}
+f&:&(v_1,v_2,\ldots,v_k) \mapsto \prod_{i=1}^k f_i(v_{k-i+1}) 
+\end{eqnarray}
+Preslikava $f$ je \emph{multilinearna}. Zgornjo definicijo lahko po linearnosti
+razširimo na vse tenzorje v $(V^*)^{\otimes k}$. Tako dobimo, da je prostor
+$\mathrm{Mul}(V,k)$ multilinearnih preslikav ranga $k$ izomorfen $k$-ti stopnici
+$(V^*)^{\otimes k}$ tenzorske algebre $T(V^*)$. 
+Za vsako multilinearno preslikavo $f:V^k\to F$, ki je podana s tenzorjem
+$f_1\otimes f_2\otimes\ldots \otimes f_k$ lahko definiramo polinom $p:V\to
+F$ stopnje $k$\footnote{polinom, ki ga tako dobimo je linearna kombinacija monomov stopnje $k$}, tako da v $f$ vstavimo $(v,v,\ldots, v)$:
+\begin{equation}
+  \label{eq:polinom}
+  p(v) = f(v,v,\ldots, v) = \prod_{i=1}^kf_i(v).
+\end{equation}
+Podobno kot pri multilinearnih preslikavah, lahko definicijo (\ref{eq:polinom})
+po linearnosti razširimo na vse tenzorje iz $(V^*)^{\otimes k}$ pa tudi na
+poljubne multitenzorje, se pravi na celotno tenzorsko algebro $T(V)$. Razlika je v
+tem, da preslikava, ki tenzorjem iz $(V^*)^{\otimes k}$ priredi polinom, ni
+izomorfizem, saj je invarijantna na permutacije faktorjev v tenzorskem
+produktu. Zato preslikava podano z (\ref{eq:polinom}) definira izomorfizem
+simetrične algebre $S(V^*)$ in prostora polinomov.
+\begin{izrek}
+  Prostor polinomov na vektorskem prostoru $V$ je izomorfen simetrični algebri
+  $S(V^*)$. Izomorfizem je podan z razširitvijo formule (\ref{eq:polinom}) po
+  linearnosti na poljubne multitenzorje.
+\end{izrek}
+Označimo z $\{\e_1,\e_2,\ldots,\e_n\}$ bazo prostora $V$ in z $\{x_1,x_2,\ldots,
+x_n\}$ dualno bazo $V^*$. Funkcionali $x_i$ niso nič drugega kot koordinatne
+funkcije v razvoju po bazi $\{\e_i\}$. Poljuben multitenzor $f\in T(V^*)$ lahko
+zapišemo kot 
+$$f = \sum_{\alpha \in \JJ}f_\alpha x_{\alpha_1}\otimes
+x_{\alpha_2}\otimes\ldots \otimes x_{\alpha_k}$$
+Če je multitenzor $f$ končen (le končno neničelnih $f_\alpha$),  mu lahko
+priredimo polinom 
+$$p(x_1\e_1+x_2\e_2+\ldots +x_n\e_n)=\sum_{\alpha \in \JJ}f_\alpha x_{\alpha_1}\cdot
+x_{\alpha_2}\cdot\ldots  x_{\alpha_{k_\alpha}}.$$
+ 
+Posvetimo se sedaj preslikavam med dvema vektorskima prostoroma $P:V\to U$.
+Pokazali bomo, da končni multitenzorji prostora $U\otimes S(V^*)$ določajo
+polinomske preslikave $V\to U$. Linearne preslikave $V\to U$ lahko predstavimo s
+tenzorji iz $U\otimes V^*$. Naj bo 
+$$f=\sum_{|\alpha|\le m}\uu_\alpha\otimes x_{\alpha_1}\otimes x_{\alpha_2}\otimes
+\ldots \otimes x_{\alpha_{k_\alpha}}$$ multitenzor reda $m$. Preslikava, ki jo
+multitenzor $f$ definira s predpisom 
+$$f(v) = \sum_{|\alpha|\le m}\left( x_{\alpha_1}(v)\cdot x_{\alpha_2}(v)\cdot
+\ldots \cdot x_{\alpha_{k_\alpha}}(v) \right)\uu_\alpha$$
+je po komponentah polinomska in vsako preslikavo $V\to U$, ki se po komponetah izraža s
+polinomi stopnje največ $m$, lahko predstavimo z multitenzorjem reda $m$.
+  
+
+Naj bosta $U, V < \RR^n$ podprostora istega vektorskega prostora. Množenje v
+univerzalnem virtualnem prostoru definiramo tako, da se ujema s kompozitumom
+polinomskih preslikav. Naj bosta $u\otimes f_1\otimes\ldots \otimes f_k$ in
+$v\otimes g_1\otimes \ldots g_l$ tenzorja. Potem je produkt
+\begin{equation}
+  \label{eq:produkt}
+ \left( u\otimes f_1\otimes\ldots \otimes f_k \right)\cdot \left(v\otimes g_1\otimes \ldots g_l\right) = f_1(v)\cdots f_k(v) u\otimes g_1^{\otimes k}\otimes \ldots \otimes g_l^{\otimes k}
+\end{equation}
+
+\begin{definicija}[Aproksimacija s Taylorjevim polinomom]
+Naj $P$ program (se pravi funkcija na virtualnem pomnilniku $P:V\to V$). Odvod
+reda $n$ oziroma aproksimacija stopnje $n$ je polinomska preslikava
+$T^{(n)}_xP:V\to V$ stopnje $n$ za katero velja
+\begin{equation}
+  \label{eq:aprox}
+  \lim_{h\to 0}\frac{\|P(x+h)-T^{(n)}_xP(h)\|}{\|h\|^n}=0
+\end{equation}
+\end{definicija}
+\subsection{Kompozicija}
+V tem delu se bomo posvetili \emph{verižnemu pravilu} za odvod kompozituma in
+posledicami za višje odvode.
+\begin{izrek}[Verižno pravilo]
+  Naj bosta $f:U\to W$ in $g:V\to U$ odvedljivi preslikavi. Potem je 
+\[T_\x(f\circ g)=T_{g(\x)}f\circ T_\x g.\]
+\end{izrek}
+\begin{posledica}
+Če gledamo na odvod kot preslikave $\D g:V\to U \otimes V^*$ in $\D f:U\to
+W\otimes U^*$, se \emph{verižno pravilo} izraža kot
+\[\D(f\circ g) = (\D f\circ g)\cdot \D g,\]
+kjer je produkt $\cdot$ med tenzorji iz $W\otimes U^*$ in $U\times V^*$
+definiran s kontrakcijo, ki se na enostavnih tenzorjih izraža s formulo
+$$w\otimes f\cdot u\otimes g=f(u)w\otimes g.$$
+\end{posledica}
+\begin{proof}
+Trditev lahko preverimo v vsaki točki $\x\in V$ posebej. Prepričati se moramo
+le, da produkt tenzorjev definiran s kontrakcijo ustreza kompozitumu linearnih
+preslikav. Vzemimo dva enostavna tenzorja $w\otimes f\in W\otimes U^*$ in
+$u\otimes g\in U\otimes V^*$. Tenzorja delujeta kot linearni preslikavi ravno s
+kontrakcijo. Če je $\x\in V$, je 
+\[(w\otimes f)((u\otimes g)(\x))=(w\otimes f)(g(\x)u) = g(\x)f(u)w = (f(u)w
+  \otimes g)(\x).\]
+ Kompozitum linearnih preslikav, ki ustrezata tenzorjema $w\otimes f$ in
+ $u\otimes g$ je linearna preslikava, ki ustreza tenzorju $f(u)w\otimes g$, ki
+ pa je ravno produkt obeh tenzorjev.
+\end{proof}
+ \begin{izrek}\label{izr:D^nRek}
+ 	Operator $\D^k$ je za kompozitum dveh funkcij rekuzivno definiran z verižnim pravilom in produktom multitenzorjev:
+ 	$$\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-1}((\D \mathrm{f_1}\circ
+  f_2)\cdot \D \mathrm{f_2}),$$,
+kjer je produkt $\cdot$ multitenzorjev iz $V\otimes T(V^*)$ definiran kot
+bilinearna razširitev kontrakcije definirane na enostavnih tenzorjih s formulo
+$$(v\otimes f_1\otimes\ldots f_n)\cdot (u\otimes g_1\otimes \ldots
+ g_k) = f_n(u)v\otimes f_1\ldots f_{n-1}\otimes g_1\otimes \ldots
+ g_k. $$
+ \end{izrek}
+ \begin{opomba}[Izračunljivost višjih odvodov]
+   Izrek \ref{izr:D^nRek} nam pove, da lahko višje odvode računamo rekurzivno z
+   enakim postopkom kot prvi odvod. Če le znamo izračunati odvode osnovnih
+   ukazov in implementiramo množenje tenzorjev. TODO bolje objasni.
+ \end{opomba}
+ 
+ \section{Operatorska analiza v Algebri algoritmov}
+
+Razdelajmo pojme, ki nam bodo kasneje omogočili konstrukcijo analitičnih strojev, skozi preproste, zlahka implementirane algebraične manipulacije.
+
+Za enostavnost izražanja definirajmo funkcijske prostore
+
+ \begin{equation}\label{eq:F^n}
+ 	\F^n:V\to V\otimes(V^*)^{n\otimes}
+ \end{equation}
+ in
+ 
+ \begin{equation}\label{eq:F_n}
+ 	\F_n:V\to V\otimes T_n(V*)
+ \end{equation}
+ 
+Naj bo $\D^k$ $\eqref{eq:odvod_splosen}$ definiran kot
+
+\begin{equation}\label{eq:dd}
+	\partial^k=\sum_{\forall_{i,\alpha}}\frac{\partial^k}{\partial
+	    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
+	  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}
+\end{equation}
+
+Tako je $\D^k$ preslikava med funkcijskimi prostori $\eqref{eq:F^n}$
+ 
+ \begin{equation}\label{eq:toFn+k}
+ \D^k:\F^n\to\F^{n+k}
+ \end{equation}
+ 
+
+ V telesu algoritmov paradigm, kot je $\textit{deli in vladaj}$ je rekurziven homomorfizem ekvivalenten klasičnem homomorfizmu, ki je hkrati tudi začetni pogoj. To dejstvo sprida izkoriščamo pri učinkovitih implementacijah.
+ 
+ \begin{izrek}\label{izr:linearnaNeodvisnost}
+  Množica $\{\partial^k\}$ predstavlja linearno neodvisne vektorje nad poljem $K$.
+ \end{izrek}
+ 
+ \begin{proof} 
+ $$\forall_i(c_i\in K)$$
+	  $$c_0+c_1\D+c_2\D^2+....+c_n\D^n=0$$
+	$$\D(c_0+c_1\D+c_2\D^2+....+c_n\D^n)=0$$
+	$$\implies$$
+	$$(\D)(c_0+c_1\D+c_2\D^2+....+c_n\D^n)(\F)=(c_0+c_1\D+c_2\D^2+....+c_n\D^n)(\F)$$
+	$$\implies$$
+	$$(\D)(\F^n)=\F^n$$
+	$$\F^{n+1}=\F^n\iff\forall_i(c_i=0)$$
+	
+ \end{proof}
+ 
+ \begin{definicija}
+ 	Neskončno odvedljiv programski jezik $\dP$, je vsak podprostor $\F$, ki zadošča relaciji
+ 	\begin{equation}\label{eq:P}
+ 		\\F=\dP\iff\D^k\F\in\F\otimes T(V^*)
+ 	\end{equation}
+ \end{definicija}
+ 
+ \begin{izrek}\label{izr:dP}
+	Programski jezik $\dP=\{\dP:V\to V_n\}$, je zaprt na diferencialni operator $\D^k$.
+ \end{izrek}
+ 
+ \begin{proof}
+ 	 Po $\eqref{eq:P}$ in simetričnosti operatorja $\D$ za vsak $k$ obstaja izomorfizem
+ 	 	\begin{equation}
+ 	 		\dP\to\D^k\dP
+ 	 	\end{equation}
+ \end{proof}
+ 
+ Kot posledica Izreka $\ref{izr:dP}$ je dvojec $(\dP,\D)$ monoid. Dejstvo, ki ga bomo sprida izkoristili pri učinkoviti implementaciji strojev poljubnega reda.
+
+Po Izreku $\ref{izr:dP}$ lahko računanje odvodov preslkave $P:V\to U$, predstavimo z eno samo
+preslikavo. Definirajmo geometrijsko vrsto
+ 
+ \begin{equation}\label{eq:DD}
+  	\sumd_n = 1+\D +\D^2 +\ldots + \D^n 
+  \end{equation}
+  
+  
+  \begin{equation}
+  	\sumd_n=\sum\limits_{n=0}^{n}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
+  		    x_{\alpha_1}\ldots \partial x_{\alpha_k}}\e_i\otimes
+  		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_k} , x_i\in V_{j\in\JJ}
+  \end{equation}
+  
+  Po Izreku $\ref{izr:linearnaNeodvisnost}$ je operator $\sumd_n$ edinstven in vsaki preslikavi $P: V\to U$ priredi preslikavo $\sumd_k:V\to
+U\otimes T(V^*)$, sestavljeno iz preslikave same in vseh odvodov reda $k$ in
+manj. Slika $\sumd_kP(\x)$ je multitenzor reda $k$, ki je direktna vsota
+vrednosti preslikave $P$ in vseh odvodov reda $k$ in manj, vseh evaluiranih v
+točki $\x$:
+\begin{equation}
+  \label{eq:multi_odvod}
+  \sumd_kP(\x) = P(\x)+\D_\x P + \D^2_\x P + \ldots + \D^k_\x P.
+\end{equation}
+\begin{izrek}\label{izr:tauRek}
+  Operator $\sumd_k$ je definiran rekurzivno s formulo
+  \begin{equation}
+    \label{eq:potenca(1+d)}
+    \sumd_{k+1}=1+\D\sumd_{k}
+  \end{equation}
+in začetnim pogojem $\tau_0=1$.
+\end{izrek}
+Očitno velja preprosta rekurzivna zveza med $\sumd_k$ in $\sumd_{k+1}$
+\begin{equation}
+   \label{eq:rekurzija}
+   \sumd_{k+1} = 1 + \D +\D^2+\ldots \D^{k+1} = 1+\D(1+\D+\ldots +\D^{k}) = 1+\D\sumd_k.
+\end{equation} 
+
+\begin{definicija}
+Naj bo $\dP_n$ podprostor, ki ga baza $\{\partial^n\}$ napenja nad $\dP$.
+ \end{definicija}
+ 
+ \begin{izrek}\label{izr:P_n}
+ 	Funkcijski prostor $\dP_n$ je izomorfen tenzorskem produktu funkcijskega prostora $\dP_0:V\to V$ in tenzorske algebre $T(V^*)$ duala virtualnega prostora $V$.
+ 	
+ 	\begin{equation}
+ 	\label{eq:P_algebra}
+ 	 	    \dP\infty\simeq \dP\otimes T(V^*) = \dP \otimes\left(\bigoplus_{k=0}^\infty (V^*)^{\otimes k} \right)
+ 	\end{equation}
+ \end{izrek}
+ 
+ \begin{proof} 
+ Indukcijska predpostavka sledi iz $\eqref{eq:P}$.
+ \begin{equation}
+ 	p\in\dP\iff \exists_{\II}\Big(\D^np=\sum\limits_{i\in\II} c_ip_i\otimes(V^*)^{n\otimes}\Big)
+ \end{equation}
+ Indukcijski korak po Izreku $\ref{izr:dP}$ sledi Izreku $\ref{izr:D^nRek}$ 
+ $$\D p_1=p_2\in \dP\implies \D^{n+1}p_1=\D^np_2$$
+  \end{proof}
+
+   Zveza nam bo omogočila elegantno in učinkovito implementacijo odvodov poljubnega reda. Posledično, v kolikor lahko implementiramo programski jezik prvega reda, lahko implementiramo tudi programski jezik poljubnega reda.
+     
+     Po Izreku $\ref{izr:P_n}$ velja
+     \begin{equation}
+     	\sumd_n\in\dP_0\otimes T(V^*)
+     \end{equation}
+   
+        \begin{opomba}
+        Seveda enako velja za vse rodovne preslikave tipa
+        $$\dP\to\dP_n$$
+        \end{opomba}
+        
+Sedaj lahko definiramo produkt nad $\dP_n$. Po Izreku $\ref{izr:P_n}$ velja
+
+\begin{equation}
+	f,g\in\dP\implies\exists_{p\in\dP}\Big(\D^nf\D^mg=\D^{n+m}p\Big)
+\end{equation}
+Množica $\{\D^n\}$ implicira nilpotenco $k>n\implies\D^k=0$. Produkt med dvema elementoma $\dP_n$ je implicitno definiran s tenzorsko algebro. 
+
+\begin{equation}\label{eq:P_prod}
+	\sum\limits_{i=0}^{n}\D^if\sum\limits_{j=0}^{n}\D^jg=\sum\limits_{k=0}^{n}\sum\limits_{i+j=k}\D^if\D^jg
+\end{equation}
+
+ \subsection{Razvoj v vrsto}\label{sec:Vrsta}
+  
+  Analizo motiviramo s primerom. Predpostavimo časovno kompleksen algoritem $A$, za katerega iščemo približek. Z opisano mehaniko lahko program lineariziramo.
+  Izberemo $v\in PV$ in preslikamo v $v'\in P'V_1$ (kar je potrebno storiti le enkrat). Potem lahko program $PV$ približamo z linearno aproksimacijo $v+(v'-v) (V)$, ki je linearne kompleksnost $\mathcal{O}(k)$, kjer je $k$ dimenzija $V$.
+  %enačba pomeni, da vektorju odštšteješ "realni" del
+  Slika linearizacije služi kot dober približek slike prvotnega programa.
+  
+  Induktivno bi želeli program razvit v neskončno vrsto. Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\dP$ (ki je funkcijski prostor nad $\RR$). Zato je izraz
+  
+  
+ \begin{equation}
+ 	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{(h\D)^n}{n!}
+ \end{equation}
+ 
+ dobro definiran.
+ 
+ \begin{equation}\label{eq:e^d}
+ 	e^{h\D}=\sum\limits_{n=0}^{\infty}\frac{h^n}{n!}\sum_{\forall_{i,\alpha}}\frac{\partial^n}{\partial
+ 		    x_{\alpha_1}\ldots \partial x_{\alpha_n}}\e_i\otimes
+ 		  dx_{\alpha_1}\otimes\ldots \otimes dx_{\alpha_n}
+ \end{equation}
+ 
+ Tako je $e^{h\D}$ preslikava med funkcijskimi prostori $\eqref{eq:F_n}$
+ 
+ \begin{equation}
+ 	e^{h\D}:\F\to\F_n
+ \end{equation}
+ 
+ Zato velja
+  
+  \begin{equation}\label{eq:specProg}
+  	e^{h\D}:\F\times V\to V_n
+  \end{equation}
+  
+ 
+Skozi $\eqref{eq:specProg}$ lahko konstruiramo preslikavo iz prostora programov v prostor polinomov.  Po $\eqref{eq:tenzor_algebra}$ je $V_n$ izomorfen komutativno asociativni unitalni algebri $S(V^{i*})$, kar korespondira polinomom z nedoločenkami v $V^i$.
+ 
+ \begin{equation}\label{eq:pToPol}
+ 	(e^{h\D})(V): \F\to S(V^*)
+ \end{equation}
+ Izraz predstavlja preslikavo programa v polinom.
+ 
+\begin{izrek}\label{izr:e^d}
+	Za program $P\in\dP$ in $v^{\JJ_k}_{k}\in T(V)$ se razvoj v vrsto izraža kot zožitev\\
+	\begin{equation}\label{eq:tenzorVrsta}
+	P(V+hv) = \Big((e^{h\D})(P)(V)\Big)v^{\JJ_k}_{k}
+	\end{equation}
+\end{izrek}
+ 
+ \begin{proof}
+ Za vsak $n$ velja $\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(LHS)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(RHS)}$\\
+ $\implies$
+ 
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n(P(V+hv))=\D^n P(V)(v^{\otimes n})$$
+ $\impliedby$
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\Big((e^{h\D})(P)(V)\Big)(v^{\JJ_k}_{k})=\lim\limits_{\lVert h\rVert\to 0}\Big((\D^n e^{h\D})(P)(V)\Big)(v^{\JJ_k}_{k})$$
+ $$\land$$
+ $$\lim\limits_{\lVert h\rVert\to 0}\D^ne^{h\D}=\lim\limits_{\lVert h\rVert\to 0}\sum\limits_{i=0}^{\infty}\frac{h^i\D^{i+n}}{i!}=\D^n$$
+ $$\implies$$
+ $$\Big(\D^n(P)(V)\Big)(v^{\otimes n})$$
+ \end{proof}
+  
+ Slika zožitve je element prvotnega virtualnega prostora $V^i$. Neodvisnost $(\ref{eq:tenzorVrsta})$ od koordinatnega sistema, se v programiranju prevede na neodvisnost v izvajanju. Tako je izraz $(\ref{eq:tenzorVrsta})$ invarianten stopnji izvajanja programa.   
+ 
+ Po Izreku $\ref{izr:P_n}$ velja
+     \begin{equation}
+     	e^{h\D}\in\dP_0\otimes T(V^*)
+     \end{equation} 
+     
+kar znova omogoča učinkovito implementacijo.
+
+ Razvoj v odrezano vrsto reda $N$ dobimo skozi projekcijo $e^{h\D}$ na $\{\D^N \}$. 
+ 
+ \begin{izrek}\label{izr:prod}
+ Operator $e^{h\D}$ je automorfizem algebre nad $\dP_\infty$
+ \begin{equation}
+ 	e^{h\D}(p_1\cdot p_2)=e^{h\D}(p_1)\cdot e^{h\D}(p_2)
+ \end{equation}
+ kjer je $\cdot$ bilinearna preslikava.
+ \end{izrek}
+ 
+ \begin{proof}
+ Za vsak $n$ velja $\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(LHS)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(RHS)}$\\
+  $\implies$
+  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^ne^{h\D}(p_1\cdot p_2)=\lim\limits_{\lVert h\rVert\to 0}\D^ne^{h\D}(p_1\cdot p_2)$$
+  $$\implies$$
+  $$\D^n(p_1\cdot p_2)$$
+  $\impliedby$
+  $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\Big(e^{h\D}(p_1)\cdot e^{h\D}(p_2)\Big)=\lim\limits_{\lVert h\rVert\to 0}\sum\limits_{k=0}^{n}{n\choose k}\D^{n-k}e^{h\D}(p_1)\cdot \D^ke^{h\D}(p_2)$$
+  $$\implies$$
+  $$\sum\limits_{k=0}^{n}{n\choose k}\D^{n-k}p_1\cdot \D^kp_2$$
+ \end{proof}
+ 
+ \begin{izrek}\label{izr:kompo}
+ Kompozicija preslikav $\dP_n$ se izraža kot
+ \begin{equation}
+ e^{h\D}(f\circ g)=exp(\D_fe^{h\D_g})(g)(f)
+ \end{equation}
+ \end{izrek}
+ 
+\begin{proof}
+ Za vsak $n$ velja $\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(LHS)}=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^n\text{(RHS)}$\\
+ $\implies$
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^ne^\D(f\circ g)=\lim\limits_{\lVert h\rVert\to 0}\D^ne^{h\D}(f\circ g)$$
+ $$\implies$$
+ $$\D^n(f\circ g)$$
+ $\impliedby$
+ $$exp(\D_fe^{h\D_g})=\prod_{i=1}^{\infty}e^{\D_f\frac{(h\D_g)^i}{i!}}\Big(e^{\D_f}\Big)$$
+ $$\implies$$
+ $$exp(\D_fe^{h\D_g})(g)(f)=\sum\limits_{\forall_n}h^n\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(\Big(e^{\D_f}\Big)f\Big)$$
+ kjer $\lambda(n)$ ozačuje particije $n$.
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^nexp(\D_fe^{h\D_g})=\lim\limits_{\lVert h\rVert\to 0}\sum\limits_{\forall_m}n!h^{n-m}\sum\limits_{\lambda(m)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{1}{k!}\Big(\Big(e^{\D_f}\Big)f\Big)$$
+ $$\implies$$
+ \begin{equation}\label{eq:dComposite}
+ \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g)}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f\Big)
+ \end{equation}
+ kjer $e^{\D_f}$ preslika $\dP\to\dP_n$. 
+ \end{proof}       
+ \begin{opomba}
+ Zato je včasih smiselno predhodno aplicirat $g(v)\in V$ na $f$, saj $e^\D$ apliciran na konstanto predstavlja identiteto in tako dobimo odvod $\D^n$ v točki $v\in V$ namesto razvoja v multitenzor.
+  $$\sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g(v))}{l!}\Big)^k\frac{n!}{k!}\Big(\Big(e^{\D_f}\Big)f(g(v))\Big)$$
+  $$\implies$$
+  \begin{equation}\label{eq:dCompositePoint}
+  \sum\limits_{\lambda(n)}\prod\limits_{k\cdot l\in\lambda}\Big(\frac{\D_f\D_g^l(g(v))}{l!}\Big)^k\frac{n!}{k!}\Big(f(g(v))\Big)
+  \end{equation}
+ \end{opomba}
+ Izrek $\ref{izr:kompo}$ omogoča enostavno implementacijo komponiranja programov $p\in\dP$ izraženih v odrezanih vrstah skozi izraz $\eqref{eq:dComposite}$. 
+ 
+ Operator $exp(\D_fe^{h\D_g})(g)(f)$ opravi povlek preslikave $f$ skozi $g$. Velja
+ 
+ \begin{equation}
+ exp(\D_fe^{h\D_g})(g): \dP\to\dP(g)
+ \end{equation}
+ 
+ Tako je njegov odvod $\frac{d}{dh}$
+ 
+ \begin{equation}\label{eq:dexp}
+ \frac{d}{dh}exp(\D_fe^{h\D_g})(g)=\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)
+ \end{equation}
+ 
+ Opazimo pomembno distinkcijo z operatorjem $e^{h\D_g}$, katerega odvod je
+ \begin{equation}\label{eq:de}
+\frac{d}{dh}e^{h\D_g}=\D_ge^{h\D_g}
+ \end{equation}
+ Sedaj lahko računam odvode poljubnega reda operatorja povleka. Kot primer poračunamo drugi odvod
+ $$\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^2exp(\D_fe^{h\D_g})(g)=\lim\limits_{\lVert h\rVert\to 0}\frac{d}{dh}\Big(\D_f(\D_gg)e^{h\D_g}exp(\D_fe^{h\D_g})(g)\Big)$$
+ kar je po enačbah $\eqref{eq:dexp}$ in $\eqref{eq:de}$
+ $$\lim\limits_{\lVert h\rVert\to 0}(\D_g\D_f(\D_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D_f(\D_gg)\D_f(\D_gg))e^{2h\D_g}exp(\D_fe^{h\D_g})(g)$$
+ z nekaj algebre in ustrezne aplikacije
+ $$\lim\limits_{\lVert h\rVert\to 0}(\D_f(\D^2_gg))e^{h\D_g}exp(\D_fe^{h\D_g})(g)+(\D^2_f(\D_gg)^2)e^{2h\D_g}exp(\D_fe^{h\D_g})(g)$$
+  $$\implies$$
+ \begin{equation}
+	(\D_f(\D^2_gg)+\D^2_f(\D_gg)^2)exp(\D_f)
+ \end{equation}
+ 
+ Tako smo brez dodatnih pravil izračunali operator drugega odvoda kompozicije z $g$, ki ga apliciramo na poljuben program. Rezultat se seveda ujema z enačbo $\eqref{eq:dComposite}$ za $n=2$.
+ 
+ Kot je razvidno iz primera, je računanje z operatorji precej enostavneje od direktnega manipuliranja funkcijskih vrst, kot smo storili v dokazu Izreka $\ref{izr:kompo}$. Seveda posledično omogoča enostavnejšo implementacijo, ki deluje nad poljubnimi funkcijskimi prostori. V prostoru ki ga $\{\D^n\}$ napenja nad $\dP$, lahko odvode kompozicij izrazimo skozi pravila produkta Izreka $\ref{izr:prod}$, ter $\eqref{eq:dexp}$ in $\eqref{eq:de}$, skozi operatorje same. Tako je eksplicitno poznavanje pravil odvajanja kompozituma nepotrebno, saj je vsebovano v sami strukturi operatorja $exp(\D_fe^{h\D_g})$, katerega pa odvajamo po osnovnih pravilih, kot v zgornjem primeru.
+ 
+ \begin{equation}\label{eq:dkompo}
+ \D^n(f\circ g)=\lim\limits_{\lVert h\rVert\to 0}(\frac{d}{dh})^nexp(\D_fe^{h\D_g})(g)(f)
+ \end{equation}
+ 
+   \begin{izrek}\label{izr:komp_homo}
+   Operator $e^{h\D}$ komutira s kompozicijo nad $\dP$
+   \begin{equation}
+   e^{h\D}(p_2\circ p_1)=e^{h\D}(p_2)\circ e^{h\D}(p_1)
+   \end{equation}
+   \end{izrek}
+   
+   \begin{proof}
+   Sledi $\eqref{eq:pToPol}$ in Izreku $\ref{izr:kompo}$.
+   \end{proof}
+ Izreka se bomo spridom poslužili v razvoju uporabe.
+ 
+   \subsection{Funkcijske transformacije programov}\label{sec:FTP}
+  
+  Analizo motiviramo s primerom. Predpostavimo strojno opremo $H$, ki je optimizirana za množico funkcij $F=\{f_i:V\to V\}$. Množico $F$ specificira proizvajalec.
+  
+  Ob tehnoloških napredkih je menjava strojne opreme pogosta, kar lahko privede do padca hitrosti v izvajanju strojne kode. Tako bi želeli razvit transformacijo programa $P\in\dP$ v bazo $F$. Pogosto smo zadovoljni z sub-optimalnim algoritmom, ki je optimiziran za strojno opremo $H$. Suboptimalnost transformacije je odvisna od same množice $F$, ali je zmožna napet prostor $\dP$, ali ne. Klasičen primer transformacije je Fourierjeva transformacija v bazi $\{sin(nx), cos(mx)\}$, ki napenja $\dP$ (kar, kot omenjeno ni nujno za poljubno množico $F$).
+  
+  Po Izreku $\ref{izr:e^d}$ lako skozi operator $e^\D$ konstruiramo preslikavo $\eqref{eq:pToPol}$ iz prostora programov $\dP$ v prostor polinomov. Tako je slika $e^\D(P\in\dP)$ integrabilna. S tem lahko definiramo notranji produkt nad $\dP$.
+  
+  \begin{izrek}
+  Za $p_1,p_2\in\dP$ se notranji produkt $\eta(p_1,p_2)$ izraža kot
+  \begin{equation}
+  	\eta(p_1,p_2)=\int_{\Omega}e^\D p_1(\vec{x})\cdot e^\D p_2(\vec{x})dx
+  \end{equation}
+  kjer $\cdot$ predstavlja notranji produkt nad $V$, saj velja $e^\D(p\in\dP):V\to V$.
+  \end{izrek}
+  
+  \begin{proof}
+  Po Izreku $\ref{izr:prod}$ velja $e^\D(p_1\cdot p_2)=e^\D(p_1)\cdot e^\D(p_2)$. Po linearnosti integrala in dobro definiranem notranjem produktu nad $V$, je zadoščeno aksiomom notranjega produkta.
+  \end{proof}
+  
+  Tako, v kolikor je $F$ ortonormirana, oziroma smo jo ortonormirali s katerim od uveljavljenih postopkov, lahko $P$ izrazimo v bazi $F$, kot
+  
+  \begin{equation}
+ 	P=\sum\limits_{\forall_{f_i\in F}}\frac{\eta(P,f_i)}{\eta(f_i,f_i)}f_i
+  \end{equation}
+  
+  V kolikor se želimo izognit integriranju, je skozi razvita orodja problem rešljiv z linearno algebro. Z $e_n^\D$ označnimo projekcijo operatorja $e^\D$, na prvih $n$ baznih vektorjev $\{\D^i\}$. Po Izreku $\ref{izr:e^d}$ lako skozi operator $e^\D$ konstruiramo preslikavo $\eqref{eq:pToPol}$ iz prostora programov $\dP$ v prostor polinomov z nedoločenkami v  $V^k$. Z $\X$ označimo bazo funkcijskega prostora polinomov, $\X=\{\prod\limits_{\forall_j} v_i^j\}$, kjer $v_i$ napenjajo $V^k$ in $j$ teče po elementih potenčne indeksne množice, invariantno permutacijam (kar je ekvialentno bazi prostora tenzorskega produkta, kjer tenzorski produkt nadomesti navaden produkt, ki seveda komutira). Potem lahko $e^\D_n(P\in\dP)$ interpretiramo kot vektor linearnih kombinacij $\X$, kar je privzeto v nadaljevanju poglavja.
+  
+  S tem lahko definiramo tenzor transformacij baze $F\to\X$
+  
+  \begin{equation}\label{eq:matTransF}
+  T_{\X F}=\begin{pmatrix}
+  e_n^\D(f_1) & e_n^\D(f_2) & \cdots & e_n^\D(f_n)
+  \end{pmatrix}
+  \end{equation}
+  
+  \begin{opomba}
+  Tenzor $\eqref{eq:matTransF}$ je matrika, v kolikor so dotične preslikave $V^m\to V$ in tenzor ranka 3, v kolikor so dotične preslikave $V^m\to V^k$. To pa je moč interpretirat, kot zaporedje matrik, za vsako izmed komponent slike preslikave.
+  \end{opomba}
+  
+  Tako je tenzor transformacije baze $\X\to F$ enak
+  
+  \begin{equation}\label{eq:matTrans}
+  T_{F\X}=T_{\X F}^{-1}
+  \end{equation}
+    
+  Skozi tenzor $\eqref{eq:matTrans}$ zlahka izvedemo tranformacijo baze $\X\to F$. Za specifičen nabor funkcij $F$ (in posledično za strojno opremo $H$, s katero je nabor pogojen) je tenzor $\eqref{eq:matTrans}$ potrebno poračunat le enkrat in ga uporabimo za transformacije poljubnih programov (ob uporabi istega operatorja $e^\D_n$).
+  Tako so koordinate programa $P\in\dP$ v bazi $F$
+  
+  \begin{equation}\label{eq:P_F}
+  	P_F=T_{F\X}\cdot e^\D(P)
+  \end{equation}
+  
+  Izraz $\eqref{eq:P_F}$ predstavlja koordinate programa $P$ v bazi $F$. Tako je program izrazljiv kot linearna kombinacija $f_i$ s pripadajočimi komponentami $P_F$ za koeficiente.
+  
+  \begin{equation}
+  P=\sum\limits_{i=0}^{n}{P_F}_if_i
+  \end{equation}
+  
+  V kolikor $F$ ne napenja $\dP$, oziroma smo vzeli projekcijo operatorja $e^\D_{n<N}$, izraz $P_F$ kljub temu predstavlja najboljši približek prvotnega programa $P$ na $n$ komponentah $\{\D^n\}$, v bazi $F$.
+  
+  Pred izračunom tenzorja $\eqref{eq:matTrans}$ je smiselno nabor funkcij $F$ razširiti z medsebojnimi kompozicijami in s tem pridobiti funkcije, ki niso izrazljive skozi linearne kombinacije (a so vseeno optimizirane delovanju na strojni opremi $H$), in tako povečat moč metode.
+  
+ \subsection{Kontrolne strukture}
+ 
+ Do sedaj smo se omejili na operacije, ki spreminjajo vsebino spomina. Poleg
+ prireditvenih ukazov, poznamo tudi kontrolne ukaze (npr. stavki \texttt{if},
+ \texttt{for}, \texttt{while}, ...). Kontrolni stavki ne vplivajo neposredno na
+ vrednost spremenljivk, ampak spreminjajo potek programa. Seveda bo to vplivalo
+ tudi na odvod. Ampak za določen nabor vhodnih spremenljivk, bo potek programa
+ vedno enak. Zato si lahko kontrolne strukture predstavljamo kot definicijo
+ zlepka. Vzemimo naprimer preprost program v programskem jeziku Python
+ \begin{verbatim}
+ def abs(x):
+   if x<0:
+    return -x
+   else
+    return x
+ \end{verbatim}
+ Funkcija \texttt{abs(x)} je program, ki izračuna zlepek
+ \begin{equation}
+   \label{eq:zlepek}
+   |x| =
+   \begin{cases}
+     -x;\quad x<0\\
+     x;\quad x\ge 0
+   \end{cases}
+ \end{equation}
+ Vsaka kontrolna struktura razdeli prostor parametrov na različna območja,
+ znotraj katerih je potek programa enak. Celoten program torej razdeli prostor
+ vseh možnih parametrov na končno množico območij $\{\Omega_i;\quad i=1,\ldots
+ k\}$, kjer je potek programa enak. Program lahko torej v splošnem definiramo kot
+ zlepek. Za $\vec{x}\in\RR^n$ je
+ \begin{equation}
+   \label{eq:zlrprk_splosno}
+   P(\vec{x}) =
+   \begin{cases}
+     P_{n_11}\circ P_{(n_1-1)1}\circ\ldots P_{11}(\vec{x});&\quad \vec{x}\in\Omega_1\\
+     P_{n_22}\circ P_{(n_2-1)2}\circ\ldots P_{12}(\vec{x});&\quad \vec{x}\in\Omega_2\\
+     \vdots&\quad\vdots\\
+     P_{n_kk}\circ P_{(n_k-1)k}\circ\ldots P_{1k}(\vec{x});&\quad \vec{x}\in\Omega_k\\
+   \end{cases}
+ \end{equation}
+ Diferencial $\sumd_nP$ programa $P$ je seveda tudi odvisen od začetnih parametrov
+ $\vec{x}$ in ga tudi lahko podamo kot zlepek a le v notranjosti deinicijskih območij $\Omega_i$
+ \begin{equation}
+   \label{eq:Dzlrprk_splosno}
+   TP_{\vec{x}} =
+   \begin{cases}
+     TP_{n_11}\cdot TP_{(n_1-1)1}\cdot\ldots TP_{11};&\quad \vec{x}\in\interior(\Omega_1)\\
+     TP_{n_22}\cdot TP_{(n_2-1)2}\cdot\ldots TP_{12}(\vec{x});&\quad \vec{x}\in\interior(\Omega_2)\\
+     \vdots&\quad\vdots\\
+     TP_{n_kk}\cdot TP_{(n_k-1)k}\cdot\ldots TP_{1k}(\vec{x});&\quad \vec{x}\in\interior(\Omega_k)\\
+   \end{cases}
+ \end{equation}
+ Problem je seveda na robu območju $\partial\Omega_i$, kjer program $P$ ni nujno odvedljiv. Problem, kateremu se je moč izognit s pristopi prihajajočih sekcij.
+ 
+  \subsection{Iteratorji}
+  
+  Iterator je funkcional, ki opravlja kompozicijo programa $p\in\dP$ s samim sabo. Je eno od pogostejših orodij v uporabi v večini programskih jezikov. Zaradi  enostavnosti izražanja $n$-ti iterat programa $p\in\dP:V\to V$ označimo s $p^n$. Tako je na iterat je moč gledat, kot na kompozicijski eksponent.
+  
+  Preučimo preprost primer in spoznajmo problem. Program $p\in\dP$ lineariziramo okoli točke $p(a)=0$. Potem za $v\in V$ velja $P(v)=\D p(a)\cdot v$. Posledično je $n$-ti iterat $P^n(v)=(\D p(a))^n\cdot v$. Matriko $\D p(a)$ je moč diagonalizirat $\D p(a)=S\Lambda S^{-1}$, kjer je $\Lambda$ diagonalna matrika lastnih vrednosti in $S$ matrika pripadajočih lastnih vektorjev. Tako je $n$-ti itearat $P^n(v)=S\Lambda^nS^{-1}\cdot v$.
+  
+  Takšen izraz za $n$-ti iterat je funkcija v $n$, števiu iteracij, in kot tak odvedljiv po robnih pogojih iterata. S tem smo pridobili zmožnost mere spremembe iteratorja v odvisnost od zveznega števila iteracih. Pojav želimo posplošit na splošne na eigen-preslikave.
+  
+  Naj bo $\mathcal{I}_p$ cikličen monoid generiran z $p:V\to V$ in kompozicijo $\circ$
+  
+  \begin{equation}
+  \mathcal{I}_p=\{p^n:V\to V\iff p(a)=a\}
+  \end{equation}
+  
+ S tem se lahko vprašamo po spremembah iteracij programa, v odvisnosti od izstopnega pogoja. Odgovor bi omogočil analizo in optimizacijo samega števila potrebnih iteracij programa.
+  
+  Naj bo preslikava $h$ definirana z eigen-enačbo
+  
+  \begin{equation}\label{eq:kh}
+  h(p(x))=\lambda h(x)
+  \end{equation}
+   \begin{equation}
+   h(a)=0
+   \end{equation}
+  
+  Sklepamo lahko o akciji $h$ nad $p$
+  
+  \begin{equation}
+  h(p^n(x))=\lambda^nh(x)
+  \end{equation}
+  
+  Z odvajanjem $\eqref{eq:kh}$ v fiksni točki se dokopljemo do skalarja $\lambda$.
+  
+  $$\D h(p(a))\D p(a)=\lambda\D h(a)$$
+  $$\implies$$
+  $$\D p(a)=\lambda$$
+  
+  Na domeni $h(\mathcal{I})$ preslikave $p^n$ postanejo množenje z $\lambda^n=(\D p(a))^n$. Očitno velja $\lambda^n=e^{\nu n}\iff \nu=ln(\lambda)$.
+  
+  Iteracijsko hitrost definiramo kot
+  
+  \begin{equation}
+  v(p^n)=\D_np^n(x)
+  \end{equation}
+  
+  Seveda velja
+  
+  \begin{equation}
+  v(p^n(a))=0
+  \end{equation}
+  
+  kar je razvidno iz enačbe $\eqref{eq:kh}$ in se sklada z intuitivnim razmislekom.
+  
+  S tem se obrnemo k izračunu iteracijske hitrosti
+ 
+  $$\D_nh(p^n)=\D_n(e^{\nu n}h(x))$$
+  $$\implies$$
+  $$\D h(p^n(x))\D_np^n(x)=\nu e^{\nu n}h(x) \land e^{\nu n}h(x)=h(p^n(x))$$
+  $$\implies$$
+  \begin{equation}\label{eq:hitrostIteracije}
+  v=\nu(\D^{-1}h)h
+  \end{equation}
+  
+  Tako bi pri optimizaciji z gradientnim spustom uporabili hitrost $\eqref{eq:hitrostIteracije}$, ki bi spustu dala smer in red velikosti. Induktivno bi lahko izpeljali pospešek in spremembe višjega reda.
+  
+  Izračun preslikave $h$ in pogoje za obstoj, za $p$ predstavljiv s potenčno vrsto je rešil Bridges (2011), postopek, ki ga zaradi jedrnatosti izpuščamo v tem besedilu. Po Izreku $\eqref{izr:e^d}$ lahko vsak program $p\in\dP$ z aplikacijo operatorja $e^\D$ transformiramo v potenčno vrsto in se poslužimo omenjega izračuna.
+  
+   Kot poseben primer uporabe iteratorjev si pogledamo akumulatorje, za katere razvijemo eksplicitno obliko v odvisnosti od robnih pogojev. Z $\Shift^n$ označimo operator, ki nad programom $p$ opravi linearen premik v smeri $v$.
+   
+   \begin{equation}
+   \Shift^n:\dP(v_0)\to \dP(v_0+nv)
+   \end{equation}
+    
+    Naj bo $\Shift$ ciklična grupa generirana za specifična $v_0,v\in V$,za operaciji vsote in produkta
+   
+   $$\Shift=\{\Shift^n\}$$   
+   Definirajmo $n$-ti akumulator kot 
+   $$\mathcal{A}_n=(1+\Shift+\Shift^2+\cdots+\Shift^n)$$ Tako je izraz zanimanja
+   $$\sum\limits_{h=0}^{n}\dP(v_0+hv)=(1+\Shift+\Shift^2+\cdots+\Shift^n)(\dP)(v_0)$$
+   Tudi v tem primeru nas zanimajo spremembe, v odvisnosti od robnih pogojev. S tem v mislih raziščimo akumulator $\mathcal{A}_n$
+   $$(1+\Shift+\Shift^2+\cdots+\Shift^n)=1+\Shift(1+\Shift+\Shift^2+\cdots+\Shift^{n-1})$$
+   $$\implies$$
+   $$1-\Shift^n=(1-S)\mathcal{A}_{n-1}$$
+   $$\exists_n\Big((1-\Shift)=\Shift^n\in\Shift\Big)\implies \exists_m\Big((1-\Shift)^{-1}=\Shift^m\in \Shift\Big)$$
+   $$\implies$$
+   $$\mathcal{A}_{n-1}=(1-\Shift^n)(\frac{1}{1-\Shift})$$
+   Po Izreku $\ref{izr:e^d}$ velja
+   $$e^{h\D}\dP(v_0)(v)=\dP(v_0+hv)\implies \Shift^h=e^{h\D}$$
+   $$\implies$$
+   $$\mathcal{A}_{n-1}=(1-\Shift^n)(\D^{-1})(\frac{\D}{1-e^{\D}})$$
+   Po Izreku $\ref{izr:linearnaNeodvisnost}$  obstaja prostor $\dP_n$, ki ga množica $\{\D^k\}$ napenja nad $\RR$. Zato je izraz   
+     
+    \begin{equation}
+    	\frac{h\D}{1-e^{h\D}}=\sum\limits_{n=0}^{\infty}c_n\frac{(h\D)^n}{n!}
+    \end{equation}
+    dobro definiran. Izkaže se $c_i=B_i$, kjer je $B_i$ $i$-to Bernulijevo število. Operator $(1-\Shift^n)$ predstavlja ocenitev v krajiščih
+    $$(1-\Shift^n)=\Bigg\vert_{v_0}^{nv}$$
+    Tako $\mathcal{A}_{n-1}$ dobi obliko
+    $$\mathcal{A}_{n-1}=(\D^{-1})(\sum\limits_{i=0}^{\infty}c_i\frac{\D^i}{i!})\Bigg\vert_{v_0}^{nv}$$
+    $$\implies$$
+    \begin{equation}
+    \mathcal{A}_{n-1}=c_0\D^{-1}+\sum\limits_{i=1}^{\infty}c_i\frac{\D^{i-1}}{i!}\Bigg\vert_{v_0}^{nv}
+    \end{equation}
+    Eksplicitno moramo poznat le en inverz. Tako je akumulator $\mathcal{A}_{n-1}$ izrazljiv kot
+    \begin{equation}
+    	\mathcal{A}_{n-1}\dP(v_0)=c_0\D^{-1}\dP(t)+\sum\limits_{i=1}^{\infty}c_i\frac{\D^{i-1}\dP(t)}{i!}\Bigg\vert_{v_0}^{nv}
+    \end{equation}
+    Izraz je funkcija robnih pogojev, zato so spremembe poljubnega reda izračunljive brez uporabe izrazov $\eqref{eq:kh}$. Imamo operator $\mathcal{A}_n\in\dP_\infty$, tako, da lahko računamo kar z njim samim, kot v primeru kompozicije $\eqref{eq:dkompo}$.
+
+    $$\frac{d^k}{dn^k}\mathcal{A}_{n-1}=\frac{d^k}{dn^k}\Big((1-\Shift^n)(\frac{1}{1-e^\D})\Big)\land \Shift^n=e^{n\D}$$
+        $$\implies$$
+        $$\D^n e^{n\D}(\frac{1}{1-e^\D}) = \Shift^n(\frac{\D^n}{1-e^\D})$$
+        $$\implies$$
+        \begin{equation}
+        \frac{d^k}{dn^k}\mathcal{A}_{n-1}P\vert_{n=N}(v)=\Big(\sum\limits_{i=0}^{\infty}c_i\frac{\D^{N-1+i}\dP(Nv)}{i!}\Big)\Big(v\Big)
+        \end{equation}
+    kjer evaluacija v $v\in V$ opravi ustrezno translacijo, saj je slika operatorja $\mathcal{A}_{n-1}$ element $V_n\simeq S(V^*)$.
+
+\subsection{Uporaba in Sklep}
+
+Vejitve programa na območja izvajamo skozi pogojne stavke. Število območij $\Omega_i$ je enako moči množice $\{\Omega_i\}$. Vsak pogojni stavek, povzroči binarno vejitev v izvajanju programa
+
+\begin{izrek}\label{izr:st.zlepkov}
+Moč množice $\{\Omega_i\}$ je enaka $\lvert\{\Omega_i \}\rvert=2^k$, kjer je $k$ število pogojnih stavkov, ki jih vsebuje program.
+\end{izrek}
+\begin{opomba}
+Iteratorji, ki v svojem telesu ne spreminjajo izstopnih kriterijev programa ne delijo na območja.
+\end{opomba}
+Iz Izreka $\ref{izr:st.zlepkov}$ sledi, da je kompleksnost števila operiranj naivnih implementacij metod sekcij $\ref{sec:Vrsta}$ in $\ref{sec:FTP}$ eksponentna v odvisnost od števila vejitev (kjer bi operirali na vsakem območju $\Omega_i$ posebej). Ob ustrezni aplikaciji Izrekov tega članka lahko kompleksnost drastično zmanjšamo (linearno), kar je predmet pouka te sekcije.
+\vspace{10px}
+
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+    text width=5.5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}[node distance = 2cm, auto]
+    \node [block] (p1) {$P_1$};
+    \node [block,right of=p1,node distance=5cm] (ep1) {$e^\D(P_1)$};
+    \node [block,right of=ep1,node distance=5cm] (tep1) {$T_{F\X}\cdot e^\D(P_1)$};
+    
+    \node [decision, below of=ep1,node distance=3cm] (v1) {Vejitev};
+    
+    \node [block,below of=v1,node distance=2.75cm] (ep2) {$e^\D(P_2)$};
+    \node [block,left of=ep2,node distance=3.5cm] (p2) {$P_2$};
+    \node [block,right of=ep2,node distance=3.5cm] (tep2) {$T_{F\X}\cdot e^\D(P_2)$};
+    
+    
+    \node [block,below of=ep2,node distance=2.75cm] (ep3) {$e^\D(P_3)$};
+    \node [block,left of=ep3,node distance=5cm] (p3) {$P_3$};
+    \node [block,right of=ep3,node distance=5cm] (tep3) {$T_{F\X}\cdot e^\D(P_3)$};
+    
+    \path [line,dashed] (p1) -- node{$e^\D$}(ep1);
+    \path [line,dashed] (p2) -- node{$e^\D$}(ep2);
+    \path [line,dashed] (p3) -- node{$e^\D$}(ep3);
+   
+    \path [line,dashed] (ep1) -- node{$T_{F\X}$}(tep1);
+    \path [line,dashed] (ep2) -- node{$T_{F\X}$}(tep2);
+    \path [line,dashed] (ep3) -- node{$T_{F\X}$}(tep3);
+		
+	\coordinate [below of=ep2,node distance=1.5cm](C);
+	\coordinate [right of=C,node distance=5.25cm](D);
+	\coordinate [right of=v1,node distance=5.25cm](E);
+	\coordinate [above of=E,node distance=1.5cm](F);
+	\coordinate [above of=v1,node distance=1.5cm](G);
+	\path[line](C)--(D)--(E)--(F)--(G);
+	
+	\coordinate [above of=ep2,node distance=1.5cm](C2);
+	\coordinate [above of=p2,node distance=1.5cm](D2);
+	\coordinate [above of=tep2,node distance=1.5cm](E2);
+	\path[line](v1)--(ep2);
+	\path[line] (C2)--(D2)--(p2);
+	\path[line] (C2)--(E2)--(tep2);
+	
+	\coordinate [above of=ep3,node distance=1cm](D3);
+	\coordinate [below of=ep2,node distance=1cm](C3);
+	\coordinate [below of=p2,node distance=1cm](D3);
+	\coordinate [below of=tep2,node distance=1cm](E3);
+	\coordinate [below of=C,node distance=0.25cm](CC3);
+	\draw (p2)--(D3)--(E3)--(tep2);
+	\draw (ep2)--(C);
+	
+	\coordinate [below of=ep1,node distance=1cm](C4);
+	\coordinate [below of=p1,node distance=1cm](D4);
+	\coordinate [below of=tep1,node distance=1cm](E4);
+	\draw (p1)--(D4)--(C4);
+	\draw (tep1)--(E4)--(C4);
+	\path[line](ep1)--(v1);
+	
+	\coordinate [above of=p3,node distance=1.25cm](C5);
+	\coordinate [above of=ep3,node distance=1.25cm](D5);
+	\coordinate [above of=tep3,node distance=1.25cm](E5);
+
+	
+	\coordinate [left of=p3,node distance=1.75cm](D2);
+	\coordinate [left of=v1,node distance=6.75cm](F2);
+	\coordinate [below of=D2,node distance=1.25cm](H2);
+	\coordinate [below of=p3,node distance=1.25cm](I2);
+	\coordinate [below of=ep3,node distance=1.25cm](J2);
+	\coordinate [below of=tep3,node distance=1.25cm](K2);
+	
+	\path[line](v1)--(F2)--(D2)--(H2)--(I2)--(p3);
+	\path[line](I2)--(J2)--(ep3);
+	\path[line](J2)--(K2)--(tep3);
+	
+\end{tikzpicture}
+\vspace{3px}
+\caption{Diagram transformacij} \label{fig:diagram} 
+\end{figure}
+
+\begin{izrek}
+Program $P\in\dP$ lahko ekvivalentno predstavimo z največ $2n+1$ aplikacijami operatorja $e^\D$, na $2n+1$ analitičnih pod-programov.
+\end{izrek}
+
+\begin{proof}
+	Programsko kodo programa $P\in\dP$ lahko predstavimo z usmerjenim grafom, kot kaže Slika $\ref{fig:diagram}$. Vsaka vejitev povzroči razdvojitev v izvajanju, a se po izvedbi vejitve vrne na točko cepitve.	
+	Po Izreku $\ref{izr:kompo}$ lahko vsako od teh vej gledamo kot na pod-program $p_i$, za katere po Izreku $\ref{izr:komp_homo}$ velja $$e^\D(p_n\circ p_{n-1}\circ\cdots\circ p_1)=e^\D(p_n)\circ e^\D(p_{n-1})\circ\cdots\circ e^\D(p_1)$$
+	
+	Tako programska koda vsebuje $2n$ odvedljivih vej, od prve delitve dalje, brez veje, ki privede do nje, na katere je potrebno aplicirat operator $e^\D$. Skupaj $2n+1$. Po Izreku $\ref{izr:P_n}$ je vsaka od teh vej analitična.
+\end{proof}
+
+Slike operatorjev $e^\D$ in $T_{F\X}$ so elementi prvotnega prostora $\dP$, katere lahko komponiramo. Tako je za $P=p_3\circ p_2\circ p_1$ slednji izraz smiseln
+
+\begin{equation}
+P=\Big(p_3\circ e^ \D(p_2)\circ T_{F\X}e^\D(p_1)\Big) \in \dP
+\end{equation}
+
+Seveda enako velja za vse permutacije aplikacije operatorjev $e^\D$ in $T_{F\X}$, kot je razvidno iz Slike $\ref{fig:diagram}$.
+
+\begin{opomba}
+Enakost je odvisna od nabora funkcij $F$, ki jih navaja proizvajalec strojne opreme.
+\end{opomba}
+
+Transformacijski tenzor $T_{F\X}$ je potrebno poračunat le enkrat, in ga je mogoče aplicirat na vse programe, ki se izvajajo na dotični strojni opremi. Enako velja za vsako vejo $p_i$, ki jih po Izreku $\ref{izr:komp_homo}$ prosto komponiramo med sebo.
+
+\begin{izrek}
+Kompozicija slik operatorja $e_n^\D(p_2)\circ e_n^\D(p_1)$ je izračunljiva v $\mathcal{O}(nlog^k(n))$, kjer je $k$ dimenzija $V$ in $n$ število baznih vektorjev $\{\D^n\}$ na katere projeciramo.
+\end{izrek}
+
+\begin{proof}
+	Po $\eqref{eq:pToPol}$ so slike operatorja $e^\D$ izomorfne simetrični algebri, katerih kompozicija je izračunljiva s FFT.
+\end{proof}
+
+Transformacije $\eqref{eq:P_F}$, je za vsako vejo potrebno poračunat le enkrat. Kompleksnost kompozicije slik transforacij $T_{F\X}\cdot e^\D(p_2)\circ T_{F\X}\cdot e^\D(p_1)$ pa je odvisna od prvotnih kompleksnosti $f_i\in F$.
+
+S tem smo pridobili orodje, ki nam omgogoča določanje računske kompleksnoti poljubnega programa $P\in\dP$, skupaj z ocenitvijo reda napake približka. Hkrati omogoča transformacijo funkcijske baze programov, in s tem implementacijo, ki je ugodnejša optimalnosti izvajanja na dotični strojni opremi. Po začetnih aplikacijah operatorjev in izvedenih transformacijah lahko program poljubnokrat uporabljamo v namen, za katerega je bil spisan. Ob tem lahko manipuliramo kompleksnost (za $k\le n$) ter preklapljamo med različicami kodnih izsekov ($p$, $e^\D(p)$, $T_{F\X}\cdot e^\D(p)$), kot bolje ustreza podmnožici domene, nad katero program operira v danem trenutku.
+
+\section{Analitični stroji}
+Algoritme lahko interpretiramo, kot funkcijsko algebro nad $\dP_0:V\to V$. 
+Po Izreku $\ref{izr:P_n}$ lahko $\dP_n$, ki ga množica$\{\D^n\}$ napenja nad $\RR$, izrazimo skozi linerne kombinacije elementov $\dP_0\otimes T(V^*)$; izomorfizem, ki je generiran z dvojcem $(\dP_0,V)$ opremljenim s tenzorskim produktom. Tako sta dvojec $(\dP_0,V)$ in pripadajoča algebra zadostna pogoja za obstoj prostora neskončno odvedljivih programov $\dP_n$.
+
+\begin{definicija}
+   Dvojec $M=\langle\dP, V\rangle$ je analitičen, naskončno-krat odvedljiv računski stroj.
+   
+    \begin{itemize}
+    \item
+    $V$ virtualen prostor, "neskončen trak", opremljen s tenzorskim produktom
+    \item
+    $\dP$ je monoid preslikav $p\in\dP:V\to V\iff\D^k p\in \dP\otimes T(V^*)$
+    \end{itemize}
+  \end{definicija}
+  Vse kar operira pod temi specifikacijami je $\textit{analitičen računski stroj}$ z zmožnostjo implementacije \textit{neskončno-krat odvedljivega programskega jezika} $\dP_\infty$, saj je diferencial $\sumd_n$ linearna kombinacija množice $\{\D^n\}$. 
+  
+  \subsection{Konstrukcija}
+  Za zgled uporabe teorije predstavljamo konstrukcijo analitičnega stroja, z zmožnostjo implementacije neskončno odvedljive različice programskega jezika $\CC$ nad virtualnim prostorom $V$ nad poljem $K$.
+  
+  Element virtualnega prostora $V_n$, implementiramo kot
+  
+  \begin{lstlisting}
+  template<class V>
+  class var
+  {
+      public:
+      	  int order;
+          V id;
+          std::map<&var,var>* dTau;
+  
+          var();
+          var(const var& other);
+          ~var();
+          var(double value);
+          void init(int order);
+          var& decreseOrder();
+          var& operator=(const var& v);
+          var& operator=(double n);
+  };       
+  \end{lstlisting}
+  
+  Multitenzor $var\in V_n$ implementiramo po Izreku $\ref{izr:tauRek}$. Z objektom $dTau_n$ modeliramo $\D\sumd_{n}$. Očitno velja
+  
+  \begin{equation}\label{eq:var}
+  var_{n+1}=(id+dTau_n)var_{n}
+  \end{equation}
+  
+  S tem se obrnemo h konstrukciji algebre nad $V$. Vsota po komponentah je
+    
+    \begin{lstlisting}
+      template<class V>
+      V sum_pairs(V a, V b) {
+        return std::make_pair(a.first, a.second + b.second);
+      }
+      \end{lstlisting}
+      
+Množenje s skalarjem polja $K$ omogoča produkt v večih algeberah, četudi je $V$ definiran nad samim sabo, $K=V$
+
+\begin{lstlisting}
+  template<class V, class K>
+  T mul_make_pair(V a, K b) {
+    return std::make_pair(a.first, a.second * b);
+  }
+  \end{lstlisting}      
+  
+   Pred nadaljevajem predpostavimo obstoj sledeče funkcije
+    \begin{lstlisting}
+    template<class var_1, class var_2, class var_3, class mapping>
+    var_3 merge_apply(
+        var_1 first, var_2 last, var_3 output, mapping func);
+    \end{lstlisting}
+    
+    ki v $\mathcal{O}(n\log(n))$ zlije dve $\textit{mapi}$, tako da pare ujemajočih se indeksov preslika s $func: V^{\times n}\to V$, ostale pa prekopira. Skupaj z operacijama po komponentah imamo sedaj linearne kombinacije $var\in V_n$ nad poljem $K$. Tenzorski produkt je implicitno definiran z $var$.
+    
+     
+      Po Izrekih $\ref{izr:D^nRek}$ in $\ref{izr:dP}$ lahko preslikave $\D^{n+1}(\mathrm{p}_2,\circ\mathrm{p}_1)=\D^n(\D\mathrm{p}_2\circ\D\mathrm{p}_1)$ definiramo rekurzivno, za vsako komponento $\D^n\dP:V\to V_n$ posebej. Tako je konstrukcija diferenciala $\sumd_n\dP:V\to V_n$ preprosta, saj po Izreku $\ref{izr:P_n}$ velja $\sumd_n\in\dP_0\otimes T(V^*)$.
+        
+        \begin{lstlisting}
+        template <class V>
+        typedef V (*Vfun)(V);
+        class tau
+        {
+            public:
+                tau();
+                tau(vFun mapping, Vector<tau> dVars);
+                ~tau();
+                var operator()(Vector<var> vars);
+            private:
+                Vector<tau> dVars;
+                vFun mapping;
+        }; 
+        \end{lstlisting}
+
+      Po Izreku $\ref{izr:tauRek}$ lahko rekurzivno definiramo preslikave $\sumd_{n+1}=1+\D\sumd_n$, ki jih po Izreku $\ref{izr:P_n}$ generiramo z algebro nad $\dP_n$.
+      
+      \begin{lstlisting}
+         var tau::operator()(Vector<var&>vars){    
+            var out;
+            out.id=this.mapping(vars.id);
+            if(min_order(vars)>0){
+               for(int i=0;i<vars.size();i++){
+                  std::map<&var,var> tmp;
+            	  for_each_copy(out.dTau,vars.get(i).dTau,tmp, mul_make_pair<std::pair<&var, var> >, this.dVars.get(i), vars.get(i).reduceOrder());
+            	  merge_apply(out.dTau,tmp, out.dTau, sum_pairs<pair<&var, var> >);
+              	  out.order=min(out,vars.get(i).order);
+              	}
+              }
+              return out;
+          }
+        \end{lstlisting}
+      
+      S tem smo konstruirali funkcijsko algebro na prostoru programov $\dP_\infty$, ki jo nad $K$ napenja $\{\D^n\}$ in je po Izreku $\ref{izr:P_n}$ izomorfizem $\dP\infty\simeq\dP_0\otimes T(V^*)$. Velja,
+      
+      $$tau:\dP^{\times n}\to \dP_\infty$$
+      $$tau:V\times\dP^{\times n}\to V_\infty$$
+    
+    Posledično obstaja algebra nad $V_\infty$ generirana s $tau$ in z identiteto preslikana v ustrezen operator:
+        
+        \begin{lstlisting}[escapeinside={(*}{*)}]
+       	    var var:: operator+(double n)const;
+            var var:: operator*(double n)const;
+            var var:: operator^(double n)const;
+            (*$\phantom{.......................................}\vdots$*)
+            var var:: operator*(const var& v)const;
+            var var:: operator^(const var& v)const;
+            var var:: operator+(const var& v)const;
+        \end{lstlisting}
+      Za jasnost, enega od elementov konstruiramo eksplicitno, brez $tau$.
+      
+      \begin{lstlisting}
+        var var::operator^(double n) const{
+            var out;
+            out.real=std::pow(this->real,n);
+            if(this->order>0){
+            	for_each_copy(this->dTau, out.dTau, mul_make_pair<&var, var> >, *this, n*(this->reduceOrder())^(n-1));
+            }
+            out.order=this->order;
+            return out;
+        }
+        \end{lstlisting}
+        
+\subsection{Optimizacija časovne kompleksnosti}
+
+Konstrukcija algebre nad $\dP_n$ sloni na multilinearnih preslikavah $\eqref{eq:multilinear}$, kar je naklonjeno paralelizaciji, bodisi skozi multi-nitno programiranje, bodisi skozi implementacijo na grafičnih procesorjih.
+
+Po Izreku $\ref{izr:D^nRek}$ velja  $\D^k(\mathrm{f_1}\circ \mathrm{f_2})=\D^{k-1}(\D \mathrm{f_1}\circ\D \mathrm{f_2})$, kar se izraža kot zaporedje skalarnih produktov. Formulo se zlahka implementira skozi $\textit{breadth-first queue}$ linearnih preslikav s praznimi preseki domen in kodomen.   
+
+\subsection{Optimizacija prostorske zahtevnosti}
+ Ponavadi nas ne zanima odvod po vseh spremenljvkah, ki jih imamo v programu.
+ Označimo z $\{\e_i,\quad i=1,2,\ldots n\}$ standardne bazne vektorje v $\RR^n$ in z
+ $\II\subset\{1,2,\ldots n\}$ množico indeksov. Indeksi v $\II$ ustrezajo
+ posameznim spremenljivkam (indeksi določajo lokacijo spremenljivke v spominu). Naj bo $V_\II$ vektorski
+ podprostor napet na vektorje $\{e_i;\quad i\in\II\}$. Označimo z 
+ $\mathcal{P}_\II$ projekcijo na $V_i$, z $\mathcal{I}_\II$ pa vložitev $V_\II$ v
+ $\RR^n$. Vložitev $\mathcal{I}_\II$ ni mišljena kot linearna preslikava, ampak
+ dopuščamo, da so vrednosti spremenljivk, ki niso v $\II$, poljubne. Recimo, da nas zanima nabor spremenljivk z indeksi $\II$, ki jih
+ program $P$ izračuna na podlagi nabora spremenljivk z indeksi $\mathbb{J}$.
+ Preslikavo med $V_\JJ\to V_\II$, ki jo določa program $P$, lahko zapišemo kot
+ \begin{equation}
+   \label{eq:zozitev}
+   P^{\JJ}_{\II}=\mathcal{P}_\II\circ P\circ \mathcal{I}_\JJ 
+ \end{equation}
+ Odvod preslikave $ P^{\JJ}_{\II}$ je enak produktu
+ \begin{equation*}
+   P^{\JJ}_{\II}=P_\II\cdot DP\cdot I_\JJ,   
+ \end{equation*}
+ kjer sta $P_\II$ in  $I_\JJ$ matriki, ki ustrezata projekciji na $V_\II$ oziroma
+ vložitvi $V_\JJ$ v $\RR^n$.  
+   
+\end{document}
+
