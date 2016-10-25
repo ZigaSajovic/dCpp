@@ -39,7 +39,7 @@ for(it_type iterator = this->dTau.get()->begin(); iterator != this->dTau.get()->
 }
 
 for(it_type iterator = this->dTau.get()->begin(); iterator != this->dTau.get()->end(); iterator++) {
-    std::cout<<&iterator->second<<" address = "<<iterator->first<<" ";
+    std::cout<<"d("<<iterator->first<<") ";
     iterator->second.print();
 }
 std::cout<<"\n";
