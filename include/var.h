@@ -26,11 +26,21 @@ class var
         var operator-(double n)const;
         var operator/(double n)const;
         var operator^(double n) const;
+        var& operator+=(double n);
+        var& operator*=(double n);
+        var& operator-=(double n);
+        var& operator/=(double n);
+        var& operator^=(double n);
         var operator+(const var& v)const;
         var operator*(const var& v)const;
         var operator-(const var& v)const;
         var operator/(const var& v)const;
         var operator^(const var& v)const;
+        var& operator+=(const var& v);
+        var& operator*=(const var& v);
+        var& operator-=(const var& v);
+        var& operator/=(const var& v);
+        var& operator^=(const var& v);
         //order logic
         bool operator==(const var& v)const;
         bool operator!=(const var& v)const;
