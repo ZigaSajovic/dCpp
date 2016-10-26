@@ -24,9 +24,9 @@ and computations on the operator level, which favors general implementation. The
 approximation and transformations of programs to a more appropriate function basis'. We
 also present several examples of how the theory can be used in computer science.
 
-A paper explaining implementation of this theory is avaliable [/paper/dCpp.pdf](https://zigasajovic.github.io/dCpp/paper/dCpp.pdf).
-
 The paper _[Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690)_, containing derivation of the theory is available on arXiv.
+
+A paper explaining implementation of this theory is avaliable [/paper/dCpp.pdf](https://zigasajovic.github.io/dCpp/paper/dCpp.pdf).
 
 
 ###Usage
