@@ -20,15 +20,15 @@ void softmax(Eigen::MatrixBase<Derived>& matrix){
 
 void dEigenExample(){
     //    space is n-times differentiable
-    int n=2;
+    int n=1;
     //    initialize the space
     dCpp::initSpace(n);
     //    Matrix holding the inputs (imgSizeX1 vector)
-    const int inputSize=28;
+    const int inputSize=50;
     Eigen::Matrix<var,1,inputSize>input=Eigen::Matrix<var,1,inputSize>::Random(1,inputSize);
     dCpp::init(input);
     //    number of outputs of the layer
-    const int outputSize=1;
+    const int outputSize=5;
     //    matrix of weights on the first level (imgSizeXnumOfOutOnFirstLevel)
     Eigen::Matrix<var,inputSize,outputSize>firstLayerVars=Eigen::Matrix<var,inputSize,outputSize>::Random(inputSize,outputSize);
     //    initializing weights
