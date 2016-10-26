@@ -13,7 +13,8 @@ var dCpp::ln(const var& v){
     out.id=std::log(v.id);
     out.order=v.order;
     if(v.order>0){
-        for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),mul_make_pair<std::pair<var*,var> ,var >, 1/v.reduce());
+        for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
+            mul_make_pair<std::pair<var*,var> ,var >, 1/v.reduce());
     }
     return out;
 }
@@ -23,7 +24,8 @@ var dCpp::cos(const var& v){
     out.id=std::cos(v.id);
     out.order=v.order;
     if(v.order>0){
-        for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),mul_make_pair<std::pair<var*,var> , var >, -1*dCpp::sin(v.reduce()));
+        for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
+            mul_make_pair<std::pair<var*,var> , var >, dCpp::sin(v.reduce())*=-1);
     }
     return out;
 }
@@ -33,21 +35,22 @@ var dCpp::sin(const var& v){
     out.id=std::sin(v.id);
     out.order=v.order;
     if(v.order>0){
-        for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),mul_make_pair<std::pair<var*,var> , var >, dCpp::cos(v.reduce()));
+        for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
+            mul_make_pair<std::pair<var*,var> , var >, dCpp::cos(v.reduce()));
     }
     return out;
 }
 
 var dCpp::tan(const var& v){
-    return dCpp::sin(v.reduce())/dCpp::cos(v.reduce());
+    return dCpp::sin(v)/=dCpp::cos(v);
 }
 
 var dCpp::cot(const var& v){
-    return dCpp::cos(v.reduce())/dCpp::sin(v.reduce());
+    return dCpp::cos(v)/=dCpp::sin(v);
 }
 
 var dCpp::log(double base, const var& v){
-    return dCpp::ln(v.reduce())/std::log(base);
+    return dCpp::ln(v)/=std::log(base);
 }
 
 var dCpp::exp(const var& v){
@@ -55,7 +58,8 @@ var dCpp::exp(const var& v){
     out.id=std::exp(v.id);
     out.order=v.order;
     if(v.order>0){
-        for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),mul_make_pair<std::pair<var*,var> , var >, dCpp::exp(v.reduce()));
+        for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),mul_make_pair<std::pair<var*,var> , var >,
+            dCpp::exp(v.reduce()));
     }
     return out;
 }
