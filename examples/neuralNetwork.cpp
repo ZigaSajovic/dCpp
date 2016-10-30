@@ -99,8 +99,7 @@ public:
     }
 };
 
-int main(){
-
+void nNetExample(){
     initSpace(1);
     net N=net(false);
     N.add(2,5,sigmoidActivation);
