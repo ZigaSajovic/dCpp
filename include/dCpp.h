@@ -7,6 +7,7 @@ namespace dCpp{
 
     void initSpace(int order);
     void init(var &v);
+    void initPlaceHolder(var &v);
 
     var cos(const var& v);
     var sin(const var& v);

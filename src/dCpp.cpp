@@ -2,11 +2,13 @@
 #include <util.h>
 #include <cmath>
 
-int orderOfSpace=1;
+int orderOfSpace=0;
 
 void dCpp::initSpace(int order){orderOfSpace=order;}
 
 void dCpp::init(var &v){v.dTau.get()->clear();v.init(orderOfSpace);}
+
+void dCpp::initPlaceHolder(var &v){v.dTau.get()->clear();v.initPlaceHolder(orderOfSpace);}
 
 var dCpp::ln(const var& v){
     var out;
