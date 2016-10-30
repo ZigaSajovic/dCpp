@@ -27,6 +27,10 @@ void var::init(int n){
     (*this->dTau.get())[this].order=n-1;
 }
 
+void var::initPlaceHolder(int order){
+    this->order=order;
+}
+
 var var::d(var* dvar){return (*this->dTau.get())[dvar];}
 
 typedef std::map<var*,var>::iterator it_type;

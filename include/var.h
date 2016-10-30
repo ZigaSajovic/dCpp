@@ -18,6 +18,7 @@ class var
         var& operator=(const var& v);
         var reduce() const;
         void init(int order);
+        void initPlaceHolder(int order);
         var d(var*dvar);
         void print() const;
         //declerations of algebraic operations
