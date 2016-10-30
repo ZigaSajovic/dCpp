@@ -597,10 +597,12 @@ var var::d(var* dvar){
     return (*this->dTau.get())[dvar];
 }
 \end{lstlisting}
-returning $n-1$ differentiable derivative of $v_1$ with respect to $v_2$.
+returning $n-1$ differentiable derivative of $v$ with respect to $v_i$.
+Explicitly expressing $v\in\VV_n$ in terms of $v.d(\&v_i)$
 \begin{equation}
-v_1\in\VV_n\implies v_1.d(\&v_2)\in\VV_{n-1}
+v=v.id+\sum\limits_{\forall_i}v.d(\&v_i)\otimes dv_i \in\VV_n\implies v.d(\&v_i)\in\VV_{n-1}
 \end{equation}
+reveals the nature of the reduction of order map.
 
  Thus, we gained the ability of writing a differentiable program acting on derivatives of another program, stressed as crucial (but lacking in most models) by other authors \cite{AD1}. Usage of the reduction of order map and other constructs of
  this Section are demonstrated in Section \ref{sec:Employment}, as we analyze procedures as systems inducing change upon objects in virtual space. 
@@ -633,7 +635,6 @@ int order=...;
 const int imgSize=28*28;
 const Eigen::Matrix<var,1,imgSize>input=Eigen::Matrix<var,1,
 	imgSize>::Random(1,imgSize);
-//    number of outputs of the layer
 const int numOfOutOnFirstLevel=10;
 //    matrix of weights on the first level 
 //    (imgSizeXnumOfOutOnFirstLevel)
