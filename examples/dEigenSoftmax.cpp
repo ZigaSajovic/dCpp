@@ -28,7 +28,7 @@ void dEigenExample(){
     Eigen::Matrix<var,1,inputSize>input=Eigen::Matrix<var,1,inputSize>::Random(1,inputSize);
     dCpp::init(input);
     //    number of outputs of the layer
-    const int outputSize=5;
+    const int outputSize=7;
     //    matrix of weights on the first level (imgSizeXnumOfOutOnFirstLevel)
     Eigen::Matrix<var,inputSize,outputSize>firstLayerVars=Eigen::Matrix<var,inputSize,outputSize>::Random(inputSize,outputSize);
     //    initializing weights
