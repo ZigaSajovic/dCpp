@@ -84,6 +84,8 @@
 
 \begin{abstract}
 We provide an illustrative implementation of an analytic, infinitely-differentiable virtual machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper \emph{Operational calculus on programming spaces and generalized tensor networks}\cite{OperationalCalculus}. Implementation closely follows theorems and derivations of the paper, intended as an educational guide.
+
+We outline the process of employing such a machine to several causes, from general engineering, model analysis, discovering redundancies in models, study of properties of the domain and more. 
 \end{abstract}
 
 \epigraph{Nothing at all takes place in the universe in which some rule of maximum or minimum does not appear.}{--- \textup{Leonhard Euler}}
@@ -110,7 +112,7 @@ and projecting it onto the unit $n$-cube, deriving the operator increasing the o
 \sumd_n:\dP_k\to\dP_{n+k}
 \end{equation} 
 
-All required theorems and proofs are provided by the paper \emph{Operational calculus on programming spaces and generalized tensor networks} \cite{OperationalCalculus} and are referenced accordingly. Source code can be found on GitHub \cite{dCpp}.
+We outline the process of employing Analytic virtual machines to several causes, from general engineering, model analysis, discovering redundancies in models, study of properties of the domain and more. Source code can be found on GitHub \cite{dCpp}.
 
 \section{Virtual memory}
 
@@ -137,7 +139,7 @@ class var
         var(const var& other);
         ~var();
         void init(int order);
-        var d(var* v);
+        var d(var* dvar);
         //declerations of algebraic operations
         //declerations of order logic
 };
@@ -651,8 +653,10 @@ softmax(firstLayerOutput);
 \end{lstlisting}
 
 \section{Employment}\label{sec:Employment}
-\subsection{1}
-\subsection{2}
+\subsection{General engineering}
+\subsection{Analysis}
+\subsubsection{Study of properties}
+\subsubsection{Discovering redundancy}
 
   \printbibliography
   
