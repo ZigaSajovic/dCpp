@@ -88,7 +88,7 @@
 \begin{abstract}
 We provide an illustrative implementation of an analytic, infinitely-differentiable virtual machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper \emph{Operational calculus on programming spaces and generalized tensor networks}\cite{OperationalCalculus}. Implementation closely follows theorems and derivations of the paper, intended as an educational guide.
 
-Analytic virtual machines allow nested transformations, with operational calculus opening new doors in program analysis. We outline the process of employing such a machine to several causes, from general engineering, model analysis, discovering redundancies in models, study of properties of the domain and more. 
+Analytic virtual machines allow nested transformations, with operational calculus opening new doors in program analysis. We outline the process of employing such a machine to several causes, seamlessly interweaving operational calculus and algorithmic control flow. 
 \end{abstract}
 
 \epigraph{Nothing at all takes place in the universe in which some rule of maximum or minimum does not appear.}{--- \textup{Leonhard Euler}}
@@ -115,7 +115,7 @@ and projecting it onto the unit $n$-cube, deriving the operator increasing the o
 \sumd_n:\dP_k\to\dP_{n+k}
 \end{equation} 
 
-Analytic virtual machines allow nested transformations, with operational calculus opening new doors in program analysis. We outline the process of employing Analytic virtual machines to several causes, from general engineering, model analysis, discovering redundancies in models, study of properties of the domain and more. Source code can be found on GitHub \cite{dCpp}.
+Analytic virtual machines allow nested transformations, with operational calculus opening new doors in program analysis. We outline the process of employing such a machine to several causes, from engineering to discovering model redundancy, seamlessly interweaving operational calculus and algorithmic control flow. Source code can be found on GitHub \cite{dCpp}.
 
 \section{Virtual memory}\label{sec:virtualMemory}
 
@@ -658,7 +658,7 @@ softmax(firstLayerOutput);
 
 \section{Employment}\label{sec:Employment}
 
-By employing analytic virtual machines, we can construct analytic procedures, viewing algorithms in a new light. One can start incorporating variable parameters into algorithm design, revealing the true nature of hyper-parameters often used in practice \cite[Remark~5.2]{OperationalCalculus}.
+The algebra over programs \cite[Theorem~5.3]{OperationalCalculus} an Analytic virtual machine enables and its operational calculus are employed towards achieving analytic conclusions through algebraic means, seamlessly interweaving operational calculus and algorithmic control flow. 
 
 \subsection{General engineering}\label{sec:generalEngineering}
 
@@ -730,6 +730,7 @@ The desire is maximizing the evaluation, using $step$ as an optimization step us
    \begin{opomba}
    Note that the derivatives $\D^n C_{p_i}$ are not differentiable, as they need not to be, as opposed to the derivatives used in Algorithm \ref{alg:train}, as by Remark \ref{rmr:dDerivatives}.
    \end{opomba}
+Both algorithms are trivially generalized to other problems.
 
 \subsection{Analysis}
 \subsubsection{Study of properties}
