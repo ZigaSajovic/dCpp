@@ -73,6 +73,9 @@
 \usepackage{tikz-cd}
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{positioning}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pifont}
 
 %\title{Analytic virtual machine\protect \\--- \protect \\ Implementation and Employment}
 \title{Implementation and Employment\protect \\of an \protect \\ Analytic virtual machine}
@@ -92,7 +95,7 @@ Analytic virtual machines allow nested transformations, with operational calculu
 \clearpage
 \tableofcontents
 \clearpage
-\section{Introduction}
+\section{Introduction}\label{sec:introduction}
 We provide an illustrative implementation of the virtual memory $\VV$ and its expansion to $\VV\otimes T(\VV^*)$, serving by itself as an algebra of programs along with an infinitely differentiable programming space \cite[Theorem~5.1]{OperationalCalculus}
 \begin{equation}
 \DD^n\CC<\dP_n:\VV\to\VV\otimes T(\VV^*)
@@ -114,7 +117,7 @@ and projecting it onto the unit $n$-cube, deriving the operator increasing the o
 
 Analytic virtual machines allow nested transformations, with operational calculus opening new doors in program analysis. We outline the process of employing Analytic virtual machines to several causes, from general engineering, model analysis, discovering redundancies in models, study of properties of the domain and more. Source code can be found on GitHub \cite{dCpp}.
 
-\section{Virtual memory}
+\section{Virtual memory}\label{sec:virtualMemory}
 
 We model an element of the virtual memory $v\in\VV_n$ \cite[Claim~4.1]{OperationalCalculus}
 \begin{eqnarray}
@@ -193,7 +196,7 @@ where $\delta^i_j$ is the identity.
     \end{equation}
   to the unit hyper-cube and applying it to the resulting direct sum.
 
-\subsubsection{Vector space over a field $K$}
+\subsubsection{Vector space over a field $K$}\label{sec:vectorSpace}
  
 We begin our construction of an algebra, by constructing a vector space $\VV_n$ over a field $K$. A vector space is collection of objects that can be added together and multiplied with elements of the underlying field $K$, .
 
@@ -245,7 +248,7 @@ Class $var$ models a vector space over a field $K$.
 By implementations of addition by components and multiplication with a scalar $k\in K$, the axioms of the vector space are satisfied.
 \end{proof}
 
-\subsubsection{Algebra over a field $K$}
+\subsubsection{Algebra over a field $K$}\label{sec:algebra}
 
 With the vector space constructed, we turn towards its elevation to an algebra. To construct an algebra over a field $K$, we equip the vector space $\VV_n$ with a bilinear product by components.
 
@@ -340,7 +343,7 @@ bool operator>(const var& v)const;
 bool operator>=(const var& v)const;
 \end{lstlisting}
 
-\section{Analytic virtual machine}
+\section{Analytic virtual machine}\label{sec:analyticVmachine}
 
 \begin{definicija}[Analytic virtual machine]
 The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiable virtual machine.
@@ -357,7 +360,7 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
     infinitely differentiable virtual machine. \cite[Defintion~5.4]{OperationalCalculus}
   \end{definicija}
 
-  \subsection{Operators}
+  \subsection{Operators}\label{sec:operators}
         
         The operator of tensor series expansion \cite[Theorem~5.4]{OperationalCalculus}
         
@@ -418,7 +421,7 @@ var tau::operator()(const var&v){
 }
 \end{lstlisting}
         
-          \subsection{Differentiable programming space}
+\subsection{Differentiable programming space}\label{sec:differentiableProgSpace}
               
               With the algebra over $\VV_n$ implemented, we turn to the construction of a differentiable programming space
               
@@ -453,7 +456,7 @@ var tau::operator()(const var&v){
 Any library implementing functions acting on variables of type $double$ or $float$, could be trivially included into $\CC<\dP_0$, simply by replacing all variables with the class $var$. Moreover, any implementations using the implemented algebra in its construction of functions, are contained in $\dP_0$.
 \end{trditev}
 
-\subsubsection{Example}
+\subsubsection{Example}\label{sec:example}
   
 As an illustrative example, we provide a simple implementation of a differentiable programming space $\dCpp$ through the use of the operator $tau$. 
 Assume the existence of functions
@@ -607,7 +610,7 @@ reveals the nature of the reduction of order map.
  Thus, we gained the ability of writing a differentiable program acting on derivatives of another program, stressed as crucial (but lacking in most models) by other authors \cite{AD1}. Usage of the reduction of order map and other constructs of
  this Section are demonstrated in Section \ref{sec:Employment}, as we analyze procedures as systems inducing change upon objects in virtual space. 
 
-\subsection{External libraries}
+\subsection{External libraries}\label{sec:external}
 
 Any $\CC$ library written in the generic paradigm employing templates is fully compatible with the differentiable programming space $\dCpp$ acting on the virtual memory $\VV$. 
 
@@ -654,7 +657,47 @@ softmax(firstLayerOutput);
 \end{lstlisting}
 
 \section{Employment}\label{sec:Employment}
-\subsection{General engineering}
+
+By employing analytic virtual machines, we can construct analytic procedures, viewing algorithms in a new light. One can start incorporating variable parameters into algorithm design, revealing the true nature of hyper-parameters often used in practice \cite[Remark~5.2]{OperationalCalculus}.
+
+\subsection{General engineering}\label{sec:generalEngineering}
+
+We demonstrate employment on the case of highway and railway design, where author has previously used the described approach. Demonstration is presented in an easily transfered general form.
+
+Highway and railway designers use clothoid splines (planar G1
+curves consisting of straight line segments, circular arcs, and clothoid segments)
+as center lines in route location \cite{ClothoidSpline}. These curves are usually computed algorithmically, using programs $P\in\dP_0$ and are used in other programs to compute various quantities. We focus on this inclusion.
+
+Assume existence of a program mapping parameters $p_i$ and a point $x_i$ to a point $y_i$ on a clothoid.
+\begin{equation}
+cloth:p_i\times x_i\to y_i
+\end{equation} 
+
+Connecting two curves $\gamma_i$ via a clothoid, matching derivatives at endpoints is a solved problem \cite[Theorem~2]{ClothoidSpline}. In practice, algorithms solving it use derivatives of $cloth$ in its body. For simplicity, we denote all parameters of $cloth$ by $p_i$, with $step$ being the employed optimization step.
+
+ \begin{algorithm}[H]
+   \caption{Train clothoid}
+   \label{alg:train}
+   \begin{algorithmic}[1]
+   \Procedure{Train clothoid}{spaceOrder}
+   \State initialize Space to $\VV_n$, $n=spaceOrder$
+   \State initialize $P_i=p_i$
+   \For{each step}
+   \State re-initalize $p_i=var(P_i.id)\in\VV_{n-1}$
+   \State extract derivatives $dC_{p_i}=cloth(p_i).d(\&p_i)\in\VV_{n-1}$;
+   \State update parameters $step(dC_{p_i}, P_i)$
+   \EndFor
+   \State return $P_i\in\VV_{n-1}$
+   \EndProcedure
+   \end{algorithmic}
+   \end{algorithm}
+
+The same can be achieved by other means, and this algorithm is not the focus of this section, we provide it in terms of our implementation for clarity and use in the coming section.
+
+\subsubsection{Training as a differentiable program}
+
+
+
 \subsection{Analysis}
 \subsubsection{Study of properties}
 \subsubsection{Discovering redundancy}
