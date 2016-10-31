@@ -673,30 +673,63 @@ Assume existence of a program mapping parameters $p_i$ and a point $x_i$ to a po
 cloth:p_i\times x_i\to y_i
 \end{equation} 
 
-Connecting two curves $\gamma_i$ via a clothoid, matching derivatives at endpoints is a solved problem \cite[Theorem~2]{ClothoidSpline}. In practice, algorithms solving it use derivatives of $cloth$ in its body. For simplicity, we denote all parameters of $cloth$ by $p_i$, with $step$ being the employed optimization step.
+Connecting two curves $\gamma_i$ via a clothoid, matching derivatives at endpoints is a solved problem \cite[Theorem~2]{ClothoidSpline}. In practice, algorithms solving it use derivatives of $cloth$ in its body. We provide it in terms of our implementation for clarity and use in the coming section. For simplicity, all parameters of $cloth$ are denoted by $p_i$, with $step$ being the employed optimization step using $k$-th derivatives in its body.
 
  \begin{algorithm}[H]
-   \caption{Train clothoid}
+   \caption{Train}
    \label{alg:train}
    \begin{algorithmic}[1]
-   \Procedure{Train clothoid}{spaceOrder}
-   \State initialize Space to $\VV_n$, $n=spaceOrder$
-   \State initialize $P_i=p_i$
+   \Procedure{Train}{n,k}
+   \State initialize $P_i=var(p_i.id)\in\VV_{n}$
    \For{each step}
-   \State re-initalize $p_i=var(P_i.id)\in\VV_{n-1}$
-   \State extract derivatives $dC_{p_i}=cloth(p_i).d(\&p_i)\in\VV_{n-1}$;
-   \State update parameters $step(dC_{p_i}, P_i)$
+   \State re-initalize $p_i=var(P_i.id)\in\VV_{n+k}$
+   \State extract derivatives $\D^k C_{p_i}=cloth(p_i).d^k(\&p_i)\in\dP_{n}$
+   \State update parameters $step(\D^k C_{p_i}, P_i)\in\dP_n$
    \EndFor
-   \State return $P_i\in\VV_{n-1}$
+   \State return $P_i\in\VV_{n}$
    \EndProcedure
    \end{algorithmic}
    \end{algorithm}
-
-The same can be achieved by other means, and this algorithm is not the focus of this section, we provide it in terms of our implementation for clarity and use in the coming section.
+\begin{opomba}\label{rmr:dDerivatives}
+Note that the derivatives $\D^k C_{p_i}$ are $n$-differentiable as by Corollary \ref{cor:extraxtDerivatives}, satisfying 
+\begin{equation}
+P_i\in\VV_n\iff \D^k C_{p_i}\in\dP_n
+\end{equation}
+This will hold meaning in the coming section. The $p_i$ denote all parameters, including the end-points. 
+\end{opomba} 
 
 \subsubsection{Training as a differentiable program}
 
+The output of Algorithm \ref{alg:train} are the required parameters $P_i$, with the algorithm itself being an element of $\dP_{n}:\VV\to\VV\otimes T_{n}(\VV^*)$, making it a $n$-differentiable procedure. This becomes useful, as usually the output of Algorithm \ref{alg:train} (connecting many sections) is only a part of an algorithm evaluating the resulting spline. Optimizing this evaluation is the main desire.
 
+We assume the end-points to be allowed to vary over a limited domain, and are determined by a program mapping some subset of the parameters $p_i$ (usually current end-points) of the curves forming the spline, to the set of adjusted end-points.
+\begin{equation}
+endP:\{p_i\}\to\{p_i\}
+\end{equation}
+Simulation of the traversal of the resulting spline is used to accumulate its evaluation.
+\begin{equation}
+eval:\{p_i\}\to K
+\end{equation}
+The desire is maximizing the evaluation, using $step$ as an optimization step using $n$-th derivatives in its body.
+
+ \begin{algorithm}[H]
+   \caption{Increase}
+   \label{alg:Increase}
+   \begin{algorithmic}[1]
+   \Procedure{Increase}{n,k}
+   \State initialize $p_i\in\VV_{n+k}$
+   \For{each step}
+   \State update end-points $endP(p_i)$
+   \State update $p_i=Train(n+k,k)\in\dP_{n}$ (Algorithm \ref{alg:train})
+   \State extract derivatives $\D^n C_{p_i}=eval(p_i).d^n(\&p_i)\in\dP_{0}$;
+   \State update $step(\D^n C_{p_i},p_i)\in\dP_0$
+   \EndFor
+   \EndProcedure
+   \end{algorithmic}
+   \end{algorithm}
+   \begin{opomba}
+   Note that the derivatives $\D^n C_{p_i}$ are not differentiable, as they need not to be, as opposed to the derivatives used in Algorithm \ref{alg:train}, as by Remark \ref{rmr:dDerivatives}.
+   \end{opomba}
 
 \subsection{Analysis}
 \subsubsection{Study of properties}
