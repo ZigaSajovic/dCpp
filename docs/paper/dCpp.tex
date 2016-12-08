@@ -750,7 +750,7 @@ E(I)=\int_{\mathbf{x}\in\Omega}g\left(I\left(\mathbf{x}\right)\right)d\mathbf{x}
   \begin{equation}\label{eq:nonL}
   E(I,w)=\int_{\tilde{O}}\int_{\tilde{O}^c}w(x,x'),\phi\left(||p_{I}(x)-p_{\tilde{I}}(x')||\right)dx'dx
   \end{equation}
-  The weight function $w:O\times O^c\to\RR+$ measures similarity between patches centered in the inpainting domain and its compliment, and $\phi$ is the patch norm-like function \cite{inpaint} (usually containing an intra-patch weight function) \cite{inpaint}.
+  The weight function $w:O\times O^c\to\RR+$ measures similarity between patches centered in the in-painting domain and its compliment, and $\phi$ is the patch norm-like function \cite{inpaint} (usually containing an intra-patch weight function) \cite{inpaint}.
   
   Yet the methods are limited in their expressive power, due to the symbolic nature of their construction. Much more elaborate procedures of sampling could be constructed with the aid of algorithmic control flow.  
   As such, the subject is readily enriched by operational calculus on programming spaces. As a simple demonstration, we will adapt the usual model for geodesic active contours, to include non-local methods similar to \eqref{eq:nonL}.
