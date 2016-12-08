@@ -795,7 +795,7 @@ E(I)=\int_{\mathbf{x}\in\Omega}g\left(I\left(\mathbf{x}\right)\right)d\mathbf{x}
    \begin{equation}\label{eq:flow2}
      \frac{\partial}{\partial t}C=NonLocal(\nabla I).id\cdot\kappa \vec{N}-\langle NonLocal(\nabla I).d(\&\nabla I),\vec{N}\rangle\vec{N}
      \end{equation}
-     where $NonLocal$ computes Algorithm \ref{alg:nonL} for each $\mathbf{x}\in\nabla I$. After replacing the edge indicator function $g$ with the Algorithm \ref{alg:nonL}, we proceed as if performing the standard GAC.
+     where $NonLocal$ computes Algorithm \ref{alg:nonL} for each $\mathbf{x}\in\nabla I$. After replacing the edge indicator function $g$ with the Algorithm \ref{alg:nonL}, we proceed as if performing the standard \emph{GAC}.
      
      Non local methods perform better, as they consider global information about the environment the manifold flows through. Global evaluations are easily formulated by algorithmic control flow, which becomes differentiable through operational calculus and is thus simply employed amongst the many established variational techniques.
          
