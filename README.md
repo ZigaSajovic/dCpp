@@ -11,19 +11,31 @@ The _[dCpp](https://github.com/ZigaSajovic/dCpp)_ project is constantly updated 
 
 From _abstract_ of the paper  _[Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690)_ in which the theory is derived by [Žiga Sajovic](https://www.linkedin.com/in/zigasajovic) and [Martin Vuk](http://www.fri.uni-lj.si/en/martin-vuk/default.html):
 
-In this paper, we develop the theory of analytic virtual machines, that
-implement analytic programming spaces and operators acting upon them. Such a machine fully integrates control structures, reataining the expressive freedom of algorithmic control flow.
+In this paper, we develop operational calculus on programming spaces that
+generalizes existing approaches to automatic differentiation of computer
+programs and provides a rigorous framework for program analysis through calculus. 
 
-A programming space is a subspace of the function space of maps on the virtual
-memory. We can construct a differential operator on programming spaces as we 
-extend the virtual memory to a tensor product of a virtual space with tensor algebra
-of its dual. Extended virtual memory serves by itself as an algebra of programs, giving the expansion of the original program as an infinite tensor series at
-program's input values. 
+We present an abstract computing machine that models automatically
+differentiable computer programs. Computer programs are viewed as maps on a
+finite dimensional vector space called virtual memory space, which we
+extend by the tensor algebra of its dual to accommodate derivatives. The
+extended virtual memory is by itself an algebra of programs and its elements
+give the expansion of the original program as an infinite tensor series at
+program's input values.     
 
-We present a theory of operators on programming spaces, that enables analysis of programs
-and computations on the operator level, which favors general implementation. Theory enables
-approximation and transformations of programs to a more appropriate function basis'. We
-also present several examples of how the theory can be used in computer science.
+We define the operator of differentiation on programming spaces and
+implement higher order derivatives as well as generalized shift operator in
+terms of its powers. Operational calculus is used to prove properties of the
+defined operators. Several possible applications to computer science are
+presented, most notably trainable general tensor neural networks that can
+provide a meaningful way of neural network initialization and in some cases
+yield better performing approximations of programs. 
+
+Our approach offers a powerful tool for program
+analysis and approximation as well as a unified approach to automatic
+differentiation covering both forward and reverse mode under a single operator. General tensor networks
+enable generalization of the existing state of the art methods for analyzing neural
+networks to any computer program. 
 
 The paper _[Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690)_, containing derivation of the theory is available on arXiv.
 
