@@ -78,8 +78,9 @@
 \usepackage{pifont}
 
 %\title{Analytic virtual machine\protect \\--- \protect \\ Implementation and Employment}
-\title{Implementation and Employment\protect \\of an \protect \\ Analytic virtual machine}
-\author{Žiga Sajovic\footnote{\href{mail.to:ziga.sajovic@xlab.si}{ziga.sajovic@xlab.si}}}
+\title{Implementation of \\ Operational calculus on programming spaces \\ with Applications}
+\author{Žiga Sajovic\footnote{XLAB d.o.o., Pot za Brdom 100, SI-1000 Ljubljana, Slovenia\newline \href{mail.to:ziga.sajovic@xlab.si}{ziga.sajovic@xlab.si}}}
+
 
 \begin{document}
 
@@ -106,7 +107,7 @@ We provide a construction of operators
 \begin{equation}
 \DD^n=\{\D^k;\quad 0\le k\le n\}
 \end{equation}
-allowing derivation of the operator of tensor series expansion \cite[Theorem~5.4]{OperationalCalculus}
+allowing derivation of the generalized shift operator \cite[Theorem~5.4]{OperationalCalculus}
  \begin{equation}
                   	e^{h\D}:\dP\times \VV\to \VV\otimes \T(\VV^*),
          \end{equation}
@@ -115,7 +116,7 @@ and projecting it onto the unit $n$-cube, deriving the operator increasing the o
 \sumd_n:\dP_k\to\dP_{n+k}
 \end{equation} 
 
-Analytic virtual machines allow nested transformations, with operational calculus opening new doors in program analysis. We outline the process of employing such a machine to several causes, from engineering to discovering model redundancy, seamlessly interweaving operational calculus and algorithmic control flow. Source code can be found on GitHub \cite{dCpp}.
+Analytic virtual machines allow nested transformations, with operational calculus opening new doors in program analysis. We outline the process of employing such a machine to several causes, from engineering to image processing, seamlessly interweaving operational calculus and algorithmic control flow. Source code can be found on GitHub \cite{dCpp}.
 
 \section{Virtual memory}\label{sec:virtualMemory}
 
@@ -656,7 +657,7 @@ softmax(firstLayerOutput);
 //retrieve the computed derivatives
 \end{lstlisting}
 
-\section{Employment}\label{sec:Employment}
+\section{Applications}\label{sec:Employment}
 
 The algebra over programs \cite[Theorem~5.3]{OperationalCalculus} an Analytic virtual machine enables and its operational calculus are employed towards achieving analytic conclusions through algebraic means, seamlessly interweaving operational calculus and algorithmic control flow. 
 
@@ -732,9 +733,78 @@ The desire is maximizing the evaluation, using $step$ as an optimization step us
    \end{opomba}
 Both algorithms can be generalized to other problems and were written as such. Mappings are trivially replaced, as are the parameters, due to the nature of their construction.
 
-\subsection{Analysis}
-\subsubsection{Study of properties}
-\subsubsection{Discovering redundancy}
+\subsection{Image processing}
+
+Variational calculus has been increasingly present in digital image processing \cite{imageVariational},  most notoriously by geodesic active contours \cite{Caselles1997} and manifold flows, where the image is computed as a stationary map of an energy functional
+
+\begin{equation}
+E(I)=\int_{\mathbf{x}\in\Omega}g\left(I\left(\mathbf{x}\right)\right)d\mathbf{x}.
+\end{equation}
+
+  The mapping $g$ is usually some local mapping of on the image. 
+  
+  \subsubsection{Non-local methods}
+  
+  Recent results in inpainting show great success by employing non-local sampling in the functional \cite{inpaint}. 
+  
+  \begin{equation}\label{eq:nonL}
+  E(I,w)=\int_{\tilde{O}}\int_{\tilde{O}^c}w(x,x'),\phi\left(||p_{I}(x)-p_{\tilde{I}}(x')||\right)dx'dx
+  \end{equation}
+  The weight function $w:O\times O^c\to\RR+$ measures similarity between patches centered in the inpainting domain and its compliment, and $\phi$ is the patch norm-like function \cite{inpaint} (usually containing an intra-patch weight function) \cite{inpaint}.
+  
+  Yet the methods are limited in their expressive power, due to the symbolic nature of their construction. Much more elaborate procedures of sampling could be constructed with the aid of algorithmic control flow.  
+  As such, the subject is readily enriched by operational calculus on programming spaces. As a simple demonstration, we will adapt the usual model for geodesic active contours, to include non-local methods similar to \eqref{eq:nonL}.
+  
+  The standard functional is
+  \begin{equation}
+  E(\mathbf{x})=\int_{C}g\left(\nabla I\left(\mathbf{x}\right)\right)ds.
+  \end{equation}
+  Yielding the flow
+  \begin{equation}\label{eq:flow}
+  \frac{\partial}{\partial t}C=g(\nabla I)\kappa \vec{N}-\langle\nabla g,\vec{N}\rangle\vec{N}
+  \end{equation}
+  We introduce non-locality to the method by redefining the edge indicator function $g$. 
+  
+   \begin{algorithm}[H]
+     \caption{Non-Local indicator}
+     \label{alg:nonL}
+     \begin{algorithmic}[1]
+     \Procedure{NonLocalIndicator}{$\mathbf{x}, \nabla img\in\VV_0$}
+     \State initialize $accum\in\VV_1$
+     \State initialize $\nabla I=var(\nabla img)\in\VV_1$
+     \State $p_i=$getSimilarPatches$(\nabla I,\mathbf{x})\in\dP_1$
+     \For{each patch $p_i$}
+     \State current=x
+     \For{iter}
+     \State $accum+=g(|\nabla p_i(current)|)\in\dP_1$
+     \State update current by randWalk
+     \EndFor
+     \EndFor
+     \State return $accum\in\VV_1$
+     \EndProcedure
+     \end{algorithmic}
+     \end{algorithm}
+     
+     \begin{opomba}
+          Algorithm \ref{alg:nonL} can be trivially replaced by a more elaborate procedure $P\in\dP_1$.
+          \end{opomba}
+   
+   We tailor  our intervention, to be as non invasive as possible to the standard method. As the flow \eqref{eq:flow} requires only the gradient of $g$ (as opposed to requiring the total derivative) we initialize $\nabla I\in\VV_1$ and setting it value at $\nabla img$. This means that $\nabla img$ is a regular non-differentiable gradient of the image, as in the standard method. Assume a function \emph{getSimilarPatches} that extracts patches that are similar to the patch centered at $\mathbf{x}$ in the image. Note that $p_i\in\VV_1$, because $p_i\in\nabla I$. We perform a random walk through the patch with a bias towards the direction of the gradient at the current position  and accumulate the standard edge indicator.
+   
+   The flow equation now becomes
+   \begin{equation}\label{eq:flow2}
+     \frac{\partial}{\partial t}C=NonLocal(\nabla I).id\cdot\kappa \vec{N}-\langle NonLocal(\nabla I).d(\&\nabla I),\vec{N}\rangle\vec{N}
+     \end{equation}
+     where $NonLocal$ computes Algorithm \ref{alg:nonL} for each $\mathbf{x}\in\nabla I$. After replacing the edge indicator function $g$ with the Algorithm \ref{alg:nonL}, we proceed as if performing the standard GAC.
+     
+     Non local methods perform better, as they consider global information about the environment the manifold flows through. Global evaluations are easily formulated by algorithmic control flow, which becomes differentiable through operational calculus and is thus simply employed amongst the many established variational techniques.
+         
+     
+     \section{Conclusions}
+     
+     Existence of a program is embedded in a virtual reality, forming a system of objects undergoing change in a virtual space. Just as the reality inhabited by us is being studied by science, revealing principles and laws, so can the virtual reality inhabited by programs. Yet here lies a tougher task, as the laws of the system are simultaneously observed and constructed; the universe is bug-free, up to philosophic precision, while our programs are not. This reinforces the need for a language capable of not only capturing, but also constructing digital phenomena, a feat demonstrated by operational calculus. \cite[Section 8]{OperationalCalculus}
+     
+     Operational calculus provides a rigorous framework for such discussion, as was briefly explored in the final section, and will be the authors' next subject of study.
 
 \clearpage
   \printbibliography
