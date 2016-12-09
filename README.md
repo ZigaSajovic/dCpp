@@ -4,6 +4,8 @@ Infinitely-differentiable C++; conditionals, loops, recursion and all things C++
 ###Abstract
 We provide an illustrative implementation of an analytic, infinitely-differentiable machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper _[Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690)_. Implementation closely follows theorems and derivations of the paper, intended as an educational guide.
 
+The paper [Implementation of Operational calculus on programming spaces with Applications](https://arxiv.org/abs/1612.02731) accompaning the implementation is avaliable on arXiv .
+
 
 The _[dCpp](https://github.com/ZigaSajovic/dCpp)_ project is constantly updated and optimized. This is the openSource version.
 
@@ -38,8 +40,6 @@ enable generalization of the existing state of the art methods for analyzing neu
 networks to any computer program. 
 
 The paper _[Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690)_, containing derivation of the theory is available on arXiv.
-
-A paper explaining implementation of this theory is avaliable at [/paper/dCpp.pdf](https://zigasajovic.github.io/dCpp/paper/dCpp.pdf).
 
 
 ###Usage
