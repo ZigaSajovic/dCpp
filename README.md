@@ -1,5 +1,5 @@
 # dCpp
-Infinitely-differentiable C++; conditionals, loops, recursion and all things C++
+Automatic differentiation in C++; conditionals, loops, recursion and all things C++
 
 ###Abstract
 We provide an illustrative implementation of an analytic, infinitely-differentiable machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper _[Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690)_. Implementation closely follows theorems and derivations of the paper, intended as an educational guide.
