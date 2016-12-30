@@ -189,40 +189,6 @@ We test it, by inititalizing a four-differentiable programming space and display
     f[1].print();
 
 ```
-####Recurrent neural network
-
-Assume existence of functions _vecSum_, _matVecProd_, _genRandVec_ and _forAll_ written in a similar fashion. Thus, we have all the tools needed to build a recursive layer. It will consist of two layers, mapping a 2-vector to a 2-vector. Output of the second layer will be recursively connected to the input of the next recursive layer.
-
-For brevity, we denote _std::vector<std::vector<var> >_ by _mat_ and _std::vector<var>_ by _vec_.
-
-```c++
-vec recursionNet(vec input, mat weights[2],vec bias[], int depth){
-    if(depth==0){
-        return softmax(input);
-    }
-    else{
-        vec firstOut;
-        //matrix vector multiplication
-        firstOut=matVecProd(weights[0],input);
-        firstOut=vecSum(firstOut,bias[0]);
-        forAll(firstOut,sigmoid);
-        vec secondOut;
-        secondOut=matVecProd(weights[1],firstOut);
-        secondOut=vecSum(secondOut,bias[1]);
-        forAll(secondOut,sigmoid);
-        return recursionNet(secondOut,weights, bias,depth-1);
-    }
-}
-```
-
-Now only some initialization of weights is needed and the network can be used, exactly like any other function would, with the exception, that this function is _n-differentiable_.
-
-```c++
-vec output = recursionNet(input,weights[],bias[], depth);
-for(var v:output)v.print();
-```
-
-to display derivatives of all orders, up to _n_ by which the space has been initialized.
 
 ###External libraries
 

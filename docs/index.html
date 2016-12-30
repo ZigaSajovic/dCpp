@@ -206,38 +206,6 @@ std::vector&lt;var&gt; <span class="pl-en">softmax</span>(<span class="pl-k">con
     f[<span class="pl-c1">1</span>].print();
 </pre></div>
 
-<h4>
-<a id="recurrent-neural-network" class="anchor" href="#recurrent-neural-network" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Recurrent neural network</h4>
-
-<p>Assume existence of functions <em>vecSum</em>, <em>matVecProd</em>, <em>genRandVec</em> and <em>forAll</em> written in a similar fashion. Thus, we have all the tools needed to build a recursive layer. It will consist of two layers, mapping a 2-vector to a 2-vector. Output of the second layer will be recursively connected to the input of the next recursive layer.</p>
-
-<p>For brevity, we denote <em>std::vectorstd::vector&lt;var &gt;</em> by <em>mat</em> and <em>std::vector<var></var></em> by <em>vec</em>.</p>
-
-<div class="highlight highlight-source-c++"><pre>vec <span class="pl-en">recursionNet</span>(vec input, mat weights[<span class="pl-c1">2</span>],vec bias[], <span class="pl-k">int</span> depth){
-    <span class="pl-k">if</span>(depth==<span class="pl-c1">0</span>){
-        <span class="pl-k">return</span> <span class="pl-c1">softmax</span>(input);
-    }
-    <span class="pl-k">else</span>{
-        vec firstOut;
-        <span class="pl-c">//matrix vector multiplication</span>
-        firstOut=<span class="pl-c1">matVecProd</span>(weights[<span class="pl-c1">0</span>],input);
-        firstOut=<span class="pl-c1">vecSum</span>(firstOut,bias[<span class="pl-c1">0</span>]);
-        <span class="pl-c1">forAll</span>(firstOut,sigmoid);
-        vec secondOut;
-        secondOut=<span class="pl-c1">matVecProd</span>(weights[<span class="pl-c1">1</span>],firstOut);
-        secondOut=<span class="pl-c1">vecSum</span>(secondOut,bias[<span class="pl-c1">1</span>]);
-        <span class="pl-c1">forAll</span>(secondOut,sigmoid);
-        <span class="pl-k">return</span> <span class="pl-c1">recursionNet</span>(secondOut,weights, bias,depth-<span class="pl-c1">1</span>);
-    }
-}</pre></div>
-
-<p>Now only some initialization of weights is needed and the network can be used, exactly like any other function would, with the exception, that this function is <em>n-differentiable</em>.</p>
-
-<div class="highlight highlight-source-c++"><pre>vec output = recursionNet(input,weights[],bias[], depth);
-<span class="pl-k">for</span>(var v:output)v.print();</pre></div>
-
-<p>to display derivatives of all orders, up to <em>n</em> by which the space has been initialized.</p>
-
 <h3>
 <a id="external-libraries" class="anchor" href="#external-libraries" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>External libraries</h3>
 
