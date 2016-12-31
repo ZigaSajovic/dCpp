@@ -2,7 +2,7 @@
 Automatic differentiation in C++; infinite differentiability of conditionals, loops, recursion and all things C++
 
 ###Abstract
-We provide an illustrative implementation of an analytic, infinitely-differentiable machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper _[Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690)_. Implementation closely follows theorems and derivations of the paper, intended as an educational guide.
+We provide an illustrative implementation of an analytic, infinitely-differentiable machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper _[Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690)_. Implementation closely follows theorems and derivations of the paper, intended as an educational guide for those transitioning from automatic differentiation to this general theory.
 
 The paper [Implementation of Operational calculus on programming spaces with Applications](https://arxiv.org/abs/1612.02731) accompaning the implementation is avaliable on arXiv .
 
