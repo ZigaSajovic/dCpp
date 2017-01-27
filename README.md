@@ -42,8 +42,24 @@ networks to any computer program.
 The paper _[Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690)_, containing derivation of the theory is available on arXiv.
 
 
-###Usage
-By employing analytic virtual machines, we can construct analytic procedures, viewing algorithms in a new light. One can start incorporating variable parameters into algorithm design, revealing the true nature of hyper-parameters often used in practice.
+###Citation
+If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please cite the following paper
+
+>Žiga Sajovic: [Implementation of Operational calculus on programming spaces with Applications](https://arxiv.org/abs/1612.02731). arXiv e-prints arXiv:1612.0273 (2016)
+
+A _BibTex_ snippet has been provided for your convenience
+
+```
+@article{
+    Author = {Žiga Sajovic},
+    Title = {Implementation of Operational calculus on programming spaces with Applications},
+    journal = {arXiv e-prints},
+    Year = 2016,
+    volume = {arXiv:1612.0273},
+    Eprint = {1612.02731},
+    Eprinttype = {arXiv},
+}
+```    
 
 ###Tutorial
 As most programmers face the need of differentiability through machine learning, we use the concept of [logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) with [softmax normalization](https://en.wikipedia.org/wiki/Softmax_function#Softmax_Normalization) as a vessel for this tutorial. We demostrate, how it is simply constructed using algorithmic control flow and reccursion, by employing _dCpp_.
