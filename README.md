@@ -9,25 +9,6 @@ The paper [Implementation of Operational calculus on programming spaces with App
 
 The _[dCpp](https://github.com/ZigaSajovic/dCpp)_ project is constantly updated and optimized. This is the openSource version.
 
-###Citation
-If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please cite the following paper
-
->Žiga Sajovic: [Implementation of Operational calculus on programming spaces with Applications](https://arxiv.org/abs/1612.02731). arXiv e-prints arXiv:1612.0273 (2016)
-
-A _BibTex_ snippet has been provided for your convenience
-
-```
-@article{
-    Author = {Žiga Sajovic},
-    Title = {Implementation of Operational calculus on programming spaces with Applications},
-    journal = {arXiv e-prints},
-    Year = 2016,
-    volume = {arXiv:1612.0273},
-    Eprint = {1612.02731},
-    Eprinttype = {arXiv},
-}
-```    
-
 ###Tutorial
 As most programmers face the need of differentiability through machine learning, we use the concept of [logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) with [softmax normalization](https://en.wikipedia.org/wiki/Softmax_function#Softmax_Normalization) as a vessel for this tutorial. We demostrate, how it is simply constructed using algorithmic control flow and reccursion, by employing _dCpp_.
 
@@ -173,7 +154,7 @@ We test it, by inititalizing a four-differentiable programming space and display
 
 ```
 
-###External libraries
+####Integrating external libraries
 
 Usage with external libraries written in generic paradigm is demonstrated on the example of [Eigen](http://eigen.tuxfamily.org/). 
 We will code a perceptron with sigmoid activations, followed by softmax normalization. We will use dCpp provided mappings in the [dEigen](/include/dEigen.h) header.
@@ -232,5 +213,24 @@ void dEigenExample(){
     }
 }
 ```
+
+###Citation
+If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please cite the following paper
+
+>Žiga Sajovic: [Implementation of Operational calculus on programming spaces with Applications](https://arxiv.org/abs/1612.02731). arXiv e-prints arXiv:1612.0273 (2016)
+
+A _BibTex_ snippet has been provided for your convenience
+
+```
+@article{
+    Author = {Žiga Sajovic},
+    Title = {Implementation of Operational calculus on programming spaces with Applications},
+    journal = {arXiv e-prints},
+    Year = 2016,
+    volume = {arXiv:1612.0273},
+    Eprint = {1612.02731},
+    Eprinttype = {arXiv},
+}
+```    
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">dC++</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://si.linkedin.com/in/zigasajovic" property="cc:attributionName" rel="cc:attributionURL">Žiga Sajovic</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
