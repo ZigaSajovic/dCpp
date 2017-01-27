@@ -121,10 +121,9 @@ With _dTau_ explained, we turn to coding the softmax normalization, we reveal ho
 //and the belonging algebra
 std::vector<var> softmax(const std::vector<var>& V){
     std::vector<var> out;
-    var sum(0);
-    init(sum);
+    var sum = 0.0;
     for(var v:V){
-        sum=sum+exp(v);
+        sum+=exp(v);
     }
     for(var v:V){
         out.push_back(exp(v)/sum);
