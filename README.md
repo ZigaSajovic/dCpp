@@ -9,21 +9,6 @@ The paper [Implementation of Operational calculus on programming spaces with App
 
 The _[dCpp](https://github.com/ZigaSajovic/dCpp)_ project is constantly updated and optimized. This is the openSource version.
 
-###Theory
-
-From _abstract_ of the paper  _[Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690)_ in which the theory is derived by [Žiga Sajovic](https://www.linkedin.com/in/zigasajovic) and [Martin Vuk](http://www.fri.uni-lj.si/en/martin-vuk/default.html):
-
-In this paper we develop operational calculus on programming spaces that generalizes existing approaches to automatic differentiation of computer programs and provides a rigorous framework for program analysis through calculus. 
-
-We present an abstract computing machine that models automatically differentiable computer programs. Computer programs are viewed as maps on a finite dimensional vector space called virtual memory space, which we extend by the tensor algebra of its dual to accommodate derivatives. The extended virtual memory is by itself an algebra of programs, a data structure one can calculate with, and its elements give the expansion of the original program as an infinite tensor series at
-program's input values. We define the operator of differentiation on programming spaces and implement higher order derivatives as well as a generalized shift operator in terms of its powers. Our approach offers a powerful tool for program
-analysis and approximation, and provides deep learning with a formal calculus. 
-
-Several possible applications to computer science are presented, most notably trainable general tensor neural networks that can provide a meaningful way of neural network initialization and enable generalization of the existing state of the art methods for analyzing neural networks to any computer program, and vice versa; i.e. connecting deep learning and general program analysis. 
-
-The paper _[Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690)_, containing derivation of the theory is available on arXiv.
-
-
 ###Citation
 If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please cite the following paper
 
