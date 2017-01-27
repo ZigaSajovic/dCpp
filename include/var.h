@@ -9,7 +9,7 @@ class var
     public:
     	int order;
         double id;
-       std::shared_ptr<std::map<var*, var> > dTau;
+        std::shared_ptr<std::map<var*, var> > dTau;
 
         var();
         var(double id);

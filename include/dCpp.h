@@ -6,6 +6,7 @@
 namespace dCpp{
 
     void initSpace(int order);
+    int getSpaceOrder();
     void init(var &v);
     void initPlaceHolder(var &v);
 

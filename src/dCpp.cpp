@@ -5,6 +5,8 @@
 int orderOfSpace=0;
 
 void dCpp::initSpace(int order){orderOfSpace=order;}
+int dCpp::getSpaceOrder(){return orderOfSpace;}
+
 
 void dCpp::init(var &v){v.dTau.get()->clear();v.init(orderOfSpace);}
 

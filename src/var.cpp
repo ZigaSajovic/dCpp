@@ -9,12 +9,12 @@
 
 var:: var(){
     this->id=0;
-    this->order=0;
+    this->order=dCpp::getSpaceOrder();
     this->dTau=std::make_shared<std::map<var*, var> >();
 };
 
 var:: var(double id){
-    this->order=0;
+    this->order=this->order=dCpp::getSpaceOrder();
     this->id=id;
     this->dTau=std::make_shared<std::map<var*, var> >();
 };
@@ -31,7 +31,17 @@ void var::initPlaceHolder(int order){
     this->order=order;
 }
 
-var var::d(var* dvar){return (*this->dTau.get())[dvar];}
+var var::d(var* dvar){
+    try{
+        return (*this->dTau.get()).at(dvar);
+    }
+    catch (const std::out_of_range& oor) {
+        var out=0;
+        out.order=0;
+        return out;
+    }
+
+}
 
 typedef std::map<var*,var>::iterator it_type;
 void var::print()const{
