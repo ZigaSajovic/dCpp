@@ -122,10 +122,10 @@ With _dTau_ explained, we turn to coding the softmax normalization, we reveal ho
 std::vector<var> softmax(const std::vector<var>& V){
     std::vector<var> out;
     var sum = 0.0;
-    for(var v:V){
+    for(const var &v:V){
         sum+=exp(v);
     }
-    for(var v:V){
+    for(const var &v:V){
         out.push_back(exp(v)/sum);
     }
     return out;
