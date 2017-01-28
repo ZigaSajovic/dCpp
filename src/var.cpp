@@ -14,7 +14,7 @@ var:: var(){
 };
 
 var:: var(double id){
-    this->order=this->order=dCpp::getSpaceOrder();
+    this->order=dCpp::getSpaceOrder();
     this->id=id;
     this->dTau=std::make_shared<std::map<var*, var> >();
 };
