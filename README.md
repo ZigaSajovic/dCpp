@@ -10,6 +10,13 @@ The paper [Implementation of Operational calculus on programming spaces with App
 The _[dCpp](https://github.com/ZigaSajovic/dCpp)_ project is constantly updated and optimized. This is the openSource version.
 
 ###Tutorial
+
+As the following tutorial is quite brief, please consult the discussions regarding common mistakes and solutions.
+
+* [Common mistakes with initializations, differentiability of differentiabile processes, and general understanding of functionality](https://github.com/ZigaSajovic/dCpp/issues/2#issuecomment-276048860)
+
+* [Solutions with detailed explanations of the rationale behind them](https://github.com/ZigaSajovic/dCpp/issues/2#issuecomment-276057623)
+
 As most programmers face the need of differentiability through machine learning, we use the concept of [logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) with [softmax normalization](https://en.wikipedia.org/wiki/Softmax_function#Softmax_Normalization) as a vessel for this tutorial. We demostrate, how it is simply constructed using algorithmic control flow and reccursion, by employing _dCpp_.
 
 First we include the necessities
