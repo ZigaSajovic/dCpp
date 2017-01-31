@@ -11,6 +11,12 @@ The _[dCpp](https://github.com/ZigaSajovic/dCpp)_ project is constantly updated 
 
 ###Tutorial
 
+dCpp is a flexible tool, allowing implementation and analysis of programs through operational calculus.
+
+* Implementations of differentiable (sub) programs operating on differentiable derivatives of other (sub) programs, where the entire process may again be differentiable. This allows trainable training processes, and flexible program analysis through operational calculus.
+*  [Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690) is the paper in which the theory is derived and the process of its use to the purpose of program analysis and deep learning is outlined.
+*  [Implementation of Operational calculus on programming spaces with Applications](https://arxiv.org/abs/1612.02731) is the paper in which the implementation of this theory into dCpp is explained, where the reader is guided through the code and the theory simultaneously, as to better understand this flexible tool.
+
 As the following tutorial is quite brief, please consult the discussions regarding common mistakes and solutions.
 
 * [Common mistakes with initializations, differentiability of differentiabile processes, and general understanding of functionality](https://github.com/ZigaSajovic/dCpp/issues/2#issuecomment-276048860)
