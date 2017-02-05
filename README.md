@@ -4,7 +4,7 @@ Automatic differentiation in C++; infinite differentiability of conditionals, lo
 ###Abstract
 We provide an illustrative implementation of an analytic, infinitely-differentiable machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper _[Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690)_. Implementation closely follows theorems and derivations of the paper, intended as an educational guide for those transitioning from automatic differentiation to this general theory.
 
-The paper [Implementation of Operational calculus on programming spaces with Applications](https://arxiv.org/abs/1612.02731) accompaning the implementation is avaliable on arXiv .
+The paper [Implementing Operational calculus on programming spaces for Differentiable computing](https://arxiv.org/abs/1612.02731) accompaning the implementation is avaliable on arXiv .
 
 
 The _[dCpp](https://github.com/ZigaSajovic/dCpp)_ project is constantly updated and optimized. This is the openSource version.
@@ -15,7 +15,7 @@ dCpp is a flexible tool, allowing implementation and analysis of programs throug
 
 * Implementations of differentiable (sub) programs operating on differentiable derivatives of other (sub) programs, where the entire process may again be differentiable. This allows trainable training processes, and flexible program analysis through operational calculus.
 *  [Operational calculus on programming spaces and generalized tensor networks](https://arxiv.org/abs/1610.07690) is the paper in which the theory is derived and the process of its use to the purpose of program analysis and deep learning is outlined.
-*  [Implementation of Operational calculus on programming spaces with Applications](https://arxiv.org/abs/1612.02731) is the paper in which the implementation of this theory into dCpp is explained, where the reader is guided through the code and the theory simultaneously, as to better understand this flexible tool.
+*  [Implementing Operational calculus on programming spaces for Differentiable computing](https://arxiv.org/abs/1612.02731) is the paper in which the implementation of this theory into dCpp is explained, where the reader is guided through the code and the theory simultaneously, as to better understand this flexible tool.
 
 As the following tutorial is quite brief, please consult the discussions regarding common mistakes and solutions.
 
@@ -229,14 +229,14 @@ void dEigenExample(){
 ###Citation
 If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please cite the following paper
 
->Žiga Sajovic: [Implementation of Operational calculus on programming spaces with Applications](https://arxiv.org/abs/1612.02731). arXiv e-prints arXiv:1612.0273 (2016)
+>Žiga Sajovic: [Implementing Operational calculus on programming spaces for Differentiable computing](https://arxiv.org/abs/1612.02731). arXiv e-prints arXiv:1612.0273 (2016)
 
 A _BibTex_ snippet has been provided for your convenience
 
 ```
 @article{
     Author = {Žiga Sajovic},
-    Title = {Implementation of Operational calculus on programming spaces with Applications},
+    Title = {Implementing Operational calculus on programming spaces for Differentiable computing},
     journal = {arXiv e-prints},
     Year = 2016,
     volume = {arXiv:1612.0273},
