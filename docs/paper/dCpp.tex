@@ -78,7 +78,7 @@
 \usepackage{pifont}
 
 %\title{Analytic virtual machine\protect \\--- \protect \\ Implementation and Employment}
-\title{Implementation of \\ Operational calculus on programming spaces \\ with Applications}
+\title{Implementing \\ Operational calculus on programming spaces \\ for Differentiable computing}
 \author{Žiga Sajovic\footnote{University of Ljubljana, Faculty of Computer and Information
   Science,  Večna pot 113, SI-1000 Ljubljana, Slovenia}\footnote{XLAB d.o.o., Pot za Brdom 100, SI-1000 Ljubljana, Slovenia\newline \href{mail.to:ziga.sajovic@xlab.si}{ziga.sajovic@gmail.com}}}
 
@@ -90,7 +90,6 @@
 \begin{abstract}
 We provide an illustrative implementation of an analytic, infinitely-differentiable virtual machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper \emph{Operational calculus on programming spaces and generalized tensor networks}\cite{OperationalCalculus}. Implementation closely follows theorems and derivations of the paper, intended as an educational guide for those transitioning from automatic differentiation to this general theory.
 
-Analytic virtual machines allow nested transformations, with operational calculus opening new doors in program analysis. We outline the process of employing such a machine to several causes, seamlessly interweaving operational calculus and algorithmic control flow. 
 \end{abstract}
 
 \epigraph{Nothing at all takes place in the universe in which some rule of maximum or minimum does not appear.}{--- \textup{Leonhard Euler}}
@@ -100,7 +99,7 @@ Analytic virtual machines allow nested transformations, with operational calculu
 \tableofcontents
 \clearpage
 \section{Introduction}\label{sec:introduction}
-We provide an illustrative implementation of the virtual memory $\VV$ and its expansion to $\VV\otimes T(\VV^*)$, serving by itself as an algebra of programs along with an infinitely differentiable programming space \cite[Theorem~5.1]{OperationalCalculus}
+We provide an illustrative implementation of the virtual memory $\VV$ and its expansion to $\VV\otimes T(\VV^*)$, serving by itself as an algebra of programs along with an infinitely differentiable programming space \cite[Theorem~14]{OperationalCalculus}
 \begin{equation}
 \DD^n\CC<\dP_n:\VV\to\VV\otimes T(\VV^*)
 \end{equation}
@@ -110,11 +109,11 @@ We provide a construction of operators
 \begin{equation}
 \DD^n=\{\D^k;\quad 0\le k\le n\}
 \end{equation}
-allowing derivation of the generalized shift operator \cite[Theorem~5.4]{OperationalCalculus}
+allowing derivation of the generalized shift operator \cite[Theorem~17]{OperationalCalculus}
  \begin{equation}
                   	e^{h\D}:\dP\times \VV\to \VV\otimes \T(\VV^*),
          \end{equation}
-and projecting it onto the unit $n$-cube, deriving the operator increasing the order of a differentiable programming space \cite[Corollary~5.2]{OperationalCalculus}
+and projecting it onto the unit $n$-cube, deriving the operator increasing the order of a differentiable programming space \cite[Proposition~11]{OperationalCalculus}
 \begin{equation}\label{eq:sumd}
 \sumd_n:\dP_k\to\dP_{n+k}
 \end{equation} 
@@ -123,7 +122,7 @@ Analytic virtual machines allow nested transformations, with operational calculu
 
 \section{Virtual memory}\label{sec:virtualMemory}
 
-We model an element of the virtual memory $v\in\VV_n$ \cite[Claim~4.1]{OperationalCalculus}
+We model an element of the virtual memory $v\in\VV_n$ \cite[Definition~7]{OperationalCalculus}
 \begin{eqnarray}
 \VV_{n}=\VV_{n-1}\oplus(V_{n-1}\otimes\VV^*) \label{eq:V_n}
 \end{eqnarray}
@@ -190,14 +189,15 @@ where $\delta^i_j$ is the identity.
   \end{equation}
  \end{proof}
  
- Compositions are modeled by mimicking the operator of program composition \cite[Theorem~5.6]{OperationalCalculus}
+ Compositions are modeled by mimicking the operator of program composition \cite[Theorem~21]{OperationalCalculus}
  \begin{equation}\label{eq:kom}
    \exp(\D_fe^{h\D_g}): \dP\to\dP_\infty
    \end{equation}
- generalizing both forward and reverse mode automatic differentiation \cite[Claim~5.3]{OperationalCalculus}. By fixing one of the mappings in \eqref{eq:kom}, we derive projections of the pullback operator
+ generalizing both forward and reverse mode automatic differentiation \cite[Remark~22]{OperationalCalculus}. By fixing one of the mappings in \eqref{eq:kom}, we derive projections of the pullback operator
  \begin{equation}\label{eq:komp}
-    \exp(\D_fe^{h\D_g})(g): \dP\to\dP_\infty(g)
+    \exp(\D_fe^{h\D_g})(\cdot,g): \dP\to\dP_\infty(g)
     \end{equation}
+
   to the unit hyper-cube and applying it to the resulting direct sum.
 
 \subsubsection{Vector space over a field $K$}\label{sec:vectorSpace}
@@ -361,12 +361,12 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
     $\dP_0$ is an analytic programming space over $\VV$
     \end{itemize}
     When $\dP_0$ is a differentiable programming space, this defines an
-    infinitely differentiable virtual machine. \cite[Defintion~5.4]{OperationalCalculus}
+    infinitely differentiable virtual machine. \cite[Defintion~15]{OperationalCalculus}
   \end{definicija}
 
   \subsection{Operators}\label{sec:operators}
         
-        The operator of tensor series expansion \cite[Theorem~5.4]{OperationalCalculus}
+        The operator of tensor series expansion \cite[Theorem~17]{OperationalCalculus}
         
         \begin{equation}\label{eq:specProg}
                   	e^{h\D}:\dP\times \VV\to \VV\otimes \T(\VV^*),
@@ -379,7 +379,7 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
         \begin{equation}\label{eq:DD}
           	\sumd_N = 1+\D +\D^2 +\ldots + \D^N,
           \end{equation}
-        which is used to implement $\DD^n\CC\subset\dP_n$, employing the recursive relation for increasing the order of $\CC$ \cite[Corollary~5.2]{OperationalCalculus}.
+        which is used to implement $\DD^n\CC\subset\dP_n$, employing the recursive relation for increasing the order of $\CC$ \cite[Proposition~11]{OperationalCalculus}.
         \begin{equation}
               \label{eq:rekurzija}
               \sumd_{k+1} = 1+\D\sumd_k,
@@ -390,7 +390,7 @@ The tuple $M=\langle \VV,\dP_0\rangle$ is an analytic, infinitely  differentiabl
         
         The \emph{double id} stands for the identity operator $1$ in the expression and the \emph{map<var*, var> dTau} for the operator $\D\sumd_k$.
         
-        Compositions of these operators is achieved by mimicking the generalized pullback operator \cite[Claim~5.3]{OperationalCalculus}
+        Compositions of these operators is achieved by mimicking the generalized pullback operator \cite[Remark~11]{OperationalCalculus}
         \begin{equation}\label{eq:opKompo}
           \exp(\D_fe^{h\D_g})(g): \dP\to\dP_\infty(g),
           \end{equation}
@@ -438,7 +438,7 @@ var tau::operator()(const var&v){
                	\begin{equation}\label{eq:P}
                	\D\dP_0\subset\dP_0\otimes T(V^*)
                	\end{equation}
-               	When all elements of $\dP_0$ are analytic, we denote $\dP_0$ as an \emph{analytic programming space}. \cite[Definition~5.1]{OperationalCalculus}
+               	When all elements of $\dP_0$ are analytic, we denote $\dP_0$ as an \emph{analytic programming space}. \cite[Definition~8]{OperationalCalculus}
                \end{definicija}
               
               \begin{izrek}\label{izr:P}
@@ -447,10 +447,10 @@ var tau::operator()(const var&v){
               	\begin{equation}\label{eq:P_n}
               	 		\D^k\dP_0\subset\dP_0\otimes T(V^*)
               	 	\end{equation}
-              for any $k\in\mathbb{N}$. \cite[Theorem~5.1]{OperationalCalculus}
+              for any $k\in\mathbb{N}$. \cite[Theorem~9]{OperationalCalculus}
               \end{izrek}
               
-              Thus, in order to have a differential programming space, we must provide closure under the differential operator \cite[Corollary~5.1]{OperationalCalculus}, for the function space $\CC$, expanded by the tensor product with the tensor algebra of the dual of the virtual memory $\VV$.
+              Thus, in order to have a differential programming space, we must provide closure under the differential operator \cite[Corollary~10]{OperationalCalculus}, for the function space $\CC$, expanded by the tensor product with the tensor algebra of the dual of the virtual memory $\VV$.
               
               \begin{equation}
               \DD^n\CC<\dP_n\iff\DD^n\CC\subset\CC\otimes T(\VV^*)
@@ -569,7 +569,7 @@ is an Analytic virtual machine.
 
 \subsubsection{Order reduction for nested applications}\label{sec:orderReduction}
  
- It is useful to be able to use the $k$-th derivative of a program $P\in\dP$ as part of a different differentiable program $P_1$. As such, we must be able to treat the derivative itself as a differentiable program $P^{\prime k}\in\dP$, while only coding the original program $P$. \cite[Section~5.2.2]{OperationalCalculus}
+ It is useful to be able to use the $k$-th derivative of a program $P\in\dP$ as part of a different differentiable program $P_1$. As such, we must be able to treat the derivative itself as a differentiable program $P^{\prime k}\in\dP$, while only coding the original program $P$. \cite[Section~5.3]{OperationalCalculus}
 \begin{izrek}\label{izr:reductionMap}
 There exists a reduction of order map $\phi:\dP_n\to \dP_{n-1}$, such that the
 following  diagram commutes
@@ -594,7 +594,7 @@ By Theorem \ref{izr:reductionMap}, $n$-differentiable $k$-th derivatives of a pr
 \end{equation}
 \end{corollary}  
 \begin{opomba}
-Theorem \ref{izr:reductionMap} and Corollary \ref{cor:extraxtDerivatives} are derived by using projections onto the unit hyper-cube on \cite[Theorem~5.7]{OperationalCalculus} and \cite[Corollary~5.5]{OperationalCalculus}.
+Theorem \ref{izr:reductionMap} and Corollary \ref{cor:extraxtDerivatives} are derived by using projections onto the unit hyper-cube on \cite[Theorem~26]{OperationalCalculus} and \cite[Corollary~27]{OperationalCalculus}.
 \end{opomba}  
 
 We construct a reduction of order map $d:\dP_n\times\VV\to\dP_{n-1}$, 
@@ -662,11 +662,11 @@ softmax(firstLayerOutput);
 
 \section{Applications}\label{sec:Employment}
 
-The algebra over programs \cite[Theorem~5.3]{OperationalCalculus} an Analytic virtual machine enables and its operational calculus are employed towards achieving analytic conclusions through algebraic means, seamlessly interweaving operational calculus and algorithmic control flow. 
+The algebra over programs \cite[Theorem~14]{OperationalCalculus} an Analytic virtual machine enables and its operational calculus are employed towards achieving analytic conclusions through algebraic means, seamlessly interweaving operational calculus and algorithmic control flow. 
 
 \subsection{General engineering}\label{sec:generalEngineering}
 
-We demonstrate employment on the case of highway and railway design, where author has previously used the described approach. Demonstration is presented in an easily transfered general form.
+We demonstrate employment on the case of highway and railway design, where the author has previously used the described approach. Demonstration is presented in an easily transfered general form.
 
 Highway and railway designers use clothoid splines (planar G1
 curves consisting of straight line segments, circular arcs, and clothoid segments)
