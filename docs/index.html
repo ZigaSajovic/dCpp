@@ -38,34 +38,29 @@
 <h3>
 <a id="abstract" class="anchor" href="#abstract" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Abstract</h3>
 
-<p>We provide an illustrative implementation of an analytic, infinitely-differentiable machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper <a href="https://arxiv.org/abs/1610.07690"><em>Operational calculus on programming spaces and generalized tensor networks</em></a>. Implementation closely follows theorems and derivations of the paper, intended as an educational guide for those transitioning from automatic differentiation to this general theory.</p>
+<p>We provide an illustrative implementation of an analytic, infinitely-differentiable machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper <a href="https://arxiv.org/abs/1610.07690"><em>Operational calculus on programming spaces</em></a>. Implementation closely follows theorems and derivations of the paper, intended as an educational guide for those transitioning from automatic differentiation to this general theory.</p>
 
-<p>The paper <a href="https://arxiv.org/abs/1612.02731"><em>Implementation of Operational calculus on programming spaces with Applications</em></a> accompaning the implementation is avaliable on arXiv.</p>
+<p>The paper <a href="https://arxiv.org/abs/1612.02731"><em>Implementing Operational calculus on programming spaces for Differentiable computing</em></a> accompaning the implementation is avaliable on arXiv.</p>
 
 <p>The <a href="https://github.com/ZigaSajovic/dCpp"><em>dCpp</em></a> project is constantly updated and optimized. This is the openSource version.</p>
 
 <h3>
-<a id="theory" class="anchor" href="#theory" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Theory</h3>
-
-<p>From <em>abstract</em> of the paper <a href="https://arxiv.org/abs/1610.07690"><em>Operational calculus on programming spaces and generalized tensor networks</em></a> in which the theory is derived by <a href="https://www.linkedin.com/in/zigasajovic">Žiga Sajovic</a>:</p>
-
-<p>In this paper, we develop operational calculus on programming spaces that generalizes existing approaches to automatic differentiation of computer programs and provides a rigorous framework for program analysis through calculus.</p>
-
-<p>We present an abstract computing machine that models automatically differentiable computer programs. Computer programs are viewed as maps on a finite dimensional vector space called virtual memory space, which we extend by the tensor algebra of its dual to accommodate derivatives. The extended virtual memory is by itself an algebra of programs and its elements give the expansion of the original program as an infinite tensor series at program's input values. </p>
-
-<p>We define the operator of differentiation on programming spaces and implement higher order derivatives as well as generalized shift operator in terms of its powers. Operational calculus is used to prove properties of the defined operators. Several possible applications to computer science are presented, most notably trainable general tensor neural networks that can provide a meaningful way of neural network initialization and in some cases yield better performing approximations of programs.</p>
-
-<p>Our approach offers a powerful tool for program analysis and approximation as well as a unified approach to automatic differentiation covering both forward and reverse mode under a single operator. General tensor networks enable generalization of the existing state of the art methods for analyzing neural networks to any computer program.</p>
-
-<p>The paper <a href="https://arxiv.org/abs/1610.07690"><em>Operational calculus on programming spaces and generalized tensor networks</em></a> , containing derivation of the theory is available on arXiv.</p>
-
-<h3>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h3>
-
-<p>By employing analytic virtual machines, we can construct analytic procedures, viewing algorithms in a new light. One can start incorporating variable parameters into algorithm design, revealing the true nature of hyper-parameters often used in practice.</p>
-
-<h3>
 <a id="tutorial" class="anchor" href="#tutorial" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tutorial</h3>
+
+<p>dCpp is a flexible tool, allowing implementation and analysis of programs through operational calculus.</p>
+
+<ul>
+<li><p>Implementations of differentiable (sub) programs operating on differentiable derivatives of other (sub) programs, where the entire process may again be differentiable. This allows trainable training processes, and flexible program analysis through operational calculus.</p></li>
+<li><p><a href="https://arxiv.org/abs/1610.07690"><em>Operational calculus on programming spaces</em></a> is the paper in which the theory is derived and the process of its use to the purpose of program analysis and deep learning is outlined.</p></li>
+<li><p><a href="https://arxiv.org/abs/1612.02731"><em>Implementing Operational calculus on programming spaces for Differentiable computing</em></a> is the paper in which the implementation of this theory into dCpp is explained, where the reader is guided through the code and the theory simultaneously, as to better understand this flexible tool.</p></li>
+</ul>
+
+<p>As the following tutorial is quite brief, please consult the discussions regarding common mistakes and solutions.</p>
+
+<ul>
+<li><a href="https://github.com/ZigaSajovic/dCpp/issues/2#issuecomment-276048860"><em>Common mistakes with initializations, differentiability of differentiabile processes, and general understanding of functionality</em></a></li>
+<li><a href="https://github.com/ZigaSajovic/dCpp/issues/2#issuecomment-276057623"><em>Solutions with detailed explanations of the rationale behind them</em></a></li>
+</ul>
 
 <p>As most programmers face the need of differentiability through machine learning, we use the concept of <a href="https://en.wikipedia.org/wiki/Logistic_regression">logistic regression</a> with <a href="https://en.wikipedia.org/wiki/Softmax_function#Softmax_Normalization">softmax normalization</a> as a vessel for this tutorial. We demostrate, how it is simply constructed using algorithmic control flow and reccursion, by employing <em>dCpp</em>.</p>
 
