@@ -244,6 +244,7 @@ If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please ci
 }
 ```    
 >Žiga Sajovic: [Implementing Operational calculus on programming spaces for Differentiable computing](https://arxiv.org/abs/1612.02731). arXiv e-prints arXiv:1612.0273 (2016)
+
 ```
 @article{
     Author = {Žiga Sajovic},
