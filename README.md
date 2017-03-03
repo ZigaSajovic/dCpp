@@ -229,7 +229,7 @@ void dEigenExample(){
 ###Citation
 If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please cite one of the following papers
 
->Žiga Sajovic, et al.: [Operational calculus on programming spaces](https://arxiv.org/abs/1610.07690). arXiv e-prints arXiv:1610.0769 (2016)
+>Žiga Sajovic, et al.: [Operational calculus on programming spaces](https://arxiv.org/abs/1610.07690). arXiv e-prints arXiv:1610.07690 (2016)
 
 
 ```
@@ -243,7 +243,7 @@ If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please ci
     Eprinttype = {arXiv},
 }
 ```    
->Žiga Sajovic: [Implementing Operational calculus on programming spaces for Differentiable computing](https://arxiv.org/abs/1612.02731). arXiv e-prints arXiv:1612.0273 (2016)
+>Žiga Sajovic: [Implementing Operational calculus on programming spaces for Differentiable computing](https://arxiv.org/abs/1612.02731). arXiv e-prints arXiv:1612.02731 (2016)
 
 ```
 @article{
