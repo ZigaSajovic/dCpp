@@ -1,7 +1,7 @@
 # dCpp
 Automatic differentiation in C++; infinite differentiability of conditionals, loops, recursion and all things C++
 
-###Abstract
+### Abstract
 We provide an illustrative implementation of an analytic, infinitely-differentiable machine, implementing infinitely-differentiable programming spaces and operators acting upon them, as constructed in the paper _[Operational calculus on programming spaces](https://arxiv.org/abs/1610.07690)_. Implementation closely follows theorems and derivations of the paper, intended as an educational guide for those transitioning from automatic differentiation to this general theory.
 
 The paper [Implementing Operational calculus on programming spaces for Differentiable computing](https://arxiv.org/abs/1612.02731) accompaning the implementation is avaliable on arXiv .
@@ -9,7 +9,7 @@ The paper [Implementing Operational calculus on programming spaces for Different
 
 The _[dCpp](https://github.com/ZigaSajovic/dCpp)_ project is constantly updated and optimized. This is the openSource version.
 
-###Tutorial
+### Tutorial
 
 dCpp is a flexible tool, allowing implementation and analysis of programs through operational calculus.
 
@@ -47,7 +47,7 @@ We will need the folowing functions
 * [dotProduct(vec1,vec2)](https://en.wikipedia.org/wiki/Dot_product)
 * [matVecProduct(mat,vec)](https://en.wikipedia.org/wiki/Matrix_multiplication)
 
-####Maps contained in the function algebra over var
+#### Maps contained in the function algebra over var
 
 By coding sigmoid(x), we will learn about creating differentiable maps, constructable using the differentiable programming space _dCpp_ and the algebra of the virtual memory _var_.
 ```c++
@@ -86,7 +86,7 @@ Accessing the derivatives is done by calling _d(var* w)_ function of the class _
     std::cout<<"df/dw_2dw_2 = "<<f.d(&w_2).d(&w_2).id<<std::endl;
 ```
 
-####Operator dTau
+#### Operator dTau
 
  Similarly, we could have used the operator [tau](include/tau.h) by coding , which allows one to create it's own elements of the differentiable programming space _dCpp_, returning a differentiable variable [var](/include/var.h). The operator [tau](include/tau.h) is initialized by a double-->double map representing the desired function, and a var-->var map representing its derivative. Lets take a closer look, by creating a differentiable map log:var-->var.
  
@@ -125,7 +125,7 @@ Again, we display all first and second derivatives
 //  df/dydy
     std::cout<<"df/dydy = "<<f.d(&y).d(&y).id<<std::endl;
 ```
-####Integrating control structures
+#### Integrating control structures
 
 With _dTau_ explained, we turn to coding the softmax normalization, we reveal how analytic virtual machines fully integrate control structures. 
 
@@ -166,7 +166,7 @@ We test it, by inititalizing a four-differentiable programming space and display
 
 ```
 
-####Integrating external libraries
+#### Integrating external libraries
 
 Usage with external libraries written in generic paradigm is demonstrated on the example of [Eigen](http://eigen.tuxfamily.org/). 
 We will code a perceptron with sigmoid activations, followed by softmax normalization. We will use dCpp provided mappings in the [dEigen](/include/dEigen.h) header.
@@ -226,7 +226,7 @@ void dEigenExample(){
 }
 ```
 
-###Citation
+### Citation
 If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please cite one of the following papers
 
 >Žiga Sajovic, et al.: [Operational calculus on programming spaces](https://arxiv.org/abs/1610.07690). arXiv e-prints arXiv:1610.07690 (2016)
