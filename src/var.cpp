@@ -179,6 +179,8 @@ var var::operator+(const var& v)const{
     return out;
 }
 
+var var::operator+(var&& v)const{return v+=*this;}
+
 var var::operator-(const var& v)const{
     return *this+(v*(-1));
 }
@@ -199,6 +201,8 @@ var var::operator*(const var& v)const{
     }
     return out;
 }
+
+var var::operator*(var&& v)const{return v*=*this;}
 
 var var::operator/(const var& v)const{
     return *this*(v^(-1));

@@ -34,7 +34,9 @@ class var
         var& operator/=(double n);
         var& operator^=(double n);
         var operator+(const var& v)const;
+        var operator+(var&& v)const;
         var operator*(const var& v)const;
+        var operator*(var&& v)const;
         var operator-(const var& v)const;
         var operator/(const var& v)const;
         var operator^(const var& v)const;
