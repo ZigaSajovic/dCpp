@@ -73,7 +73,7 @@ OutputIterT inplace_merge_apply(
 }
 
 template<class T, class V>
-T mul_make_pair(T a, const V& b) {
+T mul_make_pair(const T& a, const V& b) {
   return std::make_pair(a.first, a.second *b);
 }
 
