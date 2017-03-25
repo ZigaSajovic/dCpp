@@ -67,6 +67,8 @@ var::var(const var& other) {
     this->dTau.get()->insert(other.dTau.get()->begin(),other.dTau.get()->end());
 }
 
+var::var(var&& other) = default;
+
 var& var::operator=(const var& v){
     if(this==&v)return *this;
     this->order=v.order;

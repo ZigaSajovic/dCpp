@@ -14,6 +14,7 @@ class var
         var();
         var(double id);
         var(const var& other);
+        var(var&& other);
         ~var();
         var& operator=(const var& v);
         var reduce() const;
