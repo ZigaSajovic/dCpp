@@ -14,7 +14,7 @@ var operator-(double n, const var& v){
 }
 
 var operator/(double n, const var& v){
-            return (v^-1)*n;
+            return (v^-1)*=n;
 }
 
 var operator^(double n, const var& v){
