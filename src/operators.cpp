@@ -10,7 +10,7 @@ var operator+(double n, const var& v){
 }
 
 var operator-(double n, const var& v){
-            return v-n;
+            return (v-n)*=-1;
 }
 
 var operator/(double n, const var& v){
