@@ -116,7 +116,7 @@ var var::operator/(double n)const{
     out.order=this->order;
     out.id=this->id/n;
     for_each_copy(this->dTau.get()->begin(),this->dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
-        mul_make_pair<std::pair<var*,var> ,double >, 1/n);
+        mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,double >, 1/n);
     return out;
 }
 
@@ -125,7 +125,7 @@ var var::operator*(double n)const{
     out.id=this->id*n;
     out.order=this->order;
     for_each_copy(this->dTau.get()->begin(),this->dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
-        mul_make_pair<std::pair<var*,var> , double>, n);
+        mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator, double>, n);
     return out;
 }
 
@@ -135,7 +135,7 @@ var var::operator^(double n) const{
     out.id=std::pow(this->id,n);
     if(n!=0&&this->order>0){
         for_each_copy(this->dTau.get()->begin(),this->dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
-            mul_make_pair<std::pair<var*,var> , var>,((this->reduce())^(n-1))*=n);
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator, var>,((this->reduce())^(n-1))*=n);
     }
     return out;
 }
@@ -179,8 +179,8 @@ var var::operator+(const var& v)const{
     out.order=this->order<v.order?this->order:v.order;
     if(out.order>0){
         merge_apply(this->dTau.get()->begin(), this->dTau.get()->end(), v.dTau.get()->begin(), v.dTau.get()->end(),
-            inserter(*out.dTau.get(), out.dTau.get()->begin()),compare_first<std::pair<var*, var> >,
-            sum_pairs<std::pair<var*, var> >);
+            inserter(*out.dTau.get(), out.dTau.get()->begin()),compare_first<std::map<var*, var>::iterator >,
+            sum_pairs<std::pair<var*, var>, std::map<var*,var>::iterator >);
     }
     return out;
 }
@@ -201,11 +201,11 @@ var var::operator*(const var& v)const{
         std::map<var*,var> tmp1;
         std::map<var*,var> tmp2;
         for_each_copy(this->dTau.get()->begin(),this->dTau.get()->end(),inserter(tmp1,tmp1.begin()),
-            mul_make_pair<std::pair<var*,var> ,var >, v.reduce());
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,var >, v.reduce());
         for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(tmp2,tmp2.begin()),
-            mul_make_pair<std::pair<var*,var> ,var>, this->reduce());
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,var>, this->reduce());
         merge_apply(tmp1.begin(), tmp1.end(), tmp2.begin(), tmp2.end(), inserter(*out.dTau.get(),
-            out.dTau.get()->begin()),compare_first<std::pair<var*, var> >, sum_pairs<std::pair<var*, var> >);
+            out.dTau.get()->begin()),compare_first<std::map<var*, var>::iterator >, sum_pairs<std::pair<var*, var>, std::map<var*,var>::iterator >);
     }
     return out;
 }
@@ -226,11 +226,11 @@ var var::operator^(const var& v)const{
         std::map<var*,var> tmp1;
         std::map<var*,var> tmp2;
         for_each_copy(this->dTau.get()->begin(),this->dTau.get()->end(),inserter(tmp1,tmp1.begin()),
-            mul_make_pair<std::pair<var*,var> ,var >, (this->reduce()^(v.reduce()-1))*=v.reduce());
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,var >, (this->reduce()^(v.reduce()-1))*=v.reduce());
         for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(tmp2,tmp2.begin()),
-            mul_make_pair<std::pair<var*,var> ,var>, (this->reduce()^v.reduce())*=dCpp::ln(this->reduce()));
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,var>, (this->reduce()^v.reduce())*=dCpp::ln(this->reduce()));
         merge_apply(tmp1.begin(), tmp1.end(), tmp2.begin(), tmp2.end(), inserter(*out.dTau.get(), out.dTau.get()->begin()),
-            compare_first<std::pair<var*, var> >, sum_pairs<std::pair<var*, var> >);
+            compare_first<std::map<var*, var>::iterator >, sum_pairs<std::pair<var*, var>, std::map<var*,var>::iterator >);
     }
     return out;
 }
@@ -240,7 +240,7 @@ var& var::operator+=(const var& v){
     this->order=this->order<v.order?this->order:v.order;
     if(this->order>0){
         inplace_merge_apply(this->dTau.get()->begin(), this->dTau.get()->end(), v.dTau.get()->begin(), v.dTau.get()->end(),
-            inserter(*this->dTau.get(), this->dTau.get()->begin()),compare_first<std::pair<var*, var> >, inplace_sum<var, var>);
+            inserter(*this->dTau.get(), this->dTau.get()->begin()),compare_first<std::map<var*, var>::iterator >, inplace_sum<var, var>);
     }
     this->id+=v.id;
     return *this;
@@ -255,10 +255,10 @@ var& var::operator*=(const var& v){
     if(this->order>0){
         std::map<var*,var> tmp2;
         for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(tmp2,tmp2.begin()),
-            mul_make_pair<std::pair<var*,var> ,var>, this->reduce());
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,var>, this->reduce());
         map_each(this->dTau.get()->begin(),this->dTau.get()->end(),inplace_mul<var, var >,v.reduce());
         inplace_merge_apply(this->dTau.get()->begin(), this->dTau.get()->end(), tmp2.begin(), tmp2.end(),
-            inserter(*this->dTau.get(), this->dTau.get()->begin()),compare_first<std::pair<var*, var> >,
+            inserter(*this->dTau.get(), this->dTau.get()->begin()),compare_first<std::map<var*, var>::iterator >,
             inplace_sum<var, var>);
     }
     this->id*=v.id;
@@ -274,12 +274,12 @@ var& var::operator^=(const var& v){
     if(this->order>0){
         std::map<var*,var> tmp2;
         for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(tmp2,tmp2.begin()),
-            mul_make_pair<std::pair<var*,var> ,var>,
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,var>,
             (this->reduce()^v.reduce())*=dCpp::ln(this->reduce()));
         map_each(this->dTau.get()->begin(),this->dTau.get()->end(),inplace_mul<var, var >,
             (this->reduce()^(v.reduce()-1)*=v.reduce()));
         inplace_merge_apply(this->dTau.get()->begin(), this->dTau.get()->end(), tmp2.begin(), tmp2.end(),
-            inserter(*this->dTau.get(), this->dTau.get()->begin()),compare_first<std::pair<var*, var> >,
+            inserter(*this->dTau.get(), this->dTau.get()->begin()),compare_first<std::map<var*, var>::iterator >,
             inplace_sum<var, var>);
     }
     this->id=std::pow(this->id,v.id);

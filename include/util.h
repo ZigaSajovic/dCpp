@@ -8,7 +8,7 @@ template<class InputIterator,class InputIterator2, class OutputIterT, class Func
   OutputIterT for_each_copy(InputIterator first, InputIterator2 last, OutputIterT result, Function fn, const T2& x)
 {
   while (first!=last) {
-    *result=fn(*first,x);
+    *result=fn(first,x);
     ++first;
   }
   return result;
@@ -31,15 +31,14 @@ OutputIterT merge_apply(
   {
     if(first1==last1) return std::copy(first2, last2, result);
     if(first2==last2) return std::copy(first1, last1, result);
-
-    if (comp(*first1, *first2)<0) {
+    if (comp(first1, first2)<0) {
       *result = *first1;
       ++first1;
-    } else if (comp(*first1, *first2)>0) {
+    } else if (comp(first1, first2)>0) {
       *result=*first2;
       ++first2;
     } else {
-      *result=func(*first1, *first2);
+      *result=func(first1, first2);
       ++first1;
       ++first2;
     }
@@ -56,11 +55,10 @@ OutputIterT inplace_merge_apply(
   {
     if(first1==last1) return std::copy(first2, last2, result);
     if(first2==last2) return result;
-
-    if (comp(*first1, *first2)<0) {
+    if (comp(first1, first2)<0) {
       *result = *first1;
       ++first1;
-    } else if (comp(*first1, *first2)>0) {
+    } else if (comp(first1, first2)>0) {
       *result=*first2;
       ++first2;
     } else {
@@ -72,9 +70,9 @@ OutputIterT inplace_merge_apply(
   }
 }
 
-template<class T, class V>
-T mul_make_pair(const T& a, const V& b) {
-  return std::make_pair(a.first, a.second *b);
+template<class T, class Iterator, class V>
+T mul_make_pair(Iterator a, const V& b) {
+  return std::make_pair(a->first, a->second *b);
 }
 
 template<class T, class V>
@@ -83,13 +81,13 @@ T& inplace_mul(T& a, const V& b) {
 }
 
 template<class T>
-int compare_first(const T& a, const T& b) {
-  return a.first - b.first;
+int compare_first(T a, T b) {
+  return a->first - b->first;
 }
 
-template<class T>
-T sum_pairs(const T& a, const T& b) {
-  return std::make_pair(a.first, a.second + b.second);
+template<class T, class Iterator>
+T sum_pairs(Iterator a, Iterator b) {
+  return std::make_pair(a->first, a->second + b->second);
 }
 
 template<class T, class V>

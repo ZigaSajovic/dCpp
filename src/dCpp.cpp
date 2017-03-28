@@ -18,7 +18,7 @@ var dCpp::ln(const var& v){
     out.order=v.order;
     if(v.order>0){
         for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
-            mul_make_pair<std::pair<var*,var> ,var >, (v.reduce())^(-1));
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,var >, (v.reduce())^(-1));
     }
     return out;
 }
@@ -29,7 +29,7 @@ var dCpp::cos(const var& v){
     out.order=v.order;
     if(v.order>0){
         for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
-            mul_make_pair<std::pair<var*,var> , var >, dCpp::sin(v.reduce())*=-1);
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator, var >, dCpp::sin(v.reduce())*=-1);
     }
     return out;
 }
@@ -40,7 +40,7 @@ var dCpp::sin(const var& v){
     out.order=v.order;
     if(v.order>0){
         for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
-            mul_make_pair<std::pair<var*,var> , var >, dCpp::cos(v.reduce()));
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator, var >, dCpp::cos(v.reduce()));
     }
     return out;
 }
@@ -62,8 +62,8 @@ var dCpp::exp(const var& v){
     out.id=std::exp(v.id);
     out.order=v.order;
     if(v.order>0){
-        for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),mul_make_pair<std::pair<var*,var> , var >,
-            dCpp::exp(v.reduce()));
+        for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
+        mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator, var >, dCpp::exp(v.reduce()));
     }
     return out;
 }
