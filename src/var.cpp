@@ -6,7 +6,6 @@
 #include <iostream>
 #include <dCpp.h>
 
-
 var:: var(){
     this->id=0;
     this->order=dCpp::getSpaceOrder();
@@ -67,7 +66,7 @@ var::var(const var& other) {
     this->dTau.get()->insert(other.dTau.get()->begin(),other.dTau.get()->end());
 }
 
-var::var(var&& other) = default;
+var::var(var&& other):order{std::move(other.order)}, id{std::move(other.id)}, dTau{std::move(other.dTau)} {}
 
 var& var::operator=(const var& v){
     if(this==&v)return *this;
@@ -75,6 +74,13 @@ var& var::operator=(const var& v){
     this->id=v.id;
     this->dTau=std::make_shared<std::map<var*, var> >();
     this->dTau.get()->insert(v.dTau.get()->begin(),v.dTau.get()->end());
+    return *this;
+}
+
+var& var::operator = (var&& other) {
+    order=std::move(other.order);
+    id=std::move(other.id);
+    dTau=std::move(other.dTau);
     return *this;
 }
 

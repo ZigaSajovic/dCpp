@@ -17,6 +17,7 @@ class var
         var(var&& other);
         ~var();
         var& operator=(const var& v);
+        var& operator=(var&& other);
         var reduce() const;
         void init(int order);
         void initPlaceHolder(int order);
