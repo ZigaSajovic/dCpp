@@ -38,7 +38,9 @@ class var
         var operator*(const var& v)const;
         var operator*(var&& v)const;
         var operator-(const var& v)const;
+        var operator-(var&& v)const;
         var operator/(const var& v)const;
+        var operator/(var&& v)const;
         var operator^(const var& v)const;
         var& operator+=(const var& v);
         var& operator*=(const var& v);

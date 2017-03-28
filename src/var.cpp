@@ -129,7 +129,7 @@ var var::operator^(double n) const{
     out.id=std::pow(this->id,n);
     if(n!=0&&this->order>0){
         for_each_copy(this->dTau.get()->begin(),this->dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
-            mul_make_pair<std::pair<var*,var> , var>, ((this->reduce())^(n-1))*=n);
+            mul_make_pair<std::pair<var*,var> , var>,((this->reduce())^(n-1))*=n);
     }
     return out;
 }
@@ -185,6 +185,8 @@ var var::operator-(const var& v)const{
     return *this+(v*(-1));
 }
 
+var var::operator-(var&& v)const{return (v*=(-1))+=*this;}
+
 var var::operator*(const var& v)const{
     var out;
     out.id=this->id*v.id;
@@ -207,6 +209,8 @@ var var::operator*(var&& v)const{return v*=*this;}
 var var::operator/(const var& v)const{
     return *this*(v^(-1));
 }
+
+var var::operator/(var&& v)const{return (v^=(-1))*=*this;}
 
 var var::operator^(const var& v)const{
     var out;

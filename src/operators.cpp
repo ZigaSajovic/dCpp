@@ -5,16 +5,33 @@ var operator*(double n, const var& v){
             return v*n;
 }
 
+var operator * (double n, var&& v){
+    return v*=n;
+}
+
+
 var operator+(double n, const var& v){
             return v+n;
+}
+
+var operator + (double n, var&& v){
+    return v+=n;
 }
 
 var operator-(double n, const var& v){
             return (v-n)*=-1;
 }
 
+var operator-(double n, var&& v){
+            return (v-=n)*=-1;
+}
+
 var operator/(double n, const var& v){
             return (v^-1)*=n;
+}
+
+var operator/(double n, var&& v){
+            return (v^=(-1))*=n;
 }
 
 var operator^(double n, const var& v){

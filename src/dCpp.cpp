@@ -18,7 +18,7 @@ var dCpp::ln(const var& v){
     out.order=v.order;
     if(v.order>0){
         for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
-            mul_make_pair<std::pair<var*,var> ,var >, 1/v.reduce());
+            mul_make_pair<std::pair<var*,var> ,var >, (v.reduce())^(-1));
     }
     return out;
 }
