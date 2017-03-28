@@ -72,7 +72,7 @@ OutputIterT inplace_merge_apply(
 
 template<class T, class Iterator, class V>
 T mul_make_pair(Iterator a, const V& b) {
-  return std::make_pair(a->first, a->second *b);
+  return T(a->first, a->second *b);
 }
 
 template<class T, class V>
@@ -87,7 +87,7 @@ int compare_first(T a, T b) {
 
 template<class T, class Iterator>
 T sum_pairs(Iterator a, Iterator b) {
-  return std::make_pair(a->first, a->second + b->second);
+  return T(a->first, a->second + b->second);
 }
 
 template<class T, class V>
