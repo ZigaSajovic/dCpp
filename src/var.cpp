@@ -234,11 +234,10 @@ var var::operator^(const var& v)const{
 }
 
 var& var::operator+=(const var& v){
-
     this->order=this->order<v.order?this->order:v.order;
     if(this->order>0){
         inplace_merge_apply(this->dTau.get()->begin(), this->dTau.get()->end(), v.dTau.get()->begin(), v.dTau.get()->end(),
-            inserter(*this->dTau.get(), this->dTau.get()->begin()),compare_first<std::map<var*, var>::iterator >, inplace_sum<var, var>);
+            inserter(*this->dTau.get(), this->dTau.get()->begin()),compare_first<std::map<var*, var>::iterator >, inplace_sum<var, var>,false);
     }
     this->id+=v.id;
     return *this;

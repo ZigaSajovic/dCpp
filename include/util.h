@@ -50,13 +50,12 @@ template<class InputIterT1, class InputIterT2, class OutputIterT, class Comparat
 OutputIterT inplace_merge_apply(
     InputIterT1 first1, InputIterT1 last1,
     InputIterT2 first2, InputIterT2 last2,
-    OutputIterT result,Comparator comp, Func func) {
+    OutputIterT result,Comparator comp, Func func, bool move_it=true) {
   while (true)
   {
-    if(first1==last1) return std::copy(first2, last2, result);
+    if(first1==last1) return move_it?std::move(first2, last2, result):std::copy(first2, last2, result);
     if(first2==last2) return result;
     if (comp(first1, first2)<0) {
-      *result = *first1;
       ++first1;
     } else if (comp(first1, first2)>0) {
       *result=*first2;
