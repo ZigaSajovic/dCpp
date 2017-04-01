@@ -21,7 +21,7 @@ class var
         var reduce() const;
         void init(int order);
         void initPlaceHolder(int order);
-        var d(var*dvar);
+        var d(var*dvar) const;
         void print() const;
         //declerations of algebraic operations
         var operator+(double n)const;

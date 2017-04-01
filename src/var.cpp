@@ -30,7 +30,7 @@ void var::initPlaceHolder(int order){
     this->order=order;
 }
 
-var var::d(var* dvar){
+var var::d(var* dvar) const{
     try{
         return (*this->dTau.get()).at(dvar);
     }
