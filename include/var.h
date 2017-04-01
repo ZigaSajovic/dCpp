@@ -44,9 +44,12 @@ class var
         var operator/(var&& v)const;
         var operator^(const var& v)const;
         var& operator+=(const var& v);
+        var& operator+=(var&& v);
         var& operator*=(const var& v);
         var& operator-=(const var& v);
+        var& operator-=(var&& v);
         var& operator/=(const var& v);
+        var& operator/=(var&& v);
         var& operator^=(const var& v);
         //order logic
         bool operator==(const var& v)const;

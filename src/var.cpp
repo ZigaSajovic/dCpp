@@ -188,7 +188,7 @@ var var::operator+(const var& v)const{
 var var::operator+(var&& v)const{return v+=*this;}
 
 var var::operator-(const var& v)const{
-    return *this+(v*(-1));
+    return (v*(-1))+=*this;
 }
 
 var var::operator-(var&& v)const{return (v*=(-1))+=*this;}
@@ -243,8 +243,22 @@ var& var::operator+=(const var& v){
     return *this;
 }
 
+var& var::operator+=(var&& v){
+    this->order=this->order<v.order?this->order:v.order;
+    if(this->order>0){
+        inplace_merge_apply(this->dTau.get()->begin(), this->dTau.get()->end(), v.dTau.get()->begin(), v.dTau.get()->end(),
+            inserter(*this->dTau.get(), this->dTau.get()->begin()),compare_first<std::map<var*, var>::iterator >, inplace_sum<var, var>);
+    }
+    this->id+=v.id;
+    return *this;
+}
+
 var& var::operator-=(const var& v){
     return ((*this*=-1)+=v)*=-1;
+}
+
+var& var::operator-=(var&& v){
+    return *this+=std::move(v*=-1);
 }
 
 var& var::operator*=(const var& v){
@@ -264,6 +278,10 @@ var& var::operator*=(const var& v){
 
 var& var::operator/=(const var& v){
     return *this*=(v^(-1));
+}
+
+var& var::operator/=(var&& v){
+    return *this*=(v^=(-1));
 }
 
 var& var::operator^=(const var& v){
