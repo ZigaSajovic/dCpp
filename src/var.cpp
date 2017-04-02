@@ -42,6 +42,8 @@ var var::d(var* dvar) const{
 
 }
 
+var& var::to_lvalue() {return *this;}
+
 typedef std::map<var*,var>::iterator it_type;
 void var::print()const{
     std::cout<<"id = "<<this->id<<" order = "<<this->order<<"\n";
@@ -95,7 +97,7 @@ var var::reduce()const{
 
 //operations on doubles
 
-var var::operator+(double n)const{
+var var::operator+(double n)const &{
     var out;
     out.order=this->order;
     out.id=this->id+n;
@@ -103,7 +105,11 @@ var var::operator+(double n)const{
     return out;
 }
 
-var var::operator-(double n)const{
+var var::operator+(double n) && {
+    return std::move(*this+=n);
+}
+
+var var::operator-(double n)const &{
     var out;
     out.order=this->order;
     out.id=this->id-n;
@@ -111,7 +117,11 @@ var var::operator-(double n)const{
     return out;
 }
 
-var var::operator/(double n)const{
+var var::operator-(double n) && {
+    return std::move(*this-=n);
+}
+
+var var::operator/(double n)const &{
     var out;
     out.order=this->order;
     out.id=this->id/n;
@@ -120,7 +130,11 @@ var var::operator/(double n)const{
     return out;
 }
 
-var var::operator*(double n)const{
+var var::operator/(double n) && {
+    return std::move(*this/=n);
+}
+
+var var::operator*(double n)const &{
     var out;
     out.id=this->id*n;
     out.order=this->order;
@@ -129,15 +143,23 @@ var var::operator*(double n)const{
     return out;
 }
 
-var var::operator^(double n) const{
+var var::operator*(double n) && {
+    return std::move(*this*=n);
+}
+
+var var::operator^(double n) const &{
     var out;
     out.order=this->order;
     out.id=std::pow(this->id,n);
     if(n!=0&&this->order>0){
         for_each_copy(this->dTau.get()->begin(),this->dTau.get()->end(),inserter(*(out.dTau.get()),out.dTau.get()->begin()),
-            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator, var>,((this->reduce())^(n-1))*=n);
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator, var>,((this->reduce().to_lvalue())^(n-1))*=n);
     }
     return out;
+}
+
+var var::operator^(double n) && {
+    return std::move(*this^=n);
 }
 
 var& var::operator+=(double n){
@@ -165,7 +187,7 @@ var& var::operator/=(double n){
 var& var::operator^=(double n){
     if(n!=0&&this->order>0){
         map_each(this->dTau.get()->begin(),this->dTau.get()->end(),inplace_mul<var, var >,
-            (this->reduce()^(n-1))*=n);
+            (this->reduce().to_lvalue()^(n-1))*=n);
     }
     this->id=std::pow(this->id,n);
     return *this;
@@ -173,7 +195,7 @@ var& var::operator^=(double n){
 
 //binary operations on var
 
-var var::operator+(const var& v)const{
+var var::operator+(const var& v)const &{
     var out;
     out.id=this->id+v.id;
     out.order=this->order<v.order?this->order:v.order;
@@ -185,15 +207,29 @@ var var::operator+(const var& v)const{
     return out;
 }
 
-var var::operator+(var&& v)const{return v+=*this;}
-
-var var::operator-(const var& v)const{
-    return (v*(-1))+=*this;
+var var::operator+(const var& v)&& {
+    return std::move(*this+=v);
 }
 
-var var::operator-(var&& v)const{return (v*=(-1))+=*this;}
+var var::operator+(var&& v)&& {
+    return std::move(*this+=std::move(v));
+}
 
-var var::operator*(const var& v)const{
+var var::operator+(var&& v)const &{return std::move(v+=*this);}
+
+var var::operator-(const var& v)const &{
+    return std::move((v*(-1))+=*this);
+}
+
+var var::operator-(const var& v) &&{
+    return std::move(*this+=(v*(-1)));
+}
+
+var var::operator-(var&& v)const &{return std::move((v*=(-1))+=*this);}
+
+var var::operator-(var&& v) &&{return std::move(*this+=std::move((v*=(-1))));}
+
+var var::operator*(const var& v)const &{
     var out;
     out.id=this->id*v.id;
     out.order=this->order<v.order?this->order:v.order;
@@ -209,28 +245,40 @@ var var::operator*(const var& v)const{
     return out;
 }
 
-var var::operator*(var&& v)const{return v*=*this;}
-
-var var::operator/(const var& v)const{
-    return *this*(v^(-1));
+var var::operator*(const var& v) &&{
+    return std::move(*this*=v);
 }
 
-var var::operator/(var&& v)const{return (v^=(-1))*=*this;}
+var var::operator*(var&& v)const &{return std::move(v*=*this);}
 
-var var::operator^(const var& v)const{
+var var::operator*(var&& v) &&{
+    return std::move(v*=*this);
+}
+
+var var::operator/(const var& v)const {
+    return std::move((v^(-1))*=*this);
+}
+
+var var::operator/(var&& v)const {return std::move((v^=(-1))*=*this);}
+
+var var::operator^(const var& v)const &{
     var out;
     out.id=std::pow(this->id,v.id);
     out.order=this->order<v.order?this->order:v.order;
     if(out.order>0){
         std::map<var*,var> tmp2;
         for_each_copy(this->dTau.get()->begin(),this->dTau.get()->end(),inserter(*out.dTau.get(),out.dTau.get()->begin()),
-            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,var >, (this->reduce()^(v.reduce()-1))*=v.reduce());
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,var >, (this->reduce().to_lvalue()^(v.reduce().to_lvalue()-1))*=v.reduce());
         for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(tmp2,tmp2.begin()),
-            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,var>, (this->reduce()^v.reduce())*=dCpp::ln(this->reduce()));
+            mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,var>, (this->reduce().to_lvalue()^v.reduce())*=dCpp::ln(this->reduce()));
         inplace_merge_apply(out.dTau.get()->begin(), out.dTau.get()->end(), tmp2.begin(), tmp2.end(), inserter(*out.dTau.get(), out.dTau.get()->begin()),
             compare_first<std::map<var*, var>::iterator >, inplace_sum<var, var>);
     }
     return out;
+}
+
+var var::operator^(const var& v) &&{
+    return std::move(*this^=v);
 }
 
 var& var::operator+=(const var& v){
@@ -290,9 +338,9 @@ var& var::operator^=(const var& v){
         std::map<var*,var> tmp2;
         for_each_copy(v.dTau.get()->begin(),v.dTau.get()->end(),inserter(tmp2,tmp2.begin()),
             mul_make_pair<std::pair<var*,var> , std::map<var*,var>::iterator,var>,
-            (this->reduce()^v.reduce())*=dCpp::ln(this->reduce()));
+            (this->reduce().to_lvalue()^v.reduce())*=dCpp::ln(this->reduce()));
         map_each(this->dTau.get()->begin(),this->dTau.get()->end(),inplace_mul<var, var >,
-            (this->reduce()^(v.reduce()-1)*=v.reduce()));
+            (this->reduce().to_lvalue()^(v.reduce().to_lvalue()-1)*=v.reduce()));
         inplace_merge_apply(this->dTau.get()->begin(), this->dTau.get()->end(), tmp2.begin(), tmp2.end(),
             inserter(*this->dTau.get(), this->dTau.get()->begin()),compare_first<std::map<var*, var>::iterator >,
             inplace_sum<var, var>);

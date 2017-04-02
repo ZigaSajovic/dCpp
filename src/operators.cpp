@@ -6,32 +6,31 @@ var operator*(double n, const var& v){
 }
 
 var operator * (double n, var&& v){
-    return v*=n;
+    return std::move(v*=n);
 }
-
 
 var operator+(double n, const var& v){
             return v+n;
 }
 
 var operator + (double n, var&& v){
-    return v+=n;
+    return std::move(v+=n);
 }
 
 var operator-(double n, const var& v){
-            return (v-n)*=-1;
+            return std::move((v-n)*=-1);
 }
 
 var operator-(double n, var&& v){
-            return (v-=n)*=-1;
+            return std::move((v-=n)*=-1);
 }
 
 var operator/(double n, const var& v){
-            return (v^-1)*=n;
+            return std::move((v^-1)*=n);
 }
 
 var operator/(double n, var&& v){
-            return (v^=(-1))*=n;
+            return std::move((v^=(-1))*=n);
 }
 
 var operator^(double n, const var& v){
