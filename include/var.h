@@ -4,10 +4,12 @@
 #include <memory>
 #include <map>
 
+namespace dCpp
+{
 class var
 {
     public:
-    	int order;
+        int order;
         double id;
         std::shared_ptr<std::map<var*, var> > dTau;
 
@@ -20,7 +22,6 @@ class var
         var& operator=(var&& other);
         var reduce() const;
         void init(int order);
-        void initPlaceHolder(int order);
         var& to_lvalue();
         var d(var*dvar) const;
         void print() const;
@@ -72,5 +73,6 @@ class var
         bool operator>(const var& v)const;
         bool operator>=(const var& v)const;
 };
+}
 
 #endif // VAR_H
