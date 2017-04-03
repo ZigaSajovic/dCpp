@@ -1,7 +1,3 @@
-#include <map>
-#include <iostream>
-#include <iterator>
-#include <algorithm>
 #include <cmath>
 
 namespace dCpp

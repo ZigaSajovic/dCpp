@@ -1,8 +1,5 @@
 #include "var.h"
-#include <math.h>
 #include <util.h>
-#include <map>
-#include <memory>
 #include <iostream>
 #include <dCpp.h>
 

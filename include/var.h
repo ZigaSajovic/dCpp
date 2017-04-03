@@ -6,6 +6,7 @@
 
 namespace dCpp
 {
+
 class var
 {
     public:

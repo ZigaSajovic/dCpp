@@ -1,6 +1,5 @@
 #include "dCpp.h"
 #include <util.h>
-#include <cmath>
 
 namespace dCpp
 {

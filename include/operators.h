@@ -1,7 +1,6 @@
 #ifndef OPERATORS_H
 #define OPERATORS_H
 
-
 #include "tau.h"
 
 namespace dCpp

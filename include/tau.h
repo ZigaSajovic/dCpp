@@ -2,6 +2,7 @@
 #define TAU_H
 
 #include<var.h>
+
 namespace dCpp
 {
 namespace internal
