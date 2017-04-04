@@ -1,3 +1,5 @@
+[![dCppv0.1.0](https://img.shields.io/badge/dCpp-v0.1.0-blue.svg)](https://github.com/ZigaSajovic/dCpp/releases/tag/v0.1.0)
+
 # dCpp
 Automatic differentiation in C++; infinite differentiability of conditionals, loops, recursion and all things C++
 
@@ -7,7 +9,7 @@ We provide an illustrative implementation of an analytic, infinitely-differentia
 The paper [Implementing Operational calculus on programming spaces for Differentiable computing](https://arxiv.org/abs/1612.02731) accompaning the implementation is avaliable on arXiv .
 
 
-The _[dCpp](https://github.com/ZigaSajovic/dCpp)_ project is constantly updated and optimized. This is the openSource version.
+The _[dCpp](https://github.com/ZigaSajovic/dCpp)_ project is constantly updated and optimized. You can find the latest version [here](https://github.com/ZigaSajovic/dCpp/releases/tag/v0.1.0).
 
 ### Tutorial
 
