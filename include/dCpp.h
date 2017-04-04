@@ -16,6 +16,8 @@ var cot(const var& v);
 var ln(const var& v);
 var log(double base, const var& v);
 var exp(const var& v);
+var sqrt(const var& v);
+var sqrt(var&& v);
 }
 
 #endif // DCPP_H

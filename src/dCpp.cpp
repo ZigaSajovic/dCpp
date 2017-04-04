@@ -86,4 +86,14 @@ var exp(const var& v)
     }
     return out;
 }
+
+var sqrt(const var& v)
+{
+    return v^0.5;
+}
+
+var sqrt(var&& v)
+{
+    return std::move(v^=0.5);
+}
 }
