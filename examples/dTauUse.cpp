@@ -1,16 +1,18 @@
-#include <cstdio>
-#include <cstring>
-
-
 #include <iostream>
 #include <cmath>
 #include<dCpp.h>
 
 
-using namespace dCpp;
+namespace dCpp
+{
+namespace examples
+{
 
 //create the derivative contained in dCpp
-var log_primitive(const var&v){return 1/v;};
+var log_primitive(const var&v)
+{
+    return 1/v;
+};
 
 void dTauOperatorUse()
 {
@@ -39,4 +41,6 @@ void dTauOperatorUse()
     std::cout<<"df/dydx = "<<f.d(&y).d(&x).id<<std::endl;
 //  df/dydy
     std::cout<<"df/dydy = "<<f.d(&y).d(&y).id<<std::endl;
+}
+}
 }

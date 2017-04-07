@@ -1,15 +1,18 @@
-#include <cstdio>
-#include <cstring>
 #include <iostream>
 #include <cmath>
 
 #include<dCpp.h>
 
-using namespace dCpp;
-
+namespace dCpp
+{
+namespace examples
+{
 //simply code the map existing in the programming space dCpp
 //and the belonging algebra
-var sigmoidMap(const var&v){return 1/(1+exp(-1*v));};
+var sigmoidMap(const var&v)
+{
+    return 1/(1+exp(-1*v));
+};
 
 void mapsInAlgebra()
 {
@@ -38,4 +41,6 @@ void mapsInAlgebra()
     std::cout<<"df/dw_2dw_1 = "<<f.d(&w_2).d(&w_1).id<<std::endl;
 //  df/dw_2dw_2
     std::cout<<"df/dw_2dw_2 = "<<f.d(&w_2).d(&w_2).id<<std::endl;
+}
+}
 }

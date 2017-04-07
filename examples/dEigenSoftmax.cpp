@@ -2,33 +2,37 @@
 #include <dCpp.h>
 #include <dEigen.h>
 
-using namespace std;
-using namespace dCpp;
+namespace dCpp
+{
+namespace examples
+{
 
 //create a softmax function
 template <typename Derived>
-void softmax(Eigen::MatrixBase<Derived>& matrix){
-        //maps each element of the matrix by y=e^x;
-        dCpp::map_by_element(matrix,&dCpp::exp);
-        //sums the elements of the matrix using Eigens function
-        var tmp=matrix.sum();
-        //divides each element by the sum
-        for (size_t i=0, nRows=matrix.rows(), nCols=matrix.cols(); i<nCols; ++i)
-            for (size_t j=0; j<nRows; ++j)matrix(j,i)=matrix(j,i)/tmp;
+void softmax(Eigen::MatrixBase<Derived>& matrix)
+{
+    //maps each element of the matrix by y=e^x;
+    dCpp::map_by_element(matrix,&dCpp::exp);
+    //sums the elements of the matrix using Eigens function
+    var tmp=matrix.sum();
+    //divides each element by the sum
+    for (size_t i=0, nRows=matrix.rows(), nCols=matrix.cols(); i<nCols; ++i)
+        for (size_t j=0; j<nRows; ++j)matrix(j,i)=matrix(j,i)/tmp;
 }
 
 
-void dEigenExample(){
+void dEigenExample()
+{
     //    space is n-times differentiable
-    int n=1;
+    int n=2;
     //    initialize the space
     dCpp::initSpace(n);
     //    Matrix holding the inputs (imgSizeX1 vector)
-    const int inputSize=50;
+    const int inputSize=10;
     Eigen::Matrix<var,1,inputSize>input=Eigen::Matrix<var,1,inputSize>::Random(1,inputSize);
     dCpp::init(input);
     //    number of outputs of the layer
-    const int outputSize=7;
+    const int outputSize=5;
     //    matrix of weights on the first level (imgSizeXnumOfOutOnFirstLevel)
     Eigen::Matrix<var,inputSize,outputSize>firstLayerVars=Eigen::Matrix<var,inputSize,outputSize>::Random(inputSize,outputSize);
     //    initializing weights
@@ -43,8 +47,10 @@ void dEigenExample(){
     //    apply sofmax layer
     softmax(firstLayerOutput);
     //    display the first output layer and its (1-n)-th derivatives
-    for (size_t i=0, nRows=firstLayerOutput.rows(), nCols=firstLayerOutput.cols(); i<nCols; ++i){
-                for (size_t j=0; j<nRows; ++j) firstLayerOutput(j,i).print();
-                cout<<endl;
-    }
+//    for (size_t i=0, nRows=firstLayerOutput.rows(), nCols=firstLayerOutput.cols(); i<nCols; ++i){
+//                for (size_t j=0; j<nRows; ++j) firstLayerOutput(j,i).print();
+//                cout<<endl;
+//    }
+}
+}
 }
