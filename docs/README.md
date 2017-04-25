@@ -1,8 +1,5 @@
-[<a href="https://github.com/ZigaSajovic/dCpp">
-<div align="center">
-  <img src="ed.png"><br><br>
-</div>](https://github.com/ZigaSajovic/dCpp)
-
+<div align="center"><a href="https://github.com/ZigaSajovic/dCpp">
+<img src="ed.png"><br><br></a></div>
 
 -----------------
 
