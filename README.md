@@ -123,7 +123,7 @@ std::cout <<  t.d(&y) << std::endl;
 
 #### A note on the order of differentiability
 
-The order of an expression if that of the lowest order of the expressions appearing in its construction.
+The order of an expression is that of the lowest order of the expressions appearing in its construction.
 
 | Expression                  | Order   |
 | :--------------------------:| :-----: |
