@@ -1,6 +1,6 @@
 <a href="https://github.com/ZigaSajovic/dCpp">
 <div align="center">
-  <img src="docs/ed.png"><br><br>
+  <img src="ed.png"><br><br>
 </div>
 </a>
 
