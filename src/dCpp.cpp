@@ -1,9 +1,13 @@
 #include "dCpp.h"
 #include <util.h>
+#include <string>
+
 
 namespace dCpp
 {
 int orderOfSpace=0;
+
+std::map<var*,std::string> varNames;
 
 void initSpace(int order)
 {
@@ -18,6 +22,13 @@ void init(var &v)
 {
     v.dTau.get()->clear();
     v.init(orderOfSpace);
+}
+
+void init(var &v, std::string name)
+{
+    v.dTau.get()->clear();
+    v.init(orderOfSpace);
+    varNames[&v]=name;
 }
 
 var ln(const var& v)

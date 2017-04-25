@@ -8,6 +8,8 @@ namespace dCpp
 void initSpace(int order);
 int getSpaceOrder();
 void init(var &v);
+void init(var &v, std::string name);
+std::ostream& operator<<(std::ostream& os, const var& v);
 
 var cos(const var& v);
 var sin(const var& v);
