@@ -26,6 +26,7 @@ class var
         var& to_lvalue();
         var d(var*dvar) const;
         void print() const;
+        friend std::ostream& operator<<(std::ostream& os, const var& v);
         //declerations of algebraic operations
         var operator+(double n)const &;
         var operator+(double n) &&;

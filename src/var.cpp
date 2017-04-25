@@ -43,6 +43,11 @@ var var::d(var* dvar) const
 
 }
 
+std::ostream& operator<<(std::ostream& os, const var& v){
+    os<<v.id;
+    return os;
+}
+
 var& var::to_lvalue()
 {
     return *this;
