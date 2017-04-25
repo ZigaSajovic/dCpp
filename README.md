@@ -72,11 +72,9 @@ std::cout <<  f << std::endl;
 std::cout <<  f.d(&x) << std::endl;
 std::cout << f.d(&y) << std::endl;
 ```
-> 884.998
->
->82.1202
->
->193.959
+> 884.998  
+>82.1202  
+>193.959  
 
 #### Differentiable derivatives
 
@@ -90,13 +88,10 @@ var fy = f.d(&y);
 std::cout <<  fy.d(&x) << std::endl;
 std::cout <<  fy.d(&y) << std::endl;
 ```
->-0.103319
->
->18.7722
->
->18.7722
->
->28.8913
+>-0.103319  
+>18.7722  
+>18.7722  
+>28.8913  
 
 
 We can thus employ derivatives of ```f``` in further _n-1_-_differentiable_ calculations.
@@ -107,11 +102,9 @@ std::cout <<  F << std::endl;
 std::cout <<  F.d(&x) << std::endl;
 std::cout <<  F.d(&y) << std::endl;
 ```
->210.627
->
->17.2464
->
->33.9239
+>210.627  
+>17.2464  
+>33.9239  
 
 As the derivatives of ```f``` are _n-1_-differentiable (twice, in our case), we can interweave them in calculations containing ```f``` itself.
 
@@ -122,11 +115,9 @@ std::cout <<  t.d(&x) << std::endl;
 std::cout <<  t.d(&y) << std::endl;
 ```
 
->7.08016
->
->0.251241
->
->0.364486
+>7.08016  
+>0.251241  
+>0.364486  
 
 **This is particularly useful when analyzing and optimizing differential equations, where usually both ```f``` and its (higher) derivatives appear in the same expression.**
 
@@ -178,11 +169,9 @@ std::cout <<  l << std::endl;
 std::cout <<  l.d(&x) << std::endl;
 std::cout <<  l.d(&y) << std::endl;
 ```
->9.63263
->
->0.427715
->
->-0.000682522
+>9.63263  
+>0.427715  
+>-0.000682522  
 
 #### Examples
 
