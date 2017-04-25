@@ -2,6 +2,8 @@
 #include <iostream>
 #include <dCpp.h>
 
+//gradient descent aimed at finding the baricenter
+
 namespace dCpp
 {
 namespace examples
@@ -25,8 +27,8 @@ void baricenter()
     std::vector<double> px = {0.0, 1.0, 1.0, 0.0};
     std::vector<double> py = {0.0, 0.0, 1.0, 1.0};
 
-    var x(50.1);
-    var y(50.1);
+    var x =50.1;
+    var y = 50.1;
     dCpp::init(x);
     dCpp::init(y);
 
@@ -43,13 +45,10 @@ void baricenter()
         norm = e.d(&x).id*e.d(&x).id+e.d(&y).id*e.d(&y).id;
     }
 
+    std::cout<<"Minimum found at"<<std::endl;
     std::cout<<"x = "<<x<<std::endl;
     std::cout<<"y = "<<y<<std::endl;
 }
 
 }
-}
-
-int main(){
-    dCpp::examples::baricenter();
 }
