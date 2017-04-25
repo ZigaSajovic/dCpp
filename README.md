@@ -119,7 +119,7 @@ std::cout <<  t.d(&y) << std::endl;
 >0.251241  
 >0.364486  
 
-**This is particularly useful when analyzing and optimizing differential equations, where usually both ```f``` and its (higher) derivatives appear in the same expression.**
+This is particularly useful when analyzing and optimizing differential equations, where usually both ```f``` and its (higher) derivatives appear in the same expression.
 
 #### A note on the order of differentiability
 
