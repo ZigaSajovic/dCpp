@@ -1,0 +1,325 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>dCpp by ZigaSajovic</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>dCpp</h1>
+        <p>Automatic differentiation in C++; infinite differentiability of conditionals, loops, recursion and all things C++</p>
+
+        
+          <p class="view"><a href="https://github.com/ZigaSajovic/dCpp">View the Project on GitHub <small></small></a></p>
+        
+
+        
+
+        
+      </header>
+      <section>
+
+      <div align="center"><a href="https://github.com/ZigaSajovic/dCpp">
+<img src="ed.png" /><br /><br /></a></div>
+
+<hr />
+
+<p><a href="https://github.com/ZigaSajovic/dCpp/releases/tag/v0.1.0"><img src="https://img.shields.io/badge/dCpp-v0.1.0-blue.svg" alt="dCppv0.1.0" /></a></p>
+
+<p><strong>dCpp</strong> is a tool for automatic differentiation made to be <em>intuitive</em> to the mind of a <em>C++</em> programmer and non-invasive to his process. Despite its <em>easy to use nature</em> it retains flexibility, allowing implementations of differentiable (sub) programs operating on differentiable derivatives of other (sub) programs, where the entire process may again be differentiable. This allows trainable training processes, and flexible program analysis through operational calculus.</p>
+
+<p>dCpp was originally developed as an example of how <a href="https://en.wikipedia.org/wiki/Automatic_differentiation">automatic differentiation</a> can be viewed through the theory of <a href="https://en.wikipedia.org/wiki/Automatic_differentiation#Operational_calculus_on_programming_spaces">Operational Calculus on Programming Spaces</a>, which provides Deep Learning with a formal calculus. It has since been applied to a variety of tasks from dynamical systems analysis and digital geometry, to general program analysis and optimization by various parties.</p>
+
+<h3 id="tutorial">Tutorial</h3>
+
+<p>We demonstrate the utilities of <em>dCpp</em> on a simple encapsulating example.</p>
+
+<p>First we include the necessities</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include &lt;dCpp.h&gt;
+</span></code></pre>
+</div>
+
+<p>We initialize an <em>n</em>-differentiable programming space</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="k">using</span> <span class="k">namespace</span> <span class="n">dCpp</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">n_differentiable</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">dCpp</span><span class="o">::</span><span class="n">initSpace</span><span class="p">(</span><span class="n">n_differentiable</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<h4 id="the-basics">The Basics</h4>
+
+<p>The API of <code class="highlighter-rouge">var</code> complies with those for the standard <em>C++</em> types, and when an instance of <code class="highlighter-rouge">var</code> is left uninitialized it behaves as the <em>type</em> <code class="highlighter-rouge">double</code> would have. We may envision an instance of <code class="highlighter-rouge">var</code> as an element of the differentiable virtual memory algebra, elevating <em>C++</em> to a differentiable programming space <em>dCpp</em>. This means that any program can be made differentiable by simply substituting the <em>type</em> <code class="highlighter-rouge">double</code> for <em>type</em> <code class="highlighter-rouge">var</code> and that the coding process of the user can be left unchanged towards the initially intended goal.</p>
+
+<p>By coding a simple recursive function <code class="highlighter-rouge">foo</code> we see that the usual usage of constructs such as conditionals, loops and recursion remains unchanged.</p>
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="n">var</span> <span class="nf">foo</span><span class="p">(</span><span class="k">const</span> <span class="n">var</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span> <span class="k">const</span> <span class="n">var</span><span class="o">&amp;</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="n">foo</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">foo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">/</span> <span class="mi">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre>
+</div>
+<p>To test it, we declare two instances of <code class="highlighter-rouge">var</code>.</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="n">var</span> <span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span>
+<span class="n">var</span> <span class="n">y</span><span class="o">=</span><span class="mi">13</span><span class="p">;</span>
+</code></pre>
+</div>
+<p>Variables with respect to which differentiation is to be performed need to be <em>initialized</em> as such. This assures that uninitialized instances behave as the type <code class="highlighter-rouge">double</code> does. With the difference that <em>all instances</em> of <code class="highlighter-rouge">var</code> are differentiable <em>with respect</em> to all <em>initialized</em> instances.</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="n">dCpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="n">dCpp</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>The derivatives are extracted by specifying the memory location of the variable with respect to which differentiation is to be performed.</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="n">var</span> <span class="n">f</span> <span class="o">=</span> <span class="n">foo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">f</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">f</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre>
+</div>
+<blockquote>
+  <p>884.998</p>
+
+  <p>82.1202</p>
+
+  <p>193.959</p>
+</blockquote>
+
+<h4 id="differentiable-derivatives">Differentiable derivatives</h4>
+
+<p>The <em>virtual memory space</em> is constructed through tensor products of <em>C++</em> internal representation of the memory. This means that derivatives are themselves elements of the differentiable virtual memory.</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="n">var</span> <span class="n">fx</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">fx</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">fx</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">var</span> <span class="n">fy</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">y</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">fy</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">fy</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre>
+</div>
+<blockquote>
+  <p>-0.103319</p>
+
+  <p>18.7722</p>
+
+  <p>18.7722</p>
+
+  <p>28.8913</p>
+</blockquote>
+
+<p>We can thus employ derivatives of <code class="highlighter-rouge">f</code> in further <em>n-1</em>-_differentiable_ calculations.</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="n">var</span> <span class="n">F</span> <span class="o">=</span> <span class="n">dCpp</span><span class="o">::</span><span class="n">sqrt</span><span class="p">((</span><span class="n">fx</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">fy</span><span class="o">^</span><span class="mi">2</span><span class="p">));</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">F</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">F</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">F</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre>
+</div>
+<blockquote>
+  <p>210.627</p>
+
+  <p>17.2464</p>
+
+  <p>33.9239</p>
+</blockquote>
+
+<p>As the derivatives of <code class="highlighter-rouge">f</code> are <em>n-1</em>-differentiable (twice, in our case), we can interweave them in calculations containing <code class="highlighter-rouge">f</code> itself.</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="n">var</span> <span class="n">t</span> <span class="o">=</span> <span class="n">dCpp</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">fx</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">fy</span><span class="o">^</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">f</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">t</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">t</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">t</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<blockquote>
+  <p>7.08016</p>
+
+  <p>0.251241</p>
+
+  <p>0.364486</p>
+</blockquote>
+
+<p><strong>This is particularly useful when analyzing and optimizing differential equations, where usually both <code class="highlighter-rouge">f</code> and its (higher) derivatives appear in the same expression.</strong></p>
+
+<h4 id="a-note-on-the-order-of-differentiability">A note on the order of differentiability</h4>
+
+<p>The order of an expression if that of the lowest order of the expressions appearing in its construction.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Expression</th>
+      <th style="text-align: center">Order</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">f</td>
+      <td style="text-align: center">3</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">fx = f.d(&amp;x)</td>
+      <td style="text-align: center">2</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">fy = f.d(&amp;y)</td>
+      <td style="text-align: center">2</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">(fx^2 + fy^2) / f</td>
+      <td style="text-align: center">2</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">fxx = fx.d(&amp;x)</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">fxy = fx.d(&amp;y)</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">f * (fxy + fxx) / (fx - fy)</td>
+      <td style="text-align: center">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This means, that when we want to perform some <strong>non-differentiable</strong> operation on an expression, such as incrementing a variable in a gradient descent iteration, we should extract the <strong>value</strong> of its derivative using the <code class="highlighter-rouge">id</code> attribute of the instance <code class="highlighter-rouge">var</code>.</p>
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="kt">double</span> <span class="n">lambda</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span>
+<span class="kt">double</span> <span class="n">fx_double</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">).</span><span class="n">id</span>
+<span class="n">x</span> <span class="o">+=</span> <span class="n">lambda</span> <span class="o">*</span> <span class="n">fx_double</span><span class="p">;</span>
+<span class="kt">double</span> <span class="n">fy_double</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">).</span><span class="n">id</span>
+<span class="n">y</span> <span class="o">+=</span> <span class="n">lambda</span> <span class="o">*</span> <span class="n">fy_double</span>
+</code></pre>
+</div>
+
+<p>An example of a gradient descent can be found in <a href="https://github.com/ZigaSajovic/dCpp/blob/master/examples/baricenterGD.cpp">examples/baricenterGD</a> with a detailed explanation available in the closed issue
+<a href="https://github.com/ZigaSajovic/dCpp/issues/2#issuecomment-276057623">here</a>.</p>
+
+<h4 id="operator-dtau">Operator dTau</h4>
+
+<p>If a certain mapping the user desires is not provided in the <a href="https://github.com/ZigaSajovic/dCpp/blob/master/include/dCpp.h">dCpp</a> namespace, but its derivative exists, he may create the desired map by employing the operator <code class="highlighter-rouge">tau</code>.</p>
+
+<p>Lets assume that the map <code class="highlighter-rouge">log</code> is not provided and create it using <code class="highlighter-rouge">tau</code>, by providing it with two maps, <code class="highlighter-rouge">log</code>: <strong>double –&gt; double</strong> and <code class="highlighter-rouge">log_primitive</code>: <strong>var –&gt; var</strong>.</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="n">var</span> <span class="nf">log_primitive</span><span class="p">(</span><span class="k">const</span> <span class="n">var</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span>
+<span class="p">{</span>   
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">v</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">tau</span> <span class="n">log</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">log</span><span class="p">,</span> <span class="n">log_primitive</span><span class="p">);</span>
+</code></pre>
+</div>
+<p>The map is now ready to use</p>
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="n">var</span> <span class="n">l</span><span class="o">=</span><span class="n">log</span><span class="p">(((</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mf">0.23</span><span class="p">))</span><span class="o">^</span><span class="mf">2.1</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">l</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">l</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span>  <span class="n">l</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="o">&amp;</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre>
+</div>
+<blockquote>
+  <p>9.63263</p>
+
+  <p>0.427715</p>
+
+  <p>-0.000682522</p>
+</blockquote>
+
+<h4 id="examples">Examples</h4>
+
+<ul>
+  <li><a href="https://github.com/ZigaSajovic/dCpp/blob/master/examples/softmax.cpp">examples/softmax</a> demonstrates the construction of a vectorized softmax.</li>
+  <li><a href="https://github.com/ZigaSajovic/dCpp/blob/master/examples/baricenterGD.cpp">examples/baricenterGD</a> demonstrates gradient descent on the example of finding a baricenter.</li>
+  <li><a href="https://github.com/ZigaSajovic/dCpp/blob/master/examples/dTauUse.cpp">examples/dTauUse</a> demonstrates the use of the <code class="highlighter-rouge">tau</code> operator.</li>
+  <li><a href="https://github.com/ZigaSajovic/dCpp/blob/master/examples/dEigenSoftmax.cpp">examples/dEigenSoftmax</a> demonstrates integration with external libraries, on the example of <a href="http://eigen.tuxfamily.org/index.php?title=Main_Page">Eigen</a>.</li>
+</ul>
+
+<h4 id="further-reading">Further reading</h4>
+
+<p>As the presenting tutorial is quite brief, please consult the discussions regarding common mistakes and solutions.</p>
+
+<ul>
+  <li><a href="https://github.com/ZigaSajovic/dCpp/issues/2#issuecomment-276048860">Common mistakes with initializations, differentiability of differentiable processes, and general understanding of functionality</a></li>
+  <li><a href="https://github.com/ZigaSajovic/dCpp/issues/2#issuecomment-276057623">Solutions with detailed explanations of the rationale behind them</a></li>
+</ul>
+
+<p>Or consult the concerning papers.</p>
+
+<ul>
+  <li><a href="https://arxiv.org/abs/1610.07690">Operational calculus on programming spaces</a> is the paper in which the theory is derived and the process of its use to the purpose of program analysis and deep learning is outlined.</li>
+  <li><a href="https://arxiv.org/abs/1612.02731">Implementing Operational calculus on programming spaces for Differentiable computing</a> is the paper in which the implementation of this theory into dCpp is explained, where the reader is guided through the code and the theory simultaneously, as to better understand the tool.</li>
+</ul>
+
+<h3 id="citation">Citation</h3>
+<p>If you use <em><a href="https://github.com/ZigaSajovic/dCpp">dCpp</a></em> in your work, please cite one of the following papers</p>
+
+<blockquote>
+  <p>Žiga Sajovic, et al.: <a href="https://arxiv.org/abs/1610.07690">Operational calculus on programming spaces</a>. arXiv e-prints arXiv:1610.07690 (2016)</p>
+</blockquote>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>@article{
+    Author = {Žiga Sajovic, et al.},
+    Title = {Operational calculus on programming spaces},
+    journal = {arXiv e-prints},
+    Year = 2016,
+    volume = {arXiv:1610.0769},
+    Eprint = {1610.07690},
+    Eprinttype = {arXiv},
+}
+</code></pre>
+</div>
+<blockquote>
+  <p>Žiga Sajovic: <a href="https://arxiv.org/abs/1612.02731">Implementing Operational calculus on programming spaces for Differentiable computing</a>. arXiv e-prints arXiv:1612.02731 (2016)</p>
+</blockquote>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>@article{
+    Author = {Žiga Sajovic},
+    Title = {Implementing Operational calculus on programming spaces for Differentiable computing},
+    journal = {arXiv e-prints},
+    Year = 2016,
+    volume = {arXiv:1612.0273},
+    Eprint = {1612.02731},
+    Eprinttype = {arXiv},
+}
+</code></pre>
+</div>
+
+<p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">dC++</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://si.linkedin.com/in/zigasajovic" property="cc:attributionName" rel="cc:attributionURL">Žiga Sajovic</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+
+
+      </section>
+      <footer>
+        
+        <p>This project is maintained by <a href="https://github.com/ZigaSajovic">ZigaSajovic</a></p>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="/dCpp/assets/js/scale.fix.js"></script>
+
+
+  
+  </body>
+</html>
