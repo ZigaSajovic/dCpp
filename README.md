@@ -1,4 +1,4 @@
-<a href="https://github.com/ZigaSajovic/dCpp">
+<a href="https://zigasajovic.github.io/dCpp/">
 <div align="center">
   <img src="docs/ed.png"><br><br>
 </div>
@@ -6,7 +6,7 @@
 
 -----------------
 
-[![dCppv0.1.0](https://img.shields.io/badge/dCpp-v0.1.0-blue.svg)](https://github.com/ZigaSajovic/dCpp/releases/tag/v0.1.0)
+[![dCppv0.1.0](docs/badges/dCpp-v0.1.0-blue.svg)](https://github.com/ZigaSajovic/dCpp/releases/tag/v0.1.0)
 
 # dCpp
 Automatic differentiation in C++; infinite differentiability of conditionals, loops, recursion and all things C++
