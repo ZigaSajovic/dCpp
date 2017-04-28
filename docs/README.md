@@ -1,5 +1,5 @@
 <div align="center"><a href="https://github.com/ZigaSajovic/dCpp">
-<img src="ed.png"><br><br></a></div>
+<img src="edCpplogo.png"><br><br></a></div>
 
 -----------------
 

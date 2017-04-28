@@ -1,0 +1,42 @@
+.theorem {
+    display: block;
+    margin: 12px 0;
+    font-style: italic;
+}
+.theorem:before {
+    counter-increment: theorem;
+    content: "Theorem " counter(theorem) ".";
+    font-weight: bold;
+    font-style: normal;
+}
+body {
+  counter-reset:section lemma theorem;
+}
+.paper_section:before {
+  counter-increment: section;
+  content:"";
+}
+.lemma {
+    display: block;
+    margin: 12px 0;
+    font-style: italic;
+}
+.lemma:before {
+    counter-increment: lemma;
+    content: "Lemma " counter(lemma) ".";
+    font-weight: bold;
+    font-style: normal;
+}
+.proof {
+    display: block;
+    margin: 12px 0;
+    font-style: normal;
+}
+.proof:before {
+    content: "Proof.";
+    font-style: italic;
+}
+.proof:after {
+    content: "\25FC";
+    float:right;
+}
