@@ -70,7 +70,7 @@
 
 <p>dCpp was originally developed as an example of how <a href="https://en.wikipedia.org/wiki/Automatic_differentiation">automatic differentiation</a> can be viewed through the theory of <a href="https://en.wikipedia.org/wiki/Automatic_differentiation#Operational_calculus_on_programming_spaces">Operational Calculus on Programming Spaces</a>, which provides Deep Learning with a formal calculus. It has since been applied to a variety of tasks from dynamical systems analysis and digital geometry, to general program analysis and optimization by various parties.</p>
 
-<h3 id="tutorial">Tutorial</h3>
+<h1 id="tutorial">Tutorial</h1>
 
 <p>We demonstrate the utilities of <em>dCpp</em> on a simple encapsulating example.</p>
 
@@ -89,7 +89,7 @@
 </code></pre>
 </div>
 
-<h4 id="the-basics">The Basics</h4>
+<h2 id="the-basics">The Basics</h2>
 
 <p>The API of <code class="highlighter-rouge">var</code> complies with those for the standard <em>C++</em> types, and when an instance of <code class="highlighter-rouge">var</code> is left uninitialized it behaves as the <em>type</em> <code class="highlighter-rouge">double</code> would have. We may envision an instance of <code class="highlighter-rouge">var</code> as an element of the differentiable virtual memory algebra, elevating <em>C++</em> to a differentiable programming space <em>dCpp</em>. This means that any program can be made differentiable by simply substituting the <em>type</em> <code class="highlighter-rouge">double</code> for <em>type</em> <code class="highlighter-rouge">var</code> and that the coding process of the user can be left unchanged towards the initially intended goal.</p>
 
@@ -137,7 +137,7 @@
   </p>
 </blockquote>
 
-<h4 id="differentiable-derivatives">Differentiable derivatives</h4>
+<h2 id="differentiable-derivatives">Differentiable derivatives</h2>
 
 <p>The <em>virtual memory space</em> is constructed through tensor products of <em>C++</em> internal representation of the memory. This means that derivatives are themselves elements of the differentiable virtual memory.</p>
 
@@ -200,7 +200,7 @@
 
 <p>This is particularly useful when analyzing and optimizing differential equations, where usually both <code class="highlighter-rouge">f</code> and its (higher) derivatives appear in the same expression.</p>
 
-<h4 id="a-note-on-the-order-of-differentiability">A note on the order of differentiability</h4>
+<h2 id="a-note-on-the-order-of-differentiability">A note on the order of differentiability</h2>
 
 <p>The order of an expression is that of the lowest order of the expressions appearing in its construction.</p>
 
@@ -255,7 +255,7 @@
 <p>An example of a gradient descent can be found in <a href="https://github.com/ZigaSajovic/dCpp/blob/master/examples/baricenterGD.cpp">examples/baricenterGD</a> with a detailed explanation available in the closed issue
 <a href="https://github.com/ZigaSajovic/dCpp/issues/2#issuecomment-276057623">here</a>.</p>
 
-<h4 id="operator-dtau">Operator dTau</h4>
+<h2 id="operator-dtau">Operator dTau</h2>
 
 <p>If a certain mapping the user desires is not provided in the <a href="https://github.com/ZigaSajovic/dCpp/blob/master/include/dCpp.h">dCpp</a> namespace, but its derivative exists, he may create the desired map by employing the operator <code class="highlighter-rouge">tau</code>.</p>
 
@@ -284,7 +284,7 @@
   -0.000682522<br /></p>
 </blockquote>
 
-<h4 id="examples">Examples</h4>
+<h2 id="examples">Examples</h2>
 
 <ul>
   <li><a href="https://github.com/ZigaSajovic/dCpp/blob/master/examples/softmax.cpp">examples/softmax</a> demonstrates the construction of a vectorized softmax.</li>
@@ -293,7 +293,7 @@
   <li><a href="https://github.com/ZigaSajovic/dCpp/blob/master/examples/dEigenSoftmax.cpp">examples/dEigenSoftmax</a> demonstrates integration with external libraries, on the example of <a href="http://eigen.tuxfamily.org/index.php?title=Main_Page">Eigen</a>.</li>
 </ul>
 
-<h4 id="further-reading">Further reading</h4>
+<h2 id="further-reading">Further reading</h2>
 
 <p>As the presenting tutorial is quite brief, please consult the discussions regarding common mistakes and solutions.</p>
 
@@ -309,7 +309,7 @@
   <li><a href="https://arxiv.org/abs/1612.02731">Implementing Operational calculus on programming spaces for Differentiable computing</a> is the paper in which the implementation of this theory into dCpp is explained, where the reader is guided through the code and the theory simultaneously, as to better understand the tool.</li>
 </ul>
 
-<h3 id="citation">Citation</h3>
+<h2 id="citation">Citation</h2>
 <p>If you use <em><a href="https://github.com/ZigaSajovic/dCpp">dCpp</a></em> in your work, please cite one of the following papers</p>
 
 <blockquote>
