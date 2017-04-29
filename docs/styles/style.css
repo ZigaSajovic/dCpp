@@ -155,14 +155,14 @@ body { background-color: #fff; padding: 0 20px; margin: 0; font: 14px/1.5 "Noto 
 }
 
 .banLine {
-    padding: 25px 0px 0 0px;
+    padding: 15px 0px 0 0px;
 }
 
 .content {
   padding-top: 96px;
 }
 
-.banner hr { margin: 25px 0 0 0 !important; }
+.banner hr { margin: 15px 0 0 0 !important; }
 
 h1, h2, h3, h4, h5, h6 { color: #222; margin: 0 0 20px; }
 
