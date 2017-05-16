@@ -15,7 +15,7 @@ Automatic differentiation in C++; infinite differentiability of conditionals, lo
 
 dCpp was originally developed as an example of how [automatic differentiation](https://en.wikipedia.org/wiki/Automatic_differentiation) can be viewed through the theory of [Operational Calculus on Programming Spaces](https://en.wikipedia.org/wiki/Automatic_differentiation#Operational_calculus_on_programming_spaces), which provides Deep Learning with a formal calculus. It has since been applied to a variety of tasks from dynamical systems analysis and digital geometry, to general program analysis and optimization by various parties.
 
-### Tutorial
+## Tutorial
 
 We demonstrate the utilities of _dCpp_ on a simple encapsulating example.
 
@@ -34,7 +34,7 @@ int n_differentiable = 3;
 dCpp::initSpace(n_differentiable);
 ```
 
-#### The Basics
+### The Basics
 
 The API of ```var``` complies with those for the standard _C++_ types, and when an instance of ```var``` is left uninitialized it behaves as the _type_ ```double``` would have. We may envision an instance of ```var``` as an element of the differentiable virtual memory algebra, elevating _C++_ to a differentiable programming space _dCpp_. This means that any program can be made differentiable by simply substituting the _type_ ```double``` for _type_ ```var``` and that the coding process of the user can be left unchanged towards the initially intended goal.
 
@@ -76,7 +76,7 @@ std::cout << f.d(&y) << std::endl;
 >82.1202  
 >193.959  
 
-#### Differentiable derivatives
+### Differentiable derivatives
 
 The _virtual memory space_ is constructed through tensor products of _C++_ internal representation of the memory. This means that derivatives are themselves elements of the differentiable virtual memory.
 
@@ -121,7 +121,7 @@ std::cout <<  t.d(&y) << std::endl;
 
 This is particularly useful when analyzing and optimizing differential equations, where usually both ```f``` and its (higher) derivatives appear in the same expression.
 
-#### A note on the order of differentiability
+### A note on the order of differentiability
 
 The order of an expression is that of the lowest order of the expressions appearing in its construction.
 
@@ -148,7 +148,7 @@ An example of a gradient descent can be found in [examples/baricenterGD](https:/
 [here](https://github.com/ZigaSajovic/dCpp/issues/2#issuecomment-276057623).
 
 
-#### Operator dTau
+### Operator dTau
 
 If a certain mapping the user desires is not provided in the [dCpp](https://github.com/ZigaSajovic/dCpp/blob/master/include/dCpp.h) namespace, but its derivative exists, he may create the desired map by employing the operator ```tau```. 
 
@@ -173,14 +173,14 @@ std::cout <<  l.d(&y) << std::endl;
 >0.427715  
 >-0.000682522  
 
-#### Examples
+### Examples
 
 * [examples/softmax](https://github.com/ZigaSajovic/dCpp/blob/master/examples/softmax.cpp) demonstrates the construction of a vectorized softmax.
 * [examples/baricenterGD](https://github.com/ZigaSajovic/dCpp/blob/master/examples/baricenterGD.cpp) demonstrates gradient descent on the example of finding a baricenter.
 * [examples/dTauUse](https://github.com/ZigaSajovic/dCpp/blob/master/examples/dTauUse.cpp) demonstrates the use of the ```tau``` operator.
 * [examples/dEigenSoftmax](https://github.com/ZigaSajovic/dCpp/blob/master/examples/dEigenSoftmax.cpp) demonstrates integration with external libraries, on the example of [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page).
 
-#### Further reading
+### Further reading
 
 As the presenting tutorial is quite brief, please consult the discussions regarding common mistakes and solutions.
 
@@ -192,7 +192,7 @@ Or consult the concerning papers.
 *  [Operational calculus on programming spaces](https://arxiv.org/abs/1610.07690) is the paper in which the theory is derived and the process of its use to the purpose of program analysis and deep learning is outlined.
 *  [Implementing Operational calculus on programming spaces for Differentiable computing](https://arxiv.org/abs/1612.02731) is the paper in which the implementation of this theory into dCpp is explained, where the reader is guided through the code and the theory simultaneously, as to better understand the tool.
 
-### Citation
+## Citation
 If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please cite one of the following papers
 
 >Žiga Sajovic, et al.: [Operational calculus on programming spaces](https://arxiv.org/abs/1610.07690). arXiv e-prints arXiv:1610.07690 (2016)
