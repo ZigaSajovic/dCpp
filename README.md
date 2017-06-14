@@ -144,7 +144,7 @@ double fy_double = f.d(&x).id
 y += lambda * fy_double
 ```
 
-An example of a gradient descent can be found in [examples/baricenterGD](https://github.com/ZigaSajovic/dCpp/blob/master/examples/baricenterGD.cpp) with a detailed explanation available in the closed issue
+An example of a gradient descent can be found in [examples/barycenterGD](https://github.com/ZigaSajovic/dCpp/blob/master/examples/barycenterGD.cpp) with a detailed explanation available in the closed issue
 [here](https://github.com/ZigaSajovic/dCpp/issues/2#issuecomment-276057623).
 
 
@@ -176,7 +176,7 @@ std::cout <<  l.d(&y) << std::endl;
 ### Examples
 
 * [examples/softmax](https://github.com/ZigaSajovic/dCpp/blob/master/examples/softmax.cpp) demonstrates the construction of a vectorized softmax.
-* [examples/baricenterGD](https://github.com/ZigaSajovic/dCpp/blob/master/examples/baricenterGD.cpp) demonstrates gradient descent on the example of finding a baricenter.
+* [examples/barycenterGD](https://github.com/ZigaSajovic/dCpp/blob/master/examples/barycenterGD.cpp) demonstrates gradient descent on the example of finding a barycenter.
 * [examples/dTauUse](https://github.com/ZigaSajovic/dCpp/blob/master/examples/dTauUse.cpp) demonstrates the use of the ```tau``` operator.
 * [examples/dEigenSoftmax](https://github.com/ZigaSajovic/dCpp/blob/master/examples/dEigenSoftmax.cpp) demonstrates integration with external libraries, on the example of [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page).
 
