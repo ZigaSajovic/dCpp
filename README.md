@@ -217,7 +217,7 @@ If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please ci
     Title = {Implementing Operational calculus on programming spaces for Differentiable computing},
     journal = {arXiv e-prints},
     Year = 2016,
-    volume = {arXiv:1612.0273},
+    volume = {arXiv:1612.02731},
     Eprint = {1612.02731},
     Eprinttype = {arXiv},
 }
