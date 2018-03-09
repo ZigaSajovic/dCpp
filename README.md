@@ -204,7 +204,7 @@ If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please ci
     Title = {Operational calculus on programming spaces},
     journal = {arXiv e-prints},
     Year = 2016,
-    volume = {arXiv:1610.0769},
+    volume = {arXiv:1610.07690},
     Eprint = {1610.07690},
     Eprinttype = {arXiv},
 }
