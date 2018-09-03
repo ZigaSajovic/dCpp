@@ -190,7 +190,7 @@ As the presenting tutorial is quite brief, please consult the discussions regard
 Or consult the concerning papers.
 
 *  [Operational calculus on programming spaces](https://arxiv.org/abs/1610.07690) is the paper in which the theory is derived and the process of its use to the purpose of program analysis and deep learning is outlined.
-*  [Implementing Operational calculus on programming spaces for Differentiable computing](https://arxiv.org/abs/1612.02731) is the paper in which the implementation of this theory into dCpp is explained, where the reader is guided through the code and the theory simultaneously, as to better understand the tool.
+*  [Automatic Differentiation: a look through Tensor and Operational Calculus](https://arxiv.org/abs/1612.02731) is the paper in which the implementation of this theory into dCpp is explained, where the reader is guided through the code and the theory simultaneously, as to better understand the tool.
 
 ## Citation
 If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please cite one of the following papers
@@ -209,12 +209,12 @@ If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please ci
     Eprinttype = {arXiv},
 }
 ```    
->Žiga Sajovic: [Implementing Operational calculus on programming spaces for Differentiable computing](https://arxiv.org/abs/1612.02731). arXiv e-prints arXiv:1612.02731 (2016)
+>Žiga Sajovic: [Automatic Differentiation: a look through Tensor and Operational Calculus](https://arxiv.org/abs/1612.02731). arXiv e-prints arXiv:1612.02731 (2016)
 
 ```
 @article{
     Author = {Žiga Sajovic},
-    Title = {Implementing Operational calculus on programming spaces for Differentiable computing},
+    Title = {Automatic Differentiation: a look through Tensor and Operational Calculus},
     journal = {arXiv e-prints},
     Year = 2016,
     volume = {arXiv:1612.02731},
