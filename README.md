@@ -190,7 +190,7 @@ As the presenting tutorial is quite brief, please consult the discussions regard
 Or consult the concerning papers.
 
 *  [Operational Calculus for Differentiable Programming](https://arxiv.org/abs/1610.07690) is the paper in which the theory is derived and the process of its use to the purpose of program analysis and deep learning is outlined.
-*  [Automatic Differentiation: a look through Tensor and Operational Calculus](https://arxiv.org/abs/1612.02731) is the paper in which the implementation of this theory into dCpp is explained, where the reader is guided through the code and the theory simultaneously, as to better understand the tool.
+*  [Automatic Differentiation: a look through Tensor and Operational Calculus](https://arxiv.org/abs/1612.02731) is the paper in which the implementation of _dCpp_ is explained, as we take a look at Automatic Differentiation through the eyes of Tensor and Operational Calculus.
 
 ## Citation
 If you use _[dCpp](https://github.com/ZigaSajovic/dCpp)_ in your work, please cite one of the following papers
