@@ -13,7 +13,7 @@ Automatic differentiation in C++; infinite differentiability of conditionals, lo
 
 **dCpp** is a tool for automatic differentiation made to be _intuitive_ to the mind of a _C++_ programmer and non-invasive to his process. Despite its _easy to use nature_ it retains flexibility, allowing implementations of differentiable (sub) programs operating on differentiable derivatives of other (sub) programs, where the entire process may again be differentiable. This allows trainable training processes, and flexible program analysis through operational calculus.
 
-dCpp was originally developed as an example of how [automatic differentiation](https://en.wikipedia.org/wiki/Automatic_differentiation) can be viewed through the theory of [Operational Calculus on Programming Spaces](https://en.wikipedia.org/wiki/Automatic_differentiation#Operational_calculus_on_programming_spaces), which provides Deep Learning with a formal calculus. It has since been applied to a variety of tasks from dynamical systems analysis and digital geometry, to general program analysis and optimization by various parties.
+dCpp was originally developed as an example of how [automatic differentiation](https://en.wikipedia.org/wiki/Automatic_differentiation) can be viewed through the theory of [Operational Calculus on Programming Spaces](https://en.wikipedia.org/wiki/Automatic_differentiation#Operational_calculus_on_programming_spaces), which provides differentiable programming with a formal calculus. It has since been applied to a variety of tasks from dynamical systems analysis and digital geometry, to general program analysis and optimization by various parties.
 
 ## Tutorial
 
