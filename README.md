@@ -15,6 +15,8 @@ Automatic differentiation in C++; infinite differentiability of conditionals, lo
 
 dCpp was originally developed as an example of how [automatic differentiation](https://en.wikipedia.org/wiki/Automatic_differentiation) can be viewed through _Tensor_ and _Operational Calculus_. It has since been applied to a variety of tasks from dynamical systems analysis and digital geometry, to general program analysis and optimization by various parties.
 
+**Note** that this was the authors first c++ project, which is reflected in the repository :).
+
 ## Tutorial
 
 We demonstrate the utilities of _dCpp_ on a simple encapsulating example.
